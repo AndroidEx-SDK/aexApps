@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="right" android:background="@color/head_back" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+  
+        <ToggleButton
+        android:id="@+id/button_control_log"
+        android:layout_width="100dip"
+        android:layout_height="30dip"
+        android:layout_alignParentRight="true"
+        android:textOn="开启日志框"
+        android:textOff="关闭日志框" />
+    
+
+</LinearLayout>

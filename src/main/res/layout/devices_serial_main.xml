@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+  
+        
+      
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/text_devices"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="left" 
+        android:layout_toRightOf="@+id/textView1" >
+        
+        
+     <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="40dip"
+        android:text="@string/text_readport"
+        android:textSize="20dp" />
+     
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="wrap_content"
+        android:layout_height="40dip"
+        android:layout_above="@+id/text_devices" />
+    
+    
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    
+     <ToggleButton
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" />
+     
+     <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="扫描酒位" />
+    
+    </LinearLayout>
+ 
+     <TextView
+         android:id="@+id/text_devices"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="酒位管理列表"
+         android:layout_gravity="left" 
+         android:paddingTop="10.0px" 
+         android:paddingBottom="20.0px" 
+         android:textSize="32.0dip" />
+        
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/text_devices"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center" >
+
+        <ListView
+            android:id="@+id/listview_devices_list"
+            android:horizontalSpacing="1dp"  
+            android:verticalSpacing="1dp"  
+            android:stretchMode="columnWidth"  
+            android:gravity="center"  
+            android:listSelector="@null"  
+            android:background="#DCDCDC"  
+            android:layout_width="wrap_content"  
+            android:layout_height="wrap_content">  
+        </ListView>
+    </TableLayout>
+    
+   
+</LinearLayout>

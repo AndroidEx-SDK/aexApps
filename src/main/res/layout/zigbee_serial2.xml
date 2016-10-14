@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout 
+      android:layout_gravity="left" 
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" >
+      <Button
+          android:id="@+id/Button_return1"
+          android:layout_width="115dp"
+          android:layout_height="wrap_content"
+          android:layout_gravity="left"
+          android:text="返回" />
+      
+      <Button
+        android:id="@+id/button_io"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+         android:layout_alignParentRight="true"
+        android:text="@string/zigebee_next"  />
+     </LinearLayout>
+                   
+       <TextView 
+	       android:id="@+id/textView_title" 
+	       android:textSize="32.0dip" 
+	       android:layout_gravity="left" 
+	       android:paddingTop="40.0px"
+	       android:paddingBottom="20.0px" 
+	       android:layout_width="wrap_content" 
+	       android:layout_height="wrap_content" 
+	       android:text="终端控制管理" />
+       
+      
+       
+        <TableLayout
+                android:id="@+id/tableLayout1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_weight="1.0"
+                android:orientation="vertical" >
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" >
+                    
+
+                    
+                   <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="10.0px"
+                        android:paddingRight="10.0px" >
+
+                  <TextView
+			            android:id="@+id/textView3"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:text="请选择串口:"
+			            android:layout_below="@+id/textView_title"
+			            android:textSize="20dp" />
+                                          
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="10.0px"
+                        android:paddingRight="10.0px" >
+
+			        <Spinner
+			            android:id="@+id/spinner_serial"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content" 
+			            android:layout_toRightOf="@+id/textView3"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="10.0px"
+                        android:paddingRight="10.0px" >
+
+                    <TextView
+			            android:id="@+id/tv_brate"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:text="请选择波特率:"
+			            android:layout_toRightOf="@+id/spinner_serial"
+			            android:textSize="20dp" />
+                    </LinearLayout>
+
+                  
+                    
+               
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="10.0px"
+                        android:paddingRight="10.0px" >
+
+                      <Spinner
+			            android:id="@+id/spinner_port"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:layout_toRightOf="@+id/textView3" />
+                    </LinearLayout>
+                    
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="10.0px"
+                        android:paddingRight="10.0px" >
+
+                     <Button
+				        android:id="@+id/button_open_zigbee"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_gravity="right"
+				        android:text="打开串口" />
+                    </LinearLayout>
+                    
+                </TableRow>
+
+                <TableRow
+                    
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" >
+                    
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="10.0px"
+                        android:paddingRight="10.0px" >
+
+         
+				      <TextView
+				        android:id="@+id/tv_writeport"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_below="@+id/tv_writeport"
+				        android:layout_alignParentLeft="true"
+				        android:text="@string/text_writeport"
+				        android:textSize="20dp" />
+                    </LinearLayout>
+                    
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="10.0px"
+                        android:paddingRight="10.0px" >
+				      
+				     <EditText
+				        android:id="@+id/EditText4"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:ems="10"
+				        android:inputType="text" />
+				                        
+                    </LinearLayout>
+                    
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="10.0px"
+                        android:paddingRight="10.0px" >
+
+                    </LinearLayout>
+                    
+                   <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="10.0px"
+                        android:paddingRight="10.0px" >
+
+                    </LinearLayout>
+                    
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="10.0px"
+                        android:paddingRight="10.0px" >
+
+    
+				         <Button
+				        android:id="@+id/button2"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_gravity="right"
+				        android:text="@string/startwrite" />
+                    </LinearLayout>
+                    
+                    
+                </TableRow>
+                
+                
+                
+            </TableLayout>
+
+</LinearLayout>

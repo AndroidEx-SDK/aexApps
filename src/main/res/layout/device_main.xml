@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#10000000"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/main_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TableLayout
+                android:id="@+id/tableLayout1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_weight="1.0"
+                android:orientation="vertical" >
+
+               <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="40.0px"
+                        android:paddingRight="40.0px" >
+
+                        <ImageView
+                            android:id="@+id/ImageView_serial"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/btn_device_style"
+                            android:clickable="true" />
+
+                        <TextView
+                            android:id="@+id/TextView02"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/button_main_serial"
+                            android:textSize="24.0dip" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="20.0px"
+                        android:paddingRight="20.0px" >
+
+                        <ImageView
+                            android:id="@+id/ImageView_print"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/btn_device_style"
+                            android:clickable="true" />
+
+                        <TextView
+                            android:id="@+id/TextView03"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/button_main_print"
+                            android:textSize="24.0dip" />
+                    </LinearLayout>
+                    
+                                     <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="40.0px"
+                        android:paddingRight="40.0px" >
+
+                        <ImageView
+                            android:id="@+id/ImageView_control_io"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/btn_device_style" />
+
+                        <TextView
+                            android:id="@+id/textView5"
+                            android:layout_width="133dp"
+                            android:layout_height="61dp"
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/textview_control_io"
+                            android:textSize="24.0dip" />
+                 </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="20.0px"
+                        android:paddingRight="20.0px" >
+
+                        <ImageView
+                            android:id="@+id/ImageView_mifare"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/btn_device_style"
+                            android:clickable="true" />
+
+                        <TextView
+                            android:id="@+id/textView9"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/button_main_mifareonecard"
+                            android:textSize="24.0dip" />
+
+                    </LinearLayout>
+                    
+
+                </TableRow>
+
+                <TableRow>
+                    
+                 <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="40.0px"
+                        android:paddingRight="40.0px" >
+
+                        <ImageView
+                            android:id="@+id/ImageView_s3card"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/btn_device_style"
+                            android:clickable="true"
+                            android:contentDescription="@string/button_config" />
+
+                        <TextView
+                            android:id="@+id/tv_s3card"
+                            android:layout_width="133dp"
+                            android:layout_height="61dp"
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/button_main_s3card"
+                            android:textSize="24.0dip" />
+                 </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="20.0px"
+                        android:paddingRight="20.0px" >
+
+                        <ImageView
+                            android:id="@+id/ImageView_keyboard"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/btn_device_style"
+                            android:clickable="true"
+                            android:contentDescription="@string/button_config" />
+
+                        <TextView
+                            android:id="@+id/tv_keyboard"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/button_main_keyboard"
+                            android:textSize="24.0dip" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="20.0px"
+                        android:paddingRight="20.0px" >
+
+                        <ImageView
+                            android:id="@+id/ImageView_idcard_huashi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/btn_device_style"
+                            android:clickable="true" />
+
+                        <TextView
+                            android:id="@+id/textView6"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/button_main_readerIDCard"
+                            android:textSize="24.0dip" />
+                    </LinearLayout>
+
+                    
+                </TableRow> 
+                
+                <TableRow>
+                     
+                     <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="20.0px"
+                        android:paddingRight="20.0px" >
+
+                        <ImageView
+                            android:id="@+id/ImageView_idcard_xzx"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/btn_device_style"
+                            android:clickable="true" />
+
+                        <TextView
+                            android:id="@+id/textView7"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/button_main_readerIDUSBCard"
+                            android:textSize="24.0dip" />
+                    </LinearLayout>
+                    
+                   <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="40.0px"
+                        android:paddingRight="40.0px" >
+
+                        <ImageView
+                            android:id="@+id/ImageView_mf30card"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/btn_device_style"
+                            android:clickable="true"
+                            android:contentDescription="@string/button_config" />
+
+                        <TextView
+                            android:id="@+id/tv_mf30card"
+                            android:layout_width="133dp"
+                            android:layout_height="61dp"
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/button_main_mf30card"
+                            android:textSize="24.0dip" />
+                 </LinearLayout>
+                     
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="20.0px"
+                        android:paddingRight="20.0px" >
+
+                        <ImageView
+                            android:id="@+id/ImageView_zigbee"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/btn_device_style"
+                            android:clickable="true"
+                            android:contentDescription="@string/button_config" />
+
+                        <TextView
+                            android:id="@+id/textView52"
+                            android:layout_width="200dp"
+                            android:layout_height="61dp"
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/button_main_zigbee"
+                            android:textSize="24.0dip" />
+                    </LinearLayout>
+                    
+                 
+<!--                  <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="40.0px"
+                        android:paddingRight="40.0px" >
+
+                        <ImageView
+                            android:id="@+id/ImageView_coffee"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/btn_device_style"
+                            android:clickable="true"
+                            android:contentDescription="@string/button_config" />
+
+                        <TextView
+                            android:id="@+id/textView5"
+                            android:layout_width="133dp"
+                            android:layout_height="61dp"
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/textview_devicestest"
+                            android:textSize="24.0dip" />
+                 </LinearLayout> -->
+                 
+
+                 
+
+                </TableRow>
+                
+
+
+            </TableLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget0"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:layout_width="205dp"
+        android:layout_height="261dp"
+        android:layout_x="6dp"
+        android:layout_y="6dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="温馨提示："
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="63dp"
+            android:text="1.请先按打开按钮打开设备，若打开成功则可继续测试设备     " />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2.在测试读卡等过程中，右侧会输出读卡调试信息" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="261dp"
+        android:layout_height="485dp"
+        android:layout_x="843dp"
+        android:layout_y="9dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="调试信息输出："
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <com.eztor.devices.LogTextBox
+            android:id="@+id/cardreader_text"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1.23"
+            android:maxLines="30"
+            android:scrollbars="vertical" />
+
+    </LinearLayout>
+
+    <TableLayout
+        android:layout_width="557dp"
+        android:layout_height="359dp"
+        android:layout_x="245dp"
+        android:layout_y="14dp" >
+        
+        <TableRow
+            android:id="@+id/tableRow11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.0"
+            android:focusable="false" >
+        </TableRow>
+        
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/TextView02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="卡数据："
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <EditText
+                android:id="@+id/EditText02"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10" />
+        </TableRow>
+
+        
+        <!-- IC卡序列号 -->
+        <TableRow
+            android:id="@+id/tableRow6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/TextView06"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="IC卡序列号显示："
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <EditText
+                android:id="@+id/EditText06"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:focusable="false"
+                android:inputType="text|textMultiLine" />
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/tableRow7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/TextView_sector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="扇区号："
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <Spinner
+                android:id="@+id/spinner_sector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"/>
+        </TableRow>
+        
+         <TableRow
+            android:id="@+id/tableRow8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/TextView_block"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="块号："
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <Spinner
+                android:id="@+id/spinner_block"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"/>
+        </TableRow>
+    </TableLayout>
+
+    <LinearLayout
+        android:layout_width="562dp"
+        android:layout_height="63dp"
+        android:layout_x="248dp"
+        android:layout_y="444dp" >
+
+        <Button
+            android:id="@+id/readcard_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="单次读卡测试" />
+        <Button
+            android:id="@+id/repeat_readcard_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="循环读卡测试" />
+        <Button
+            android:id="@+id/writecard_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="写卡" />
+
+        <Button
+            android:id="@+id/clearcard_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="清屏" />
+        
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="108dp"
+        android:layout_height="57dp"
+        android:layout_x="251dp"
+        android:layout_y="379dp" >
+
+        <ToggleButton
+            android:id="@+id/closecard_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="ToggleButton" />
+    </LinearLayout>
+
+</AbsoluteLayout>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:background="@color/bar" android:layout_width="fill_parent" android:layout_height="46.0px" android:layout_weight="0.0"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:textSize="24.0dip" android:layout_gravity="center_vertical" android:id="@id/step" android:paddingLeft="15.0px" android:paddingRight="15.0px" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="操作步骤:" />
+    <TextView android:textSize="24.0dip" android:textColor="@color/tip" android:layout_gravity="center_vertical" android:id="@id/step1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="  1." />
+    <TextView android:textSize="24.0dip" android:layout_gravity="center_vertical" android:id="@id/step2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="  ❯  2." />
+    <TextView android:textSize="24.0dip" android:layout_gravity="center_vertical" android:id="@id/step3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="  ❯  3." />
+    <TextView android:textSize="24.0dip" android:layout_gravity="center_vertical" android:id="@id/step4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="  ❯  4." />
+    <TextView android:textSize="24.0dip" android:layout_gravity="center_vertical" android:id="@id/step5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="  ❯  5." />
+</LinearLayout>

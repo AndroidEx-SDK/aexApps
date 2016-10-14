@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <TextView 
+        android:id="@+id/textview_print_msg"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:textSize="24dp"
+        android:text="打印内容:"
+        />
+    
+    <EditText 
+        android:id="@+id/edittext_print_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:inputType="textMultiLine"
+        android:gravity="left|top"
+        android:minLines="6"
+        />
+
+    <TableLayout
+        android:id="@+id/tableLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        
+       <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="参数设置"
+            android:textSize="9pt" />
+
+        <!-- 打印二维码 -->
+
+        <CheckBox
+            android:id="@+id/check_2Dimensional"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/print_check_2Dimensional" />
+
+        <!-- 打印条形码 -->
+
+        <CheckBox
+            android:id="@+id/check_barcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/print_check_barcode" />
+
+        <!-- 打印二倍字符 -->
+
+        <CheckBox
+            android:id="@+id/check_2size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/print_check_2size" />
+
+        <!-- 对齐方式设置 -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/print_text_setAlign"
+            android:textSize="9pt" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup_setAlign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/print_text_setAlign" >
+
+            <RadioButton
+                android:id="@+id/radio_leftAlign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/print_radio_leftAlign" />
+
+            <RadioButton
+                android:id="@+id/radio_middleAlign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/print_radio_middleAlign" />
+
+            <RadioButton
+                android:id="@+id/radio_rightAlign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/print_radio_rightAlign" />
+        </RadioGroup>
+    </TableLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tableLayout1"
+        android:layout_marginLeft="47dp"
+        android:layout_marginTop="35dp"
+        android:gravity="left" >
+
+        <TextView
+            android:id="@+id/textview_printtimes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="50.0"
+            android:text="打印次数:" />
+
+        <EditText
+            android:id="@+id/edittext_printtimes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="50.0"
+            android:inputType="number" >
+
+            <requestFocus />
+        </EditText>
+
+        <Button
+            android:id="@+id/print_button_print"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="50.0"
+            android:text="@string/print_button" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget0"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:layout_width="205dp"
+        android:layout_height="261dp"
+        android:layout_x="6dp"
+        android:layout_y="6dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="温馨提示："
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="63dp"
+            android:text="1.请先按打开按钮打开设备，若打开成功则可继续测试设备     " />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2.在测试读卡等过程中，右侧会输出读卡调试信息" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="108dp"
+        android:layout_height="57dp"
+        android:layout_x="263dp"
+        android:layout_y="446dp" >
+
+        <ToggleButton
+            android:id="@+id/idreader_toggleButton1"
+            android:layout_width="33dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.27"
+            android:text="ToggleButton" />
+
+    </LinearLayout>
+
+    <TableLayout
+        android:layout_width="557dp"
+        android:layout_height="359dp"
+        android:layout_x="245dp"
+        android:layout_y="14dp" >
+        
+        <TableRow
+            android:id="@+id/tableRow11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.0"
+            android:focusable="false" >
+        </TableRow>
+        
+	    <TextView
+	        android:id="@+id/idreader_textView5"
+	        android:layout_width="386dp"
+	        android:layout_height="365dp"
+	        android:layout_x="265dp"
+	        android:layout_y="24dp"
+	        android:text="TextView" />
+        
+      </TableLayout>
+
+    <LinearLayout
+        android:layout_width="216dp"
+        android:layout_height="57dp"
+        android:layout_x="374dp"
+        android:layout_y="446dp" >
+
+        <Button
+            android:id="@+id/idreader_button1"
+            android:layout_width="95dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.92"
+            android:text="读证" />
+
+        <Button
+            android:id="@+id/idreader_button2"
+            android:layout_width="95dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.92"
+            android:text="清屏" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="261dp"
+        android:layout_height="485dp"
+        android:layout_x="756dp"
+        android:layout_y="13dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="调试信息输出："
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <com.eztor.devices.LogTextBox
+            android:id="@+id/idreader_text"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1.23"
+            android:maxLines="30"
+            android:scrollbars="vertical" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/idreader_imageView1"
+        android:layout_width="161dp"
+        android:layout_height="161dp"
+        android:layout_x="567dp"
+        android:layout_y="28dp" />
+
+</AbsoluteLayout>

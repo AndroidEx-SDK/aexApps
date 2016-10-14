@@ -1,0 +1,438 @@
+<resources>
+    <string name="app_name">AndroidEx</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <!-- Strings related to Settings -->
+    <string name="print_active">PM58,ET58打印机测试</string>
+    <string name="print_button_test">打印测试</string>
+    <string name="print_button">打印测试</string>
+    <string name="print_edit_notice">请输入要打印的字符</string>
+    <string name="print_check_2Dimensional">打印二维码</string>
+    <string name="print_check_barcode">打印条形码</string>
+    <string name="print_check_2size">二倍字符显示</string>
+    <string name="print_text_setAlign">对齐方式设置</string>
+    <string name="print_radio_leftAlign">左对齐</string>
+    <string name="print_radio_middleAlign">居中对齐</string>
+    <string name="print_radio_rightAlign">右对齐</string>
+    <string name="menu_about">关于</string>
+    <string name="menu_help">帮助</string>
+    <string name="menu_display_group">显示组</string>
+    <string name="menu_select_all">全选</string>
+    <string name="menu_unselect_all">全不选</string>
+    <string name="menu_refresh">刷新</string>
+    <string name="header_start">kk30外围设备?</string>
+    <string name="header_main">kk30外围设备?</string>
+    <string name="header_about">kk30外围设备? - 关于</string>
+    <string name="header_info">kk30外围设备? - 信息</string>
+    <string name="header_info_print">kk30外围设备? - 打印机信息</string>
+    <string name="header_info_cardreader">kk30外围设备? - 多合一读卡器信息</string>
+    <string name="header_info_idreader">kk30外围设备? - 身份证阅读器信息</string>
+    <string name="header_info_onekeyboard">kk30外围设备? - 读卡器，键盘一体机信息</string>
+    <string name="header_help">kk30外围设备? - 帮助</string>
+    <string name="header_print">kk30外围设备? - 热敏打印机</string>
+    <string name="header_onekeyboard">kk30外围设备? - 读卡，键盘一体机</string>
+    <string name="header_idreader">kk30外围设备? - 身份证阅读器</string>
+    <string name="header_cardreader">kk30外围设备? - 多合一读卡器</string>
+    <string name="header_find_printers">kk30外围设备? - 查找打印机</string>
+    <string name="header_profile">kk30外围设备? - 我的档案</string>
+    <string name="title_select_conversation">选择对话</string>
+    <string name="title_select_contact">选择联系人</string>
+    <string name="footer">由深圳怡拓通讯赞助</string>
+    <string name="toast_nothing_selected">没有选中。</string>
+    <string name="message_starting_print_job">启动打印作业...</string>
+    <string name="message_finishing_print_job">完成打印工作...</string>
+    <string name="button_main_print">热敏打印机</string>
+    <string name="button_main_serial">标准串口测试工具</string>
+    <string name="text_writeport">写入串口:</string>
+    <string name="text_readport">监听串口</string>
+    <string name="text_writedata">写入内容</string>
+    <string name="startwrite">开始写入</string>
+    <string name="button_clear">清空</string>
+    <string name="button_main_readerInOne">多合一读卡器</string>
+    <string name="button_main_mifareonecard">Mifareone读卡器</string>
+    <string name="button_main_nfccard">板载高频模块读卡器</string>
+    <string name="button_main_keyboardInOne">一体键盘</string>
+    <string name="button_main_zigbee">zigbee串口测试工具</string>
+    <string name="button_main_keyboard">密码键盘</string>
+    <string name="button_main_pn532">PN532RFID读卡器</string>   
+    <string name="button_main_devicesmanager">酒位管理</string> 
+    <string name="button_main_rfm13card">世融通读卡器</string> 
+    <string name="button_main_mf30card">峰华MF30-E读卡器</string> 
+    <string name="button_main_s3card">峰华S3 CPU读卡器</string>
+    <string name="button_setup_apk">APK安装卸载测试</string> 
+   
+    <string name="button_config">配置串口参数</string>
+    <string name="button_main_readerIDCard">华视身份阅读器</string>
+    <string name="button_main_readerIDUSBCard">新中新身份阅读器</string>
+    <string name="textView_print_text">打印机串口</string>
+    <string name="textView_card_text">读卡器串口</string>
+    <string name="textView_keyboard_text">密码键盘串口</string>
+    <string name="textView_idcard_text">身份证阅读器串口</string>
+    <string name="textView_keyboardone_text">一体键盘串口</string>
+    <string name="textView_mifare_text">Mifareonecard串口</string>
+    <string name="button_setconfig">设置</string>
+    <string name="button_ok">好</string>
+    <string name="button_go">转到</string>
+    <string name="button_yes">是</string>
+    <string name="button_no">否</string>
+    <string name="button_cancel">取消</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+    <string name="button_read_more">了解更多</string>
+    <string name="button_continue">继续</string>
+    <string name="button_use_generic">使用普通</string>
+    <string name="button_select_manually">人工选择</string>
+    <string name="button_new_user">新用户</string>
+    <string name="button_login">登录</string>
+    <string name="button_edit">编辑</string>
+    <string name="button_logout">注销</string>
+    <string name="button_save">保存</string>
+    <string name="button_send_feedback">发送反馈</string>
+    <string name="button_open_site_dynamix">打开www.a10bbs.com</string>
+    <string name="button_open_site_printershare">打开www.a10bbs.com</string>
+    <string name="button_add_printer">添加打印机</string>
+    <string name="button_search">搜索</string>
+    <string name="button_new_search">新的搜索</string>
+    <string name="button_scan">打开打印机</string>
+    <string name="button_print">打印</string>
+    <string name="button_options">选项</string>
+    <string name="about_text">直接从手机打印文件，gmail，照片，通讯录，短信/彩信及更多！</string>
+    <string name="about_text_company">kk30外围设备? - 热敏打印机是由深圳怡拓通讯技术提供。 我们的重点是为Android和其他移动平台的开发和发布应用程序。 我们为您和您的企业（大或小）开发应用程序以及任何复杂问题的解决方案。欲了解更多我们公司与产品的信息 或联系我们，请访问mobiledynamix.com。对于一般的信息发送电邮至 info@dynamixsoftware.com。</string>
+    <string name="help_text_print">"kk30外围设备? - 热敏打印机程序通过jni c实现串口通讯，java层下发指令，先已jar包，lib库的方式提供调用接口，该程序为运行demo；
+kk30外围设备? - 热敏打印机特点: 
+
+* 支持Android2.3.4及以上版本系统; 
+
+* 支持标准ESC/POS指令集; 
+
+* 支持usb或者串口接口;
+
+* 支持58MM,80MM热敏打印机。
+
+"</string>
+    <string name="help_text_cardreader">"kk30外围设备? - 多合一读卡器程序通过jni c实现串口通讯，java层下发指令，先已jar包，lib库的方式提供调用接口，该程序为运行demo；
+kk30外围设备? - 多合一读卡器特点: 
+
+* 支持Android2.3.4及以上版本系统; 
+
+* 多合一读卡器包含非接触式RFID,IC卡,CPU卡等;
+
+* 支持标准iso8583报文协议; 
+
+* 支持usb或者串口接口;
+
+* 支持银联标准协议。
+
+"</string>
+
+        <string name="help_text_mifareonecard">"kk30外围设备? - Mifareone读卡器程序通过jni c实现串口通讯，java层下发指令，先已jar包，lib库的方式提供调用接口，该程序为运行demo；
+kk30外围设备? - Mifareone读卡器特点: 
+
+* 支持Android2.3.4及以上版本系统; 
+
+* Mifareone读卡器支持目前市场上的Mifareone card;
+
+
+"</string>
+    <string name="help_text_idreader">"kk30外围设备? - 身份证阅读器程序通过jni c实现串口通讯，java层下发指令，先已jar包，lib库的方式提供调用接口，该程序为运行demo；
+kk30外围设备? - 身份证阅读器特点: 
+
+* 支持Android2.3.4及以上版本系统; 
+
+* 支持usb或者串口接口;
+
+"</string>
+    <string name="help_text_onekeyboard">"kk30外围设备? - 读卡器，键盘一体机程序通过jni c实现串口通讯，java层下发指令，先已jar包，lib库的方式提供调用接口，该程序为运行demo；
+kk30外围设备? - 读卡器，键盘一体机特点: 
+
+* 支持Android2.3.4及以上版本系统;
+ 
+* 读卡器，键盘一体机包含非接触式RFID,IC卡,CPU卡等;
+
+* 支持标准ESC/POS指令集; 
+
+* 支持usb或者串口接口。
+
+"</string>
+    <string name="label_processing">处理...</string>
+    <string name="label_processing_progress">处理[%s]的...</string>
+    <string name="label_printer">打印机</string>
+    <string name="label_paper">纸</string>
+    <string name="label_not_selected">未选择</string>
+    <string name="label_preview">页面预览（%s个）</string>
+    <string name="label_favourite_printers">喜欢的打印机</string>
+    <string name="label_found_printers">找到打印机（%s）的</string>
+    <string name="label_scanning">扫描...</string>
+    <string name="label_searching">搜索...</string>
+    <string name="label_more_then">更多%s</string>
+    <string name="label_loading">载入...</string>
+    <string name="label_loading_progress">载入[%s]的...</string>
+    <string name="label_rendering">渲染...</string>
+    <string name="label_rendering_progress">渲染[%s]的...</string>
+    <string name="label_preparing_page">准备页%2$s的第%1$s</string>
+    <string name="label_password_required">需要密码</string>
+    <string name="label_no_messages">没有邮件</string>
+    <string name="label_printing_solution">热敏打印解决方案</string>
+    <string name="label_cardreader_solution">多合一读卡器解决方案</string>
+    <string name="label_idreader_solution">身份证阅读器解决方案</string>
+    <string name="label_onekeyboard_solution">读卡器，键盘一体机解决方案</string>
+    <string name="label_options">选项</string>
+    <string name="label_printer_details">打印机详细</string>
+    <string name="label_owner_details">业主详细</string>
+    <string name="label_remove_printer">删除打印机</string>
+    <string name="label_no_conversations">无会话</string>
+    <string name="label_inbox">收件箱</string>
+    <string name="label_starred">带星号</string>
+    <string name="label_chats">聊天</string>
+    <string name="label_sent">发送</string>
+    <string name="label_outbox">发件箱</string>
+    <string name="label_drafts">草稿</string>
+    <string name="label_all">所有邮件</string>
+    <string name="label_spam">垃圾邮件</string>
+    <string name="label_trash">垃圾</string>
+    <string name="label_muted">静音</string>
+    <string name="label_printer_name">姓名</string>
+    <string name="label_printer_location">位置</string>
+    <string name="label_printer_status">状态</string>
+    <string name="label_print_range">打印范围</string>
+    <string name="label_print_range_all">所有</string>
+    <string name="label_print_range_selected">选择</string>
+    <string name="label_print_range_pages">页码</string>
+    <string name="label_print_range_tip">输入页码，范围或者其组合。例如5或4-10或1，7-8</string>
+    <string name="label_print_options">打印选项</string>
+    <string name="label_picture_size">图片大小</string>
+    <string name="label_picture_size_original">原始尺寸</string>
+    <string name="label_picture_size_fit">适合页面</string>
+    <string name="label_page_margins">页边距</string>
+    <string name="label_page_margins_no">没有边距</string>
+    <string name="label_page_orientation">页面方向</string>
+    <string name="label_page_orientation_auto">自动</string>
+    <string name="label_page_orientation_portrait">横向</string>
+    <string name="label_page_orientation_landscape">纵向</string>
+    <string name="label_paper_size">纸张尺寸</string>
+    <string name="label_paper_source">纸张来源</string>
+    <string name="label_printout_mode">打印输出模式</string>
+    <string name="label_select_group">选择组</string>
+    <string name="label_all_contacts">所有联系人</string>
+    <string name="label_my_contacts">我的联系人</string>
+    <string name="label_starred_contacts">带星号的联系</string>
+    <string name="label_no_contacts">没有联系人</string>
+    <string name="label_empty_group">小组%s是空的</string>
+    <string name="label_phone_numbers">电话号码</string>
+    <string name="label_email_addresses">电邮地址</string>
+    <string name="label_chat_addresses">IM地址</string>
+    <string name="label_postal_addresses">邮政地址</string>
+    <string name="label_organizations">组织</string>
+    <string name="label_notes">备注</string>
+    <string name="label_printing_completed">顺利完成打印</string>
+    <string name="dialog_no_printers_title">没有找到打印机</string>
+    <string name="dialog_search_title">查找打印机</string>
+    <string name="label_keyboard_solution">密码键盘解决方案</string>
+    <string name="header_info_keyboard">密码键盘信息</string>
+    <string name="header_keyboard">密码键盘设备</string>
+    <string name="header_mifarecard">Mifareone card</string>
+    <string name="label_mifarecard_solution">Mifare one card解决方案</string>
+    <string name="header_mifareonecard">Mifareone card读卡器</string>
+    <string name="label_mifareonecard_solution">Mifareone card读卡器解决方案</string>
+    <string name="nfccard_data">卡数据:</string>
+    <string name="button_main_order">自助下单机</string>
+    <string name="teller">取 款</string>
+    <string name="cash">现金交款</string>
+    <string name="deposit">存 款</string>
+    <string name="transfer">转 帐</string>
+    <string name="remmit">个人汇款</string>
+    <string name="account">个人开户</string>
+    <string name="loss">挂 失</string>
+    <string name="special">特殊业务</string>
+    <string name="charge">代收费</string>
+    <string name="telegraph">电 汇</string>
+    <string name="fetched">银行进账</string>
+    <string name="spinnerIdtype">请选择证件类型</string>
+    <string name="spinnerAddress">请选择地址</string>
+    <string name="spinnerSex">请选择性别</string>
+    <string name="spinnerJob">请选择职业</string>
+    <string name="spinnerRelate">请选择关系</string>
+    <string name="spinnerCharge">请选择收费名称</string>
+    <string name="spinnerLoss">请选择丢失原因</string>
+    <string name="spinnerRequest">请选择申请事项</string>
+    <string name="spinnerCurrency">请选择币种</string>
+    <string name="outbound">境外汇款</string>
+    <string name="abc_cash">现金缴款</string>
+    <string name="abc_manage">管理收费</string>
+    <string name="abc_balance">个人结算</string>
+    <string name="abc_deposit">存 款</string>
+    <string name="abc_account">个人开户</string>
+    <string name="abc_message">银信通申请</string>
+    <string name="abc_loss">挂失/换卡</string>
+    <string name="abc_cardin">卡存款</string>
+    <string name="abc_cardout">卡取款</string>
+    <string name="abc_western">西联收汇</string>
+    <string name="spinnerAddrType">请选择地址类型</string>
+    <string name="spinnerChaoHui">请选择钞汇标志</string>
+    <string name="spinnerZhiQu">请选择支取方式</string>
+    <string name="spinnerTongDui">请选择通兑标志</string>
+    <string name="spinnerSelect">请选择</string>
+    <string name="spinnerISP">请选择运营商</string>
+    <string name="spinnerAccount">请选择帐户类型</string>
+    <string name="spinnerCard">请选择卡类型</string>
+    <string name="spinnerBusiness">请选择业务类型</string>
+    <string name="spinnerCountry">请选择国籍</string>
+    <string name="abc_western2">西联发汇</string>
+    <string name="abc_outbound">境外汇款</string>
+    <string name="specialbusiness">特殊业务</string>
+    
+    
+    <string name="title_item_detail">kk API详情</string>
+
+
+    <string name="about_introduce_title">\n项目介绍\n</string>
+    <string name="about_introduce">AEXSDK Demo</string>
+    <string name="about_developers_title">\n开发者\n</string>
+    <string name="about_thanks_title">\n感谢\n</string>
+    <string name="about_thanks">感谢所有对这个项目提供了切实帮助的人们。</string>
+    <string name="about_links_title">\n相关链接\n</string>
+    <string name="about_links">http://www.androidex.cn</string>
+    <string name="meteredseat_set">咪表参数设置</string>
+    <string name="meteredset_setnum">咪表编号</string>
+    <string name="meteredset_dev">外设端口设置</string>
+    <string name="meteredset_dev_cardreader">读卡器配置</string>
+    <string name="meteredset_dev_print">热敏打印机配置</string>
+    <string name="meteredset_dev_keyboard">密码键盘配置</string>
+    <string name="meteredset_dev_idcard">身份证配置</string>
+    <string name="meteredset_server">连接服务器地址设置</string>
+    <string name="meteredset_server_defaultip">默认服务器地址</string>
+    <string name="meteredset_dev_zigbee">zigbee模块端口</string>
+    <string name="meteredset_server_api">咪表服务器地址</string>
+    <string name="meteredset_version">版本号</string>
+    <string name="meteredset_type">终端类型</string>
+    <string name="meteredset_save">保存配置</string>
+    <string name="meteredset_reload">重新载入</string>
+    <string name="system_set">系统参数设置</string>
+    <string name="font">屏幕字体配置</string>
+    <string name="statusbar">状态栏配置</string>
+    <string name="screenconfig">旋转角度配置</string>
+    <string name="autoboot">定时开机时间配置</string>
+    <string name="autoshutdown">定时关机时间配置</string>
+    <string name="bootset">程序启动配置</string>
+    <string name="titile_gps_set">GPS配置</string>
+    <string name="gps_rs232_set">GPS方式</string>
+    <string name="defaultstart">默认启动程序</string>
+    <string name="button_main_paytest">支付测试</string>
+    <string name="pay_list_title">订单详情</string>
+    <string name="pay_list_merchant">商户号:</string>
+    <string name="pay_list_terminal">终端号:</string>
+    <string name="pay_list_fee">金额:</string>
+    <string name="pay_list_agent">商户:</string>
+    <string name="pay_shuaka_title">请刷银行卡</string>
+    <string name="pay_shuaka_cardno">卡号:</string>
+    <string name="pay_inputpwd_title">请输入密码</string>
+    <string name="pay_inoutpwd_pwd">密码:</string>
+    <string name="pay_recvresult_title">交易结果</string>
+    <string name="pay_recvresult_result">支付结果:</string>
+    <string name="pay_list_date">日期:</string>
+    <string name="pay_list_orderno">订单号:</string>
+    <string name="pay_list_currency">币种:</string>
+    
+    <string name="zigebee_p0.0">P0.0</string>
+    <string name="zigebee_p0.1">P0.1</string>
+    <string name="zigebee_p0.2">P0.2</string>
+    <string name="zigebee_p0.3">P0.3</string>
+    <string name="zigebee_p0.4">P0.4</string>
+    <string name="zigebee_p0.5">P0.5</string>
+    <string name="zigebee_p0.6">P0.6</string>
+    <string name="zigebee_p0.7">P0.7</string>
+    <string name="zigebee_p1.0">P1.0</string>
+    <string name="zigebee_p1.1">P1.1</string>
+    <string name="zigebee_p1.2">P1.2</string>
+    <string name="zigebee_p1.3">P1.3</string>
+    <string name="zigebee_p1.4">P1.4</string>
+    <string name="zigebee_p1.5">P1.5</string>
+    <string name="zigebee_p1.6">P1.6</string>
+    <string name="zigebee_p1.7">P1.7</string>
+    <string name="zigebee_p2.0">P2.0</string>
+    <string name="zigebee_p2.1">P2.1</string>
+    <string name="zigebee_p2.2">P2.2</string>
+    <string name="text_selectdevice">终端:</string>
+    <string name="zigebee_next">下一步</string>
+    <string name="button_zigbee_scan">扫描终端</string>
+    <string name="io_output">IO输出</string>
+    <string name="io_input">IO输入</string>     
+    <string name="temperature_default">28</string>  
+    <string name="pref_title_social_recommendations">Enable social recommendations</string>
+    <string name="pref_description_social_recommendations">Recommendations for people to contact
+        based on your message history
+    </string>
+
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">John Smith</string>
+
+    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+    <string-array name="pref_example_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>2</item>
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+
+    <string name="pref_title_sync_frequency">Sync frequency</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">通知</string>
+
+    <string name="pref_title_new_message_notifications">New message notifications</string>
+
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_ringtone_silent">Silent</string>
+
+    <string name="pref_title_vibrate">Vibrate</string>
+    <string name="humidity_default">50</string>   
+    <string name="textview_vgatohdmi">VGA和HDMI切换</string>  
+    <string name="textview_vga">VGA切换</string>
+    <string name="textview_hdmi">HDMI切换</string>
+    <string name="textview_config_ioport">IO配置</string> 
+    <string name="textview_config_onofftime">开启关闭时间间隔</string>
+    <string name="textview_control_io">智能中断IO控制</string>
+    <string name="textview_config_intervaltime">间隔时间</string>
+    <string name="button_openio">开始运行</string>
+    <string name="button_closeio">停止运行</string>
+    <string name="device_one">设备1</string>
+    <string name="device_two">设备2</string>
+    <string name="device_three">设备3</string>
+    <string name="device_four">设备4</string>
+    <string name="device_five">设备5</string>
+    <string name="button_start">开始测试</string>
+    <string name="coffer_tip">欢迎使用智能咖啡机</string>    
+    <string name="coffer_message">准备就绪...</string> 
+    <string name="textview_devicestest">设备自动化测试</string>
+    <string name="about_developers">Shenzhen AndroidEx Co,Ltd.</string>
+    <string name="dummy_button">Full screen</string>
+    <string name="app_subtitle">专注于安卓工业解决方案</string>
+    <string name="ready">就绪</string>
+</resources>
