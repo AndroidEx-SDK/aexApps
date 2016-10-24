@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.androidex.aexsettings">
+          package="com.androidex.apps.home">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -30,7 +30,7 @@
         android:exported="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".FullscreenActivity"
+            android:name="com.androidex.apps.home.FullscreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
@@ -43,22 +43,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.androidex.aexsettings.DevicesListActivity"
+            android:name="com.androidex.apps.home.DevicesListActivity"
             android:launchMode="singleTask"
             android:icon="@drawable/ic_launcher"
             android:label="@string/title_item_detail"
             android:exported="true">
         </activity>
         <activity
-            android:name="com.androidex.aexsettings.DetailActivity"
+            android:name="com.androidex.apps.home.DetailActivity"
             android:launchMode="singleTask"
             android:icon="@drawable/ic_launcher"
             android:label="@string/title_item_detail"
             android:exported="true">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.androidex.aexsettings.DevicesListActivity" />
-        </activity>        <receiver android:name="com.androidex.aexsettings.BootBroadcastReceiver">
+                android:value="com.androidex.apps.home.DevicesListActivity" />
+        </activity>        <receiver android:name="com.androidex.apps.home.BootBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

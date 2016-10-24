@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/aexAdvert/aexAdvert.iml" filepath="$PROJECT_DIR$/aexAdvert/aexAdvert.iml" />
       <module fileurl="file://$PROJECT_DIR$/aexApps.iml" filepath="$PROJECT_DIR$/aexApps.iml" />
       <module fileurl="file://$PROJECT_DIR$/aexHome/aexHome.iml" filepath="$PROJECT_DIR$/aexHome/aexHome.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
 </project>

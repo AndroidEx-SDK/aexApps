@@ -5,7 +5,7 @@ android {
     compileSdkVersion 22
     buildToolsVersion '22.0.1'
     defaultConfig {
-        applicationId "com.androidex.aexsettings"
+        applicationId 'com.androidex.apps.home'
         minSdkVersion 17
         targetSdkVersion 22
         versionCode 1
@@ -46,6 +46,7 @@ android {
 dependencies {
     provided fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
+    compile(name: 'appLibs-debug', ext: 'aar')
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.android.support:design:22.2.1'
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
