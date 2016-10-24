@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="appLibs-debug-">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/aexHome/build/intermediates/exploded-aar/appLibs-debug/jars/libs/aexlib.jar!/" />
+      <root url="jar://$PROJECT_DIR$/aexHome/build/intermediates/exploded-aar/appLibs-debug/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/aexHome/build/intermediates/exploded-aar/appLibs-debug/res" />
+      <root url="jar://$PROJECT_DIR$/aexHome/build/intermediates/exploded-aar/appLibs-debug/jars/libs/jniaexlib.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
