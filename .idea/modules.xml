@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/aexAdvert/aexAdvert.iml" filepath="$PROJECT_DIR$/aexAdvert/aexAdvert.iml" />
       <module fileurl="file://$PROJECT_DIR$/aexApps.iml" filepath="$PROJECT_DIR$/aexApps.iml" />
       <module fileurl="file://$PROJECT_DIR$/aexHome/aexHome.iml" filepath="$PROJECT_DIR$/aexHome/aexHome.iml" />
+      <module fileurl="file://$PROJECT_DIR$/aexSmartBiz/aexSmartBiz.iml" filepath="$PROJECT_DIR$/aexSmartBiz/aexSmartBiz.iml" />
     </modules>
   </component>
 </project>

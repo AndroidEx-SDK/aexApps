@@ -42,23 +42,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.androidex.apps.home.DevicesListActivity"
-            android:launchMode="singleTask"
-            android:icon="@drawable/ic_launcher"
-            android:label="@string/title_item_detail"
-            android:exported="true">
-        </activity>
-        <activity
-            android:name="com.androidex.apps.home.DetailActivity"
-            android:launchMode="singleTask"
-            android:icon="@drawable/ic_launcher"
-            android:label="@string/title_item_detail"
-            android:exported="true">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.androidex.apps.home.DevicesListActivity" />
-        </activity>        <receiver android:name="com.androidex.apps.home.BootBroadcastReceiver">
+        <receiver android:name="com.androidex.apps.home.BootBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

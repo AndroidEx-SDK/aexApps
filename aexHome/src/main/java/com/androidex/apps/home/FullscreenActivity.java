@@ -228,10 +228,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
     }
 
     static {
-        DummyContent.addItem(new DummyContent.DummyItem("setting","系统设置","", SetFragment.class,"url=setting",true,0));
         DummyContent.addItem(new DummyContent.DummyItem("log","日志","", LogFragment.class,"url=log",true,0));
-        DummyContent.addItem(new DummyContent.DummyItem("javatest","java API设备测试","", DevicesFragment.class,"url=javatest",true,0));
-        DummyContent.addItem(new DummyContent.DummyItem("webtest","web API测试测试","", DetailFragment.class,"url=file:///android_asset/index.html",true,0));
     };
 
     /**

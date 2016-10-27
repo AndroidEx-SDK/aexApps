@@ -3,7 +3,8 @@ package com.androidex.apps.home;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+
+import com.androidex.logger.Log;
 
 public class BootBroadcastReceiver extends BroadcastReceiver {    
 	private static final String TAG = "AEXSDK";
