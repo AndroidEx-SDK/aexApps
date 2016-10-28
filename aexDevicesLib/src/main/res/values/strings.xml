@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">aexDevicesLib</string>
+    <string name="DEVICE_PRINTER_B58">微型热敏打印机B58</string>
+    <string name="DEVICE_PK_KMY350">凯名扬密码键盘KMY350</string>
+    <string name="DEVICE_READER_MT318">多合一读卡器MT318</string>
 </resources>
