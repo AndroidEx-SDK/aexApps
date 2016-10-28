@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidex.devices.appDeviceDriver;
+
 public class SmartBizMainActivity extends AppCompatActivity {
 
     public static final String TAG = "SmartBiz";
@@ -47,6 +49,8 @@ public class SmartBizMainActivity extends AppCompatActivity {
                 if(mDevices.mPrinter.Open()){
                     mDevices.mPrinter.selfTest();
                     mDevices.mPrinter.Close();
+                }else{
+                    Toast.makeText(mActivity,String.format("Open printer fial:%s",mDevices.mPrinter.mParams.optString(appDeviceDriver.PORT_ADDRESS)),Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -59,6 +63,8 @@ public class SmartBizMainActivity extends AppCompatActivity {
                     mDevices.mBankCardReader.readerQueryCard();
                     mDevices.mBankCardReader.readerPopCard();
                     mDevices.mBankCardReader.Close();
+                }else{
+                    Toast.makeText(mActivity,String.format("Open bank reader fial:%s",mDevices.mBankCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS)),Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -71,6 +77,8 @@ public class SmartBizMainActivity extends AppCompatActivity {
                     mDevices.mCasCardReader.readerQueryCard();
                     mDevices.mCasCardReader.readerPopCard();
                     mDevices.mCasCardReader.Close();
+                }else{
+                    Toast.makeText(mActivity,String.format("Open cas reader fial:%s",mDevices.mCasCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS)),Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -84,6 +92,8 @@ public class SmartBizMainActivity extends AppCompatActivity {
                     Log.d(TAG, pkVersion);
                     Toast.makeText(mActivity, pkVersion, Toast.LENGTH_LONG).show();
                     mDevices.mPasswordKeypad.Close();
+                }else{
+                    Toast.makeText(mActivity,String.format("Open password keypad fial:%s",mDevices.mPasswordKeypad.mParams.optString(appDeviceDriver.PORT_ADDRESS)),Toast.LENGTH_LONG).show();
                 }
             }
         });

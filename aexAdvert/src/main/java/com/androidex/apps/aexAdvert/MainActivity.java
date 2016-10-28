@@ -1,4 +1,4 @@
-package com.androidex.app;
+package com.androidex.apps.aexAdvert;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;

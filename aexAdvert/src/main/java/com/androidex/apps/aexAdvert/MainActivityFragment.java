@@ -1,4 +1,4 @@
-package com.androidex.app;
+package com.androidex.apps.aexAdvert;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;

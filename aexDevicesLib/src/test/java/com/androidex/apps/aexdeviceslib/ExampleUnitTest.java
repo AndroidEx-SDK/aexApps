@@ -1,4 +1,4 @@
-package com.androidex.app;
+package com.androidex.apps.aexdeviceslib;
 
 import org.junit.Test;
 

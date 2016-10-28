@@ -52,7 +52,7 @@ public class appSmartBizDevices extends appLibsDevices {
         mPrinter = new aexddB58Printer(ctx,mConfig.mConfigPrinter);
         mBankCardReader = new aexddMT318PoscReader(ctx,mConfig.mConfigBankReader);
         mCasCardReader = new aexddMT318PoscReader(ctx,mConfig.mConfigCasReader);
-        mNfcReader = new aexddNfcReader(ctx,mConfig.mConfigPasswordKeypad);
+        mPasswordKeypad = new aexddPasswordKeypad(ctx,mConfig.mConfigPasswordKeypad);
 
     }
 }
