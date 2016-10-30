@@ -84,6 +84,11 @@ public class aexddMT318PoscReader extends aexddPoscReader {
     }
 
     @Override
+    public void selfTest() {
+
+    }
+
+    @Override
     public boolean reset()
     {
         boolean ret = false;

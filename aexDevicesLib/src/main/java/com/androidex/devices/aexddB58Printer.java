@@ -2,8 +2,8 @@ package com.androidex.devices;
 
 import android.content.Context;
 
-import com.androidex.aexapplibs.R;
 import com.androidex.aexlibs.hwService;
+import com.androidex.apps.aexdeviceslib.R;
 import com.androidex.logger.Log;
 
 import org.json.JSONException;
