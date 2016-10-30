@@ -1,7 +1,6 @@
 package com.androidex.apps.aexSmartBiz;
 
 import android.content.Context;
-
 import com.androidex.aexapplibs.appLibsService;
 
 /**

@@ -10,6 +10,10 @@ import android.widget.Toast;
 
 import com.androidex.devices.appDeviceDriver;
 
+/**
+ *
+ */
+
 public class SmartBizMainActivity extends AppCompatActivity {
 
     public static final String TAG = "SmartBiz";
@@ -59,9 +63,9 @@ public class SmartBizMainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //
                 if(mDevices.mBankCardReader.Open()) {
-                    mDevices.mBankCardReader.readerReset();
-                    mDevices.mBankCardReader.readerQueryCard();
-                    mDevices.mBankCardReader.readerPopCard();
+                    mDevices.mBankCardReader.reset();
+                    mDevices.mBankCardReader.queryCard();
+                    mDevices.mBankCardReader.popCard();
                     mDevices.mBankCardReader.Close();
                 }else{
                     Toast.makeText(mActivity,String.format("Open bank reader fial:%s",mDevices.mBankCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS)),Toast.LENGTH_LONG).show();
@@ -73,9 +77,9 @@ public class SmartBizMainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //
                 if(mDevices.mCasCardReader.Open()) {
-                    mDevices.mCasCardReader.readerReset();
-                    mDevices.mCasCardReader.readerQueryCard();
-                    mDevices.mCasCardReader.readerPopCard();
+                    mDevices.mCasCardReader.reset();
+                    mDevices.mCasCardReader.queryCard();
+                    mDevices.mCasCardReader.popCard();
                     mDevices.mCasCardReader.Close();
                 }else{
                     Toast.makeText(mActivity,String.format("Open cas reader fial:%s",mDevices.mCasCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS)),Toast.LENGTH_LONG).show();

@@ -11,6 +11,10 @@ import com.androidex.devices.aexddPoscReader;
 import com.androidex.devices.aexddPrinter;
 
 /**
+ *
+ */
+
+/**
  * Created by yangjun on 2016/10/26.
  */
 
@@ -52,7 +56,30 @@ public class appSmartBizDevices extends appLibsDevices {
         mPrinter = new aexddB58Printer(ctx,mConfig.mConfigPrinter);
         mBankCardReader = new aexddMT318PoscReader(ctx,mConfig.mConfigBankReader);
         mCasCardReader = new aexddMT318PoscReader(ctx,mConfig.mConfigCasReader);
-        mPasswordKeypad = new aexddPasswordKeypad(ctx,mConfig.mConfigPasswordKeypad);
+        mPasswordKeypad = new aexddPasswordKeypad(ctx, mConfig.mConfigPasswordKeypad) {
+            /**
+             *
+             */
+            @Override
+            public int ReciveDataLoop() {
+                return 0;
+            }
+
+            @Override
+            public String getStatusStr(int i) {
+                return null;
+            }
+
+            @Override
+            public boolean pkReset() {
+                return false;
+            }
+
+            @Override
+            public String pkGetVersion() {
+                return null;
+            }
+        };
 
     }
 }
