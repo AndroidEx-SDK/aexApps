@@ -1,5 +1,5 @@
 #include <jni.h>
-#include "com_androidex_devices_aexddPoscReader.h"
+#include "com_androidex_devices_aexddMT318.h"
 #include <memory.h>
 #include <pthread.h>
 
@@ -15,7 +15,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include "./include/utils.h"
-#include "aexddPoscReader.h"
+#include "aexddMT318.h"
 
 #include <android/log.h>
 

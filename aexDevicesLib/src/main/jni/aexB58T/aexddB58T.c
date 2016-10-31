@@ -13,8 +13,8 @@
 #include <android/log.h>
 #include <dirent.h>
 
-#include	"aexddPrinter.h"
-#include	"./include/utils.h"
+#include "aexddB58T.h"
+#include	"../include/utils.h"
 
 
 #define MAX_BUFF 2048
@@ -24,7 +24,7 @@ static ON_PRINT_EVENT on_print_event=NULL;
 /**
  * 设置回调函数，在JNI的代码里会调用它来设置处理事件的回调函数
  */
-void aexddPrinter_set_event(ON_PRINT_EVENT oke)
+void aexddB58T_set_event(ON_PRINT_EVENT oke)
 {
 	on_print_event = oke;
 }
@@ -32,7 +32,7 @@ void aexddPrinter_set_event(ON_PRINT_EVENT oke)
 /**
  * 打印机事件的入口函数，静态函数只能在本文件中调用
  */
-static int aexddPrinter_event(PRINT_HANDLE print,HKKP env,HKKP obj,int code,char *pszFormat,...)
+static int aexddB58T_event(PRINT_HANDLE print,HKKP env,HKKP obj,int code,char *pszFormat,...)
 {
 	char pszDest[MAX_BUFF];
 	va_list args;
@@ -52,9 +52,9 @@ static int aexddPrinter_event(PRINT_HANDLE print,HKKP env,HKKP obj,int code,char
 /*
  * 说明：将java传入的字符串指令转换位16进制指令
  * */
-//void aexddPrinter_hexEncode(const unsigned char *pbSrcData, int nSrcLen, char *szDest, int *pnDestLen)
+//void aexddB58T_hexEncode(const unsigned char *pbSrcData, int nSrcLen, char *szDest, int *pnDestLen)
 
-int aexddPrinter_hexDecode(PRINT_HANDLE print,HKKP env,HKKP obj)
+int aexddB58T_hexDecode(PRINT_HANDLE print,HKKP env,HKKP obj)
 {
 	char *pin2="1122334455667788";
 	char pout2[10]={0};
@@ -106,9 +106,9 @@ static int print_send_cmd(int fd,char *cmd,int size)
 
 /**
  * 打开打印机，返回0失败   其他成功
- * @aexddPrinterram arg 串口参数字符串，字符串格式为:com=/dev/ttyUSB0(串口设备字符串),s=115200(波特率),p=N(奇偶校验),b=1(停止位),d=8(数据位数)
+ * @aexddB58Tram arg 串口参数字符串，字符串格式为:com=/dev/ttyUSB0(串口设备字符串),s=115200(波特率),p=N(奇偶校验),b=1(停止位),d=8(数据位数)
  */
-PRINT_HANDLE aexddPrinter_open(HKKP env,HKKP obj,char* arg)
+PRINT_HANDLE aexddB58T_open(HKKP env,HKKP obj,char* arg)
 {
 	int fd = com_open(arg);
 	//__android_log_print(ANDROID_LOG_DEBUG,"kkp","Open fd= %d,path= %s ",fd,arg);
@@ -135,12 +135,12 @@ PRINT_HANDLE aexddPrinter_open(HKKP env,HKKP obj,char* arg)
 }
 
 /**
- * 函数名：aexddPrinter_close
+ * 函数名：aexddB58T_close
  * 参数：
  * 返回值：0，成功；其他为失败；
  * 说明：关闭打印机串口
  */
-int aexddPrinter_close(PRINT_HANDLE print,HKKP env,HKKP obj)
+int aexddB58T_close(PRINT_HANDLE print,HKKP env,HKKP obj)
 {
 	if(print){
 		if(print->fd)
@@ -186,7 +186,7 @@ int aexddPrinter_close(PRINT_HANDLE print,HKKP env,HKKP obj)
  * n  行数
  * 为防止n过大导致资源浪费，n最大为10
  */
-int aexddPrinter_newline(PRINT_HANDLE print,HKKP env,HKKP obj,int n){
+int aexddB58T_newline(PRINT_HANDLE print,HKKP env,HKKP obj,int n){
 	int i;
 	char buff[MAX_BUFF];
 	if( !print || n<1 || n>10) return -1;
@@ -210,7 +210,7 @@ int aexddPrinter_newline(PRINT_HANDLE print,HKKP env,HKKP obj,int n){
  * @param n 设置字符大小
  * 10  2倍宽    01 2倍高
  */
-int aexddPrinter_set_fontsize(PRINT_HANDLE print,HKKP env,HKKP obj,int isize){
+int aexddB58T_set_fontsize(PRINT_HANDLE print,HKKP env,HKKP obj,int isize){
 	char buff[MAX_BUFF];
 	if (!print)
 		return -1;
@@ -232,7 +232,7 @@ int aexddPrinter_set_fontsize(PRINT_HANDLE print,HKKP env,HKKP obj,int isize){
  * @param n 设置字符大小
  * 10  2倍宽    01 2倍高    00  取消倍宽倍高
  */
-int aexddPrinter_setmode(PRINT_HANDLE print,HKKP env,HKKP obj,int isize){
+int aexddB58T_setmode(PRINT_HANDLE print,HKKP env,HKKP obj,int isize){
 	char buff[MAX_BUFF];
 	if (!print)
 		return -1;
@@ -251,7 +251,7 @@ int aexddPrinter_setmode(PRINT_HANDLE print,HKKP env,HKKP obj,int isize){
  * 设置行间距为n 点行 （n ∕203 英寸） 默认n=30
  * @param n 行间距
  */
-int aexddPrinter_set_linewide(PRINT_HANDLE print,HKKP env,HKKP obj,int isize){
+int aexddB58T_set_linewide(PRINT_HANDLE print,HKKP env,HKKP obj,int isize){
 	char buff[MAX_BUFF];
 	if (!print)
 		return -1;
@@ -267,19 +267,19 @@ int aexddPrinter_set_linewide(PRINT_HANDLE print,HKKP env,HKKP obj,int isize){
 
 /**
  *@4.PM58,ET58 ESC @ 初始化打印机                                     1B 40
- * 函数名：aexddPrinter_initialize
+ * 函数名：aexddB58T_initialize
  * 参数：
  * 返回值：0，成功；其他为；
  * 说明：初始化打印机
  */
-int aexddPrinter_initialize(PRINT_HANDLE print,HKKP env,HKKP obj)
+int aexddB58T_initialize(PRINT_HANDLE print,HKKP env,HKKP obj)
 {
 	char buff[MAX_BUFF] ;
 	if (!print)
 		return -1;
 	memset(buff,0,sizeof(buff));
 	sprintf(&buff[0],"\x1b\x40");
-	//__android_log_print(ANDROID_LOG_DEBUG,"kkp","aexddPrinter_initialize");
+	//__android_log_print(ANDROID_LOG_DEBUG,"kkp","aexddB58T_initialize");
 
 	if(com_write(print->fd, buff, 2))
 		return 0;
@@ -291,7 +291,7 @@ int aexddPrinter_initialize(PRINT_HANDLE print,HKKP env,HKKP obj)
  * @5.PM58,ET58 ESC SO 设置字符倍宽打印                                 1B 0E ,在一行内该命令之后的所有字符均以正常宽度的2倍打
  * 在一行内该命令之后的所有字符均以正常宽度的2 倍打印
  */
-int aexddPrinter_set_charDSize(PRINT_HANDLE print,HKKP env,HKKP obj)
+int aexddB58T_set_charDSize(PRINT_HANDLE print,HKKP env,HKKP obj)
 {
 	char buff[MAX_BUFF];
 
@@ -310,7 +310,7 @@ int aexddPrinter_set_charDSize(PRINT_HANDLE print,HKKP env,HKKP obj)
 *
 * 恢复正常宽度打印
 */
-int aexddPrinter_set_charNSize(PRINT_HANDLE print,HKKP env,HKKP obj)
+int aexddB58T_set_charNSize(PRINT_HANDLE print,HKKP env,HKKP obj)
 {
 	char buff[MAX_BUFF];
 
@@ -328,7 +328,7 @@ int aexddPrinter_set_charNSize(PRINT_HANDLE print,HKKP env,HKKP obj)
 @7.PM58,ET58 ESC * m n1 n2 d1⋯dk 设定点图命令                       1B 2A m n1 n2 [d]k,
 @设定点图命令
 */
-int aexddPrinter_set_graph(PRINT_HANDLE print,HKKP env,HKKP obj ,char m, char n1, char n2, char* chGPI)
+int aexddB58T_set_graph(PRINT_HANDLE print,HKKP env,HKKP obj ,char m, char n1, char n2, char* chGPI)
 {
 	char buff[MAX_BUFF];
 
@@ -347,7 +347,7 @@ int aexddPrinter_set_graph(PRINT_HANDLE print,HKKP env,HKKP obj ,char m, char n1
  * @8.PM58,ET58 GS w n 设置条码宽度                                     1D 77 n,设置条形码水平尺寸，2 £  n £ 6
  *
  * */
-int aexddPrinter_set_barcodeWide(PRINT_HANDLE print,HKKP env,HKKP obj, char n)
+int aexddB58T_set_barcodeWide(PRINT_HANDLE print,HKKP env,HKKP obj, char n)
 {
 	char buff[MAX_BUFF];
 
@@ -365,7 +365,7 @@ int aexddPrinter_set_barcodeWide(PRINT_HANDLE print,HKKP env,HKKP obj, char n)
  *@9.PM58,ET58 GS h n 设置条形码高度                                   1D 68 n,设置条形码高度，1 £  n £ 255。
  *设定条码宽度,水平方向点数 2<=n<=6,缺省值为3
  * */
-int aexddPrinter_set_barcodeHigh(PRINT_HANDLE print,HKKP env,HKKP obj, char n)
+int aexddB58T_set_barcodeHigh(PRINT_HANDLE print,HKKP env,HKKP obj, char n)
 {
 	char buff[MAX_BUFF];
 
@@ -383,7 +383,7 @@ int aexddPrinter_set_barcodeHigh(PRINT_HANDLE print,HKKP env,HKKP obj, char n)
  * @10.PM58,ET58 GS k m d1 ... dk NUL ② GS k m n d1 ... dn 打印条形码   1D 6B m n d1 .. dn
  * 打印条形码
  * */
-int aexddPrinter_print_barcode(PRINT_HANDLE print,HKKP env,HKKP obj,char wide ,char high,char code,char* data, int len)
+int aexddB58T_print_barcode(PRINT_HANDLE print,HKKP env,HKKP obj,char wide ,char high,char code,char* data, int len)
 {
 	char buff[MAX_BUFF];
 
@@ -407,7 +407,7 @@ int aexddPrinter_print_barcode(PRINT_HANDLE print,HKKP env,HKKP obj,char wide ,c
  @11.PM58,ET58 打印英文  写入缓冲区直接打印  0x0a
  */
 /*打印英文*/
-int aexddPrinter_print_en(PRINT_HANDLE print,HKKP env,HKKP obj,char* pEn,int length)
+int aexddB58T_print_en(PRINT_HANDLE print,HKKP env,HKKP obj,char* pEn,int length)
 {
 	char buff[MAX_BUFF] ;
 	if(!print)	return 0;
@@ -431,7 +431,7 @@ int aexddPrinter_print_en(PRINT_HANDLE print,HKKP env,HKKP obj,char* pEn,int len
  * @param size  打印点大小(3-6)  ver:QR码型号(0-40)  lv:QR纠错等级(0-3)  nl,nh:QR码的打印数据长度 (nl+nh*256)<400
  *
  */
-int aexddPrinter_print_2Dimensional(PRINT_HANDLE print,HKKP env,HKKP obj,char *content,int ilen){
+int aexddB58T_print_2Dimensional(PRINT_HANDLE print,HKKP env,HKKP obj,char *content,int ilen){
     char buff[MAX_BUFF];
     if (!print || ilen>400)
         return -1;
@@ -530,7 +530,7 @@ n	说明	纠正比例（%）
 //   #HEX
 //   1D 28 6B 30 81
 
-int aexddPrinter_SGT801_print_2Dimensional(PRINT_HANDLE print,HKKP env,HKKP obj,int isize,char *content,int ilen){
+int aexddB58T_SGT801_print_2Dimensional(PRINT_HANDLE print,HKKP env,HKKP obj,int isize,char *content,int ilen){
     char buff[MAX_BUFF];
     char value[MAX_BUFF];
     char data[MAX_BUFF];
@@ -557,7 +557,7 @@ int aexddPrinter_SGT801_print_2Dimensional(PRINT_HANDLE print,HKKP env,HKKP obj,
 }
 
 // 打印位图
-int aexddPrinter_print_bitmap(PRINT_HANDLE print,HKKP env,HKKP obj,const unsigned char *data, int iLen, int iLine){
+int aexddB58T_print_bitmap(PRINT_HANDLE print,HKKP env,HKKP obj,const unsigned char *data, int iLen, int iLine){
 
 
     int iNum = 1;
@@ -575,15 +575,15 @@ int aexddPrinter_print_bitmap(PRINT_HANDLE print,HKKP env,HKKP obj,const unsigne
     // 开始打印图片
 
     //初始化打印机
-    aexddPrinter_initialize(print,env,obj);
+    aexddB58T_initialize(print,env,obj);
 
     // 设置行距
-    if(aexddPrinter_setLineinterval(print,env,obj,10))
+    if(aexddB58T_setLineinterval(print,env,obj,10))
     {
         return -1;
     }
     // 设置打印区域
-    if(aexddPrinter_setprintarea(print,env,obj,nL+1, nH))
+    if(aexddB58T_setprintarea(print,env,obj,nL+1, nH))
     {
         return -1;
     }
@@ -606,7 +606,7 @@ int aexddPrinter_print_bitmap(PRINT_HANDLE print,HKKP env,HKKP obj,const unsigne
         iNum++;
     }
     /*
-      aexddPrinter_stepline(print,env,obj,"\x1b\x4a",30);        // 进纸(10*.0125mm)
+      aexddB58T_stepline(print,env,obj,"\x1b\x4a",30);        // 进纸(10*.0125mm)
 
         //==开始打印图片
         int iNum = 0;
@@ -621,15 +621,15 @@ int aexddPrinter_print_bitmap(PRINT_HANDLE print,HKKP env,HKKP obj,const unsigne
         nL = iLine - nH*256;
 
         //初始化打印机
-        aexddPrinter_initialize(print,env,obj);
+        aexddB58T_initialize(print,env,obj);
 
         // 设置行距
-        if(aexddPrinter_setLineinterval(print,env,obj,10))
+        if(aexddB58T_setLineinterval(print,env,obj,10))
         {
             return -1;
         }
         // 设置打印区域
-        if(aexddPrinter_setprintarea(print,env,obj,nL+1, nH))
+        if(aexddB58T_setprintarea(print,env,obj,nL+1, nH))
         {
             return -1;
         }
@@ -685,7 +685,7 @@ int PrintBitmap(PRINT_HANDLE print,HKKP env,HKKP obj,int m,const unsigned char *
 }
 
 // 设置间距
-int aexddPrinter_setLineinterval(PRINT_HANDLE print,HKKP env,HKKP obj,int n){
+int aexddB58T_setLineinterval(PRINT_HANDLE print,HKKP env,HKKP obj,int n){
     if (!print) return -1;
 
     char buff[20];
@@ -701,7 +701,7 @@ int aexddPrinter_setLineinterval(PRINT_HANDLE print,HKKP env,HKKP obj,int n){
 }
 
 // 设置打印区域
-int aexddPrinter_setprintarea(PRINT_HANDLE print,HKKP env,HKKP obj,int nL,int nH){
+int aexddB58T_setprintarea(PRINT_HANDLE print,HKKP env,HKKP obj,int nL,int nH){
     if (!print) return -1;
 
     char buff[20];
@@ -723,7 +723,7 @@ int aexddPrinter_setprintarea(PRINT_HANDLE print,HKKP env,HKKP obj,int nL,int nH
  * 切纸命令
  * @param n = 1全切纸  0部分切纸
  */
-int aexddPrinter_cut(PRINT_HANDLE print,HKKP env,HKKP obj, char* pcode,int iflag){
+int aexddB58T_cut(PRINT_HANDLE print,HKKP env,HKKP obj, char* pcode,int iflag){
     char buff[20] = {0};
 
     if (!print)
@@ -750,7 +750,7 @@ int aexddPrinter_cut(PRINT_HANDLE print,HKKP env,HKKP obj, char* pcode,int iflag
  * 打印行缓冲器里的内容，并向前n行   n=0--255
  * param n 走动的行数
  */
-int aexddPrinter_stepline(PRINT_HANDLE print,HKKP env,HKKP obj, char* pcode, int n)
+int aexddB58T_stepline(PRINT_HANDLE print,HKKP env,HKKP obj, char* pcode, int n)
 {
     char buff[20] = {0};
 
@@ -772,7 +772,7 @@ int aexddPrinter_stepline(PRINT_HANDLE print,HKKP env,HKKP obj, char* pcode, int
     ET58 进入汉字模式 十六进制：1C   26
  */
 /*打印中文*/
-int aexddPrinter_print_ch(PRINT_HANDLE print,HKKP env,HKKP obj,char* pch,int ibytelen)
+int aexddB58T_print_ch(PRINT_HANDLE print,HKKP env,HKKP obj,char* pch,int ibytelen)
 {
     char buff[MAX_BUFF] = {0} ;
     if (!print ||ibytelen <1)
@@ -801,7 +801,7 @@ int aexddPrinter_print_ch(PRINT_HANDLE print,HKKP env,HKKP obj,char* pch,int iby
 @1,PM58 ESC 2 设置字符行间距为1/6英寸                            1B 32 设置行间距为1/6英寸
  * 设置字符行间距为 1/6 英寸
  */
-int aexddPrinter_set_charwide(PRINT_HANDLE print,HKKP env,HKKP obj)
+int aexddB58T_set_charwide(PRINT_HANDLE print,HKKP env,HKKP obj)
 {
 	if(!print)	return 0;
 	char ch[] = "\x1b\x32";
@@ -826,7 +826,7 @@ int aexddPrinter_set_charwide(PRINT_HANDLE print,HKKP env,HKKP obj)
  * 说明：获取打印机厂商信息
  * 返回值：大于0，成功；0，失败；
  * */
-int aexddPrinter_getfactory(PRINT_HANDLE print, HKKP env, HKKP obj, int n)
+int aexddB58T_getfactory(PRINT_HANDLE print, HKKP env, HKKP obj, int n)
 {
 	char buff[20];
 	char rbuff[128];
@@ -864,7 +864,7 @@ n 值（十进制） 返回状态
  * n = 1: 传送打印机状态 ，n = 2: 传送脱机状态 ，n = 3: 传送错误状态 ，n = 4: 传送卷纸传感器状态
  * 目前获取状态失败，未返回任何数据，
  */
-int aexddPrinter_getstatus(PRINT_HANDLE print, HKKP env, HKKP obj, int n)
+int aexddB58T_getstatus(PRINT_HANDLE print, HKKP env, HKKP obj, int n)
 {
 	char buff[20];
 	char rbuff[128];
@@ -900,7 +900,7 @@ int aexddPrinter_getstatus(PRINT_HANDLE print, HKKP env, HKKP obj, int n)
 /*
  * 设置排列方式:0-左对齐,1-居中,2-右对齐
  */
-int aexddPrinter_set_align(PRINT_HANDLE print,HKKP env,HKKP obj,int iflag){
+int aexddB58T_set_align(PRINT_HANDLE print,HKKP env,HKKP obj,int iflag){
 	char buff[MAX_BUFF];
 	if (!print || iflag<0 || iflag>2)
 		return -1;
@@ -919,7 +919,7 @@ int aexddPrinter_set_align(PRINT_HANDLE print,HKKP env,HKKP obj,int iflag){
 // * @param iflag  1向前走纸 ，0 退纸
 // * @param isetp  走纸点数
 // */
-//int aexddPrinter_steppoint(PRINT_HANDLE print,HKKP env,HKKP obj,int iflag,int istep)
+//int aexddB58T_steppoint(PRINT_HANDLE print,HKKP env,HKKP obj,int iflag,int istep)
 //{
 //	char buff[MAX_BUFF];
 //	if (!print || istep<1)
@@ -941,7 +941,7 @@ int aexddPrinter_set_align(PRINT_HANDLE print,HKKP env,HKKP obj,int iflag){
 //		return -1;
 //}
 
-int aexddPrinter_T_500AP_print_barcode(PRINT_HANDLE print,HKKP env,HKKP obj,char wide ,char high,char code,char* data, int len)
+int aexddB58T_T_500AP_print_barcode(PRINT_HANDLE print,HKKP env,HKKP obj,char wide ,char high,char code,char* data, int len)
 {
 	char buff[MAX_BUFF];
 
@@ -963,7 +963,7 @@ int aexddPrinter_T_500AP_print_barcode(PRINT_HANDLE print,HKKP env,HKKP obj,char
 	}
 }
 
-int aexddPrinter_T_500AP_print_2Dimensional(PRINT_HANDLE print,HKKP env,HKKP obj,char *content,int ilen)
+int aexddB58T_T_500AP_print_2Dimensional(PRINT_HANDLE print,HKKP env,HKKP obj,char *content,int ilen)
 {
 	char buff[MAX_BUFF];
 	char temp[20] = {0};
@@ -988,7 +988,7 @@ int aexddPrinter_T_500AP_print_2Dimensional(PRINT_HANDLE print,HKKP env,HKKP obj
 	}
 }
 
-int aexddPrinter_RG_CB532_print_barcode(PRINT_HANDLE print,HKKP env,HKKP obj,char wide ,char high,char code,char* data, int len)
+int aexddB58T_RG_CB532_print_barcode(PRINT_HANDLE print,HKKP env,HKKP obj,char wide ,char high,char code,char* data, int len)
 {
 	char buff[MAX_BUFF];
 
@@ -1013,7 +1013,7 @@ int aexddPrinter_RG_CB532_print_barcode(PRINT_HANDLE print,HKKP env,HKKP obj,cha
 	}
 }
 
-int aexddPrinter_RG_CB532_print_2Dimensional(PRINT_HANDLE print,HKKP env,HKKP obj,char *content,int ilen)
+int aexddB58T_RG_CB532_print_2Dimensional(PRINT_HANDLE print,HKKP env,HKKP obj,char *content,int ilen)
 {
 	char buff[MAX_BUFF];
 	char temp[20] = {0};
@@ -1038,7 +1038,7 @@ int aexddPrinter_RG_CB532_print_2Dimensional(PRINT_HANDLE print,HKKP env,HKKP ob
 	}
 }
 
-int aexddPrinter_TA500_print_2Dimensional(PRINT_HANDLE print,HKKP env,HKKP obj,char *content,int ilen)
+int aexddB58T_TA500_print_2Dimensional(PRINT_HANDLE print,HKKP env,HKKP obj,char *content,int ilen)
 {
 	char command1[256]={0};
 	char command2[256]={0};
@@ -1118,7 +1118,7 @@ int aexddPrinter_TA500_print_2Dimensional(PRINT_HANDLE print,HKKP env,HKKP obj,c
 	}
 }
 
-int aexddPrinter_TA500_cut(PRINT_HANDLE print,HKKP env,HKKP obj,int n){
+int aexddB58T_TA500_cut(PRINT_HANDLE print,HKKP env,HKKP obj,int n){
 	char buff[20] = {0};
 
 	if (!print)

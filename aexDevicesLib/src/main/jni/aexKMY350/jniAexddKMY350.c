@@ -4,8 +4,8 @@
 #include     <stdlib.h>
 #include     <locale.h>
 #include     <wchar.h>
-#include "com_androidex_devices_aexddPasswordKeypad.h"
-#include "aexddPasswordKeypad.h"
+#include "com_androidex_devices_aexddKMY350.h"
+#include "aexddKMY350.h"
 #include <android/log.h>
 
 #define FALSE 0
@@ -23,12 +23,12 @@ void SetKmyHandle(KMY_HANDLE kmy)
 	s_kmy = kmy;
 }
 
-JNIEXPORT jint JNICALL aexddPasswordKeypad_JNI_OnLoad(JavaVM *vm, void *reserved)
+JNIEXPORT jint JNICALL aexddKMY350_JNI_OnLoad(JavaVM *vm, void *reserved)
 {
      return JNI_VERSION_1_4; /* the required JNI version */
 }
 
-JNIEXPORT void JNICALL aexddPasswordKeypad_JNI_OnUnload(JavaVM* vm, void* reserved)
+JNIEXPORT void JNICALL aexddKMY350_JNI_OnUnload(JavaVM* vm, void* reserved)
 {
 	if(s_kmy){
 		kmy_close(s_kmy,NULL,NULL);
@@ -124,36 +124,12 @@ static int jni_kmy_event(KMY_HANDLE kmy,HKMY env,HKMY obj,int code,char *msg)
 	return TRUE;
 }
 
-JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyFind
-  (JNIEnv *env, jobject this,jstring path, jstring filter,jstring arg)
-{
-	char r[512];
-	kmy_set_event(jni_kmy_event);
-	char  *chpath =(char *) (*env)->GetStringUTFChars(env, path, 0);
-	char  *chfilter =(char *) (*env)->GetStringUTFChars(env, filter, 0);
-	char  *charg =(char *) (*env)->GetStringUTFChars(env, arg, 0);
-	if(s_kmy){
-		kmy_close(s_kmy,env,this);
-		s_kmy = NULL;
-	}
-	s_kmy = kmy_find(env,this,chpath,chfilter,charg);
-	(*env)->ReleaseStringUTFChars(env, path, chpath);
-	(*env)->ReleaseStringUTFChars(env, filter, chfilter);
-	(*env)->ReleaseStringUTFChars(env, arg, charg);
-	if(s_kmy){
-		sprintf(r,"{success:true,Version:\"%s\",Serial:\"%s\",port:\"%s\"}",s_kmy->version,s_kmy->sn,s_kmy->port);
-	}else{
-		sprintf(r,"{success:false}");
-	}
-	return (*env)->NewStringUTF(env,(const char*)r);
-}
-
 /*
  * Class:     com_eztor_openkk_jnikmykeyboard
  * Method:    kmyOpen
  * Signature: ([C)I
  */
-JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyOpen
+JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddKMY350_kmyOpen
   (JNIEnv *env, jobject this, jstring arg)
 {
 	char r[512];
@@ -166,7 +142,7 @@ JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyOpen
 	s_kmy = kmy_open(env,this,charg);
 	(*env)->ReleaseStringUTFChars(env, arg, charg);
 	if(s_kmy){
-		sprintf(r,"{success:true,Version:\"%s\",Serial:\"%s\",port:\"%s\"}",s_kmy->version,s_kmy->sn,s_kmy->port);
+		sprintf(r,"{success:true,fd:%d,Version:\"%s\",Serial:\"%s\",port:\"%s\"}",s_kmy->fd,s_kmy->version,s_kmy->sn,s_kmy->port);
 	}else{
 		sprintf(r,"{success:false}");
 	}
@@ -178,7 +154,7 @@ JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyOpen
  * Method:    kmyClose
  * Signature: ()I
  */
-JNIEXPORT void JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyClose
+JNIEXPORT void JNICALL Java_com_androidex_devices_aexddKMY350_kmyClose
   (JNIEnv *env, jobject this)
 {
 	kmy_close(s_kmy,env,this);
@@ -191,7 +167,7 @@ JNIEXPORT void JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyClose
  * Method:    kmyReset
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyReset
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddKMY350_kmyReset
   (JNIEnv *env, jobject this, jint timeout)
 {
 	if(s_kmy && s_kmy->fd > 0){
@@ -206,7 +182,7 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyReset
  * Method:    kmyResetWithPpin
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyResetWithPpin
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddKMY350_kmyResetWithPpin
   (JNIEnv *env, jobject this, jint timeout)
 {
 	if(s_kmy && s_kmy->fd > 0){
@@ -221,7 +197,7 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyResetWi
  * Method:    kmyGetSn
  * Signature: ([CI)I
  */
-JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyGetSn
+JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddKMY350_kmyGetSn
   (JNIEnv *env, jobject this, jint timeout)
 {
 	char sn[256];
@@ -241,7 +217,7 @@ JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyGetS
 	return rsn;
 }
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmySetSn
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddKMY350_kmySetSn
   (JNIEnv *env, jobject this, jstring sn,jint timeout)
 {
 	char  *chsn =(char *) (*env)->GetStringUTFChars(env, sn, 0);
@@ -257,7 +233,7 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmySetSn
  * Method:    kmyGetVersion
  * Signature: ([CI)I
  */
-JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyGetVersion
+JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddKMY350_kmyGetVersion
   (JNIEnv *env, jobject this, jint timeout)
 {
 	char v[256];
@@ -272,7 +248,7 @@ JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyGetV
  * Method:    kmySetEncryptMode
  * Signature: (II)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmySetEncryptMode
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddKMY350_kmySetEncryptMode
   (JNIEnv *env, jobject this, jint ewm, jint timeout)
 {
 	if(!(s_kmy && s_kmy->fd > 0)){
@@ -286,7 +262,7 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmySetEncr
  * Method:    kmyDlMasterKey
  * Signature: (I[CI)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyDlMasterKey
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddKMY350_kmyDlMasterKey
   (JNIEnv *env, jobject this, jint mk_no, jstring mk, jint timeout)
 {
 
@@ -305,7 +281,7 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyDlMaste
  * Method:    kmyDlWorkKey
  * Signature: (II[CI)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyDlWorkKey
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddKMY350_kmyDlWorkKey
   (JNIEnv *env, jobject this, jint mkno, jint wkno, jstring wk, jint timeout)
 {
 	if(!(s_kmy && s_kmy->fd > 0)){
@@ -323,7 +299,7 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyDlWorkK
  * Method:    kmyActiveWorkKey
  * Signature: (III)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyActiveWorkKey
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddKMY350_kmyActiveWorkKey
   (JNIEnv *env, jobject this, jint mkno, jint wkno, jint timeout)
 {
 	if(!(s_kmy && s_kmy->fd > 0)){
@@ -337,7 +313,7 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyActiveW
  * Method:    kmyOpenKeypad
  * Signature: (II)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyOpenKeypad
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddKMY350_kmyOpenKeypad
   (JNIEnv *env, jobject this, jint ctl, jint timeout)
 {
 	if(!(s_kmy && s_kmy->fd > 0)){
@@ -351,7 +327,7 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyOpenKey
  * Method:    kmyDlCardNo
  * Signature: ([CI)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyDlCardNo
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddKMY350_kmyDlCardNo
   (JNIEnv *env, jobject this, jstring card, jint timeout)
 {
 	if(!(s_kmy && s_kmy->fd > 0)){
@@ -369,7 +345,7 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyDlCardN
  * Method:    kmyStartPin
  * Signature: (SSSSSI)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyStartPin
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddKMY350_kmyStartPin
   (JNIEnv *env, jobject this, jshort pl, jshort dm, jshort am, jshort pm, jshort t, jint timeout)
 {
 	if(!(s_kmy && s_kmy->fd > 0)){
@@ -384,7 +360,7 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyStartPi
  * Method:    kmyPinBlock
  * Signature: ([CI)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyPinBlock
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddKMY350_kmyPinBlock
   (JNIEnv *env, jobject this, jstring pchCardNo, jint timeout)
 {
 	if(!(s_kmy && s_kmy->fd > 0)){
@@ -402,7 +378,7 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyPinBloc
  * Method:    kmyReadPin
  * Signature: ([CI)I
  */
-JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyReadPin
+JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddKMY350_kmyReadPin
   (JNIEnv *env, jobject this, jint t)
 {
 	char pin[256] = "",hexpin[256] = "";
@@ -420,7 +396,7 @@ JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyRead
  * Method:    kmyEncrypt
  * Signature: ([C[CI)I
  */
-JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyEncrypt
+JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddKMY350_kmyEncrypt
   (JNIEnv *env, jobject this, jstring in, jint t)
 {
 	char out[256] = "";
@@ -440,7 +416,7 @@ JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyEncr
  * Method:    kmyDecrypt
  * Signature: ([C[CI)I
  */
-JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyDecrypt
+JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddKMY350_kmyDecrypt
   (JNIEnv *env, jobject this, jstring in, jint t)
 {
 	char out[256] = "";
@@ -460,7 +436,7 @@ JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyDecr
  * Method:    kmyCalcMacData
  * Signature: ([C[CI)I
  */
-JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyCalcMacData
+JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddKMY350_kmyCalcMacData
   (JNIEnv *env, jobject this, jstring in, jint t)
 {
 	char out[256] = "",hexOut[256] = "";
@@ -475,7 +451,7 @@ JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyCalc
 	return (*env)->NewStringUTF(env, (const char*)hexOut);
 }
 
-JNIEXPORT void JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyStartReadKey
+JNIEXPORT void JNICALL Java_com_androidex_devices_aexddKMY350_kmyStartReadKey
   (JNIEnv *env, jobject this, jstring cb, jint timeout)
 {
 	if(s_kmy && s_kmy->fd > 0){
@@ -486,11 +462,11 @@ JNIEXPORT void JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyStartRe
 }
 
 /*
- * Class:     com_androidex_devices_aexddPasswordKeypad
+ * Class:     com_androidex_devices_aexddKMY350
  * Method:    kmyStartAllStep
  * Signature: (IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V
  */
-JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddPasswordKeypad_kmyStartAllStep
+JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddKMY350_kmyStartAllStep
   (JNIEnv *env, jobject this, jint mKeyNo, jint wKeyNo, jstring wKey, jstring cardNo, jstring callback, jstring port,jint timeout)
 {
 	int r=0;

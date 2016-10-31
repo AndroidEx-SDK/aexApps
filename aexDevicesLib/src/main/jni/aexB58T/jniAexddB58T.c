@@ -2,9 +2,9 @@
 #include <stdio.h>      /*标准输入输出定义*/
 #include <stdlib.h>
 #include <android/log.h>
-#include "com_androidex_devices_aexddPrinter.h"
-#include "aexddPrinter.h"
-#include "./include/utils.h"
+#include "com_androidex_devices_aexddB58T.h"
+#include "aexddB58T.h"
+#include "../include/utils.h"
 
 
 static PRINT_HANDLE s_print = NULL;
@@ -13,15 +13,15 @@ static PRINT_HANDLE s_print = NULL;
 static jclass printProvider=NULL;
 static jmethodID javaprintEvent=NULL;
 
-JNIEXPORT jint JNICALL aexddPrinter_JNI_OnLoad(JavaVM* vm, void* reserved)
+JNIEXPORT jint JNICALL aexddB58T_JNI_OnLoad(JavaVM* vm, void* reserved)
 {
 	return JNI_VERSION_1_4;
 }
 
-JNIEXPORT void JNICALL aexddPrinter_JNI_OnUnload(JavaVM* vm, void* reserved)
+JNIEXPORT void JNICALL aexddB58T_JNI_OnUnload(JavaVM* vm, void* reserved)
 {
 	if(s_print){
-		aexddPrinter_close(s_print,NULL,NULL);
+		aexddB58T_close(s_print,NULL,NULL);
         s_print = NULL;
 	}
 }
@@ -32,7 +32,7 @@ JNIEXPORT void JNICALL aexddPrinter_JNI_OnUnload(JavaVM* vm, void* reserved)
  * */
 static jclass getProvider(JNIEnv *env)
 {
-	return (*env)->FindClass(env,"com/androidex/devices/aexddPrinter");
+	return (*env)->FindClass(env,"com/androidex/devices/aexddB58Printer");
 }
 
 
@@ -80,221 +80,214 @@ static int jni_print_event(PRINT_HANDLE print,JNIEnv *env, jobject obj,int code,
 	return 0;
 }
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_open
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_native_1open
 (JNIEnv *env, jobject this, jstring strarg)
 {
 
 	char *charg = (char *)(*env)->GetStringUTFChars(env, strarg, 0);
 	if(!s_print){
-		s_print = aexddPrinter_open(env,this,charg);
+		s_print = aexddB58T_open(env,this,charg);
 	}
 
 	(*env)->ReleaseStringUTFChars(env, strarg, charg);
 	if(s_print){
-		aexddPrinter_set_event(jni_print_event);
+		aexddB58T_set_event(jni_print_event);
 		return TRUE;
 	}else{
 		return FALSE;
 	}
 }
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_close
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_native_1close
   (JNIEnv *env, jobject this)
 {
-	int iret=aexddPrinter_close(s_print,env,this);
+	int iret=aexddB58T_close(s_print,env,this);
 	s_print=NULL;
 	return iret;
 }
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_initialize
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_initialize
 (JNIEnv *env, jobject this)
 {
-	int iret = aexddPrinter_initialize(s_print,env,this);
+	int iret = aexddB58T_initialize(s_print,env,this);
     return iret;
 }
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_getstatus
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_getstatus
   (JNIEnv *env, jobject this, jint n)
 {
-	int iret=aexddPrinter_getstatus(s_print,env,this ,n);
+	int iret=aexddB58T_getstatus(s_print,env,this ,n);
 	return iret;
 }
 
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_getfactory
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_getfactory
 (JNIEnv *env, jobject this, jint n)
 {
-	int iret=aexddPrinter_getfactory(s_print,env,this ,n);
+	int iret=aexddB58T_getfactory(s_print,env,this ,n);
 	return iret;
 }
 
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_newline
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_newline
   (JNIEnv *env, jobject this, jint n)
 {
-	return aexddPrinter_newline(s_print,env,this,n);
+	return aexddB58T_newline(s_print,env,this,n);
 }
 
 
-//JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_steppoint
+//JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_steppoint
 //  (JNIEnv *env, jobject this, jint iflag, jint n)
 //{
-//	return aexddPrinter_steppoint(s_print,env ,this ,iflag ,n);
+//	return aexddB58T_steppoint(s_print,env ,this ,iflag ,n);
 //}
 
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_stepline
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_stepline
 (JNIEnv *env, jobject this,jbyteArray xcode,jint istep)
 {
 	char *pcode = (char *)(*env)->GetByteArrayElements(env, xcode, 0);
-	int iret = aexddPrinter_stepline(s_print,env,this,pcode,istep);
+	int iret = aexddB58T_stepline(s_print,env,this,pcode,istep);
 	(*env)->ReleaseByteArrayElements(env,xcode, pcode,0);
 	return iret;
 }
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_cut
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_cut
   (JNIEnv *env, jobject this,jbyteArray xcode,jint iflag)
 {
 	char* chch = (char*) (*env)->GetByteArrayElements(env, xcode, 0);
-	int iret=aexddPrinter_cut(s_print,env,this,chch,iflag);
+	int iret=aexddB58T_cut(s_print,env,this,chch,iflag);
 	(*env)->ReleaseByteArrayElements(env,xcode, chch,0);
     return iret;
 }
 
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_set_1align
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_set_1align
   (JNIEnv *env, jobject this, jint iflag)
 {
-	return aexddPrinter_set_align(s_print,env ,this ,iflag);
+	return aexddB58T_set_align(s_print,env ,this ,iflag);
 }
 
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_set_1fontsize
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_set_1fontsize
   (JNIEnv *env, jobject this, jint isize)
 {
-	return aexddPrinter_set_fontsize(s_print,env ,this ,isize);
+	return aexddB58T_set_fontsize(s_print,env ,this ,isize);
 }
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_set_1linewide
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_set_1linewide
   (JNIEnv *env, jobject this, jint isize)
 {
-	return aexddPrinter_set_linewide(s_print,env,this ,isize);
+	return aexddB58T_set_linewide(s_print,env,this ,isize);
 }
 
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_set_1charwide
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_set_1charwide
 (JNIEnv *env, jobject this)
 {
-	return aexddPrinter_set_charwide(s_print,env,this);
+	return aexddB58T_set_charwide(s_print,env,this);
 }
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_set_1charDSize
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_set_1charDSize
 (JNIEnv *env, jobject this)
 {
-	return aexddPrinter_set_charDSize(s_print,env,this);
+	return aexddB58T_set_charDSize(s_print,env,this);
 }
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_set_1charNSize
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_set_1charNSize
 (JNIEnv *env, jobject this)
 {
-	return aexddPrinter_set_charNSize(s_print,env,this);
+	return aexddB58T_set_charNSize(s_print,env,this);
 }
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_print_1ch
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_print_1ch
   (JNIEnv *env, jobject this, jbyteArray bytech,int length)
 {
 	char* chch = (char*) (*env)->GetByteArrayElements(env, bytech, 0);
-	int iret=aexddPrinter_print_ch(s_print,env,this,chch,length);
+	int iret=aexddB58T_print_ch(s_print,env,this,chch,length);
 	(*env)->ReleaseByteArrayElements(env,bytech, chch,0);
 	return iret;
 }
 
 
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_print_1en
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_print_1en
 (JNIEnv *env, jobject this, jbyteArray byteen, jint length)
 {
 	char *chen = (char *)(*env)->GetByteArrayElements(env, byteen, 0);
-	int iret = aexddPrinter_print_en(s_print,env,this,chen,length);
+	int iret = aexddB58T_print_en(s_print,env,this,chen,length);
 	(*env)->ReleaseByteArrayElements(env,byteen, chen,0);
     return iret;
 }
 
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_set_1graph
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_set_1graph
 (JNIEnv *env, jobject this, jchar m, jchar n1, jchar n2, jstring  strbmppath)
 
 {
 	char *chbmppath = (char *)(*env)->GetStringUTFChars(env, strbmppath, 0);
-	int iret = aexddPrinter_set_graph(s_print,env,this,m,n1,n2,chbmppath);
+	int iret = aexddB58T_set_graph(s_print,env,this,m,n1,n2,chbmppath);
 	(*env)->ReleaseStringUTFChars(env, strbmppath, chbmppath);
 	return iret;
 }
 
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_set_1barcodeHigh
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_set_1barcodeHigh
 (JNIEnv *env, jobject this, jchar n)
 {
-	return aexddPrinter_set_barcodeHigh(s_print,env,this,n);
+	return aexddB58T_set_barcodeHigh(s_print,env,this,n);
 }
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_set_1barcodeWide
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_set_1barcodeWide
 (JNIEnv *env, jobject this, jchar n)
 {
-	return aexddPrinter_set_barcodeWide(s_print,env,this,n);
+	return aexddB58T_set_barcodeWide(s_print,env,this,n);
 }
 
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_print_1barcode
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_print_1barcode
 (JNIEnv *env, jobject this,jchar wide ,jchar high, jchar code, jstring strcode, jint len)
 {
 	char *chen = (char *)(*env)->GetStringUTFChars(env, strcode, 0);
-	int iret = aexddPrinter_print_barcode(s_print,env,this,wide,high,code,chen,len);
+	int iret = aexddB58T_print_barcode(s_print,env,this,wide,high,code,chen,len);
 	(*env)->ReleaseStringUTFChars(env, strcode, chen);
 	return iret;
 }
 
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_print_12Dimensional
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_print_12Dimensional
   (JNIEnv *env, jobject this, jstring strcode, jint ilen)
 {
 	char  *pstrcode =(char *) (*env)->GetStringUTFChars(env, strcode, 0);
-	int iret=aexddPrinter_print_2Dimensional(s_print,env,this,pstrcode,ilen);
+	int iret=aexddB58T_print_2Dimensional(s_print,env,this,pstrcode,ilen);
 	(*env)->ReleaseStringUTFChars(env, strcode, pstrcode);
 	return iret;
 }
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_SGT801_1out_12Dimensional
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_SGT801_1out_12Dimensional
   (JNIEnv *env, jobject this, jint isize, jbyteArray bycode, jint ilen)
 {
 	char *pstrcode = (char*) (*env)->GetByteArrayElements(env, bycode, 0);
-	int iret=aexddPrinter_SGT801_print_2Dimensional(s_print,env,this,isize,pstrcode,ilen);
+	int iret=aexddB58T_SGT801_print_2Dimensional(s_print,env,this,isize,pstrcode,ilen);
 	(*env)->ReleaseByteArrayElements(env,bycode, pstrcode,0);
 	return iret;
 }
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_print_1bitmap
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_print_1bitmap
   (JNIEnv *env, jobject this, jbyteArray data, jint size, jint bmpwidth, jint bmphigh, jint width, jint high)
 {
 	char *szData = (unsigned char*) (*env)->GetByteArrayElements(env, data, 0);
-	int iret=aexddPrinter_print_bitmap(s_print,env,this,szData,size, bmpwidth);
+	int iret=aexddB58T_print_bitmap(s_print,env,this,szData,size, bmpwidth);
 	(*env)->ReleaseByteArrayElements(env,data, szData,0);
 	return iret;
 }
 
-
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_test
-  (JNIEnv *env, jobject this){
-
-       return aexddPrinter_hexDecode(s_print,env,this);
-}
-
 /*
- * Class:     com_androidex_devices_aexddPrinter
+ * Class:     com_androidex_devices_aexddB58Printer
  * Method:    serial_recive
  * Signature: (II)Ljava/lang/String;
  */
-JNIEXPORT jbyteArray JNICALL Java_com_androidex_devices_aexddPrinter_serial_1read
+JNIEXPORT jbyteArray JNICALL Java_com_androidex_devices_aexddB58Printer_serial_1read
   (JNIEnv *env, jobject this,jint timeout)
 {
 	char buf[2048];
@@ -311,11 +304,11 @@ JNIEXPORT jbyteArray JNICALL Java_com_androidex_devices_aexddPrinter_serial_1rea
 }
 
 /*
- * Class:     com_androidex_devices_aexddPrinter
+ * Class:     com_androidex_devices_aexddB58Printer
  * Method:    serial_write
  * Signature: (ILjava/lang/String;I)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_serial_1write
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_serial_1write
   (JNIEnv *env, jobject this, jbyteArray data,jint len)
 {
 	jbyte * arrayBody = (*env)->GetByteArrayElements(env,data,0);
@@ -326,11 +319,11 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_serial_1write
 }
 
 /*
- * Class:     com_androidex_devices_aexddPrinter
+ * Class:     com_androidex_devices_aexddB58Printer
  * Method:    serial_select
  * Signature: (III)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_serial_1select
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_serial_1select
   (JNIEnv *env, jobject this, jint sec, jint usec)
 {
 	int r = serial_select(s_print,env,this,sec,usec);
@@ -339,83 +332,83 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_serial_1select
 
 
 /*
- * Class:     com_androidex_devices_aexddPrinter
+ * Class:     com_androidex_devices_aexddB58Printer
  * Method:    T_500AP_print_barcode
  * Signature: (CCCLjava/lang/String;I)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_T_1500AP_1out_1barcode
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_T_1500AP_1out_1barcode
   (JNIEnv *env, jobject this,jchar wide ,jchar high, jchar code, jstring strcode, jint len)
 {
 	char *chen = (char *)(*env)->GetStringUTFChars(env, strcode, 0);
-	int iret = aexddPrinter_T_500AP_print_barcode(s_print,env,this,wide,high,code,chen,len);
+	int iret = aexddB58T_T_500AP_print_barcode(s_print,env,this,wide,high,code,chen,len);
 	(*env)->ReleaseStringUTFChars(env, strcode, chen);
 	return iret;
 }
 
 /*
- * Class:     com_androidex_devices_aexddPrinter
+ * Class:     com_androidex_devices_aexddB58Printer
  * Method:    T_500AP_print_2Dimensional
  * Signature: (Ljava/lang/String;I)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_T_1500AP_1out_12Dimensional
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_T_1500AP_1out_12Dimensional
 (JNIEnv *env, jobject this, jstring strcode, jint ilen)
 {
 	char  *pstrcode =(char *) (*env)->GetStringUTFChars(env, strcode, 0);
-	int iret=aexddPrinter_T_500AP_print_2Dimensional(s_print,env,this,pstrcode,ilen);
+	int iret=aexddB58T_T_500AP_print_2Dimensional(s_print,env,this,pstrcode,ilen);
 	(*env)->ReleaseStringUTFChars(env, strcode, pstrcode);
 	return iret;
 }
 
 /*
- * Class:     com_androidex_devices_aexddPrinter
+ * Class:     com_androidex_devices_aexddB58Printer
  * Method:    RG_CB532_print_barcode
  * Signature: (CCCLjava/lang/String;I)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_RG_1CB532_1out_1barcode
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_RG_1CB532_1out_1barcode
   (JNIEnv *env, jobject this,jchar wide ,jchar high, jchar code, jstring strcode, jint len)
 {
 	char *chen = (char *)(*env)->GetStringUTFChars(env, strcode, 0);
-	int iret = aexddPrinter_RG_CB532_print_barcode(s_print,env,this,wide,high,code,chen,len);
+	int iret = aexddB58T_RG_CB532_print_barcode(s_print,env,this,wide,high,code,chen,len);
 	(*env)->ReleaseStringUTFChars(env, strcode, chen);
 	return iret;
 }
 
 /*
- * Class:     com_androidex_devices_aexddPrinter
+ * Class:     com_androidex_devices_aexddB58Printer
  * Method:    RG_CB532_print_2Dimensional
  * Signature: (Ljava/lang/String;I)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_RG_1CB532_1out_12Dimensional
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_RG_1CB532_1out_12Dimensional
 (JNIEnv *env, jobject this, jstring strcode, jint ilen)
 {
 	char  *pstrcode =(char *) (*env)->GetStringUTFChars(env, strcode, 0);
-	int iret= aexddPrinter_RG_CB532_print_2Dimensional(s_print,env,this,pstrcode,ilen);
+	int iret= aexddB58T_RG_CB532_print_2Dimensional(s_print,env,this,pstrcode,ilen);
 	(*env)->ReleaseStringUTFChars(env, strcode, pstrcode);
 	return iret;
 }
 /*
- * Class:     com_androidex_devices_aexddPrinter
+ * Class:     com_androidex_devices_aexddB58Printer
  * Method:    TA_500_print_2Dimensional
  * Signature: (Ljava/lang/String;I)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_TA_1500_1out_12Dimensional
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_TA_1500_1out_12Dimensional
 (JNIEnv *env, jobject this, jstring strcode, jint ilen)
 {
 	char  *pstrcode =(char *) (*env)->GetStringUTFChars(env, strcode, 0);
-	int iret= aexddPrinter_TA500_print_2Dimensional(s_print,env,this,pstrcode,ilen);
+	int iret= aexddB58T_TA500_print_2Dimensional(s_print,env,this,pstrcode,ilen);
 	(*env)->ReleaseStringUTFChars(env, strcode, pstrcode);
 	return iret;
 }
 
 /*
- * Class:     com_androidex_devices_aexddPrinter
+ * Class:     com_androidex_devices_aexddB58Printer
  * Method:    TA_500_cut
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddPrinter_TA_1500_1cut
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_TA_1500_1cut
   (JNIEnv *env, jobject this,jint n)
 {
-	int iret=aexddPrinter_TA500_cut(s_print,env,this,n);
+	int iret=aexddB58T_TA500_cut(s_print,env,this,n);
     return iret;
 }
 

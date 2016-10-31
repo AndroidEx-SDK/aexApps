@@ -1,5 +1,5 @@
 #include <jni.h>
-#include "com_androidex_devices_aexddPasswordKeypad.h"
+#include "com_androidex_devices_aexddKMY350.h"
 #include <memory.h>
 #include <pthread.h>
 
@@ -15,8 +15,8 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include "Des.h"
-#include "./include/utils.h"
-#include "aexddPasswordKeypad.h"
+#include "../include/utils.h"
+#include "aexddKMY350.h"
 
 #include <android/log.h>
 
@@ -50,12 +50,8 @@ static int kmy_event(KMY_HANDLE kmy,HKMY env,HKMY obj,int code,char *pszFormat,.
 	return 0;
 }
 
-
-
-
-
 //例：if sour=0x39 0x30" then return =0x90
-char asc_to_bcd(char *sour) {
+static char asc_to_bcd(char *sour) {
 	char HBits = sour[0];
 	//WriteLogInt("HBits=",HBits);
 
@@ -87,7 +83,7 @@ char asc_to_bcd(char *sour) {
 	return bcd;
 }
 
-int CompressAsc(char *soustr, int len, char *desstr) {
+static int CompressAsc(char *soustr, int len, char *desstr) {
 	int i = 0;
 	int ch;
 	char tmpstr[2049];
@@ -402,101 +398,54 @@ static int kmy_send_hexcmd(int fd,char *cmd,int size)
 	ret = com_write(fd, chSendCmd, strlen(chSendCmd));
 	return ret;
 }
-
-KMY_HANDLE kmy_find(HKMY env,HKMY obj,char *path,char *filter,char *arg)
-{
-	DIR* dir_info; //目录指针
-	struct dirent* dir_entry; //目录项信息指针
-	//打开一个待扫描的目录
-	dir_info = opendir(path);
-	if( dir_info )
-	{
-		//打开目录成功
-		while ( (dir_entry = readdir(dir_info)) != NULL)
-		{
-			//忽略这两个特殊项目
-			if(strcmp(dir_entry->d_name, "..")==0 || strcmp(dir_entry->d_name, ".")==0)
-				continue;
-			if(dir_entry->d_type != DT_DIR){
-				if(strstr(dir_entry->d_name,filter)){
-					char a[256];
-					memset(a,0,sizeof(a));
-					sprintf(a,"%s/%s,%s",path,dir_entry->d_name,arg);
-					// __android_log_print(ANDROID_LOG_DEBUG,"kmy","find device : %s",a);
-					KMY_HANDLE kmy = kmy_open(env,obj,a);
-					if(kmy){
-//						if(kmy_reset(kmy,env,obj,3000)){
-//							strcpy(kmy->port,a);
-//							kmy_event(kmy,env,obj,KE_FIND_PORT,kmy->port);
-//							closedir(dir_info);
-//							// __android_log_print(ANDROID_LOG_DEBUG,"kmy","ok");
-//							return kmy;
-//						}else{
-//							kmy_close(kmy,env,obj);
-//							kmy = NULL;
-//							// __android_log_print(ANDROID_LOG_DEBUG,"kmy","fail");
-//						}
-						return kmy;
-					}else{
-						// __android_log_print(ANDROID_LOG_DEBUG,"kmy","Open %s error",a);
-					}
-				}
-			}
-		}
-		//使用完毕，关闭目录指针。
-		closedir(dir_info);
-	}
-	return NULL;
-}
-
 /**
  * 打开密码键盘，返回密码键盘的句柄
  * @param arg 串口参数字符串，字符串格式为:	com=/dev/ttyUSB0(串口设备字符串),s=9600(波特率),p=N(奇偶校验),b=1(停止位),d=8(数据位数)
  */
 KMY_HANDLE kmy_open(HKMY env,HKMY obj,char *arg)
 {
-	int fd = com_open(arg);
-	if(fd > 0){
-		KMY_HANDLE kmy = (KMY_HANDLE)malloc(sizeof(KMY_DATA));
-		if(kmy){
-			memset(kmy,0,sizeof(KMY_DATA));
-			kmy->fd = fd;
-			kmy->mode = 1;
-			kmy->max_pin_len = 6;
-			strcpy(kmy->port,arg);
-			if(kmy_get_version(kmy,env,obj,kmy->version,3000)){
-				if(!kmy_check_device(kmy->version)){
-					kmy_close(kmy,env,obj);		//打开的不是密码键盘
-					return NULL;
-				}
-			}else{
-				kmy_close(kmy,env,obj);		//打开的不是密码键盘
-				return NULL;
-			}
-			kmy_get_sn(kmy,env,obj,kmy->sn,3000);
-			#ifdef	JNI_DEBUG
-			{
-				char buf[256];
-				sprintf(buf,"port=%s,fd=%d,version=%s,sn=%s",arg,kmy->fd,kmy->version,kmy->sn);
-				kmy_event(kmy,env,obj,KE_OPENED,buf);
-			}
-			#endif
-			in_read_key = FALSE;
-			return kmy;
-		}else{
-			#ifdef	JNI_DEBUG
-			{
-				char buf[256];
-				sprintf(buf,"kmy malloc fail,fd closed,fd=%d",fd);
-				kmy_event(NULL,env,obj,KE_OPENED,buf);
-			}
-			#endif
-			com_close(fd);
-			return NULL;
-		}
-	}else{
-		return NULL;
-	}
+    int fd = com_open(arg);
+    if(fd > 0){
+        KMY_HANDLE kmy = (KMY_HANDLE)malloc(sizeof(KMY_DATA));
+        if(kmy){
+            memset(kmy,0,sizeof(KMY_DATA));
+            kmy->fd = fd;
+            kmy->mode = 1;
+            kmy->max_pin_len = 6;
+            strcpy(kmy->port,arg);
+            if(kmy_get_version(kmy,env,obj,kmy->version,3000)){
+                if(!kmy_check_device(kmy->version)){
+                    kmy_close(kmy,env,obj);		//打开的不是密码键盘
+                    return NULL;
+                }
+            }else{
+                kmy_close(kmy,env,obj);		//打开的不是密码键盘
+                return NULL;
+            }
+            kmy_get_sn(kmy,env,obj,kmy->sn,3000);
+#ifdef	JNI_DEBUG
+            {
+                char buf[256];
+                sprintf(buf,"port=%s,fd=%d,version=%s,sn=%s",arg,kmy->fd,kmy->version,kmy->sn);
+                kmy_event(kmy,env,obj,KE_OPENED,buf);
+            }
+#endif
+            in_read_key = FALSE;
+            return kmy;
+        }else{
+#ifdef	JNI_DEBUG
+            {
+                char buf[256];
+                sprintf(buf,"kmy malloc fail,fd closed,fd=%d",fd);
+                kmy_event(NULL,env,obj,KE_OPENED,buf);
+            }
+#endif
+            com_close(fd);
+            return NULL;
+        }
+    }else{
+        return NULL;
+    }
 }
 
 /**
@@ -505,21 +454,21 @@ KMY_HANDLE kmy_open(HKMY env,HKMY obj,char *arg)
  */
 void kmy_close(KMY_HANDLE kmy,HKMY env,HKMY obj)
 {
-	in_read_key = FALSE;
-	if(kmy){
-		if(kmy->fd){
-			com_close(kmy->fd);
-			#ifdef	JNI_DEBUG
-			if(env && obj){
-				char buf[256];
+    in_read_key = FALSE;
+    if(kmy){
+        if(kmy->fd){
+            com_close(kmy->fd);
+#ifdef	JNI_DEBUG
+            if(env && obj){
+                char buf[256];
 
-				sprintf(buf,"kmy closed,fd=%d",kmy->fd);
-				kmy_event(kmy,env,obj,KE_CLOSED,buf);
-			}
-			#endif
-		}
-		free(kmy);
-	}
+                sprintf(buf,"kmy closed,fd=%d",kmy->fd);
+                kmy_event(kmy,env,obj,KE_CLOSED,buf);
+            }
+#endif
+        }
+        free(kmy);
+    }
 }
 
 /**

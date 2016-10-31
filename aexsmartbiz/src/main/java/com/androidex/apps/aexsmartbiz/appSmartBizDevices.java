@@ -4,7 +4,8 @@ import android.content.Context;
 
 import com.androidex.aexapplibs.appLibsDevices;
 import com.androidex.devices.aexddB58Printer;
-import com.androidex.devices.aexddMT318PoscReader;
+import com.androidex.devices.aexddKMY350;
+import com.androidex.devices.aexddMT318Reader;
 import com.androidex.devices.aexddNfcReader;
 import com.androidex.devices.aexddPasswordKeypad;
 import com.androidex.devices.aexddPoscReader;
@@ -54,9 +55,9 @@ public class appSmartBizDevices extends appLibsDevices {
         mHwservice = new appSmartBizService(ctx);
 
         mPrinter = new aexddB58Printer(ctx,mConfig.mConfigPrinter);
-        mBankCardReader = new aexddMT318PoscReader(ctx,mConfig.mConfigBankReader);
-        mCasCardReader = new aexddMT318PoscReader(ctx,mConfig.mConfigCasReader);
-        mPasswordKeypad = new aexddPasswordKeypad(ctx, mConfig.mConfigPasswordKeypad) {
+        mBankCardReader = new aexddMT318Reader(ctx,mConfig.mConfigBankReader);
+        mCasCardReader = new aexddMT318Reader(ctx,mConfig.mConfigCasReader);
+        mPasswordKeypad = new aexddKMY350(ctx, mConfig.mConfigPasswordKeypad) {
             /**
              *
              */

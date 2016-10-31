@@ -61,6 +61,11 @@ public class aexddKMY350 extends aexddPasswordKeypad {
         return obj;
     }
 
+    @Override
+    public boolean selfTest() {
+        return false;
+    }
+
     /**
      *
      * @return
@@ -155,5 +160,27 @@ public class aexddKMY350 extends aexddPasswordKeypad {
         }
         return ret;
     }
+    // jni相关函数
+    public  native String  kmyOpen(String arg);
+    public  native void kmyClose();
+    public  native int kmyReset(int timeout);
+    public  native int kmyResetWithPpin(int timeout);
+    public  native String kmyGetSn(int timeout);
+    public  native int kmySetSn(String sn,int timeout);
+    public  native String kmyGetVersion(int timeout);
+    public  native int kmySetEncryptMode(int ewm,int timeout);
+    public  native int kmyDlMasterKey(int MKeyNo, String MKeyAsc,int timeout);
+    public  native int kmyDlWorkKey(int MKeyNo, int WKeyNo, String WKeyAsc,int timeout);
+    public  native int kmyActiveWorkKey(int MKeyNo, int WKeyNo,int timeout);
+    public  native int kmyOpenKeypad(int CTL,int timeout);
+    public  native int kmyDlCardNo(String pchCardNo,int timeout);
+    public  native int kmyStartPin(short PinLen, short DispMode, short AddMode, short PromMode,short nTimeOut,int timeout);
+    public  native int kmyPinBlock(String pchCardNo,int timeout);
+    public  native String kmyReadPin(int timeout);
+    public  native String kmyEncrypt(String DataInput,int timeout);
+    public  native String kmyDecrypt(String DataInput,int timeout);
+    public  native String kmyCalcMacData(String DataInput,int timeout);
+    public  native void kmyStartReadKey(String callback,int timeout);
+    public  native String kmyStartAllStep(int mKeyNo,int wKeyNo,String wkey,String CardNo,String callback,String port,int timeout);
 
 }

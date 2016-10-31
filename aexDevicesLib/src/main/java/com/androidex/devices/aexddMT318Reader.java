@@ -13,15 +13,15 @@ import org.json.JSONObject;
  * Created by yangjun on 2016/10/24.
  */
 
-public class aexddMT318PoscReader extends aexddPoscReader {
+public class aexddMT318Reader extends aexddPoscReader {
 
     public static final String TAG = "mt318";
 
-    public aexddMT318PoscReader(Context ctx) {
+    public aexddMT318Reader(Context ctx) {
         super(ctx);
     }
 
-    public aexddMT318PoscReader(Context ctx, JSONObject args) {
+    public aexddMT318Reader(Context ctx, JSONObject args) {
         super(ctx, args);
     }
 
@@ -84,8 +84,8 @@ public class aexddMT318PoscReader extends aexddPoscReader {
     }
 
     @Override
-    public void selfTest() {
-
+    public boolean selfTest() {
+        return true;
     }
 
     @Override
@@ -190,5 +190,8 @@ public class aexddMT318PoscReader extends aexddPoscReader {
         }
         return ret;
     }
+
+    public native int native_Open(String arg);						           // 打开打印机
+    public native int native_Close();								           // 关闭打印机
 
 }

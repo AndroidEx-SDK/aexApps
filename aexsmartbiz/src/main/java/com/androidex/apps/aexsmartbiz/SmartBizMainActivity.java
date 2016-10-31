@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.androidex.devices.appDeviceDriver;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  *
  */
@@ -26,6 +28,14 @@ public class SmartBizMainActivity extends AppCompatActivity {
     private Button btn_exit;
     private TextView tv_sdk_version;
     private TextView tv_uuid;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mDevices.mPrinter.Close();
+        mDevices.mBankCardReader.Close();
+        mDevices.mCasCardReader.Close();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +61,14 @@ public class SmartBizMainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //
                 if(mDevices.mPrinter.Open()){
-                    mDevices.mPrinter.selfTest();
+                    //mDevices.mPrinter.selfTest();
+                    String str = "安卓工控\n\n";
+                    try {
+                        mDevices.mPrinter.WriteData(str.getBytes("UTF8"),str.getBytes().length);
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    mDevices.mPrinter.WriteDataHex("1D564200");
                     mDevices.mPrinter.Close();
                 }else{
                     Toast.makeText(mActivity,String.format("Open printer fial:%s",mDevices.mPrinter.mParams.optString(appDeviceDriver.PORT_ADDRESS)),Toast.LENGTH_LONG).show();
