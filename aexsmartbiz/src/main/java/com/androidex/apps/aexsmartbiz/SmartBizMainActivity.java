@@ -1,14 +1,17 @@
 package com.androidex.apps.aexSmartBiz;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidex.common.LogFragment;
 import com.androidex.devices.appDeviceDriver;
+import com.androidex.logger.Log;
+import com.androidex.logger.LogWrapper;
+import com.androidex.logger.MessageOnlyLogFilter;
 
 import java.io.UnsupportedEncodingException;
 
@@ -44,6 +47,8 @@ public class SmartBizMainActivity extends AppCompatActivity {
 
         mActivity = this;
         mDevices = new appSmartBizDevices(this);
+
+        initializeLogging();
 
         btn_test_printer = (Button)findViewById(R.id.btn_test_printer);
         btn_bank_reader = (Button)findViewById(R.id.btn_reader_card);
@@ -125,5 +130,24 @@ public class SmartBizMainActivity extends AppCompatActivity {
                 System.exit(0);
             }
         });
+    }
+
+    /** Create a chain of targets that will receive log data */
+    public void initializeLogging() {
+        // Wraps Android's native log framework.
+        LogWrapper logWrapper = new LogWrapper();
+        // Using Log, front-end to the logging chain, emulates android.util.log method signatures.
+        Log.setLogNode(logWrapper);
+
+        // Filter strips out everything except the message text.
+        MessageOnlyLogFilter msgFilter = new MessageOnlyLogFilter();
+        logWrapper.setNext(msgFilter);
+
+        // On screen logging via a fragment with a TextView.
+        LogFragment logFragment = (LogFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.log_fragment);
+        msgFilter.setNext(logFragment.getLogView());
+
+        Log.i(TAG, "就绪");
     }
 }

@@ -18,10 +18,10 @@ public class appSmartBizConfig extends appLibsConfig {
     public static final String BANK_READER = "bankReader";
     public static final String CAS_READER = "casReader";
     public static final String PASSWORD_KEYPAD = "passwordKeypad";
-    public String PORT_ADDR_PRINTER = "/dev/ttyS0,115200,N,1,8";
-    public String PORT_ADDR_PASSWORD_KEYPAD = "/dev/ttyS2,115200,N,1,8";
-    public String PORT_ADDR_BANKREADER = "/dev/ttyS4,115200,N,1,8";
-    public String PORT_ADDR_CASREADER = "/dev/ttyS6,115200,N,1,8";
+    public String PORT_ADDR_PRINTER = "/dev/ttyS5,115200,N,1,8";
+    public String PORT_ADDR_PASSWORD_KEYPAD = "/dev/ttyS2,9600,N,1,8";
+    public String PORT_ADDR_BANKREADER = "/dev/ttyS4,9600,N,1,8";
+    public String PORT_ADDR_CASREADER = "/dev/ttyS6,9600,N,1,8";
     public JSONObject mConfigPrinter;
     public JSONObject mConfigBankReader;
     public JSONObject mConfigCasReader;

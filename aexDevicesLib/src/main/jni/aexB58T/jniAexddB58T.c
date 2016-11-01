@@ -57,7 +57,7 @@ static jmethodID getMethod(JNIEnv *env, char *func,char *result)
 /**
  * 调用了Java对应打印机处理方法的函数，此函数会用于打印机的事件处理
  */
-static int jni_print_event(PRINT_HANDLE print,JNIEnv *env, jobject obj,int code,char *msg)
+static int jni_event(PRINT_HANDLE print,JNIEnv *env, jobject obj,int code,char *msg)
 {
 	JNIEnv* jniEnv = (JNIEnv*)env;
 	jobject javaObject = (jobject)obj;
@@ -80,22 +80,23 @@ static int jni_print_event(PRINT_HANDLE print,JNIEnv *env, jobject obj,int code,
 	return 0;
 }
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_native_1open
+JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddB58Printer_native_1open
 (JNIEnv *env, jobject this, jstring strarg)
 {
-
+    char r[512];
 	char *charg = (char *)(*env)->GetStringUTFChars(env, strarg, 0);
 	if(!s_print){
 		s_print = aexddB58T_open(env,this,charg);
 	}
 
 	(*env)->ReleaseStringUTFChars(env, strarg, charg);
-	if(s_print){
-		aexddB58T_set_event(jni_print_event);
-		return TRUE;
-	}else{
-		return FALSE;
-	}
+    if(s_print){
+        aexddB58T_set_event(jni_event);
+        sprintf(r,"{success:true,fd:%d,Version:\"%s\",Serial:\"%s\",port:\"%s\"}",s_print->fd,s_print->version,s_print->sn,s_print->port);
+    }else{
+        sprintf(r,"{success:false}");
+    }
+    return (*env)->NewStringUTF(env,(const char*)r);
 }
 
 JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_native_1close

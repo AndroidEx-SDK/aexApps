@@ -16,7 +16,7 @@ JNIEXPORT void JNICALL aexddB58T_JNI_OnUnload(JavaVM* vm, void* reserved);
  * Method:    open
  * Signature: (Ljava/lang/String;)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_native_1open
+JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddB58Printer_native_1open
   (JNIEnv *, jobject, jstring);
 
 /*

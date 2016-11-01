@@ -14,6 +14,14 @@ import org.json.JSONObject;
  */
 
 public class aexddKMY350 extends aexddPasswordKeypad {
+    static
+    {
+        try {
+            System.loadLibrary("appDevicesLibs");
+        } catch (UnsatisfiedLinkError e) {
+            Log.d("B58TPrinter", "appDevicesLibs.so library not found!");
+        }
+    }
 
     public static final String TAG = "kmy350";
 
@@ -29,6 +37,29 @@ public class aexddKMY350 extends aexddPasswordKeypad {
     public String getDeviceName() {
         return mContext.getString(R.string.DEVICE_PK_KMY350);
     }
+
+    @Override
+    public boolean Open() {
+        String printerPort = mParams.optString(PORT_ADDRESS);
+        String ret = kmyOpen(printerPort);
+        try {
+            JSONObject r = new JSONObject(ret);
+            mSerialFd = r.optInt("fd",0);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return mSerialFd > 0;
+    }
+
+    @Override
+    public boolean Close()
+    {
+        kmyClose();
+        mSerialFd = 0;
+        return true;
+    }
+
 
     /**
      * WebJavaBridge.OnJavaBridgePlugin接口的函数，当Web控件通过js调用插件时会调用此函数。

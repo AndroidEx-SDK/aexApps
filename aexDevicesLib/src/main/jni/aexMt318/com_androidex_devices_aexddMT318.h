@@ -16,7 +16,7 @@ void JNICALL aexddMT318_JNI_OnUnload(JavaVM* vm, void* reserved);
  * Method:    Open
  * Signature: (Ljava/lang/String;)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_native_Open
+JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddMT318Reader_native_1mt318_1Open
   (JNIEnv *, jobject, jstring);
 
 /*
@@ -24,7 +24,7 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_native_Open
  * Method:    Close
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_com_androidex_devices_aexddMT318Reader_native_Close
+JNIEXPORT void JNICALL Java_com_androidex_devices_aexddMT318Reader_native_1mt318_1Close
   (JNIEnv *, jobject);
 
 /*
@@ -32,7 +32,7 @@ JNIEXPORT void JNICALL Java_com_androidex_devices_aexddMT318Reader_native_Close
  * Method:    Reset
  * Signature: (I)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddMT318Reader_Reset
+JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddMT318Reader_native_1mt318_1Reset
   (JNIEnv *, jobject, jint);
 
 /*
@@ -40,7 +40,7 @@ JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddMT318Reader_Reset
  * Method:    ReadCard
  * Signature: (Ljava/lang/String;I)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_ReadCard
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_native_1mt318_1ReadCard
   (JNIEnv *, jobject, jstring, jint);
 
 /*
@@ -48,7 +48,7 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_ReadCard
  * Method:    RFM_13_Ring
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_RFM_113_1Ring
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_native_1mt318_1RFM_113_1Ring
   (JNIEnv *, jobject, jint);
 
 /*
@@ -56,7 +56,7 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_RFM_113_1Ring
  * Method:    RFM_13_ReadGuid
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_RFM_113_1ReadGuid
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_native_1mt318_1RFM_113_1ReadGuid
   (JNIEnv *, jobject, jint);
 
 /*
@@ -64,7 +64,7 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_RFM_113_1Read
  * Method:    RFM_13_ReadCard
  * Signature: (III)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_RFM_113_1ReadCard
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_native_1mt318_1RFM_113_1ReadCard
   (JNIEnv *, jobject, jint, jint, jint);
 
 /*
@@ -72,7 +72,7 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_RFM_113_1Read
  * Method:    RFM_13_WriteCard
  * Signature: (I[BI[BI[BI)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_RFM_113_1WriteCard
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_native_1mt318_1RFM_113_1WriteCard
   (JNIEnv *, jobject, jint, jbyteArray, jint, jbyteArray, jint, jbyteArray, jint);
 
 /*
@@ -80,7 +80,7 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_RFM_113_1Writ
  * Method:    MF_30_ReadCard
  * Signature: (III)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_MF_130_1ReadCard
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_native_1mt318_1MF_130_1ReadCard
   (JNIEnv *, jobject, jint, jint, jint);
 
 /*
@@ -88,7 +88,7 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_MF_130_1ReadC
  * Method:    MF_30_WriteCard
  * Signature: (II[BI)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_MF_130_1WriteCard
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_native_1mt318_1MF_130_1WriteCard
   (JNIEnv *, jobject, jint, jint, jbyteArray, jint);
 
 /*
@@ -96,7 +96,7 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_MF_130_1Write
  * Method:    MF_30_ReadGuid
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_MF_130_1ReadGuid
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_native_1mt318_1MF_130_1ReadGuid
   (JNIEnv *, jobject, jint);
 
 /*
@@ -104,7 +104,7 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_MF_130_1ReadG
  * Method:    MF_30_GetVer
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_MF_130_1GetVer
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_native_1mt318_1MF_130_1GetVer
   (JNIEnv *, jobject, jint);
 
 /*
@@ -112,7 +112,7 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_MF_130_1GetVe
  * Method:    MF_30_ReadCardbyPwd
  * Signature: (II[BII)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_MF_130_1ReadCardbyPwd
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_native_1mt318_1MF_130_1ReadCardbyPwd
   (JNIEnv *, jobject, jint, jint, jbyteArray, jint, jint);
 
 /*
@@ -120,7 +120,7 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_MF_130_1ReadC
  * Method:    CPU_Reset
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_CPU_1Reset
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_native_1mt318_1CPU_1Reset
   (JNIEnv *, jobject, jint);
 
 /*
@@ -128,7 +128,7 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_CPU_1Reset
  * Method:    CPU_PowerOn
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_CPU_1PowerOn
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_native_1mt318_1CPU_1PowerOn
   (JNIEnv *, jobject, jint);
 
 /*
@@ -136,7 +136,7 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_CPU_1PowerOn
  * Method:    CPU_PowerOff
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_CPU_1PowerOff
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_native_1mt318_1CPU_1PowerOff
   (JNIEnv *, jobject, jint);
 
 /*
@@ -144,32 +144,8 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_CPU_1PowerOff
  * Method:    CPU_Apdu
  * Signature: ([BII)I
  */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_CPU_1Apdu
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_native_1mt318_1CPU_1Apdu
   (JNIEnv *, jobject, jbyteArray, jint, jint);
-
-/*
- * Class:     com_androidex_devices_aexddMT318
- * Method:    serial_read
- * Signature: (I)[B
- */
-JNIEXPORT jbyteArray JNICALL Java_com_androidex_devices_aexddMT318Reader_serial_1read
-  (JNIEnv *, jobject, jint);
-
-/*
- * Class:     com_androidex_devices_aexddMT318
- * Method:    serial_write
- * Signature: ([BI)I
- */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_serial_1write
-  (JNIEnv *, jobject, jbyteArray, jint);
-
-/*
- * Class:     com_androidex_devices_aexddMT318
- * Method:    serial_select
- * Signature: (II)I
- */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_serial_1select
-  (JNIEnv *, jobject, jint);
 
 #ifdef __cplusplus
 }

@@ -14,6 +14,14 @@ import org.json.JSONObject;
  */
 
 public class aexddMT318Reader extends aexddPoscReader {
+    static
+    {
+        try {
+            System.loadLibrary("appDevicesLibs");
+        } catch (UnsatisfiedLinkError e) {
+            Log.d("B58TPrinter", "appDevicesLibs.so library not found!");
+        }
+    }
 
     public static final String TAG = "mt318";
 
@@ -28,6 +36,28 @@ public class aexddMT318Reader extends aexddPoscReader {
     @Override
     public String getDeviceName() {
         return mContext.getString(R.string.DEVICE_READER_MT318);
+    }
+
+    @Override
+    public boolean Open() {
+        String printerPort = mParams.optString(PORT_ADDRESS);
+        String ret = native_mt318_Open(printerPort);
+        try {
+            JSONObject r = new JSONObject(ret);
+            mSerialFd = r.optInt("fd",0);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return mSerialFd > 0;
+    }
+
+    @Override
+    public boolean Close()
+    {
+        native_mt318_Close();
+        mSerialFd = 0;
+        return true;
     }
 
     /**
@@ -93,10 +123,11 @@ public class aexddMT318Reader extends aexddPoscReader {
     {
         boolean ret = false;
         //
-        WriteDataHex("3040");
-        String r = ReciveDataHex(255,3000*delayUint);
-        Log.d(TAG,String.format("readerReset:%s",r));
-        ret = r.length() > 0;
+        //WriteDataHex("3040");
+        //String r = ReciveDataHex(255,3000*delayUint);
+        //Log.d(TAG,String.format("readerReset:%s",r));
+        //ret = r.length() > 0;
+
         return ret;
     }
 
@@ -191,7 +222,28 @@ public class aexddMT318Reader extends aexddPoscReader {
         return ret;
     }
 
-    public native int native_Open(String arg);						           // 打开打印机
-    public native int native_Close();								           // 关闭打印机
-
+    public native String    native_mt318_Open(String arg);						           // 打开打印机
+    public native int       native_mt318_Close();								           // 关闭打印机
+    public  native String  	native_mt318_Reset(int timeout);
+    public  native int 	    native_mt318_ReadCard(String callback,int timeout);
+    // 兼容 世融通读卡器
+    public  native int      native_mt318_RFM_13_Ring(int timeout);
+    public  native int      native_mt318_RFM_13_ReadGuid(int timeout);
+    public  native int      native_mt318_RFM_13_ReadCard(int sectorid, int blockid, int timeout);
+    public  native int      native_mt318_RFM_13_WriteCard(int sectorid, byte[] data0, int len0, byte[] data1, int len1, byte[] data2, int len2);
+    // 兼容 峰华科技 MF-30 读卡器
+    public  native int      native_mt318_MF_30_ReadCard(int sectorid, int blockid, int timeout);
+    public  native int      native_mt318_MF_30_WriteCard(int sectorid,int blockid, byte[] data0, int len0);
+    public  native int      native_mt318_MF_30_ReadGuid(int timeout);
+    public  native int      native_mt318_MF_30_GetVer(int timeout);
+    public  native int      native_mt318_MF_30_ReadCardbyPwd(int sectorid, int blockid, byte[] passwd, int pwdlen,int timeout);
+    // 兼容 峰华科技 S3 cpu读卡器
+    // 复位读卡器
+    public  native int      native_mt318_CPU_Reset(int timeout);
+    // 上电
+    public native int       native_mt318_CPU_PowerOn(int timeout);
+    // 下电
+    public native int       native_mt318_CPU_PowerOff(int timeout);
+    // Apdu 指令
+    public  native int      native_mt318_CPU_Apdu(byte[] data, int len,int timeout);
 }

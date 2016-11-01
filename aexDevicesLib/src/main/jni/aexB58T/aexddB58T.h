@@ -31,9 +31,7 @@ typedef struct BITMAPINFO_ {
 
 typedef void* HKKP;
 
-typedef (*ON_PRINT_EVENT)(PRINT_HANDLE print,HKKP env,HKKP obj,int code,char *msg);
-
-static int aexddB58T_event(PRINT_HANDLE print,HKKP env,HKKP obj,int code,char *pszFormat,...);
+typedef int (*ON_PRINT_EVENT)(PRINT_HANDLE print,HKKP env,HKKP obj,int code,char *pszFormat,...);
 
 void aexddB58T_set_event(ON_PRINT_EVENT oke);
 

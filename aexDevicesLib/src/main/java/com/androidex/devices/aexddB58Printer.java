@@ -36,6 +36,28 @@ public class aexddB58Printer extends aexddPrinter {
         return mContext.getString(R.string.DEVICE_PRINTER_B58);
     }
 
+    @Override
+    public boolean Open() {
+        String printerPort = mParams.optString(PORT_ADDRESS);
+        String ret = native_open(printerPort);
+        try {
+            JSONObject r = new JSONObject(ret);
+            mSerialFd = r.optInt("fd",0);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return mSerialFd > 0;
+    }
+
+    @Override
+    public boolean Close()
+    {
+        native_close();
+        mSerialFd = 0;
+        return true;
+    }
+
     /**
      * WebJavaBridge.OnJavaBridgePlugin接口的函数，当Web控件通过js调用插件时会调用此函数。
      * @param action        js调用java的动作
@@ -219,7 +241,7 @@ public class aexddB58Printer extends aexddPrinter {
         return true;
     }
 
-    public native int native_open(String arg);						           // 打开打印机
+    public native String native_open(String arg);						           // 打开打印机
     public native int native_close();								           // 关闭打印机
 
     //2.打印机指令操作
