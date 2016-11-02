@@ -109,14 +109,6 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_out_1barcode
 
 /*
  * Class:     com_androidex_devices_aexddB58Printer
- * Method:    out_en
- * Signature: ([BI)I
- */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_out_1en
-  (JNIEnv *, jobject, jbyteArray, jint);
-
-/*
- * Class:     com_androidex_devices_aexddB58Printer
  * Method:    cmdline
  * Signature: ([B)I
  */
@@ -145,14 +137,6 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_cut
  * Signature: ([BI)I
  */
 JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_stepline
-  (JNIEnv *, jobject, jbyteArray, jint);
-
-/*
- * Class:     com_androidex_devices_aexddB58Printer
- * Method:    out_ch
- * Signature: ([BI)I
- */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_out_1ch
   (JNIEnv *, jobject, jbyteArray, jint);
 
 /*
@@ -258,30 +242,6 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_TA_1500_1cut
  */
 JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_out_1bitmap
   (JNIEnv *, jobject, jbyteArray, jint, jint, jint, jint, jint);
-
-/*
- * Class:     com_androidex_devices_aexddB58Printer
- * Method:    serial_read
- * Signature: (I)[B
- */
-JNIEXPORT jbyteArray JNICALL Java_com_androidex_devices_aexddB58Printer_serial_1read
-  (JNIEnv *, jobject, jint);
-
-/*
- * Class:     com_androidex_devices_aexddB58Printer
- * Method:    serial_write
- * Signature: ([BI)I
- */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_serial_1write
-  (JNIEnv *, jobject, jbyteArray, jint);
-
-/*
- * Class:     com_androidex_devices_aexddB58Printer
- * Method:    serial_select
- * Signature: (II)I
- */
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddB58Printer_serial_1select
-  (JNIEnv *, jobject, jint, jint);
 
 #ifdef __cplusplus
 }

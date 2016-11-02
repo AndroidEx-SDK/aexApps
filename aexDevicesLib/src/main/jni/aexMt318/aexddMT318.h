@@ -97,4 +97,6 @@ int cpucard_check_block(KKCARD_HANDLE kkc,HKKC env,HKKC obj,int value, int timeo
 // 读取响应数据
 int cpucard_read_block(KKCARD_HANDLE kkc,HKKC env,HKKC obj,char *data,char *szRecvData, int *length, int timeout);
 
+int kkcard_send_cmd(int fd,char *cmd,int size);
+
 #endif

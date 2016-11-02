@@ -131,7 +131,7 @@ static int kkcard_recv_by_len(int fd,char *buf,int bufsize,int timeout)
  * @param fd 串口句柄
  * @param cmd 命令字符串
  */
-static int kkcard_send_cmd(int fd,char *cmd,int size)
+int kkcard_send_cmd(int fd,char *cmd,int size)
 {
 	char chSendCmd[256],*p = chSendCmd;
 	unsigned int nLen, ret;

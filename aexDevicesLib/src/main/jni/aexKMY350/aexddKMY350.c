@@ -362,7 +362,7 @@ static int kmy_recv_by_len(int fd,char *buf,int bufsize,int timeout)
  * @param fd 串口句柄
  * @param cmd 命令字符串
  */
-static int kmy_send_cmd(int fd,char *cmd,int size)
+int kmy_send_cmd(int fd,char *cmd,int size)
 {
 	char chSendCmd[256];
 	unsigned int nLen, ret;
@@ -383,7 +383,7 @@ static int kmy_send_cmd(int fd,char *cmd,int size)
 	return ret;
 }
 
-static int kmy_send_hexcmd(int fd,char *cmd,int size)
+int kmy_send_hexcmd(int fd,char *hexcmd,int size)
 {
 	char chSendCmd[256];
 	int nLen, ret;
@@ -391,13 +391,14 @@ static int kmy_send_hexcmd(int fd,char *cmd,int size)
 	tcflush(fd,TCIOFLUSH);
 	memset(chSendCmd, '\0', sizeof(chSendCmd));
 
-	ret = HexBCC(cmd, size);
-	sprintf(chSendCmd, "%c%s%02X%c", 0x02, cmd, ret,0x03);
+	ret = HexBCC(hexcmd, size);
+	sprintf(chSendCmd, "%c%s%02X%c", 0x02, hexcmd, ret,0x03);
 
 	// __android_log_print(ANDROID_LOG_DEBUG,"kmy","sendCmd(\\0x%02X%s\\0x03) return 0x%02X",chSendCmd[0],chSendCmd+1,ret);
 	ret = com_write(fd, chSendCmd, strlen(chSendCmd));
 	return ret;
 }
+
 /**
  * 打开密码键盘，返回密码键盘的句柄
  * @param arg 串口参数字符串，字符串格式为:	com=/dev/ttyUSB0(串口设备字符串),s=9600(波特率),p=N(奇偶校验),b=1(停止位),d=8(数据位数)

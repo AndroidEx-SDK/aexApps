@@ -147,6 +147,11 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_native_1mt318
 JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_native_1mt318_1CPU_1Apdu
   (JNIEnv *, jobject, jbyteArray, jint, jint);
 
+JNIEXPORT void JNICALL Java_com_androidex_devices_aexddMT318Reader_mt318SendCmd
+        (JNIEnv *, jobject, jint, jstring, jint);
+JNIEXPORT void JNICALL Java_com_androidex_devices_aexddMT318Reader_mt318SendHexCmd
+        (JNIEnv *, jobject, jint, jstring);
+
 #ifdef __cplusplus
 }
 #endif

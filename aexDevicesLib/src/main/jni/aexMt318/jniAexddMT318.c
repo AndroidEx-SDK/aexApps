@@ -7,6 +7,7 @@
 #include "com_androidex_devices_aexddMT318.h"
 #include "aexddMT318.h"
 #include <android/log.h>
+#include "../include/utils.h"
 
 #define FALSE 0
 #define TRUE  1
@@ -364,3 +365,33 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_native_1mt318
 	return r;
 }
 
+
+JNIEXPORT void JNICALL Java_com_androidex_devices_aexddMT318Reader_mt318SendCmd
+        (JNIEnv *env, jobject this, jint fd, jstring cmd, jint size)
+{
+    char *strCmd = (char *) (*env)->GetStringUTFChars(env,cmd, 0);
+
+    kkcard_send_cmd(fd,strCmd,size);
+    (*env)->ReleaseStringUTFChars(env, cmd, strCmd);
+}
+
+JNIEXPORT void JNICALL Java_com_androidex_devices_aexddMT318Reader_mt318SendHexCmd
+        (JNIEnv *env, jobject this, jint fd, jstring hexcmd)
+{
+    char *strCmd = (char *) (*env)->GetStringUTFChars(env,hexcmd, 0);
+    int len = strlen(strCmd);
+    int dlen = len;
+    char *buf = malloc(dlen);
+    int r = 0;
+
+    if(buf){
+        memset(buf,0,dlen);
+        HexDecode(strCmd,len,buf,&dlen);
+        __android_log_print(ANDROID_LOG_DEBUG,"MT318","writeHex([%d=>%d]%s)",len,dlen,strCmd);
+        r = kkcard_send_cmd(fd,buf,dlen);
+        free(buf);
+    }else {
+        __android_log_print(ANDROID_LOG_DEBUG,"MT318","writeHex error: malloc buf error.dlen=%d",dlen);
+    }
+    (*env)->ReleaseStringUTFChars(env, hexcmd, strCmd);
+}

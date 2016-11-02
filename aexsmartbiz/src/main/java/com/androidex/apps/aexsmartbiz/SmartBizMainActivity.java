@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidex.common.LogFragment;
+import com.androidex.devices.aexddB58Printer;
 import com.androidex.devices.appDeviceDriver;
 import com.androidex.logger.Log;
 import com.androidex.logger.LogWrapper;
@@ -65,18 +66,25 @@ public class SmartBizMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //
+                Log.d(TAG,"打印测试程序...");
                 if(mDevices.mPrinter.Open()){
-                    //mDevices.mPrinter.selfTest();
-                    String str = "安卓工控\n\n";
+                    Log.d(TAG,"打开打印机设备...成功");
+                    mDevices.mPrinter.selfTest();
+                    String str = "安卓工控";
                     try {
-                        mDevices.mPrinter.WriteData(str.getBytes("UTF8"),str.getBytes().length);
+                        mDevices.mPrinter.WriteData(str.getBytes("GBK"),str.getBytes().length);
+                        aexddB58Printer printer = (aexddB58Printer) (mDevices.mPrinter);
+                        printer.newline(3);
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
                     mDevices.mPrinter.WriteDataHex("1D564200");
                     mDevices.mPrinter.Close();
+                    Log.d(TAG,"打印测试结束，关闭打印机设备。");
                 }else{
-                    Toast.makeText(mActivity,String.format("Open printer fial:%s",mDevices.mPrinter.mParams.optString(appDeviceDriver.PORT_ADDRESS)),Toast.LENGTH_LONG).show();
+                    String s = String.format("Open printer fial:%s",mDevices.mPrinter.mParams.optString(appDeviceDriver.PORT_ADDRESS));
+                    Log.d(TAG,s);
+                    Toast.makeText(mActivity,s,Toast.LENGTH_LONG).show();
                 }
             }
         });

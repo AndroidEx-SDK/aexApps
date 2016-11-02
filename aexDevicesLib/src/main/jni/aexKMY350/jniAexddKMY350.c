@@ -487,3 +487,21 @@ JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddKMY350_kmyStartAllStep
 	}
 	return (*env)->NewStringUTF(env, (const char*)passHex);
 }
+
+JNIEXPORT void JNICALL Java_com_androidex_devices_aexddKMY350_kmySendCmd
+        (JNIEnv *env, jobject this, jint fd, jstring cmd, jint size)
+{
+    char *strCmd = (char *) (*env)->GetStringUTFChars(env,cmd, 0);
+
+    kmy_send_cmd(fd,strCmd,size);
+    (*env)->ReleaseStringUTFChars(env, cmd, strCmd);
+}
+
+JNIEXPORT void JNICALL Java_com_androidex_devices_aexddKMY350_kmySendHexCmd
+        (JNIEnv *env, jobject this, jint fd, jstring hexcmd, jint size)
+{
+    char *strCmd = (char *) (*env)->GetStringUTFChars(env,hexcmd, 0);
+
+    kmy_send_hexcmd(fd,strCmd,size);
+    (*env)->ReleaseStringUTFChars(env, hexcmd, strCmd);
+}

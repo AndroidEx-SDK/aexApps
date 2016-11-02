@@ -46,7 +46,6 @@ typedef int (*ON_KMY_EVENT)(KMY_HANDLE kmy,HKMY env,HKMY obj,int code,char *pszF
  */
 void kmy_set_event(ON_KMY_EVENT oke);
 
-KMY_HANDLE kmy_find(HKMY env,HKMY obj,char *path,char *filter,char *arg);
 /**
  * 打开密码键盘，返回密码键盘的句柄
  * @param arg 串口参数字符串，字符串格式为:	com=/dev/ttyUSB0(串口设备字符串),s=9600(波特率),p=N(奇偶校验),b=1(停止位),d=8(数据位数)
@@ -57,6 +56,10 @@ KMY_HANDLE kmy_open(HKMY env,HKMY obj,char *arg);
  *@param kmy 密码键盘的句柄
  */
 void kmy_close(KMY_HANDLE kmy,HKMY env,HKMY obj);
+
+int kmy_send_cmd(int fd,char *cmd,int size);
+int kmy_send_hexcmd(int fd,char *hexcmd,int size);
+
 /**
  * 程序复位自检（不破坏密钥区）
  * @param kmy 串口句柄

@@ -165,6 +165,11 @@ JNIEXPORT jstring JNICALL Java_com_androidex_devices_aexddKMY350_kmyCalcMacData
 JNIEXPORT void JNICALL Java_com_androidex_devices_aexddKMY350_kmyStartReadKey
   (JNIEnv *, jobject, jstring, jint);
 
+JNIEXPORT void JNICALL Java_com_androidex_devices_aexddKMY350_kmySendCmd
+        (JNIEnv *, jobject, jint, jstring, jint);
+JNIEXPORT void JNICALL Java_com_androidex_devices_aexddKMY350_kmySendHexCmd
+        (JNIEnv *, jobject, jint, jstring, jint);
+
 #ifdef __cplusplus
 }
 #endif

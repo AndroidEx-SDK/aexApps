@@ -605,53 +605,6 @@ int aexddB58T_print_bitmap(PRINT_HANDLE print,HKKP env,HKKP obj,const unsigned c
         iLeft -= iLine;
         iNum++;
     }
-    /*
-      aexddB58T_stepline(print,env,obj,"\x1b\x4a",30);        // 进纸(10*.0125mm)
-
-        //==开始打印图片
-        int iNum = 0;
-        int m = 1;
-        int iLeft = iLen;
-        unsigned char printBuff[2048] = {'\0'};
-
-        int nL = 0;
-        int nH = 0;
-
-        nH = iLine/256;
-        nL = iLine - nH*256;
-
-        //初始化打印机
-        aexddB58T_initialize(print,env,obj);
-
-        // 设置行距
-        if(aexddB58T_setLineinterval(print,env,obj,10))
-        {
-            return -1;
-        }
-        // 设置打印区域
-        if(aexddB58T_setprintarea(print,env,obj,nL+1, nH))
-        {
-            return -1;
-        }
-
-        while (iLeft > 0)
-        {
-            memset(printBuff, '\0', sizeof(printBuff));
-
-            if (iLeft >= iLine)
-            {
-                memcpy(printBuff, data+(iNum * iLine), iLine);
-                if (PrintBitmap(print,env,obj,m, printBuff, iLine))
-                {
-                    return -1;
-                }
-            }
-            iLeft -= iLine;
-            iNum++;
-        }
-        //===打印图片结束
-    */
-
     return 0;
 }
 

@@ -9,6 +9,8 @@ import com.androidex.logger.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * Created by yangjun on 2016/10/24.
  */
@@ -118,13 +120,46 @@ public class aexddB58Printer extends aexddPrinter {
         return 0;
     }
 
+    /**
+     * n = 1: 传送打印机状态
+     * n = 2: 传送脱机状态
+     * n = 3: 传送错误状态
+     * n = 4: 传送卷纸传感器状态
+     * @return
+     */
     @Override
     public int checkStatus()
     {
         int r = 0;
-        WriteDataHex("1D7231");
-        String rs = ReciveDataHex(10,1000*delayUint);
-        Log.d(TAG,String.format("checkStatus return %s\n",rs));
+        byte[] rs;
+
+        WriteDataHex("100401");
+        rs = ReciveData(1,1000*delayUint);
+        if(rs.length >1) {
+            Log.d(TAG, String.format("checkStatus return 0x%02X\n", rs[0]));
+            r = rs[0];
+        }
+
+        WriteDataHex("100402");
+        rs = ReciveData(1,1000*delayUint);
+        if(rs.length >1) {
+            Log.d(TAG, String.format("checkStatus return 0x%02X\n", rs[0]));
+            r |= rs[0] << 8;
+        }
+
+        WriteDataHex("100403");
+        rs = ReciveData(1,1000*delayUint);
+        if(rs.length >1) {
+            Log.d(TAG, String.format("checkStatus return 0x%02X\n", rs[0]));
+            r |= rs[0] << 16;
+        }
+
+        WriteDataHex("100404");
+        rs = ReciveData(1,1000*delayUint);
+        if(rs.length >1) {
+            Log.d(TAG, String.format("checkStatus return 0x%02X\n", rs[0]));
+            r = rs[0] << 24;
+        }
         return r;
     }
 
@@ -138,6 +173,7 @@ public class aexddB58Printer extends aexddPrinter {
     public int print(String str)
     {
         //打印英文
+        WriteData(str.getBytes(),str.getBytes().length);
         return 0;
     }
 
@@ -145,6 +181,12 @@ public class aexddB58Printer extends aexddPrinter {
     public int printChinese(String str)
     {
         //打印中文
+        try {
+            byte[] sgbk = str.getBytes("GBK");
+            WriteData(sgbk,sgbk.length);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         return 0;
     }
 
@@ -152,6 +194,7 @@ public class aexddB58Printer extends aexddPrinter {
     public int cutPaper(int n)
     {
         //切纸
+        WriteDataHex(String.format("1D564200"));
         return 0;
     }
 
@@ -167,6 +210,20 @@ public class aexddB58Printer extends aexddPrinter {
     {
         //打印二维码
         return 0;
+    }
+
+    @Override
+    public void setAlign(int n)
+    {
+        //设置对齐方式：0-左对齐,1-居中,2-右对齐
+        WriteDataHex(String.format("1B61%02X",n&0xFF));     //设置左对齐
+        WriteDataHex("1D2110");     //设置字体大小为16
+    }
+
+    @Override
+    public void setSize(int n)
+    {
+        WriteDataHex(String.format("1D21%02X",n&0xFF));     //设置字体大小为n
     }
 
     /**
@@ -185,24 +242,14 @@ public class aexddB58Printer extends aexddPrinter {
         hwService hwservice = new hwService(mContext);
         testChStr = String.format(testChStr,hwservice.getSdkVersion(),hwservice.get_uuid(),hwservice.get_serial());
 
-        WriteDataHex("1B40");       //初始化
+        reset();       //初始化
         //监测打印机状态，n = 1: 传送打印机状态 ，n = 2: 传送脱机状态 ，n = 3: 传送错误状态 ，n = 4: 传送卷纸传感器状态
-        WriteDataHex("100404");     //查询卷纸状态
-        String ret = ReciveDataHex(2,1000*delayUint);     //读取一个字节
-        if((ret != null) && (ret.length() > 0)){
-            int s = Integer.parseInt(ret,16);
-            if((s & 0x60) == 0){
-                //打印机有纸
-            }else{
-                Log.d(TAG, "打印机无纸。");
-                return false;
-            }
-        }
-        WriteDataHex("0A");         //换行
-        WriteDataHex("0A");         //换行
+        Log.d(TAG,String.format("Printer status 0x%08X",checkStatus()));
+        ln();         //换行
+        ln();         //换行
         //打印：
         //设置对齐方式：0-左对齐,1-居中,2-右对齐
-        WriteDataHex("1B6100");     //设置左对齐
+        setAlign(0);    //设置左对齐
         WriteDataHex("1D2110");     //设置字体大小为16
         //打印英文
         WriteData(testEnStr.getBytes(),testEnStr.length());
@@ -223,8 +270,14 @@ public class aexddB58Printer extends aexddPrinter {
         //打印英文
         WriteData(testEnStr.getBytes(),testEnStr.length());
         WriteDataHex("1C26");   //打印中文
-        WriteData(testChStr.getBytes(),testChStr.length());
-        WriteData(companyStr.getBytes(),companyStr.length());
+        try {
+            byte[] sgbk = testChStr.getBytes("GBK");
+            WriteData(sgbk,sgbk.length);
+            sgbk = companyStr.getBytes("GBK");
+            WriteData(sgbk,sgbk.length);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         //打印条码,char wide=03 ,char high=A2,char code=49
         WriteDataHex(String.format("1D77031D68A21D6B49%02X",hwservice.get_uuid().length()));
@@ -236,7 +289,7 @@ public class aexddB58Printer extends aexddPrinter {
         WriteData(companyStr.getBytes(),companyStr.length());
         WriteDataHex("0A");         //换行
         //切纸
-        WriteDataHex("1B69");       //全切纸
+        cutPaper(1);       //全切纸
         //WriteDataHex("1B6D");       //半切纸
         return true;
     }
@@ -285,14 +338,12 @@ public class aexddB58Printer extends aexddPrinter {
     public native int set_barcodeWide( char n);	                                //设定条码宽度,水平方向点数 2<=n<=6,缺省值为3
     public native int out_barcode(char wide,char high,char code,String data, int len);// 打印条形码
 
-    public native int out_en(byte[] pEn, int length);                                //打印英文
     public native int cmdline(byte[] cmd);                               //透传指令
 
     /*****************功能相同，指令集不同****************************/
     public native int out_2Dimensional(String content,int ilen);	                 // content二维码内容
     public native int cut(byte[] code, int iflag);							           // iflag = 1全切纸  0部分切纸
     public native int stepline(byte[] code,int n);                                   // 打印行缓冲器里的内容，并向前n行   n=0--255
-    public native int out_ch(byte[] pCh,int length);                                //打印中文
 
     /******************PM58************************/
     public native int set_charwide();                                    // 设置字符行间距为 1/6 英寸

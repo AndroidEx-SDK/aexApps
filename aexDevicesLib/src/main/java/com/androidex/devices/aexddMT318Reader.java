@@ -106,6 +106,7 @@ public class aexddMT318Reader extends aexddPoscReader {
             public void run() {
                 //在线程中执行jni函数
                 //OnBackCall.ONBACKCALL_RECIVEDATA
+                native_mt318_ReadCard("",0);
             }
         };
         pthread = new Thread(run);
@@ -123,11 +124,11 @@ public class aexddMT318Reader extends aexddPoscReader {
     {
         boolean ret = false;
         //
-        //WriteDataHex("3040");
-        //String r = ReciveDataHex(255,3000*delayUint);
-        //Log.d(TAG,String.format("readerReset:%s",r));
-        //ret = r.length() > 0;
-
+        mt318SendHexCmd(mSerialFd,"3040");
+        String r = ReciveDataHex(255,3000*delayUint);
+        Log.d(TAG,String.format("readerReset:%s",r));
+        ret = r.length() > 0;
+        //native_mt318_Reset(3000*delayUint);
         return ret;
     }
 
@@ -136,7 +137,7 @@ public class aexddMT318Reader extends aexddPoscReader {
         boolean ret = false;
         String rhex = "";
         //
-        WriteDataHex("3240");
+        mt318SendHexCmd(mSerialFd,"3240");
         byte[] r = ReciveData(255,3000*delayUint);
         try {
             rhex = Base16.encode(r);
@@ -155,7 +156,7 @@ public class aexddMT318Reader extends aexddPoscReader {
         int ret = 0;
         String rhex = "";
         //
-        WriteDataHex("3431");
+        mt318SendHexCmd(mSerialFd,"3431");
         byte[] r = ReciveData(255,3000*delayUint);
         try {
             rhex = Base16.encode(r);
@@ -206,7 +207,7 @@ public class aexddMT318Reader extends aexddPoscReader {
         int ret = 0;
         String rhex = "";
         //
-        WriteDataHex("3144");
+        mt318SendHexCmd(mSerialFd,"3144");
         byte[] r = ReciveData(255,3000*delayUint);
         try {
             rhex = Base16.encode(r);
@@ -246,4 +247,8 @@ public class aexddMT318Reader extends aexddPoscReader {
     public native int       native_mt318_CPU_PowerOff(int timeout);
     // Apdu 指令
     public  native int      native_mt318_CPU_Apdu(byte[] data, int len,int timeout);
+
+    public  native void mt318SendCmd(int fd,String cmd,int size);
+    public  native void mt318SendHexCmd(int fd,String hexcmd);
+
 }

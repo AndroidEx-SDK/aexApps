@@ -3,7 +3,6 @@ package com.androidex.devices;
 import android.content.Context;
 
 import com.androidex.apps.aexdeviceslib.R;
-import com.androidex.hwuitls.Base16;
 import com.androidex.logger.Log;
 
 import org.json.JSONException;
@@ -165,12 +164,14 @@ public class aexddKMY350 extends aexddPasswordKeypad {
     {
         boolean ret = false;
         String rhex = "";
-        //
+        /*
         WriteDataHex("0131");
         byte[] r = ReciveData(255,3000*delayUint);
         rhex = new String(r);
         Log.d(TAG,String.format("pkReset:%s",rhex));
         ret = rhex.contains("303500");
+        */
+        kmyReset(3000*delayUint);
         return ret;
     }
 
@@ -180,7 +181,7 @@ public class aexddKMY350 extends aexddPasswordKeypad {
         String ret = "";
         String rhex = "";
         //
-        WriteDataHex("0130");
+        /*WriteDataHex("0130");
         byte[] r = ReciveData(255,3000*delayUint);
         rhex = new String(r);
         try {
@@ -189,7 +190,8 @@ public class aexddKMY350 extends aexddPasswordKeypad {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ret;
+        */
+        return kmyGetVersion(3000*delayUint);
     }
     // jni相关函数
     public  native String  kmyOpen(String arg);
@@ -213,5 +215,7 @@ public class aexddKMY350 extends aexddPasswordKeypad {
     public  native String kmyCalcMacData(String DataInput,int timeout);
     public  native void kmyStartReadKey(String callback,int timeout);
     public  native String kmyStartAllStep(int mKeyNo,int wKeyNo,String wkey,String CardNo,String callback,String port,int timeout);
+    public  native void kmySendCmd(int fd,String cmd,int size);
+    public  native void kmySendHexCmd(int fd,String hexcmd,int size);
 
 }
