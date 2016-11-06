@@ -40,6 +40,8 @@ public class aexddKMY350 extends aexddPasswordKeypad {
     @Override
     public boolean Open() {
         String printerPort = mParams.optString(PORT_ADDRESS);
+        if(mSerialFd > 0)
+            Close();
         String ret = kmyOpen(printerPort);
         try {
             JSONObject r = new JSONObject(ret);

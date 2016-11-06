@@ -41,6 +41,9 @@ public class aexddMT318Reader extends aexddPoscReader {
     @Override
     public boolean Open() {
         String printerPort = mParams.optString(PORT_ADDRESS);
+
+        if(mSerialFd > 0)
+            Close();
         String ret = native_mt318_Open(printerPort);
         try {
             JSONObject r = new JSONObject(ret);

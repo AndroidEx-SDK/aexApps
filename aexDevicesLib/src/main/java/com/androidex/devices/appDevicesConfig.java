@@ -1,10 +1,9 @@
-package com.androidex.apps.aexSmartBiz;
+package com.androidex.devices;
 
 
 import android.content.Context;
 
 import com.androidex.aexapplibs.appLibsConfig;
-import com.androidex.devices.appDeviceDriver;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,12 +12,12 @@ import org.json.JSONObject;
  * Created by yangjun on 2016/10/26.
  */
 
-public class appSmartBizConfig extends appLibsConfig {
+public class appDevicesConfig extends appLibsConfig {
     public static final String PRINTER = "printer";
     public static final String BANK_READER = "bankReader";
     public static final String CAS_READER = "casReader";
     public static final String PASSWORD_KEYPAD = "passwordKeypad";
-    public String PORT_ADDR_PRINTER = "/dev/ttyS6,115200,N,1,8";
+    public String PORT_ADDR_PRINTER = "/dev/ttyS0,115200,N,1,8";
     public String PORT_ADDR_PASSWORD_KEYPAD = "/dev/ttyS2,9600,N,1,8";
     public String PORT_ADDR_BANKREADER = "/dev/ttyS4,9600,N,1,8";
     public String PORT_ADDR_CASREADER = "/dev/ttyS6,9600,N,1,8";
@@ -27,7 +26,7 @@ public class appSmartBizConfig extends appLibsConfig {
     public JSONObject mConfigCasReader;
     public JSONObject mConfigPasswordKeypad;
 
-    public appSmartBizConfig(Context context) {
+    public appDevicesConfig(Context context) {
         super(context);
         if(loadFromUserInfo()) {
             //成功读取配置

@@ -1,6 +1,8 @@
 package com.androidex.apps.home;
 
 import android.content.Intent;
+import android.nfc.NfcAdapter;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,6 +24,7 @@ import com.androidex.common.AndroidExActivityBase;
 import com.androidex.common.DummyContent;
 import com.androidex.common.LogFragment;
 import com.androidex.common.OnMultClickListener;
+import com.androidex.devices.aexddAndroidNfcReader;
 import com.androidex.logger.Log;
 import com.androidex.logger.LogWrapper;
 import com.androidex.logger.MessageOnlyLogFilter;
@@ -324,4 +327,38 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             return null;
         }
     }
+
+
+    public void enableReaderMode() {
+        Log.i(TAG, "启用读卡模式");
+        NfcAdapter nfc = NfcAdapter.getDefaultAdapter(this);
+        if (nfc != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                nfc.enableReaderMode(this,,aexddAndroidNfcReader.READER_FLAGS, null);
+            }
+        }
+    }
+
+    public void disableReaderMode() {
+        Log.i(TAG, "禁用读卡模式");
+        NfcAdapter nfc = NfcAdapter.getDefaultAdapter(this);
+        if (nfc != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                nfc.disableReaderMode(this);
+            }
+        }
+    }
+
+    public void onAccountReceived(final String account) {
+        // This callback is run on a background thread, but updates to UI elements must be performed
+        // on the UI thread.
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //mAccountField.setText(account);
+                Log.i(TAG,String.format("NFC:%s",account));
+            }
+        });
+    }
+
 }

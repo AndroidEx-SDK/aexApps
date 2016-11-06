@@ -16,6 +16,7 @@ import java.io.UnsupportedEncodingException;
  */
 
 public class aexddB58Printer extends aexddPrinter {
+    private static final String TAG = "B58T";
     static
     {
         try {
@@ -41,6 +42,8 @@ public class aexddB58Printer extends aexddPrinter {
     @Override
     public boolean Open() {
         String printerPort = mParams.optString(PORT_ADDRESS);
+        if(mSerialFd > 0)
+            Close();
         String ret = native_open(printerPort);
         try {
             JSONObject r = new JSONObject(ret);
@@ -135,28 +138,28 @@ public class aexddB58Printer extends aexddPrinter {
 
         WriteDataHex("100401");
         rs = ReciveData(1,1000*delayUint);
-        if(rs.length >1) {
+        if((rs != null) && (rs.length >1)) {
             Log.d(TAG, String.format("checkStatus return 0x%02X\n", rs[0]));
             r = rs[0];
         }
 
         WriteDataHex("100402");
         rs = ReciveData(1,1000*delayUint);
-        if(rs.length >1) {
+        if((rs != null) && rs.length >1) {
             Log.d(TAG, String.format("checkStatus return 0x%02X\n", rs[0]));
             r |= rs[0] << 8;
         }
 
         WriteDataHex("100403");
         rs = ReciveData(1,1000*delayUint);
-        if(rs.length >1) {
+        if((rs != null) && rs.length >1) {
             Log.d(TAG, String.format("checkStatus return 0x%02X\n", rs[0]));
             r |= rs[0] << 16;
         }
 
         WriteDataHex("100404");
         rs = ReciveData(1,1000*delayUint);
-        if(rs.length >1) {
+        if((rs != null) && rs.length >1) {
             Log.d(TAG, String.format("checkStatus return 0x%02X\n", rs[0]));
             r = rs[0] << 24;
         }
