@@ -1,7 +1,9 @@
 package com.androidex.apps.home;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
+import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,21 +22,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.androidex.aexlibs.WebJavaBridge;
 import com.androidex.common.AndroidExActivityBase;
 import com.androidex.common.DummyContent;
 import com.androidex.common.LogFragment;
 import com.androidex.common.OnMultClickListener;
 import com.androidex.devices.aexddAndroidNfcReader;
+import com.androidex.devices.aexddNfcReader;
+import com.androidex.devices.appDevicesManager;
 import com.androidex.logger.Log;
-import com.androidex.logger.LogWrapper;
-import com.androidex.logger.MessageOnlyLogFilter;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class FullscreenActivity extends AndroidExActivityBase implements OnMultClickListener {
+@TargetApi(Build.VERSION_CODES.KITKAT)
+public class FullscreenActivity extends AndroidExActivityBase implements OnMultClickListener,NfcAdapter.ReaderCallback{
 
+    public static final String LOG = "Log";
     /**
      * The {@link PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -63,12 +68,16 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             return false;
         }
     };
+    public WebJavaBridge.OnJavaBridgeListener mJbListener;
+    private MainFragment mMainFragment = new MainFragment();
+    private AboutFragment mAboutFragment = new AboutFragment();
+    private aexLogFragment mLogFragment = new aexLogFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.aexsetting_main);
+        setContentView(R.layout.aexhome_main);
         hwservice.EnterFullScreen();
         getWindow().getDecorView().setBackgroundResource(R.drawable.default_wallpaper);
         initActionBar(R.id.toolbar);
@@ -79,7 +88,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
         mContentView = (ViewPager) findViewById(R.id.fullscreen_content);
         mContentView.setAdapter(mSectionsPagerAdapter);
         mContentView.setBackgroundResource(R.drawable.default_wallpaper);
-        //registerMultClickListener(mContentView,this);
+        registerMultClickListener(mContentView,this);
 
         mControlsView = findViewById(R.id.dummy_button);
         // Upon interacting with UI controls, delay any scheduled hide()
@@ -93,6 +102,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
     @Override
     protected void onResume() {
         super.onResume();
+        enableReaderMode();
         //if(verify_password == 0)
         //    CheckPassword();
         hwservice.ExitFullScreen();
@@ -102,6 +112,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
     @Override
     protected void onPause() {
         super.onPause();
+        disableReaderMode();
         hwservice.ExitFullScreen();
         DisableFullScreen();
     }
@@ -155,19 +166,12 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
         super.HideControlBar();
     }
 
-    /** Create a chain of targets that will receive log data */
+    /** Create a chain of targets that will receive log data
+     *
+     * */
     @Override
     public void initializeLogging() {
         super.initializeLogging();
-
-        // On screen logging via a fragment with a TextView.
-        LogFragment logFragment = (LogFragment) getSupportFragmentManager().findFragmentByTag("Log");
-        if(logFragment != null) {
-            LogWrapper logWrapper = (LogWrapper) Log.getLogNode();
-            MessageOnlyLogFilter msgFilter = (MessageOnlyLogFilter)logWrapper.getNext();
-            msgFilter.setNext(logFragment.getLogView());
-        }
-        Log.i(TAG, getString(R.string.ready));
     }
 
     @Override
@@ -235,6 +239,19 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
     };
 
     /**
+     * 根据Fragment的字符串标识来启动显示。
+     * @param id
+     */
+    public void showFragment(String id) {
+        DummyContent.DummyItem aItem = DummyContent.findItemByTag(id);
+        if(aItem != null){
+            showFragment(mMainFragment.getView().getId(),aItem);
+            mJbListener = (WebJavaBridge.OnJavaBridgeListener) aItem.getView();
+            DummyContent.setActive(aItem);
+        }
+    }
+
+    /**
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
@@ -294,51 +311,108 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
+     * 主页面的ViewPagers的页面生成Adapter，主页面的数量和内容在这里产生。
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public static final int PAGER_COUNT = 3;
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
+        /**
+         * 获得页面数量
+         * @return      返回实际的页面数量
+         */
+        @Override
+        public int getCount() {
+            // Show 3 total pages.
+            return PAGER_COUNT;
+        }
+
+        /**
+         * 获得指定序号的页面Fragment对象
+         * @param position
+         * @return
+         */
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            switch(position){
+                case 0:
+                {
+                    return new AdvertFragment();
+                }
+                case 1:
+                {
+                    return mAboutFragment;
+                }
+                case 2:     //日志Fragment
+                {
+                    return mLogFragment;
+                }
+                default:
+                    return null;
+            }
+            //return PlaceholderFragment.newInstance(position + 1);
         }
 
-        @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return 3;
-        }
-
+        /**
+         * 获得Pager的标题
+         * @param position      Pager的序号
+         * @return
+         */
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Main";
+                    return "Main";    //主页面
                 case 1:
-                    return "Setting";
+                    return "About";     //关于本机页面
                 case 2:
-                    return "Log";
+                    return "Log";       //运行日志页面
+                default:
+                    return "Unknown";
             }
-            return null;
         }
     }
 
+    /**
+     * 此函数实现NfcAdapter.ReaderCallback接口，这里调用NFC Reader类的接口来实现该函数的功能。
+     * 这里只是为了把这个调用映射到此Activity而已。
+     * @param tag
+     */
+    @Override
+    public void onTagDiscovered(Tag tag) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            aexddNfcReader lNfcReader = appDevicesManager.getDevicesManager(this).mNfcReader;
+            if((lNfcReader != null) && (lNfcReader instanceof NfcAdapter.ReaderCallback)){
+                NfcAdapter.ReaderCallback nfcReader = (NfcAdapter.ReaderCallback)lNfcReader;
+                nfcReader.onTagDiscovered(tag);
+            }
+        }
+    }
 
+    /**
+     * 启用NFC读卡
+     */
     public void enableReaderMode() {
         Log.i(TAG, "启用读卡模式");
         NfcAdapter nfc = NfcAdapter.getDefaultAdapter(this);
         if (nfc != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                nfc.enableReaderMode(this,,aexddAndroidNfcReader.READER_FLAGS, null);
+                if(this instanceof NfcAdapter.ReaderCallback){
+                    nfc.enableReaderMode(this,this,aexddAndroidNfcReader.READER_FLAGS, null);
+                }
             }
         }
     }
 
+    /**
+     * 禁用NFC读卡
+     */
     public void disableReaderMode() {
         Log.i(TAG, "禁用读卡模式");
         NfcAdapter nfc = NfcAdapter.getDefaultAdapter(this);
@@ -349,6 +423,10 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
         }
     }
 
+    /**
+     * 当NFC读卡器读到AID后调用此函数事件通知此Activity。
+     * @param account
+     */
     public void onAccountReceived(final String account) {
         // This callback is run on a background thread, but updates to UI elements must be performed
         // on the UI thread.

@@ -31,11 +31,13 @@
         android:layout_height="match_parent"/>
 
     <android.support.design.widget.FloatingActionButton
-                android:id="@+id/dummy_button"
+        android:id="@+id/dummy_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
+        android:layout_gravity="top|left"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email"/>
+        android:src="@android:drawable/ic_dialog_info"
+        app:layout_anchor="@+id/fullscreen_content"
+        app:layout_anchorGravity="bottom|right"/>
 
 </android.support.design.widget.CoordinatorLayout>

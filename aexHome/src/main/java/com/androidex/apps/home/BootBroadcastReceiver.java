@@ -7,7 +7,7 @@ import android.content.Intent;
 import com.androidex.logger.Log;
 
 public class BootBroadcastReceiver extends BroadcastReceiver {    
-	private static final String TAG = "AEXSDK";
+	private static final String TAG = "aexHome";
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -16,7 +16,7 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
 			//Intent sayHelloIntent = new Intent(context,DevicesListActivity.class);
 			//sayHelloIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			//context.startActivity(sayHelloIntent);	
-			Log.v(TAG, String.format("Recive %s,will create aexservice.\n",intent.getAction()));
+			Log.v(TAG, String.format("Recive %s.\n",intent.getAction()));
             Intent dlIntent = new Intent(context,FullscreenActivity.class);
             dlIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(dlIntent);
