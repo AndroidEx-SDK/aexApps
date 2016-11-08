@@ -1,10 +1,7 @@
 package com.androidex.apps.home;
 
-import android.app.Activity;
-import android.app.AlertDialog.Builder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -21,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.androidex.common.DummyContent;
 import com.androidex.common.IniReader;
 import com.androidex.logger.Log;
 
@@ -31,10 +27,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class AdvertFragment extends Fragment {
-	public View 			psetview		=null;
-    public static final String ARG_ITEM_ID = "item_id";
-    DummyContent.DummyItem mItem;
-
+	public View psetview = null;
 	//统一文件存储路径便于管理
 	public String advertPath = "/mnt/sdcard/advertpic/";
 	public String ukeyPath = "/mnt/usbhost1/";
@@ -58,26 +51,15 @@ public class AdvertFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments().containsKey(ARG_ITEM_ID)) {
-            mItem = DummyContent.findItemByTag(getArguments().getString(ARG_ITEM_ID));
-        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        if (mItem != null) {
-        	this.getActivity().getActionBar().setTitle(mItem.content);
-        }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		LinearLayout.LayoutParams wvParams = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		LinearLayout.LayoutParams wvParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		if (psetview == null) {
-			psetview		= inflater.inflate(R.layout.advert_main, null);
-		}
-		
-    	Intent intent = new Intent();
-        intent.setClass(psetview.getContext(), AdvertFragment.class);
-        startActivity(intent);
+            psetview = inflater.inflate(R.layout.advert_main, null);
+        }
 		return psetview;
     }
     
@@ -92,31 +74,6 @@ public class AdvertFragment extends Fragment {
 		super.onDestroyView();
 	}
 
-	@Override 
-	public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-		// We have a menu item to show in action bar.
-        setHasOptionsMenu(true);
-    }
-	
-	protected Activity getKKMain() {
-		Activity kkmain = (Activity)getActivity();
-		return kkmain;
-	}
-	
-    public void showDialog(String msg){
-        new Builder(getKKMain())
-        .setTitle("确认")  
-        .setMessage(msg)  
-        .setPositiveButton("保存",new DialogInterface.OnClickListener(){
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-			}
-        })  
-        .setNegativeButton("取消", null)  
-        .show();  
-    } 
-    
     public void startPlayPic(){
 		//创建广告播放存储配置和图片的根目录
 		File ff = new File(advertPath);
