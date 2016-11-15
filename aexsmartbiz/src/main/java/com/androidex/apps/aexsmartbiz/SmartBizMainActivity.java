@@ -148,6 +148,9 @@ public class SmartBizMainActivity extends AppCompatActivity {
                     mDevices.mPasswordKeypad.Close();
                 }else{
                     Toast.makeText(mActivity,String.format("Open password keypad fial:%s",mDevices.mPasswordKeypad.mParams.optString(appDeviceDriver.PORT_ADDRESS)),Toast.LENGTH_LONG).show();
+
+
+                    
                 }
             }
         });
