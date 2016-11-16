@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     public String configname ="/mnt/sdcard/advertpic/advert.ini";
 
     Bitmap bm = null;;
-    public ImageView iview;
+    public ImageView iview;//图片控件
     public String[] result;
     public int advertnum = 0;
     public int nSeconds = 3;
