@@ -70,9 +70,7 @@ public class SmartBizMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //
-                Log.i(TAG,"打印测试程序...");
                 if(mDevices.mPrinter.Open()){
-                    Log.i(TAG,"打开打印机设备...成功");
                     try{
                         mDevices.mPrinter.selfTest();
                         String str = "安卓工控";
