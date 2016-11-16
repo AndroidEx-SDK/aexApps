@@ -17,9 +17,6 @@ import com.androidex.logger.MessageOnlyLogFilter;
 
 import java.io.UnsupportedEncodingException;
 
-/**
- *
- */
 
 public class SmartBizMainActivity extends AppCompatActivity {
 
