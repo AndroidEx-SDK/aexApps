@@ -172,6 +172,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
     @Override
     public void initializeLogging() {
         super.initializeLogging();
+        mLogFragment.initializeLogging();
     }
 
     @Override
