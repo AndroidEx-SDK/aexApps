@@ -17,10 +17,6 @@ import com.androidex.logger.MessageOnlyLogFilter;
 
 import java.io.UnsupportedEncodingException;
 
-/**
- *
- */
-
 public class SmartBizMainActivity extends AppCompatActivity {
 
     public static final String TAG = "SmartBiz";
@@ -66,10 +62,10 @@ public class SmartBizMainActivity extends AppCompatActivity {
         Log.i(TAG,mDevices.mHwservice.getSdkVersion());
         Log.i(TAG,mDevices.mHwservice.get_uuid());
         Log.i(TAG,String.format("flag0=0x%02X,flag1=0x%02X",mDevices.mHwservice.get_flag0(),mDevices.mHwservice.get_flag1()));
+        //打印机
         btn_test_printer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //
                 Log.i(TAG,"打印测试程序...");
                 if(mDevices.mPrinter.Open()){
                     Log.i(TAG,"打开打印机设备...成功");
@@ -97,50 +93,41 @@ public class SmartBizMainActivity extends AppCompatActivity {
                 }
             }
         });
+        //银行卡
         btn_bank_reader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //
-                Log.i(TAG,"打开银行卡读卡器测试程序...");
                 if(mDevices.mBankCardReader.Open()) {
-                    Log.i(TAG,"打开银行卡读卡器成功...");
                     mDevices.mBankCardReader.reset();
-                    Log.i(TAG,"开始读银行卡...");
                     mDevices.mBankCardReader.ReciveDataLoop();
                     //mDevices.mBankCardReader.queryCard();
                     //mDevices.mBankCardReader.popCard();
                     //mDevices.mBankCardReader.Close();
-                    Log.i(TAG,"已启动监听读银行卡...");
                 }else{
                     Toast.makeText(mActivity,String.format("Open bank reader fial:%s",mDevices.mBankCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS)),Toast.LENGTH_LONG).show();
                 }
             }
         });
+        //
         btn_cas_reader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //
-                Log.i(TAG,"打开燃气读卡器测试程序...");
                 if(mDevices.mCasCardReader.Open()) {
-                    Log.i(TAG,"打开燃气读卡器成功...");
                     mDevices.mCasCardReader.reset();
-                    Log.i(TAG,"开始读燃气卡...");
                     mDevices.mCasCardReader.ReciveDataLoop();
                     //mDevices.mCasCardReader.queryCard();
                     //mDevices.mCasCardReader.popCard();
                     //mDevices.mCasCardReader.Close();
-                    Log.i(TAG,"已启动监听燃气读卡器...");
                 }else{
                     Toast.makeText(mActivity,String.format("Open cas reader fial:%s",mDevices.mCasCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS)),Toast.LENGTH_LONG).show();
                 }
             }
         });
+        //密码键盘
         btn_test_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG,"打开密码键盘测试程序...");
                 if(mDevices.mPasswordKeypad.Open()) {
-                    Log.i(TAG,"打开密码键盘成功...");
                     mDevices.mPasswordKeypad.pkReset();
                     String pkVersion = mDevices.mPasswordKeypad.pkGetVersion();
                     Log.d(TAG, pkVersion);
@@ -155,7 +142,6 @@ public class SmartBizMainActivity extends AppCompatActivity {
         btn_exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //
                 System.exit(0);
             }
         });
