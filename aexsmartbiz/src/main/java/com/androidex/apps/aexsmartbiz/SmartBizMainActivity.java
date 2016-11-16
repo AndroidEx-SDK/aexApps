@@ -17,6 +17,9 @@ import com.androidex.logger.MessageOnlyLogFilter;
 
 import java.io.UnsupportedEncodingException;
 
+/**
+ * 
+ */
 public class SmartBizMainActivity extends AppCompatActivity {
 
     public static final String TAG = "SmartBiz";
