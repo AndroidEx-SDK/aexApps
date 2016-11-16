@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     public String configname ="/mnt/sdcard/advertpic/advert.ini";
 
     Bitmap bm = null;;
-    public ImageView iview;//图片控件
+    public ImageView iview;//   图片控件
     public String[] result;
     public int advertnum = 0;
     public int nSeconds = 3;
@@ -332,7 +332,6 @@ public class MainActivity extends AppCompatActivity {
             String strSeconds = ini.getValue("config", "seconds");
             System.out.println(strSeconds );
             showToast("读取配置中设置时间间隔秒数为" +strSeconds);
-
             nSeconds = Integer.parseInt(strSeconds);
             if(nSeconds <= 0){
                 nSeconds =3;
