@@ -232,6 +232,7 @@ public class aexddB58Printer extends aexddPrinter {
     /**
      * 打印机类对象的自检函数，此函数会打印一些文字内容并切纸。
      */
+
     @Override
     public boolean selfTest()
     {
@@ -250,34 +251,36 @@ public class aexddB58Printer extends aexddPrinter {
         Log.d(TAG,String.format("Printer status 0x%08X",checkStatus()));
         ln();         //换行
         ln();         //换行
+        try {
         //打印：
         //设置对齐方式：0-左对齐,1-居中,2-右对齐
         setAlign(0);    //设置左对齐
-        WriteDataHex("1D2110");     //设置字体大小为16
+        WriteDataHex("1D2108");     //设置字体大小为16
         //打印英文
-        WriteData(testEnStr.getBytes(),testEnStr.length());
+        WriteData(testEnStr.getBytes("GBK"),testEnStr.length());
         WriteDataHex("1C26");   //打印中文
-        WriteData(testChStr.getBytes(),testChStr.length());
-        WriteData(companyStr.getBytes(),companyStr.length());
+        WriteData(testChStr.getBytes("GBK"),testChStr.length());
+        WriteData(companyStr.getBytes("GBK"),companyStr.length());
 
         WriteDataHex("1B6101");     //设置居中
-        WriteDataHex("1D2116");     //设置字体大小为22
+        WriteDataHex("1D2108");     //设置字体大小为22
         //打印英文
-        WriteData(testEnStr.getBytes(),testEnStr.length());
+        WriteData(testEnStr.getBytes("GBK"),testEnStr.length());
         WriteDataHex("1C26");   //打印中文
-        WriteData(testChStr.getBytes(),testChStr.length());
-        WriteData(companyStr.getBytes(),companyStr.length());
+        WriteData(testChStr.getBytes("GBK"),testChStr.length());
+        WriteData(companyStr.getBytes("GBK"),companyStr.length());
 
         WriteDataHex("1B6102");     //设置右对齐
-        WriteDataHex("1D2118");     //设置字体大小为24
+        WriteDataHex("1D2108");     //设置字体大小为24
         //打印英文
-        WriteData(testEnStr.getBytes(),testEnStr.length());
+        WriteData(testEnStr.getBytes("GBK"),testEnStr.length());
         WriteDataHex("1C26");   //打印中文
-        try {
+
             byte[] sgbk = testChStr.getBytes("GBK");
             WriteData(sgbk,sgbk.length);
             sgbk = companyStr.getBytes("GBK");
             WriteData(sgbk,sgbk.length);
+
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
