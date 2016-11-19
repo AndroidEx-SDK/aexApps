@@ -196,7 +196,7 @@ public class aexddKMY350 extends aexddPasswordKeypad {
         return kmyGetVersion(3000*delayUint);
     }
     // jni相关函数
-    public  native String  kmyOpen(String arg);
+    public  native String  kmyOpen(String arg);//传入printerPort
     public  native void kmyClose();
     public  native int kmyReset(int timeout);
     public  native int kmyResetWithPpin(int timeout);

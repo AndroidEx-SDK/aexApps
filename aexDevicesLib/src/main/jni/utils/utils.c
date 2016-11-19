@@ -287,12 +287,13 @@ static int com_set_parity(int fd, int databits, int stopbits, char parity) {
  */
 int com_open(char *dev) {
 	int fd;
-	char arg[5][MAX_ARG_LEN];
+	char arg[5][MAX_ARG_LEN];//二维数组
 	char *com="/dev/ttyUSB0",*s="115200",*p="N",*b="1",*d="8";
 
 	int r = 0;
-	memset(arg,0,5*MAX_ARG_LEN);
-	int argc = split_arguments(dev,arg,5,',');
+	memset(arg,0,5*MAX_ARG_LEN);//第三个参数的意思是arg中有5*MAX_ARG_LEN字符被赋值为第二个参数值(0)
+
+	int argc = split_arguments(dev,arg,5,',');//分隔字符变成数组
 
 	switch(argc){
 	case 0:
@@ -323,15 +324,16 @@ int com_open(char *dev) {
 		d = arg[4];
 		break;
 	}
-	fd = open(com, O_RDWR | O_NOCTTY | O_NDELAY);
-
+	fd = open(com, O_RDWR | O_NOCTTY | O_NDELAY);//O_RDWR以可读写方式打开文件
+												//O_NOCTTY如果欲打开的文件为终端机设备时，则不会将该终端机当成进程控制终端机。
+												//O_NDELAY以不可阻断的方式打开文件，也就是无论有无数据读取或等待，都会立即返回进程之中。
 	if (fd<=0) {
 		__android_log_print(ANDROID_LOG_INFO, "utils","Can't Open Serial Port %s:%s\n",com,strerror(errno));
 	} else {
 		//int pn = (p[0] != 'N') || (p[0] != 'n');
 		char pn= p[0];
 		//__android_log_print(ANDROID_LOG_INFO, "utils", "波特率 %s",s);
-		com_set_speed(fd, atoi(s));
+		com_set_speed(fd, atoi(s));//atoi()函数 将s转化成整形
 		if (com_set_parity(fd, atoi(d), atoi(b), pn)==FALSE)
 		{
 			perror("设置串口参数出错");

@@ -69,11 +69,11 @@ public class SmartBizMainActivity extends AppCompatActivity {
         btn_test_printer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-<<<<<<< HEAD
+//<<<<<<< HEAD
                 Log.i(TAG,"打印测试程序...");
-=======
+//=======
                 //
->>>>>>> bd0346b8d1c8ddbe5b99670a3c2e7af7a5cdead6
+//>>>>>>> bd0346b8d1c8ddbe5b99670a3c2e7af7a5cdead6
                 if(mDevices.mPrinter.Open()){
                     try{
                         mDevices.mPrinter.selfTest();

@@ -20,6 +20,10 @@
 
 #include <android/log.h>
 
+/**
+ * 相当于java中的具体功能的实现类（认为）
+ */
+
 static ON_KMY_EVENT on_kmy_event=NULL;
 static in_read_key = FALSE;		//由于读卡进程会持续一段时间，因此，为了避免程序二次进入读卡程序设置该参数。
 
@@ -405,9 +409,9 @@ int kmy_send_hexcmd(int fd,char *hexcmd,int size)
  */
 KMY_HANDLE kmy_open(HKMY env,HKMY obj,char *arg)
 {
-    int fd = com_open(arg);
+    int fd = com_open(arg);//打开串口
     if(fd > 0){
-        KMY_HANDLE kmy = (KMY_HANDLE)malloc(sizeof(KMY_DATA));
+        KMY_HANDLE kmy = (KMY_HANDLE)malloc(sizeof(KMY_DATA));//向系统申请分配空间
         if(kmy){
             memset(kmy,0,sizeof(KMY_DATA));
             kmy->fd = fd;
