@@ -18,7 +18,7 @@ public class aexddKMY350 extends aexddPasswordKeypad {
         try {
             System.loadLibrary("appDevicesLibs");
         } catch (UnsatisfiedLinkError e) {
-            Log.d("B58TPrinter", "appDevicesLibs.so library not found!");
+            Log.d("KMY350", "appDevicesLibs.so library not found!");
         }
     }
 
@@ -107,7 +107,7 @@ public class aexddKMY350 extends aexddPasswordKeypad {
         Runnable run=new Runnable() {
             public void run() {
                 //在线程中执行jni函数
-                //OnBackCall.ONBACKCALL_RECIVEDATA
+                //OnBackCall.ONBACKCALL_RECIVEDATA；
             }
         };
         pthread = new Thread(run);
@@ -193,6 +193,7 @@ public class aexddKMY350 extends aexddPasswordKeypad {
             e.printStackTrace();
         }
         */
+
         return kmyGetVersion(3000*delayUint);
     }
     // jni相关函数
