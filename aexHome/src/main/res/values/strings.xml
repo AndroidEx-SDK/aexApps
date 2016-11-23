@@ -54,13 +54,13 @@
     <string name="button_main_keyboardInOne">一体键盘</string>
     <string name="button_main_zigbee">zigbee串口测试工具</string>
     <string name="button_main_keyboard">密码键盘</string>
-    <string name="button_main_pn532">PN532RFID读卡器</string>   
-    <string name="button_main_devicesmanager">酒位管理</string> 
-    <string name="button_main_rfm13card">世融通读卡器</string> 
-    <string name="button_main_mf30card">峰华MF30-E读卡器</string> 
+    <string name="button_main_pn532">PN532RFID读卡器</string>
+    <string name="button_main_devicesmanager">酒位管理</string>
+    <string name="button_main_rfm13card">世融通读卡器</string>
+    <string name="button_main_mf30card">峰华MF30-E读卡器</string>
     <string name="button_main_s3card">峰华S3 CPU读卡器</string>
-    <string name="button_setup_apk">APK安装卸载测试</string> 
-   
+    <string name="button_setup_apk">APK安装卸载测试</string>
+
     <string name="button_config">配置串口参数</string>
     <string name="button_main_readerIDCard">华视身份阅读器</string>
     <string name="button_main_readerIDUSBCard">新中新身份阅读器</string>
@@ -281,8 +281,8 @@ kk30外围设备? - 读卡器，键盘一体机特点:
     <string name="abc_western2">西联发汇</string>
     <string name="abc_outbound">境外汇款</string>
     <string name="specialbusiness">特殊业务</string>
-    
-    
+
+
     <string name="title_item_detail">kk API详情</string>
 
 
@@ -333,7 +333,7 @@ kk30外围设备? - 读卡器，键盘一体机特点:
     <string name="pay_list_date">日期:</string>
     <string name="pay_list_orderno">订单号:</string>
     <string name="pay_list_currency">币种:</string>
-    
+
     <string name="zigebee_p0.0">P0.0</string>
     <string name="zigebee_p0.1">P0.1</string>
     <string name="zigebee_p0.2">P0.2</string>
@@ -357,8 +357,8 @@ kk30外围设备? - 读卡器，键盘一体机特点:
     <string name="zigebee_next">下一步</string>
     <string name="button_zigbee_scan">扫描终端</string>
     <string name="io_output">IO输出</string>
-    <string name="io_input">IO输入</string>     
-    <string name="temperature_default">28</string>  
+    <string name="io_input">IO输入</string>
+    <string name="temperature_default">28</string>
     <string name="pref_title_social_recommendations">Enable social recommendations</string>
     <string name="pref_description_social_recommendations">Recommendations for people to contact
         based on your message history
@@ -412,11 +412,11 @@ kk30外围设备? - 读卡器，键盘一体机特点:
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
-    <string name="humidity_default">50</string>   
-    <string name="textview_vgatohdmi">VGA和HDMI切换</string>  
+    <string name="humidity_default">50</string>
+    <string name="textview_vgatohdmi">VGA和HDMI切换</string>
     <string name="textview_vga">VGA切换</string>
     <string name="textview_hdmi">HDMI切换</string>
-    <string name="textview_config_ioport">IO配置</string> 
+    <string name="textview_config_ioport">IO配置</string>
     <string name="textview_config_onofftime">开启关闭时间间隔</string>
     <string name="textview_control_io">智能中断IO控制</string>
     <string name="textview_config_intervaltime">间隔时间</string>
@@ -428,8 +428,8 @@ kk30外围设备? - 读卡器，键盘一体机特点:
     <string name="device_four">设备4</string>
     <string name="device_five">设备5</string>
     <string name="button_start">开始测试</string>
-    <string name="coffer_tip">欢迎使用智能咖啡机</string>    
-    <string name="coffer_message">准备就绪...</string> 
+    <string name="coffer_tip">欢迎使用智能咖啡机</string>
+    <string name="coffer_message">准备就绪...</string>
     <string name="textview_devicestest">设备自动化测试</string>
     <string name="about_developers">Shenzhen AndroidEx Co,Ltd.</string>
     <string name="dummy_button">Full screen</string>
@@ -438,9 +438,10 @@ kk30外围设备? - 读卡器，键盘一体机特点:
 
     <string name="system_seting">系统设置</string>
     <string name="about_this">关于本机</string>
-
-
-
+    <string name="real_time_clock">实时时钟</string>
+    <string name="nfc">近场通讯NFC</string>
+    <string name="tca9535">TCA9535按键板</string>
+    <string name="ttyso">ttyS0作为调试串口</string>
 
 
 </resources>
