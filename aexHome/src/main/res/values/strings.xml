@@ -435,4 +435,12 @@ kk30外围设备? - 读卡器，键盘一体机特点:
     <string name="dummy_button">Full screen</string>
     <string name="app_subtitle">专注于安卓工业解决方案</string>
     <string name="ready">就绪</string>
+
+    <string name="system_seting">系统设置</string>
+    <string name="about_this">关于本机</string>
+
+
+
+
+
 </resources>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray_dark_background"
+        android:minHeight="?attr/actionBarSize">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:text="@string/about_this"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_background"
+        android:orientation="vertical"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_white_radius_5"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tv_compony_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/iv_log"
+                android:text="深圳市安卓工控设备有限公司-办公区门禁"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_compony_name"
+                android:layout_marginTop="@dimen/abc_button_inset_vertical_material"
+                android:layout_toRightOf="@id/iv_log"
+                android:singleLine="true"
+                android:text="云家天下在线、QQ物联在线、环信在线、SIP离线"
+                android:textColor="@color/black_overlay"/>
+
+            <ImageView
+                android:id="@+id/iv_log"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="10dp"
+                android:src="@mipmap/ic_launcher"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/abc_button_inset_vertical_material"
+            android:text="设备标识"
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/abc_button_inset_vertical_material"
+            android:background="@drawable/bg_white_radius_5"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/qr_code_uuid"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginRight="10dp"
+                android:src="@mipmap/android_weixin"/>
+
+            <TextView
+                android:id="@+id/btn_auto"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="@dimen/abc_button_inset_vertical_material"
+                android:layout_toRightOf="@id/qr_code_uuid"
+                android:background="@drawable/bg_dark_gray_radius_5"
+                android:gravity="center"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:text="AUTO"
+                android:textColor="@color/black"
+                android:textSize="10sp"/>
+
+            <TextView
+                android:id="@+id/tv_uuid"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="@dimen/abc_button_inset_vertical_material"
+                android:layout_toRightOf="@id/btn_auto"
+                android:gravity="center"
+                android:text="设备UUID:1105615A-D987-23B3-"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_uuid"
+                android:layout_marginTop="@dimen/abc_button_inset_vertical_material"
+                android:layout_toRightOf="@id/qr_code_uuid"
+                android:text="Android UUID: F5E50C5C55C5C5C"
+                android:textColor="@color/black"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/abc_button_inset_vertical_material"
+            android:text="系统信息"
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_white_radius_5"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+
+            <TextView
+                android:id="@+id/tv_system_version"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="@dimen/abc_button_inset_vertical_material"
+                android:layout_toRightOf="@id/btn_auto"
+                android:gravity="center"
+                android:text="系统版本: AndroidEx 5.1.1 r468 -D987-23B3-"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/tv_linux_version"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="@dimen/abc_button_inset_vertical_material"
+                android:layout_toRightOf="@id/btn_auto"
+                android:gravity="center"
+                android:text="Linux版本: 3.10"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/tv_hardware_version"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="@dimen/abc_button_inset_vertical_material"
+                android:layout_toRightOf="@id/btn_auto"
+                android:gravity="center"
+                android:text="硬件版本:   KK34 V2.1"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/tv_start_date"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="@dimen/abc_button_inset_vertical_material"
+                android:layout_toRightOf="@id/btn_auto"
+                android:gravity="center"
+                android:text="生产日期：2016-11-11  22：00：00"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/tv_active_date"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="@dimen/abc_button_inset_vertical_material"
+                android:layout_toRightOf="@id/btn_auto"
+                android:gravity="center"
+                android:text="激活日期：2016-11-11  22：00：00"
+                android:textColor="@color/black"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/abc_button_inset_vertical_material"
+            android:text="位置信息"
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tv_install_site"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/marginPadding40"
+            android:layout_toRightOf="@id/btn_auto"
+            android:background="@drawable/bg_white_radius_5"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:text="安装位置：2016-11-11  22：00：00"
+            android:textColor="@color/black"/>
+    </LinearLayout>
+</LinearLayout>
