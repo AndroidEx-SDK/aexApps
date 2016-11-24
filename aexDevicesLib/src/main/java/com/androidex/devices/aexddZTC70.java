@@ -32,6 +32,6 @@ public class aexddZTC70 extends aexddKMY350 {
       @Override
       public String getDeviceName() {
 
-            return mContext.getString(R.string.DEVICE_READER_ZTC70);
+            return mContext.getString(R.string.DEVICE_PK_ZTC70);
       }
 }

@@ -3,7 +3,7 @@ package com.androidex.devices;
 import android.content.Context;
 
 import com.androidex.apps.aexdeviceslib.R;
-import com.androidex.common.Base16;
+import com.androidex.hwuitls.Base16;
 import com.androidex.logger.Log;
 
 import org.json.JSONException;
@@ -143,7 +143,8 @@ public class aexddMT318Reader extends aexddPoscReader {
         mt318SendHexCmd(mSerialFd,"3240");
         byte[] r = ReciveData(255,3000*delayUint);
         try {
-            rhex = Base16.encode(r);
+           // rhex = Base16.encode(r);
+            rhex = Base16.encode(r) ;
             Log.d(TAG,String.format("readerPopCard:%s",rhex));
         } catch (Exception e) {
             e.printStackTrace();
