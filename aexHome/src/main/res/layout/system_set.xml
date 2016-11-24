@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
@@ -221,13 +222,15 @@
                     android:text="@string/real_time_clock"
                     android:textColor="@color/black"/>
 
-                <Switch
+                <com.androidex.apps.home.view.SwitchButton
                     android:id="@+id/switch_realtime_clock"
+                    style="@style/SwitchButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Switch"
+                    app:kswTextOff="Off"
+                    app:kswTextOn="On"
+                    app:kswTintColor="@color/switch_color"
                     />
-
             </LinearLayout>
 
             <LinearLayout
@@ -244,13 +247,15 @@
                     android:text="@string/nfc"
                     android:textColor="@color/black"/>
 
-                <Switch
+                <com.androidex.apps.home.view.SwitchButton
                     android:id="@+id/switch_nfc"
+                    style="@style/SwitchButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Switch"
+                    app:kswTextOff="Off"
+                    app:kswTextOn="On"
+                    app:kswTintColor="@color/switch_color"
                     />
-
             </LinearLayout>
 
             <LinearLayout
@@ -267,13 +272,15 @@
                     android:text="@string/tca9535"
                     android:textColor="@color/black"/>
 
-                <Switch
+                <com.androidex.apps.home.view.SwitchButton
                     android:id="@+id/switch_ca9535"
+                    style="@style/SwitchButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Switch"
+                    app:kswTextOff="Off"
+                    app:kswTextOn="On"
+                    app:kswTintColor="@color/switch_color"
                     />
-
             </LinearLayout>
 
             <LinearLayout
@@ -340,11 +347,14 @@
                     android:text="@string/ttyso"
                     android:textColor="@color/black"/>
 
-                <Switch
+                <com.androidex.apps.home.view.SwitchButton
                     android:id="@+id/switch_ttyS0"
+                    style="@style/SwitchButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Switch"
+                    app:kswTextOff="Off"
+                    app:kswTextOn="On"
+                    app:kswTintColor="@color/switch_color"
                     />
 
             </LinearLayout>
