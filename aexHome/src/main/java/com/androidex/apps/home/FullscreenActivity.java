@@ -148,7 +148,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
         Toolbar toolbar = (Toolbar) findViewById(resId);
         if (toolbar != null) {
             //toolbar.setLogo(com.androidex.aexapplibs.R.drawable.androidex);      //设置logo图片
-            //toolbar.setNavigationIcon(com.androidex.aexapplibs.R.drawable.back);     //设置导航按钮
+           // toolbar.setNavigationIcon(com.androidex.aexapplibs.R.drawable.back);     //设置导航按钮
             toolbar.setTitle(R.string.app_name);          //设置标题
             toolbar.setSubtitle(R.string.app_subtitle);   //设置子标题
         }

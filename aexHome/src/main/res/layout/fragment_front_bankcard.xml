@@ -1,0 +1,27 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.androidex.apps.home.Fragment.FrontBankcard">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="首先插入银行卡"
+        android:gravity="center"
+        android:id="@+id/textView"
+        android:layout_below="@id/toolbar"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="下一步"
+        android:layout_alignParentBottom="true"
+        android:textColor="#000"
+        android:id="@+id/btn_next"
+        />
+</RelativeLayout>
