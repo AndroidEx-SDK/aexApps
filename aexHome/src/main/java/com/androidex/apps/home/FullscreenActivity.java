@@ -69,7 +69,9 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
                   }
                   return false;
             }
+
       };
+
       public WebJavaBridge.OnJavaBridgeListener mJbListener;
       private MainFragment mMainFragment = new MainFragment();
       private AboutFragment mAboutFragment = new AboutFragment();
@@ -99,7 +101,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             mControlsView.setOnTouchListener(mDelayHideTouchListener);
             setFullScreenView(mContentView);
             setFullScreen(true);
-
       }
 
       @Override
@@ -115,7 +116,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
       @Override
       protected void onPause() {
             super.onPause();
-            //disableReaderMode();
+            disableReaderMode();
             hwservice.ExitFullScreen();
             DisableFullScreen();
       }
@@ -128,6 +129,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             }
             return super.onKeyDown(keyCode, event);
       }
+
 
       @Override
       protected void onDestroy() {
@@ -268,6 +270,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
        *
        * @param id
        */
+
       public void showFragment(String id) {
             DummyContent.DummyItem aItem = DummyContent.findItemByTag(id);
             if (aItem != null) {

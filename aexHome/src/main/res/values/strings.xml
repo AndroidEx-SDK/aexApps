@@ -444,6 +444,9 @@ kk30外围设备? - 读卡器，键盘一体机特点:
     <string name="nfc">近场通讯NFC</string>
     <string name="tca9535">TCA9535按键板</string>
     <string name="ttyso">ttyS0作为调试串口</string>
-<string name="prompt">温馨提示：请先按打开按钮打开设备，若提示打开成功，才能继续测试　</string>
+    <string name="prompt">温馨提示：请先按打开按钮打开设备，若提示打开成功，才能继续测试　</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
