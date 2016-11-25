@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ddd"
+    android:orientation="vertical">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="返回"
+        android:textColor="#000"
+        android:id="@+id/bt_back"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="写入串口:"
+        android:textColor="#000"
+        android:layout_marginTop="20dp"/>
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal"
+       android:layout_marginTop="@dimen/marginPadding10dp">
+       <EditText
+           android:layout_width="0dp"
+           android:layout_height="40dp"
+
+           android:background="@drawable/edxitext_style"
+           android:layout_weight="8"
+           android:id="@+id/et_input"/>
+
+       <TextView
+           android:layout_width="0dp"
+           android:layout_height="40dp"
+           android:layout_weight="1"
+           android:text="确认"
+           android:gravity="center"
+           android:textColor="#000"
+           android:id="@+id/bt_sure"
+           />
+
+
+   </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/marginPadding10dp"
+        android:id="@+id/tv_result"
+        android:textColor="#000"
+        android:text="显示写入结果"/>
+
+</LinearLayout>
