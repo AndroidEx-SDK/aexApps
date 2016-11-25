@@ -438,6 +438,8 @@ kk30外围设备? - 读卡器，键盘一体机特点:
 
     <string name="system_seting">系统设置</string>
     <string name="about_this">关于本机</string>
+    <string name="intnet_set">网络设置</string>
+    <string name="start_set">启动设置</string>
     <string name="real_time_clock">实时时钟</string>
     <string name="nfc">近场通讯NFC</string>
     <string name="tca9535">TCA9535按键板</string>

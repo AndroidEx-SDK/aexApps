@@ -15,23 +15,23 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             android:subtitle="专注于工控解决方案"
             android:title="@string/app_name"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tablayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/width110"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="@android:color/white"
+                app:tabTextAppearance="@style/MyCustomTextAppearance"/>
+
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tablayout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/width110"
-        app:tabMode="fixed"
-        app:tabSelectedTextColor="@android:color/white"
-        app:tabTextAppearance="@style/MyCustomTextAppearance"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
