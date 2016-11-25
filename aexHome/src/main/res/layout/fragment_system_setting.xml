@@ -18,7 +18,7 @@
             android:layout_gravity="center"
             android:text="@string/system_seting"
             android:textColor="@android:color/white"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_size20"
             android:textStyle="bold"/>
 
     </android.support.v7.widget.Toolbar>
@@ -28,29 +28,35 @@
         android:layout_height="match_parent"
         android:background="@color/gray_background"
         android:orientation="vertical"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="5dp">
+        android:paddingLeft="@dimen/padding10"
+        android:paddingTop="@dimen/padding5"
+        android:paddingRight="@dimen/padding10">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/abc_button_inset_vertical_material"
+            android:paddingLeft="@dimen/padding10"
+            android:paddingTop="@dimen/padding5"
             android:text="系统调试"
             android:textColor="@color/black"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/text_size20"/>
 
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_white_radius_5"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:paddingLeft="@dimen/padding10"
+            android:paddingRight="@dimen/padding10"
+            android:paddingTop="@dimen/padding5"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/padding10"
+                android:paddingTop="@dimen/padding5">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -60,7 +66,8 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="ADB设置"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size17"/>
 
                 <TextView
                     android:id="@+id/tv_system_version"
@@ -75,7 +82,10 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/padding10"
+                android:paddingRight="@dimen/padding10"
+                android:paddingTop="@dimen/padding5">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -85,7 +95,8 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="系统日志"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size17"/>
 
                 <TextView
                     android:id="@+id/tv_system_data"
@@ -104,9 +115,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/abc_button_inset_vertical_material"
+            android:paddingLeft="@dimen/padding10"
+            android:paddingRight="@dimen/padding10"
+            android:paddingTop="@dimen/padding5"
             android:text="系统操作"
             android:textColor="@color/black"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/text_size20"/>
 
         <LinearLayout
 
@@ -114,12 +128,17 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_white_radius_5"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="5dp"
+            android:paddingLeft="@dimen/padding10"
+            android:paddingTop="@dimen/padding5">
 
             <LinearLayout
                 android:id="@+id/restart"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/padding10"
+                android:paddingRight="@dimen/padding10"
+                android:paddingTop="@dimen/padding5">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -129,7 +148,8 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="升级/重启/关机"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size17"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -143,7 +163,10 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/padding10"
+                android:paddingRight="@dimen/padding10"
+                android:paddingTop="@dimen/padding5">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -153,7 +176,8 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="DC断电操作"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size17"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -169,7 +193,10 @@
             <LinearLayout
                 android:id="@+id/alarm_clck_set"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/padding10"
+                android:paddingRight="@dimen/padding10"
+                android:paddingTop="@dimen/padding5">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -179,7 +206,8 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="闹钟设置"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size17"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -196,9 +224,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/abc_button_inset_vertical_material"
+            android:paddingLeft="@dimen/padding10"
+            android:paddingRight="@dimen/padding10"
+            android:paddingTop="@dimen/padding5"
             android:text="驱动配置"
             android:textColor="@color/black"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/text_size20"/>
 
         <LinearLayout
 
@@ -210,7 +241,10 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/padding10"
+                android:paddingRight="@dimen/padding10"
+                android:paddingTop="@dimen/padding5">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -220,7 +254,8 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="@string/real_time_clock"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size17"/>
 
                 <com.androidex.apps.home.view.SwitchButton
                     android:id="@+id/switch_realtime_clock"
@@ -235,7 +270,10 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/padding10"
+                android:paddingRight="@dimen/padding10"
+                android:paddingTop="@dimen/padding5">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -245,7 +283,8 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="@string/nfc"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size17"/>
 
                 <com.androidex.apps.home.view.SwitchButton
                     android:id="@+id/switch_nfc"
@@ -260,7 +299,10 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/padding10"
+                android:paddingRight="@dimen/padding10"
+                android:paddingTop="@dimen/padding5">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -270,7 +312,8 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="@string/tca9535"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size17"/>
 
                 <com.androidex.apps.home.view.SwitchButton
                     android:id="@+id/switch_ca9535"
@@ -285,7 +328,10 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/padding10"
+                android:paddingRight="@dimen/padding10"
+                android:paddingTop="@dimen/padding5">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -295,7 +341,8 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="北斗定位"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size17"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -310,9 +357,13 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/padding10"
+                android:paddingRight="@dimen/padding10"
+                android:paddingTop="@dimen/padding5">
 
                 <TextView
+                    android:id="@+id/textView10"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="@dimen/abc_button_inset_vertical_material"
@@ -320,7 +371,8 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="回音消除"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size17"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -335,7 +387,10 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/padding10"
+                android:paddingRight="@dimen/padding10"
+                android:paddingTop="@dimen/padding5">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -345,7 +400,8 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="@string/ttyso"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size17"/>
 
                 <com.androidex.apps.home.view.SwitchButton
                     android:id="@+id/switch_ttyS0"

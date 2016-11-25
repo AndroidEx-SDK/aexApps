@@ -27,15 +27,15 @@
         android:layout_height="match_parent"
         android:background="@color/gray_background"
         android:orientation="vertical"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="5dp">
+        android:paddingLeft="@dimen/padding10"
+        android:paddingRight="@dimen/padding10"
+        android:paddingTop="@dimen/padding5">
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_white_radius_5"
-            android:padding="5dp">
+            android:padding="@dimen/padding10">
 
             <ImageView
                 android:id="@+id/iv_loggo"
@@ -51,8 +51,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/iv_loggo"
+                android:singleLine="true"
                 android:text="深圳市安卓工控设备有限公司-办公区门禁"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size17"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -62,7 +64,8 @@
                 android:layout_toRightOf="@id/iv_loggo"
                 android:singleLine="true"
                 android:text="云家天下在线、QQ物联在线、环信在线、SIP离线"
-                android:textColor="@color/black_overlay"/>
+                android:textColor="@color/black_overlay"
+                android:textSize="@dimen/text_size17"/>
 
         </RelativeLayout>
 
@@ -72,7 +75,7 @@
             android:layout_marginTop="@dimen/abc_button_inset_vertical_material"
             android:text="设备标识"
             android:textColor="@color/black"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/text_size20"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -109,8 +112,10 @@
                 android:layout_marginLeft="@dimen/abc_button_inset_vertical_material"
                 android:layout_toRightOf="@id/btn_auto"
                 android:gravity="center"
+                android:singleLine="true"
                 android:text="设备UUID:1105615A-D987-23B3-"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size17"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -119,20 +124,21 @@
                 android:layout_marginTop="@dimen/abc_button_inset_vertical_material"
                 android:layout_toRightOf="@id/qr_code_uuid"
                 android:text="Android UUID: F5E50C5C55C5C5C"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size17"/>
 
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/abc_button_inset_vertical_material"
             android:text="系统信息"
             android:textColor="@color/black"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/text_size20"/>
 
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_white_radius_5"
@@ -148,7 +154,8 @@
                 android:layout_toRightOf="@id/btn_auto"
                 android:gravity="center"
                 android:text="系统版本: AndroidEx 5.1.1 r468 -D987-23B3-"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size17"/>
 
             <TextView
                 android:id="@+id/tv_linux_version"
@@ -158,7 +165,8 @@
                 android:layout_toRightOf="@id/btn_auto"
                 android:gravity="center"
                 android:text="Linux版本: 3.10"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size17"/>
 
             <TextView
                 android:id="@+id/tv_hardware_version"
@@ -168,7 +176,8 @@
                 android:layout_toRightOf="@id/btn_auto"
                 android:gravity="center"
                 android:text="硬件版本:   KK34 V2.1"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size17"/>
 
             <TextView
                 android:id="@+id/tv_start_date"
@@ -178,7 +187,8 @@
                 android:layout_toRightOf="@id/btn_auto"
                 android:gravity="center"
                 android:text="生产日期：2016-11-11  22：00：00"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size17"/>
 
             <TextView
                 android:id="@+id/tv_active_date"
@@ -188,7 +198,8 @@
                 android:layout_toRightOf="@id/btn_auto"
                 android:gravity="center"
                 android:text="激活日期：2016-11-11  22：00：00"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size17"/>
         </LinearLayout>
 
         <TextView
@@ -197,7 +208,8 @@
             android:layout_marginTop="@dimen/abc_button_inset_vertical_material"
             android:text="位置信息"
             android:textColor="@color/black"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/text_size20"
+            />
 
         <TextView
             android:id="@+id/tv_install_site"
@@ -208,6 +220,7 @@
             android:gravity="center_vertical"
             android:padding="5dp"
             android:text="安装位置：2016-11-11  22：00：00"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size17"/>
     </LinearLayout>
 </LinearLayout>

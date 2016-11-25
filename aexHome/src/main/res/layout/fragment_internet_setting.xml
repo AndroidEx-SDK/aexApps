@@ -11,7 +11,7 @@
         android:background="@drawable/bg_child_title"
         android:text="网络设置"
         android:gravity="center"
-        android:textSize="20dp"
+        android:textSize="@dimen/text_size20"
         android:textColor="#fff"
         android:layout_weight="1"/>
 
@@ -27,12 +27,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="以太网"
-            android:textSize="20dp"
+            android:textSize="@dimen/text_size20"
             android:textColor="#000"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             />
-        <ToggleButton
+        <com.androidex.apps.home.view.SwitchButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -319,7 +319,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="默认网关"
-                android:textSize="20dp"
+                android:textSize="@dimen/text_size20"
                 android:textColor="#000"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"/>
@@ -467,7 +467,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             />
-        <ToggleButton
+        <com.androidex.apps.home.view.SwitchButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

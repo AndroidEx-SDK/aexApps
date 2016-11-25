@@ -1,13 +1,21 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:orientation="vertical" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
 
     <ImageView
         android:id="@+id/picsw"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.41"
-        android:src="@drawable/androidex" />
+        android:src="@drawable/androidex"/>
 
-</LinearLayout>
+    <!--为了测试方便增加的退出按钮-->
+    <Button
+        android:id="@+id/btn_exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="退出"/>
+
+
+</RelativeLayout>

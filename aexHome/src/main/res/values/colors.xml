@@ -43,6 +43,7 @@
     <color name="btn_idcard">#ffffffff</color>
     <color name="transparence">#000000ff</color>
     <color name="switch_color">#4d78d2</color>
+    <color name="title_background">#545454</color>
 
 
 </resources>
