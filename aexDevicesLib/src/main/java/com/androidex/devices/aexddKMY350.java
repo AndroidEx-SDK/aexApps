@@ -3,6 +3,7 @@ package com.androidex.devices;
 import android.content.Context;
 
 import com.androidex.apps.aexdeviceslib.R;
+import com.androidex.common.Base16;
 import com.androidex.logger.Log;
 
 import org.json.JSONException;
@@ -166,14 +167,14 @@ public class aexddKMY350 extends aexddPasswordKeypad {
     {
         boolean ret = false;
         String rhex = "";
-        /*
+
         WriteDataHex("0131");
         byte[] r = ReciveData(255,3000*delayUint);
         rhex = new String(r);
         Log.d(TAG,String.format("pkReset:%s",rhex));
         ret = rhex.contains("303500");
-        */
-        kmyReset(3000*delayUint);
+
+        //kmyReset(3000*delayUint);
         return ret;
     }
 
@@ -182,8 +183,8 @@ public class aexddKMY350 extends aexddPasswordKeypad {
     {
         String ret = "";
         String rhex = "";
-        //
-        /*WriteDataHex("0130");
+
+        WriteDataHex("0130");
         byte[] r = ReciveData(255,3000*delayUint);
         rhex = new String(r);
         try {
@@ -192,10 +193,49 @@ public class aexddKMY350 extends aexddPasswordKeypad {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        */
+        ret = kmyGetVersion(3000*delayUint);
 
-        return kmyGetVersion(3000*delayUint);
+        return ret;
     }
+
+    /**
+     * <ul>
+     *     <strong>加密全套步骤</strong>
+     *     <li>Reset:复位键盘，避免键盘处于其他状态影响最终结果。注意此复位不能清除主秘钥等</li>
+     *     <li>Set encryt mode:设置加密模式，0:DES,1:3DES</li>
+     *     <li>Set encrypt mac:设置Mac算法模式，01 MAC采用ASNI X9.9算法 *   02 MAC采用SAM卡算法  03 MAC采用银联的算法</li>
+     *     <li>Download work key:下载工作秘钥</li>
+     *     <li>Active work key:激活工作秘钥</li>
+     *     <li>Start read key:读取并响应按键信息，按取消(0x1B)或者确认(0x0D)退出</li>
+     * </ul>
+     int ire=kmy_reset(kmy,env,obj,timeout);
+     ire=kmy_set_encrypt_mode(kmy,env,obj,0,timeout);
+     // __android_log_print(ANDROID_LOG_INFO, "kmy","Set encrypt mode %s",ire?"TRUE":"FALSE");
+     ire=kmy_set_encrypt_mac(kmy,env,obj,1,timeout);
+     // __android_log_print(ANDROID_LOG_INFO, "kmy","Set mac encrypt mode %s",ire?"TRUE":"FALSE");
+
+     int r = kmy_dl_work_key(kmy,env,obj,mKeyNo,wKeyNo, chwKey,timeout);
+     if(r){
+     if(kmy_active_work_key(kmy,env,obj,mKeyNo,wKeyNo,timeout)){
+     if(kmy_pin_block(kmy,env,obj,chcardNo,timeout)){
+     kmy_event(kmy,env,obj,KE_START_PIN,"{success:true,status:\"%d\",msg:\"%s\"}",1,"请提示用户输入密码!");
+     if(kmy_start_read_key(kmy,env,obj,chcb,timeout)){
+     usleep(100000);
+     return kmy_read_pin(kmy,env,obj,NULL,passHex,timeout);
+     }else{
+     __android_log_print(ANDROID_LOG_INFO, "kmy","kmy_start_read_key fail");
+     }
+     return FALSE;
+     }else{
+     return FALSE;
+     }
+     }else{
+     return FALSE;
+     }
+     }else{
+     return FALSE;
+     }
+     */
     // jni相关函数
     public  native String  kmyOpen(String arg);//传入printerPort
     public  native void kmyClose();
