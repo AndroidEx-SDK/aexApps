@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ddd">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="#666"
+        android:text="打印内容："
+
+        android:id="@+id/tv_prit"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lines="5"
+        android:layout_below="@id/tv_prit"
+        android:background="@drawable/edxitext_style"
+        android:hint="请输入打印内容"
+        android:gravity="left|top"
+        android:layout_marginTop="@dimen/marginPadding10dp"
+        android:id="@+id/et_input_content"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="对齐方式:"
+        android:layout_below="@id/et_input_content"
+        android:layout_marginTop="@dimen/marginPadding10dp"
+        android:textSize="20sp"
+        android:textColor="#666"
+        android:id="@+id/tv_align"
+        />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_align"
+        android:id="@+id/rg_align">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="左对齐"
+            android:checked="false"
+            android:textSize="15sp"
+            android:textColor="#666"
+            android:id="@+id/rb_align_left"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="居中对齐"
+            android:checked="false"
+            android:textSize="15sp"
+            android:textColor="#666"
+            android:id="@+id/rb_align_mid"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="右对齐"
+            android:checked="false"
+            android:textSize="15sp"
+            android:textColor="#666"
+            android:id="@+id/rb_align_right"/>
+
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="参数设置:"
+        android:textSize="20sp"
+        android:textColor="#666"
+        android:layout_below="@id/rg_align"
+        android:layout_marginTop="@dimen/marginPadding10dp"
+        android:id="@+id/tv_parameter"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_parameter"
+        android:text="打印二维码"
+        android:textSize="15sp"
+        android:textColor="#666"
+        android:id="@+id/ck_printf_code"
+        android:checked="false"/>
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ck_printf_code"
+        android:text="打印条形码"
+        android:textSize="15sp"
+        android:textColor="#666"
+        android:id="@+id/ck_printf_linear"
+        android:checked="false"/>
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ck_printf_linear"
+        android:text="两倍字符显示"
+        android:textSize="15sp"
+        android:textColor="#666"
+        android:id="@+id/ck_double_show"
+        android:checked="false"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ck_double_show"
+        android:text="打印测试"
+        android:textSize="20sp"
+        android:textColor="#333"
+        android:layout_marginTop="20dp"
+        android:id="@+id/bt_printf"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="返回"
+        android:layout_alignParentBottom="true"
+        android:textSize="20sp"
+        android:textColor="#333"/>
+
+</RelativeLayout>
