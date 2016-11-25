@@ -6,6 +6,7 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -23,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.androidex.aexlibs.WebJavaBridge;
+import com.androidex.apps.home.activity.SystemMainActivity;
 import com.androidex.common.AndroidExActivityBase;
 import com.androidex.common.DummyContent;
 import com.androidex.common.LogFragment;
@@ -97,6 +99,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             mControlsView.setOnTouchListener(mDelayHideTouchListener);
             setFullScreenView(mContentView);
             setFullScreen(true);
+
       }
 
       @Override
@@ -112,7 +115,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
       @Override
       protected void onPause() {
             super.onPause();
-            disableReaderMode();
+            //disableReaderMode();
             hwservice.ExitFullScreen();
             DisableFullScreen();
       }
@@ -139,7 +142,8 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             // Trigger the initial hide() shortly after the activity has been
             // created, to briefly hint to the user that UI controls
             // are available.
-            delayedHide(AUTO_HIDE_DELAY_MILLIS);
+            //在这里设置隐藏
+            //delayedHide(AUTO_HIDE_DELAY_MILLIS);
       }
 
       @Override
@@ -147,11 +151,20 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             super.initActionBar(resId);
             Toolbar toolbar = (Toolbar) findViewById(resId);
             if (toolbar != null) {
-                  //toolbar.setLogo(com.androidex.aexapplibs.R.drawable.androidex);      //设置logo图片
-                  //toolbar.setNavigationIcon(com.androidex.aexapplibs.R.drawable.back);     //设置导航按钮
+                  toolbar.setLogo(com.androidex.aexapplibs.R.drawable.androidex);      //设置logo图片
+                  toolbar.setNavigationIcon(com.androidex.aexapplibs.R.drawable.back);     //设置导航按钮
                   toolbar.setTitle(R.string.app_name);          //设置标题
                   toolbar.setSubtitle(R.string.app_subtitle);   //设置子标题
+                  setSupportActionBar(toolbar);
             }
+            toolbar.setOnClickListener(new View.OnClickListener() {
+                  @Override
+                  public void onClick(View v) {
+                        android.util.Log.e("============", "运行了");
+                        Intent intent = new Intent(FullscreenActivity.this, SystemMainActivity.class);
+                        startActivity(intent);
+                  }
+            });
       }
 
       @Override
@@ -227,6 +240,15 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             //mContentView表示在某个布局上点击才有效
             //if (times == 4 && v.equals(mContentView)) {     //连续4次点击执行事件
             //ToggleControlBar();
+            Snackbar.make(v, "FAB", Snackbar.LENGTH_LONG)
+                      .setAction("cancel", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                  //这里的单击事件代表点击消除Action后的响应事件
+
+                            }
+                      })
+                      .show();
             if (times == 1) {
                   Intent intent = new Intent(FullscreenActivity.ActionControlBar);
                   intent.putExtra("flag", "toggle");
@@ -351,8 +373,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
                               return new AdvertFragment();
                         }
                         case 1: {
-                              return mMainFragment;
-                              // return mAboutFragment;
+                              return mAboutFragment;
                         }
                         case 2:     //日志Fragment
                         {
@@ -412,6 +433,15 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
                   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                         if (this instanceof NfcAdapter.ReaderCallback) {
                               nfc.enableReaderMode(this, this, aexddAndroidNfcReader.READER_FLAGS, null);
+
+                              Snackbar.make(mContentView, "FAB", Snackbar.LENGTH_LONG).setAction("cancel", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                          //这里的单击事件代表点击消除Action后的响应事件
+
+                                    }
+                              })
+                                        .show();
                         }
                   }
             }

@@ -1,176 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#ddd"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#ddd"
+              android:orientation="vertical"
     >
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="1"
         android:background="@drawable/bg_child_title"
-        android:text="网络设置"
         android:gravity="center"
-        android:textSize="@dimen/text_size20"
+        android:text="网络设置"
         android:textColor="#fff"
-        android:layout_weight="1"/>
+        android:textSize="@dimen/text_size20"/>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#fff"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="#fff">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="以太网"
-            android:textSize="@dimen/text_size20"
-            android:textColor="#000"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:text="以太网"
+            android:textColor="#000"
+            android:textSize="@dimen/text_size20"
             />
+
         <com.androidex.apps.home.view.SwitchButton
+            android:id="@+id/tb_on_off"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:textOn="ON"
-            android:textOff="OFF"
-            android:layout_marginRight="10dp"
             android:layout_centerVertical="true"
-            android:id="@+id/tb_on_off"/>
+            android:layout_marginRight="10dp"
+            android:textOff="OFF"
+            android:textOn="ON"/>
 
+    </LinearLayout>
 
-
-    </RelativeLayout>
     <LinearLayout
+        android:id="@+id/ll_yitai"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:id="@+id/ll_yitai"
-        android:orientation="vertical"
-        android:background="#fff"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="5dp"
         android:layout_weight="4"
+        android:background="@drawable/bg_white_radius_5"
+        android:orientation="vertical"
         >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:text="mac地址"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_mac_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+        </LinearLayout>
+
+        <include layout="@layout/line_1"></include>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="mac地址"
-                android:textSize="20dp"
-                android:textColor="#000"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10.10.10.10"
-                android:textSize="20dp"
-                android:textColor="#000"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"
-                android:id="@+id/tv_mac_address"/>
-
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#ddd"></RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:text="IP地址"
-                android:textSize="20dp"
                 android:textColor="#000"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"/>
+                android:textSize="20dp"/>
 
             <TextView
+                android:id="@+id/tv_ip_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10.10.10.10"
-                android:textSize="20dp"
-                android:textColor="#000"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"
-                android:id="@+id/tv_ip_address"/>
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#ddd"></RelativeLayout>
+        <include layout="@layout/line_1"></include>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             >
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
                 android:text="子网掩码"
-                android:textSize="20dp"
                 android:textColor="#000"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"/>
+                android:textSize="20dp"/>
 
             <TextView
+                android:id="@+id/tv_child"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10.10.10.10"
-                android:textSize="20dp"
-                android:textColor="#000"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"
-                android:id="@+id/tv_child"/>
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
 
         </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#ddd"></RelativeLayout>
+
+        <include layout="@layout/line_1"></include>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="默认网关"
-                android:textSize="20dp"
-                android:textColor="#000"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10.10.10.10"
-                android:textSize="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="默认网关"
                 android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_defult"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"
-                android:id="@+id/tv_defult"/>
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
 
         </RelativeLayout>
 
@@ -179,271 +180,270 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#fff"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="#fff">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="WIFI"
-            android:textSize="20dp"
-            android:textColor="#000"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
+            android:text="WIFI"
+            android:textColor="#000"
+            android:textSize="20dp"
             />
+
         <TextView
+            android:id="@+id/tv_wifi_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_wifi_content"
-            android:textSize="20dp"
-            android:textColor="#000"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:text="AndroidEx"/>
-
+            android:text="AndroidEx"
+            android:textColor="#000"
+            android:textSize="20dp"/>
 
 
     </RelativeLayout>
+
     <LinearLayout
+        android:id="@+id/ll_wifi"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:id="@+id/ll_wifi"
-        android:orientation="vertical"
-        android:background="#fff"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="@dimen/padding20"
         android:layout_marginTop="5dp"
         android:layout_weight="4"
+        android:background="@drawable/bg_white_radius_5"
+        android:orientation="vertical"
         >
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
                 android:text="mac地址"
-                android:textSize="20dp"
                 android:textColor="#000"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"/>
+                android:textSize="20dp"/>
 
             <TextView
+                android:id="@+id/tv_mac_address_wifi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10.10.10.10"
-                android:textSize="20dp"
-                android:textColor="#000"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"
-                android:id="@+id/tv_mac_address_wifi"/>
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
 
         </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#ddd"></RelativeLayout>
+
+        <include layout="@layout/line_1"></include>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             >
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
                 android:text="IP地址"
-                android:textSize="20dp"
                 android:textColor="#000"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"/>
+                android:textSize="20dp"/>
 
             <TextView
+                android:id="@+id/tv_ip_address_wifi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10.10.10.10"
-                android:textSize="20dp"
-                android:textColor="#000"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"
-                android:id="@+id/tv_ip_address_wifi"/>
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
 
         </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#ddd"></RelativeLayout>
+
+        <include layout="@layout/line_1"></include>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             >
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
                 android:text="子网掩码"
-                android:textSize="20dp"
                 android:textColor="#000"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"/>
+                android:textSize="20dp"/>
 
             <TextView
+                android:id="@+id/tv_child_internet_wifi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10.10.10.10"
-                android:textSize="20dp"
-                android:textColor="#000"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"
-                android:id="@+id/tv_child_internet_wifi"/>
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
 
         </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#ddd"></RelativeLayout>
+
+        <include layout="@layout/line_1"></include>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="默认网关"
-                android:textSize="@dimen/text_size20"
-                android:textColor="#000"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10.10.10.10"
-                android:textSize="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="默认网关"
                 android:textColor="#000"
+                android:textSize="@dimen/text_size20"/>
+
+            <TextView
+                android:id="@+id/tv_defult_internet_wifi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"
-                android:id="@+id/tv_defult_internet_wifi"/>
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
 
         </RelativeLayout>
 
-
-
-
-        </LinearLayout>
+    </LinearLayout>
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#fff"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="#fff">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="移动"
-            android:textSize="20dp"
-            android:textColor="#000"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
+            android:text="移动"
+            android:textColor="#000"
+            android:textSize="20dp"
             />
+
         <TextView
+            android:id="@+id/tv_phone_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_phone_content"
-            android:textSize="20dp"
-            android:textColor="#000"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:text="离线"/>
-
+            android:text="离线"
+            android:textColor="#000"
+            android:textSize="20dp"/>
 
 
     </RelativeLayout>
 
 
     <LinearLayout
+        android:id="@+id/ll_phone"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:id="@+id/ll_phone"
-        android:orientation="vertical"
-        android:background="#fff"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="5dp"
         android:layout_weight="2"
+        android:background="@drawable/bg_white_radius_5"
+        android:orientation="vertical"
         >
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="mac地址"
-                android:textSize="20dp"
-                android:textColor="#000"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10.10.10.10"
-                android:textSize="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="mac地址"
                 android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_phone_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"
-                android:id="@+id/tv_phone_address"/>
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
 
         </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#ddd"></RelativeLayout>
+
+        <include layout="@layout/line_1"></include>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="IP地址"
-                android:textSize="20dp"
-                android:textColor="#000"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10.10.10.10"
-                android:textSize="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="IP地址"
                 android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_address_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"
-                android:id="@+id/tv_address_phone"/>
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
 
         </RelativeLayout>
-
 
 
     </LinearLayout>
@@ -452,37 +452,34 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#fff"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         android:layout_weight="1"
-        android:layout_marginTop="10dp">
+        android:background="#fff">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="蓝牙"
-            android:textSize="20dp"
-            android:textColor="#000"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
+            android:text="蓝牙"
+            android:textColor="#000"
+            android:textSize="20dp"
             />
+
         <com.androidex.apps.home.view.SwitchButton
+            android:id="@+id/tb_on_off_lanya"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:textOn="ON"
-            android:textOff="OFF"
-            android:layout_marginRight="10dp"
             android:layout_centerVertical="true"
-            android:id="@+id/tb_on_off_lanya"/>
-
+            android:layout_marginRight="10dp"
+            android:textOff="OFF"
+            android:textOn="ON"/>
 
 
     </RelativeLayout>
-
-
-
 
 
 </LinearLayout>

@@ -1,120 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#ccc">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#ccc"
+              android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="1"
         android:background="@drawable/bg_child_title"
-        android:text="启动设置"
         android:gravity="center"
-        android:textSize="20dp"
+        android:text="启动设置"
         android:textColor="#fff"
-        android:layout_weight="1"/>
+        android:textSize="20dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#fff"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="#fff">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="自启动"
-            android:textSize="20dp"
-            android:textColor="#000"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
+            android:text="自启动"
+            android:textColor="#000"
+            android:textSize="20dp"
             />
+
         <TextView
+            android:id="@+id/tv_start_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_start_content"
-            android:textSize="20dp"
-            android:textColor="#000"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:text="进程守护"/>
-
+            android:text="进程守护"
+            android:textColor="#000"
+            android:textSize="20dp"/>
 
 
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/ll_yitai"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:id="@+id/ll_yitai"
-        android:orientation="vertical"
-        android:background="#fff"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="2dp"
         android:layout_weight="2"
+        android:background="@drawable/bg_white_radius_5"
+        android:orientation="vertical"
         >
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="进程守护"
-                android:textSize="20dp"
-                android:textColor="#000"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="自动重启"
-                android:textSize="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="进程守护"
                 android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"
-                android:id="@+id/tv_progress"/>
+                android:text="自动重启"
+                android:textColor="#000"
+                android:textSize="20dp"/>
 
         </RelativeLayout>
-        <RelativeLayout
+
+        <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#ddd"></RelativeLayout>
+            android:background="#ddd"></View>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="1">
 
-            >
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
                 android:text="状态"
-                android:textSize="20dp"
                 android:textColor="#000"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"/>
+                android:textSize="20dp"/>
 
             <TextView
+                android:id="@+id/tv_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
                 android:text="启动"
-                android:textSize="20dp"
                 android:textColor="#000"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"
-                android:id="@+id/tv_status"/>
+                android:textSize="20dp"/>
 
         </RelativeLayout>
-
 
 
     </LinearLayout>
@@ -122,76 +124,74 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#fff"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="5dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="#fff">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
             android:text="门禁控制器"
-            android:textSize="20dp"
             android:textColor="#000"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:textSize="20dp"
             />
+
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/tv_wifi_content"
-            android:textSize="20dp"
-            android:textColor="#000"
-            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:text="AndroidEx"/>
-
+            android:text="AndroidEx"
+            android:textColor="#000"
+            android:textSize="20dp"/>
 
 
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
         android:id="@+id/ll_interface"
-        android:orientation="vertical"
-        android:background="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="2dp"
         android:layout_weight="1"
+        android:background="@drawable/bg_white_radius_5"
+        android:orientation="vertical"
         >
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="接口"
-                android:textSize="20dp"
-                android:textColor="#000"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10.10.10.10"
-                android:textSize="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="接口"
                 android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_interface"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"
-                android:id="@+id/tv_interface"/>
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
 
         </RelativeLayout>
-
-
-
-
 
 
     </LinearLayout>
@@ -199,307 +199,303 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#fff"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="5dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="#fff">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
             android:text="打印机"
-            android:textSize="20dp"
             android:textColor="#000"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:textSize="20dp"
             />
+
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/tv_pritf"
-            android:textSize="20dp"
-            android:textColor="#000"
-            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:text="离线"/>
-
+            android:text="离线"
+            android:textColor="#000"
+            android:textSize="20dp"/>
 
 
     </RelativeLayout>
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
         android:id="@+id/ll_read_card"
-        android:orientation="vertical"
-        android:background="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="2dp"
         android:layout_weight="1"
+        android:background="@drawable/bg_white_radius_5"
+        android:orientation="vertical"
         >
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="接口"
-                android:textSize="20dp"
-                android:textColor="#000"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10.10.10.10"
-                android:textSize="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="接口"
                 android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_pritf_interface"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"
-                android:id="@+id/tv_pritf_interface"/>
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
 
         </RelativeLayout>
 
 
+    </LinearLayout>
 
-
-
-
-    </LinearLayout><RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:background="#fff"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginTop="5dp"
-    android:layout_weight="1">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="多功能读卡器"
-        android:textSize="20dp"
-        android:textColor="#000"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_read_card"
-        android:textSize="20dp"
-        android:textColor="#000"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
-        android:text="离线"/>
-
-
-
-</RelativeLayout>
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:background="#fff">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="多功能读卡器"
+            android:textColor="#000"
+            android:textSize="20dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_read_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:text="离线"
+            android:textColor="#000"
+            android:textSize="20dp"/>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
         android:id="@+id/ll_read_card_interface"
-        android:orientation="vertical"
-        android:background="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="2dp"
         android:layout_weight="1"
+        android:background="@drawable/bg_white_radius_5"
+        android:orientation="vertical"
         >
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="接口"
-                android:textSize="20dp"
-                android:textColor="#000"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10.10.10.10"
-                android:textSize="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/bg_white_radius_5"
                 android:textColor="#000"
+                android:text="接口"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_read_card_interface"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"
-                android:id="@+id/tv_read_card_interface"/>
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
 
         </RelativeLayout>
 
 
-
-
-
-
     </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#fff"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="5dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="#fff">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
             android:text="闪付"
-            android:textSize="20dp"
             android:textColor="#000"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:textSize="20dp"
             />
+
         <TextView
+            android:id="@+id/tv_pay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_pay"
-            android:textSize="20dp"
-            android:textColor="#000"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:text="无"/>
-
+            android:text="无"
+            android:textColor="#000"
+            android:textSize="20dp"/>
 
 
     </RelativeLayout>
+
     <LinearLayout
+        android:id="@+id/ll_pay_interface"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:id="@+id/ll_pay_interface"
-        android:orientation="vertical"
-        android:background="#fff"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="2dp"
         android:layout_weight="1"
+        android:background="@drawable/bg_white_radius_5"
+        android:orientation="vertical"
         >
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="接口"
-                android:textSize="20dp"
-                android:textColor="#000"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10.10.10.10"
-                android:textSize="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="接口"
                 android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_pay_interface"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"
-                android:id="@+id/tv_pay_interface"/>
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
 
         </RelativeLayout>
 
 
-
-
-
-
     </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#fff"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="5dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="#fff">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="燃气读卡器"
-            android:textSize="20dp"
-            android:textColor="#000"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
+            android:text="燃气读卡器"
+            android:textColor="#000"
+            android:textSize="20dp"
             />
+
         <TextView
+            android:id="@+id/tv_grass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_grass"
-            android:textSize="20dp"
-            android:textColor="#000"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:text="离线"/>
-
+            android:text="离线"
+            android:textColor="#000"
+            android:textSize="20dp"/>
 
 
     </RelativeLayout>
+
     <LinearLayout
+        android:id="@+id/ll_grass_interface"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:id="@+id/ll_grass_interface"
-        android:orientation="vertical"
-        android:background="#fff"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="2dp"
         android:layout_weight="1"
+        android:background="@drawable/bg_white_radius_5"
+        android:orientation="vertical"
         >
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="接口"
-                android:textSize="20dp"
-                android:textColor="#000"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10.10.10.10"
-                android:textSize="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="接口"
                 android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_mac_address_wifi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"
-                android:id="@+id/tv_mac_address_wifi"/>
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
 
         </RelativeLayout>
 
 
-
-
-
-
     </LinearLayout>
-
-
-
-
-
 
 
 </LinearLayout>
