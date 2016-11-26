@@ -4,7 +4,7 @@
     android:id="@+id/activity_transaction"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.androidex.apps.home.view.TransactionActivity"
+    tools:context="com.androidex.apps.home.activity.TransactionActivity"
     android:orientation="horizontal"
     android:background="@drawable/default_wallpaper">
     <LinearLayout

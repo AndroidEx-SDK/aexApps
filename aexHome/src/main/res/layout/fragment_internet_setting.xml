@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/gray_background"
+              android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray_dark_background"
+        android:minHeight="?attr/actionBarSize">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:text="@string/intnet_set"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size20"
+            android:textStyle="bold"/>
+
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#fff"
+        android:gravity="center_vertical"
+        android:paddingBottom="@dimen/padding8"
+        android:paddingTop="@dimen/padding8">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:text="以太网"
+            android:textColor="#000"
+            android:textSize="@dimen/text_size20"
+            />
+
+        <com.androidex.apps.home.view.SwitchButton
+            android:id="@+id/tb_on_off"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:textOff="OFF"
+            android:textOn="ON"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_yitai"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/bg_white_radius_5"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="@dimen/padding8"
+            android:paddingTop="@dimen/padding8">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:text="mac地址"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_mac_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+        </LinearLayout>
+
+        <include layout="@layout/line_1"></include>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding8"
+            android:paddingTop="@dimen/padding8"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="IP地址"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_ip_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+        </RelativeLayout>
+
+        <include layout="@layout/line_1"></include>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding8"
+            android:paddingTop="@dimen/padding8"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="子网掩码"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_child"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+        </RelativeLayout>
+
+        <include layout="@layout/line_1"></include>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="默认网关"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_defult"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#fff"
+        android:paddingBottom="@dimen/padding8"
+        android:paddingTop="@dimen/padding8">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="WIFI"
+            android:textColor="#000"
+            android:textSize="20dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_wifi_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:text="AndroidEx"
+            android:textColor="#000"
+            android:textSize="20dp"/>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_wifi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="@dimen/padding20"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/bg_white_radius_5"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/padding8"
+        android:paddingTop="@dimen/padding8"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding8"
+            android:paddingTop="@dimen/padding8">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="mac地址"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_mac_address_wifi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+        </RelativeLayout>
+
+        <include layout="@layout/line_1"></include>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingBottom="@dimen/padding8"
+            android:paddingTop="@dimen/padding8"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="IP地址"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_ip_address_wifi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+        </RelativeLayout>
+
+        <include layout="@layout/line_1"></include>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding8"
+            android:paddingTop="@dimen/padding8"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="子网掩码"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_child_internet_wifi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+        </RelativeLayout>
+
+        <include layout="@layout/line_1"></include>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding8"
+            android:paddingTop="@dimen/padding8"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="默认网关"
+                android:textColor="#000"
+                android:textSize="@dimen/text_size20"/>
+
+            <TextView
+                android:id="@+id/tv_defult_internet_wifi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#fff"
+        android:paddingBottom="@dimen/padding8"
+        android:paddingTop="@dimen/padding8">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="移动"
+            android:textColor="#000"
+            android:textSize="20dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_phone_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:text="离线"
+            android:textColor="#000"
+            android:textSize="20dp"/>
+
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/bg_white_radius_5"
+        android:orientation="vertical"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding8"
+            android:paddingTop="@dimen/padding8">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="mac地址"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_phone_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+        </RelativeLayout>
+
+        <include layout="@layout/line_1"></include>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding8"
+            android:paddingTop="@dimen/padding8"
+            >
+
+            <TextView
+                android:id="@+id/tv_address_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
+                android:text="IP地址"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#fff"
+        android:paddingBottom="@dimen/padding8"
+        android:paddingTop="@dimen/padding8">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="蓝牙"
+            android:textColor="#000"
+            android:textSize="20dp"
+            />
+
+        <com.androidex.apps.home.view.SwitchButton
+            android:id="@+id/tb_on_off_lanya"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:textOff="OFF"
+            android:textOn="ON"/>
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

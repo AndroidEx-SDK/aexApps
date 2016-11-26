@@ -1,4 +1,4 @@
-package com.androidex.apps.home.Fragment;
+package com.androidex.apps.home.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;

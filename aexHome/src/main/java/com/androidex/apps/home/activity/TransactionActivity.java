@@ -1,4 +1,4 @@
-package com.androidex.apps.home.view;
+package com.androidex.apps.home.activity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,9 +15,10 @@ import android.util.Log;
 import android.view.Window;
 import android.widget.TextView;
 
-import com.androidex.apps.home.Fragment.FrontBankcard;
-import com.androidex.apps.home.Fragment.OtherCard;
 import com.androidex.apps.home.R;
+import com.androidex.apps.home.fragment.FrontBankcard;
+import com.androidex.apps.home.fragment.OtherCard;
+import com.androidex.apps.home.view.NoScrollViewPager;
 import com.androidex.common.AndroidExActivityBase;
 
 import java.util.ArrayList;

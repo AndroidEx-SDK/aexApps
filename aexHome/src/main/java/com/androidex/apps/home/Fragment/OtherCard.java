@@ -1,4 +1,4 @@
-package com.androidex.apps.home.Fragment;
+package com.androidex.apps.home.fragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;

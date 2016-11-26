@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/gray_background"
+              android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray_dark_background"
+        android:minHeight="?attr/actionBarSize">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:text="@string/intnet_set"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size20"
+            android:textStyle="bold"/>
+
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#fff"
+        android:paddingBottom="@dimen/padding8"
+        android:paddingTop="@dimen/padding8">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="自启动"
+            android:textColor="#000"
+            android:textSize="20dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_start_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:text="进程守护"
+            android:textColor="#000"
+            android:textSize="20dp"/>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_yitai"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/bg_white_radius_5"
+        android:orientation="vertical"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding8"
+            android:paddingTop="@dimen/padding8">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="进程守护"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="自动重启"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ddd"></View>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding8"
+            android:paddingTop="@dimen/padding8">
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="启动"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
+                android:text="状态"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:background="#fff"
+        android:paddingBottom="@dimen/padding8"
+        android:paddingTop="@dimen/padding8">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="门禁控制器"
+            android:textColor="#000"
+            android:textSize="20dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_wifi_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:text="AndroidEx"
+            android:textColor="#000"
+            android:textSize="20dp"/>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_interface"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/bg_white_radius_5"
+        android:orientation="vertical"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding8"
+            android:paddingTop="@dimen/padding8">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="接口"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_interface"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:background="#fff"
+        android:paddingBottom="@dimen/padding8"
+        android:paddingTop="@dimen/padding8">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="打印机"
+            android:textColor="#000"
+            android:textSize="20dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_pritf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:text="离线"
+            android:textColor="#000"
+            android:textSize="20dp"/>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_read_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/bg_white_radius_5"
+        android:orientation="vertical"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding8"
+            android:paddingTop="@dimen/padding8">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="接口"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_pritf_interface"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:background="#fff"
+        android:paddingBottom="@dimen/padding8"
+        android:paddingTop="@dimen/padding8">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="多功能读卡器"
+            android:textColor="#000"
+            android:textSize="20dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_read_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:text="离线"
+            android:textColor="#000"
+            android:textSize="20dp"/>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_read_card_interface"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/bg_white_radius_5"
+        android:orientation="vertical"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding8"
+            android:paddingTop="@dimen/padding8">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/bg_white_radius_5"
+                android:text="接口"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_read_card_interface"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:background="#fff"
+        android:paddingBottom="@dimen/padding8"
+        android:paddingTop="@dimen/padding8">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="闪付"
+            android:textColor="#000"
+            android:textSize="20dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:text="无"
+            android:textColor="#000"
+            android:textSize="20dp"/>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_pay_interface"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/bg_white_radius_5"
+        android:orientation="vertical"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding8"
+            android:paddingTop="@dimen/padding8">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="接口"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_pay_interface"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:background="#fff"
+        android:paddingBottom="@dimen/padding8"
+        android:paddingTop="@dimen/padding8">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="燃气读卡器"
+            android:textColor="#000"
+            android:textSize="20dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_grass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:text="离线"
+            android:textColor="#000"
+            android:textSize="20dp"/>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_grass_interface"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/bg_white_radius_5"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/padding8"
+        android:paddingTop="@dimen/padding8"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="接口"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_mac_address_wifi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="10.10.10.10"
+                android:textColor="#000"
+                android:textSize="20dp"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -23,6 +23,7 @@
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
+
     <application
         android:allowBackup="true"
         android:exported="true"
@@ -42,13 +43,22 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.DEFAULT" />
+
             </intent-filter>
 
         </activity>
 
-        <receiver android:name=".BootBroadcastReceiver">
+
+
+        <activity
+            android:name=".activity.SystemMainActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <receiver android:name="com.androidex.apps.home.BootBroadcastReceiver">
+
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
         <!--
@@ -59,7 +69,7 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".view.TransactionActivity"
+        <activity android:name="com.androidex.apps.home.activity.TransactionActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
