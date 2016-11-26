@@ -38,7 +38,7 @@ JNIEXPORT void JNICALL aexddKMY350_JNI_OnUnload(JavaVM* vm, void* reserved)
 
 static jclass getProvider(JNIEnv* env)
 {
-	return (*env)->FindClass(env,"com/eztor/plugins/kkkmy");
+	return (*env)->FindClass(env,"com/androidex/devices/aexddKMY350");
 }
 
 static jmethodID getMethod(JNIEnv* env,char *func,char *result)
