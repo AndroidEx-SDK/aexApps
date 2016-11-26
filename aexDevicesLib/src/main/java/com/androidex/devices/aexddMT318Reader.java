@@ -3,7 +3,7 @@ package com.androidex.devices;
 import android.content.Context;
 
 import com.androidex.apps.aexdeviceslib.R;
-import com.androidex.hwuitls.Base16;
+import com.androidex.common.Base16;
 import com.androidex.logger.Log;
 
 import org.json.JSONException;
