@@ -2,6 +2,7 @@ package com.androidex.apps.home;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Color;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Build;
@@ -69,13 +70,13 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
                   }
                   return false;
             }
-
       };
 
-      public WebJavaBridge.OnJavaBridgeListener mJbListener;
-      private MainFragment mMainFragment = new MainFragment();
-      private AboutFragment mAboutFragment = new AboutFragment();
-      private aexLogFragment mLogFragment = new aexLogFragment();
+      public static WebJavaBridge.OnJavaBridgeListener mJbListener;
+      private static MainFragment mMainFragment = new MainFragment();
+      private static AboutFragment mAboutFragment = new AboutFragment();
+      private static aexLogFragment mLogFragment = new aexLogFragment();
+      private static AdvertFragment mAdvertFragment = new AdvertFragment();
 
       @Override
       protected void onCreate(Bundle savedInstanceState) {
@@ -91,15 +92,31 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             mContentView = (ViewPager) findViewById(R.id.fullscreen_content);
             mContentView.setAdapter(mSectionsPagerAdapter);
             mContentView.setBackgroundResource(R.drawable.default_wallpaper);
-            registerMultClickListener(mContentView, this);
+            //registerMultClickListener(mContentView, this);
 
             mControlsView = findViewById(R.id.dummy_button);
             // Upon interacting with UI controls, delay any scheduled hide()
             // operations to prevent the jarring behavior of controls going away
             // while interacting with the UI.
             mControlsView.setOnTouchListener(mDelayHideTouchListener);
+            if (mAdvertFragment.getView()!=null){
+
+                  registerMultClickListener(mAdvertFragment.getView(), this);
+            }else
+                  Snackbar.make(mContentView, "FAB", Snackbar.LENGTH_LONG).setAction("cancel", new View.OnClickListener() {
+                                  @Override
+                                  public void onClick(View v) {
+                                        //这里的单击事件代表点击消除Action后的响应事件
+
+                                  }
+                            })
+                            .show();
+
             setFullScreenView(mContentView);
             setFullScreen(true);
+
+            // mLogFragment.getView().setOnTouchListener(mDelayHideTouchListener);
+
       }
 
       @Override
@@ -110,7 +127,10 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             //    CheckPassword();
             hwservice.ExitFullScreen();
             EnableFullScreen();
+
       }
+
+
 
       @Override
       protected void onPause() {
@@ -156,6 +176,8 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
                   toolbar.setNavigationIcon(com.androidex.aexapplibs.R.drawable.back);     //设置导航按钮
                   toolbar.setTitle(R.string.app_name);          //设置标题
                   toolbar.setSubtitle(R.string.app_subtitle);   //设置子标题
+                  toolbar.setTitleTextColor(Color.WHITE);
+                  toolbar.setSubtitleTextColor(Color.WHITE);
                   setSupportActionBar(toolbar);
             }
             toolbar.setOnClickListener(new View.OnClickListener() {
@@ -370,7 +392,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
                   // Return a PlaceholderFragment (defined as a static inner class below).
                   switch (position) {
                         case 0: {
-                              return new AdvertFragment();
+                              return mAdvertFragment;
                         }
                         case 1: {
                               return mAboutFragment;

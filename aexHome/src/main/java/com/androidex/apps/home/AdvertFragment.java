@@ -62,10 +62,11 @@ public class AdvertFragment extends Fragment {
                   psetview = inflater.inflate(R.layout.advert_main, null);
             }
             initView();
+            startPlayPic();
             return psetview;
       }
 
-      public void initView(){
+      public void initView() {
             Button exit = (Button) psetview.findViewById(R.id.btn_exit);
             exit.setOnClickListener(new View.OnClickListener() {
                   @Override
@@ -74,6 +75,7 @@ public class AdvertFragment extends Fragment {
                   }
             });
       }
+
       @Override
       public void onDestroyView() {
             if (psetview != null) {
@@ -93,7 +95,9 @@ public class AdvertFragment extends Fragment {
                   if (!ff.mkdirs()) {
                         Log.e("adplay", String.format("Create %s fail.", advertPath));
                   }
-            }
+            } else
+                  Toast.makeText(getActivity(), "U盘为插入", Toast.LENGTH_SHORT).show();
+
 
             //获取图片控件
             iview = (ImageView) psetview.findViewById(R.id.picsw);
