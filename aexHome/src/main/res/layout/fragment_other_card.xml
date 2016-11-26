@@ -1,34 +1,78 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.androidex.apps.home.Fragment.OtherCard"
-    android:orientation="horizontal">
+    android:background="#f8f8f8">
 
     <!-- TODO: Update blank fragment layout -->
+
+    <ImageView
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_centerVertical="true"
+        android:scaleType="fitXY"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/ic_launcher"
+        android:id="@+id/iv_image"/>
+
+    <EditText
+        android:layout_width="160dp"
+        android:layout_height="40dp"
+        android:inputType="number"
+        android:background="@drawable/edxitext_style"
+        android:hint="@string/input_money"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/iv_image"
+        android:layout_marginStart="20dp"
+        android:id="@+id/et_input" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="确定"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColor="#333"
+        android:layout_alignTop="@+id/et_input"
+        android:layout_toEndOf="@+id/et_input"
+        android:layout_marginStart="16dp"
+        android:id="@+id/tv_sure" />
+
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-        <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-           android:layout_gravity="center"
-            android:scaleType="fitXY"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/default_wallpaper"
-            android:id="@+id/iv_image"/>
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/et_input"
+        android:background="@drawable/bg_white_radius_5">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="上一步"
+            android:textSize="15sp"
+            android:textColor="#333"
+            android:gravity="center"
+            android:id="@+id/tv_before" />
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="40dp"
+            android:background="#ddd"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="退出"
+            android:textSize="15sp"
+            android:textColor="#333"
+            android:gravity="center"
+            android:id="@+id/tv_back" />
+
+
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="完成"
-            android:textColor="#000"
-            android:id="@+id/bt_finish"
-            android:layout_gravity="bottom"/>
-    </LinearLayout>
-</LinearLayout>
+
+
+
+</RelativeLayout>

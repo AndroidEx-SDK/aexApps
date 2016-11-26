@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Window;
 import android.widget.TextView;
 
@@ -35,7 +36,7 @@ public class TransactionActivity extends AndroidExActivityBase {
 
     private NextBrodcastResive nbr;
 
-    private int recyle = 10;
+    private int recyle = 20;
     final Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -49,7 +50,6 @@ public class TransactionActivity extends AndroidExActivityBase {
                 }else{
                     finish(); //进入广告界面,暂时用finish代替
                 }
-
             }
         }
     };
@@ -71,7 +71,7 @@ public class TransactionActivity extends AndroidExActivityBase {
         intentFilter.addAction(FrontBankcard.str);
         intentFilter.addAction(OtherCard.action);
         intentFilter.addAction(OtherCard.action_back);
-        intentFilter.addAction(FrontBankcard.action_fb_back);
+        intentFilter.addAction(FrontBankcard.action_fb_back);//关闭
         registerReceiver(nbr,intentFilter);
     }
 
@@ -136,17 +136,7 @@ public class TransactionActivity extends AndroidExActivityBase {
         }
         @Override
         public Fragment getItem(int position) {
-            switch (position){
-                case 0:
-                {
-                    return new FrontBankcard();
-                }
-                case 1:
-                {
-                    return new OtherCard();
-                }
-                default:return null;
-            }
+            return  mFragmentList.get(position);
         }
 
 
@@ -159,13 +149,12 @@ public class TransactionActivity extends AndroidExActivityBase {
     private  class NextBrodcastResive extends BroadcastReceiver{
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent.getAction().equals(FrontBankcard.str)){
+            if(intent.getAction().equals(FrontBankcard.str)){//下一步
                 mViewPager.setCurrentItem(1);
-            }else if(intent.getAction().equals(OtherCard.action)){
-                finish();
-            }else if(intent.getAction().equals(OtherCard.action_back)){
+            }else if(intent.getAction().equals(OtherCard.action_back)){//返回
                 mViewPager.setCurrentItem(0);
-            }else if(intent.getAction().equals(FrontBankcard.action_fb_back)){
+            }else if(intent.getAction().equals(FrontBankcard.action_fb_back)){//退出
+                Log.d(TAG,"关闭");
                 finish();
             }
         }
