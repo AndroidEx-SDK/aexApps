@@ -3,7 +3,6 @@ package com.androidex.devices;
 import android.content.Context;
 
 import com.androidex.apps.aexdeviceslib.R;
-import com.androidex.common.Base16;
 import com.androidex.logger.Log;
 
 import org.json.JSONException;
@@ -40,28 +39,14 @@ public class aexddKMY350 extends aexddPasswordKeypad {
 
     @Override
     public boolean Open() {
-        String printerPort = mParams.optString(PORT_ADDRESS);
-        if(mSerialFd > 0)
-            Close();
-        String ret = kmyOpen(printerPort);
-        try {
-            JSONObject r = new JSONObject(ret);
-            mSerialFd = r.optInt("fd",0);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return mSerialFd > 0;
+        return super.Open();
     }
 
     @Override
     public boolean Close()
     {
-        kmyClose();
-        mSerialFd = 0;
-        return true;
+        return super.Close();
     }
-
 
     /**
      * WebJavaBridge.OnJavaBridgePlugin接口的函数，当Web控件通过js调用插件时会调用此函数。
@@ -162,42 +147,123 @@ public class aexddKMY350 extends aexddPasswordKeypad {
         }
     }
 
+    /**
+     * 发送键盘命令。
+     * @param cmd   命令内容，不包含头、尾和BCC
+     */
+    public void pkSendCmd(String cmd)
+    {
+        kmySendCmd(mSerialFd,cmd,cmd.length());
+    }
+
+    /**
+     * 发送Base16格式命令。
+     * @param cmd   Base16命令内容，不包含头、尾和BCC
+     */
+    public void pkSendHexCmd(String cmd)
+    {
+        kmySendHexCmd(mSerialFd,cmd,cmd.length());
+    }
+
+    /**
+     * 程序自检复位:02h+01h+31h+<BCC>+[03h]
+     * <p>
+     *     键盘进行自检完毕，不破坏密钥区，如果主密钥有效(将 16 个主密钥用 BCC 校验)，将蜂鸣器响一声;无效蜂鸣器响三声，
+     *     自检状态在 ST 中。返回信息后，复位所有变量，并关闭键盘及加密状态。
+     * </p>
+     * <p>
+     *     命令返回:02h+01h+<ST>+<BCC>+[03h]。ST 可能是 04h、15h、E0h、FXh。
+     * </p>
+     * @return  返回成功或失败
+     */
     @Override
     public boolean pkReset()
     {
         boolean ret = false;
         String rhex = "";
 
-        WriteDataHex("0131");
-        byte[] r = ReciveData(255,3000*delayUint);
-        rhex = new String(r);
-        Log.d(TAG,String.format("pkReset:%s",rhex));
-        ret = rhex.contains("303500");
-
-        //kmyReset(3000*delayUint);
+        pkSendHexCmd("0131");
+        rhex = ReciveDataHex(255,3000*delayUint);
+        ret = !rhex.isEmpty();
         return ret;
     }
 
+    /**
+     * 取产品版本号等参数
+     * <p>
+     *     <p>命令:02h+01h+30h+<BCC>+ [03h]</p>
+     *     <p>返回:02h+Ln+<ST>+<DATA>+<BCC>+[03h]。ST可能是 04h、15h、E0h、F0h。ST=F0h表示没装E2ROM芯片。</p>
+     *     <p>描述:DATA=Ver+SN+Rechang 其中 Ver 表示 16 字节(ASCII 码)版本号，SN 前 4 字节(BCD)表示生产序 号，
+     *     后 4 个字节是全为“00”(如果有密码算法芯片，则是其编号)，Rechang 表示 2 字节充电时间(需 硬件支持)。
+     *     返回信息后关闭加密状态。</p>
+     * </p>
+     * @return
+     */
     @Override
     public String pkGetVersion()
     {
         String ret = "";
         String rhex = "";
 
-        WriteDataHex("0130");
-        byte[] r = ReciveData(255,3000*delayUint);
-        rhex = new String(r);
-        try {
-            r = Base16.decode(rhex.substring(5,5+32));
-            ret = new String(r);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        ret = kmyGetVersion(3000*delayUint);
+        pkSendHexCmd("0130");
+        rhex = ReciveDataHex(255,3000*delayUint);
+        ret = rhex;
+        return ret;
+    }
+
+    /**
+     *
+     * @param mode
+     */
+    public void pkSetEncryptMode(int mode)
+    {
+
+    }
+
+    public void pkSetEncryptMac(int mode)
+    {
+
+    }
+
+    public void pkDownloadWorkKey(int mKeyNo,int wKeyNo,String wKeyAsc)
+    {
+
+    }
+
+    public void pkActiveWorkKey(int mKeyNo,int wKeyNo)
+    {
+
+    }
+
+    /**
+     * <p>命令:02h+<Ln>+36h+<字符串>+<BCC>+[03h]</p>
+     * <p>描述:将(Ln-1=)8 倍字节明文字符串用当前工作密钥(DES/3DES)以 ECB 方式进行加密运算 C=eK(P)，</p>
+     * <p>返回密文数据。返回信息后关闭加密状态。要求 Ln-1 表示小于等于 248 字节。</p>
+     * <p>返回: 02h+<Ln>+<ST>+<密文字串>+<BCC>+[03h]。 ST 可能是 04h、15h、A4h、B5h、C4h、D5h、E0h。</p>
+     * @param data
+     * @return
+     */
+    public String pkEncrypt(String data)
+    {
+        String ret = "";
 
         return ret;
     }
 
+    /**
+     * <p>命令:02h+<Ln>+37h+<密文字串>+<BCC>+[03h]</p>
+     * <p>描述:将(Ln-1=)8 倍字节密文字符串用当前工作密钥(DES/3DES)以 ECB 方式进行解密运算 P=dK(C)，</p>
+     * <p>返回明文数据。返回信息后关闭加密状态。要求 Ln-1 表示小于等于 248 字节。</p>
+     * <p>返回: 02h+<Ln>+<ST>+<明文字串>+<BCC>+[03h]。ST 可能是 04h、15h、A4h、B5h、C4h、D5h、E0h。</p>
+     * @param data
+     * @return
+     */
+    public String pkDecrypt(String data)
+    {
+        String ret = "";
+
+        return ret;
+    }
     /**
      * <ul>
      *     <strong>加密全套步骤</strong>
@@ -206,58 +272,18 @@ public class aexddKMY350 extends aexddPasswordKeypad {
      *     <li>Set encrypt mac:设置Mac算法模式，01 MAC采用ASNI X9.9算法 *   02 MAC采用SAM卡算法  03 MAC采用银联的算法</li>
      *     <li>Download work key:下载工作秘钥</li>
      *     <li>Active work key:激活工作秘钥</li>
-     *     <li>Start read key:读取并响应按键信息，按取消(0x1B)或者确认(0x0D)退出</li>
+     *     <li>Pin block:使用提供的银行卡号进行PINBLOCK运算</li>
+     *     <li>Start read key:读取并响应按键信息，按取消(0x1B)或者确认(0x0D)或者超时退出</li>
+     *     <li>Read pin:读取密码密文</li>
      * </ul>
-     int ire=kmy_reset(kmy,env,obj,timeout);
-     ire=kmy_set_encrypt_mode(kmy,env,obj,0,timeout);
-     // __android_log_print(ANDROID_LOG_INFO, "kmy","Set encrypt mode %s",ire?"TRUE":"FALSE");
-     ire=kmy_set_encrypt_mac(kmy,env,obj,1,timeout);
-     // __android_log_print(ANDROID_LOG_INFO, "kmy","Set mac encrypt mode %s",ire?"TRUE":"FALSE");
+     * */
+    public String pkStartAllStep()
+    {
+        String ret = "";
+        //
+        return ret;
+    }
 
-     int r = kmy_dl_work_key(kmy,env,obj,mKeyNo,wKeyNo, chwKey,timeout);
-     if(r){
-     if(kmy_active_work_key(kmy,env,obj,mKeyNo,wKeyNo,timeout)){
-     if(kmy_pin_block(kmy,env,obj,chcardNo,timeout)){
-     kmy_event(kmy,env,obj,KE_START_PIN,"{success:true,status:\"%d\",msg:\"%s\"}",1,"请提示用户输入密码!");
-     if(kmy_start_read_key(kmy,env,obj,chcb,timeout)){
-     usleep(100000);
-     return kmy_read_pin(kmy,env,obj,NULL,passHex,timeout);
-     }else{
-     __android_log_print(ANDROID_LOG_INFO, "kmy","kmy_start_read_key fail");
-     }
-     return FALSE;
-     }else{
-     return FALSE;
-     }
-     }else{
-     return FALSE;
-     }
-     }else{
-     return FALSE;
-     }
-     */
-    // jni相关函数
-    public  native String  kmyOpen(String arg);//传入printerPort
-    public  native void kmyClose();
-    public  native int kmyReset(int timeout);
-    public  native int kmyResetWithPpin(int timeout);
-    public  native String kmyGetSn(int timeout);
-    public  native int kmySetSn(String sn,int timeout);
-    public  native String kmyGetVersion(int timeout);
-    public  native int kmySetEncryptMode(int ewm,int timeout);
-    public  native int kmyDlMasterKey(int MKeyNo, String MKeyAsc,int timeout);
-    public  native int kmyDlWorkKey(int MKeyNo, int WKeyNo, String WKeyAsc,int timeout);
-    public  native int kmyActiveWorkKey(int MKeyNo, int WKeyNo,int timeout);
-    public  native int kmyOpenKeypad(int CTL,int timeout);
-    public  native int kmyDlCardNo(String pchCardNo,int timeout);
-    public  native int kmyStartPin(short PinLen, short DispMode, short AddMode, short PromMode,short nTimeOut,int timeout);
-    public  native int kmyPinBlock(String pchCardNo,int timeout);
-    public  native String kmyReadPin(int timeout);
-    public  native String kmyEncrypt(String DataInput,int timeout);
-    public  native String kmyDecrypt(String DataInput,int timeout);
-    public  native String kmyCalcMacData(String DataInput,int timeout);
-    public  native void kmyStartReadKey(String callback,int timeout);
-    public  native String kmyStartAllStep(int mKeyNo,int wKeyNo,String wkey,String CardNo,String callback,String port,int timeout);
     public  native void kmySendCmd(int fd,String cmd,int size);
     public  native void kmySendHexCmd(int fd,String hexcmd,int size);
 

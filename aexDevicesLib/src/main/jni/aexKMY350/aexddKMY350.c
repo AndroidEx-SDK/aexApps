@@ -403,6 +403,55 @@ int kmy_send_hexcmd(int fd,char *hexcmd,int size)
 	return ret;
 }
 
+
+int kmy_read_key_loop(int fd,char *cb,int timeout)
+{
+    char buf[512],str[512];
+    int times = 6,r = 0,irecvlen=0;
+
+
+    if(timeout == 0)
+        timeout = 5000;
+    if(!kmy) return FALSE;
+//	if(in_read_key){
+//		// __android_log_print(ANDROID_LOG_INFO, "kmy","already read key.");
+//		return 0;
+//	}
+    in_read_key = TRUE;
+    tcflush(kmy->fd, TCIOFLUSH);
+    do{
+        memset(buf,0,sizeof(buf));
+        memset(str,0,sizeof(str));
+        if(irecvlen==kmy->max_pin_len) return TRUE;
+        r = com_recive(kmy->fd,buf,sizeof(buf),timeout);
+        __android_log_print(ANDROID_LOG_INFO, "kmy","r=%d,times=%d，buf=0x%02X,pinlen=%d",r,times-1,buf[0],kmy->max_pin_len);
+        if(buf[0] == 0x2A || (buf[0] > '0' && buf[0] < '9')){
+            irecvlen++;
+            sprintf(str,"%s('%c');",cb,buf[0]);
+        }else{
+            sprintf(str,"%s('0x%02X');",cb,buf[0]);
+        }
+
+        if(buf[0] == 0x1B || buf[0] == 0x0D || buf[0] == 0x00){
+            break;
+        }else if(buf[0] == 0x08){
+            irecvlen--;
+            kmy_event(kmy,env,obj,KE_PRESSED,str);
+            times++;	//按了删除键
+        }else{
+            kmy_event(kmy,env,obj,KE_PRESSED,str);
+        }
+        times--;
+    }while(r>0 && times > 0 && buf[0] != 0x00);
+    // __android_log_print(ANDROID_LOG_INFO, "kmy","end read key");
+    if(buf[0] != 0x1B && buf[0] != 0x0D && buf[0] != 0x00){
+        sprintf(str,"%s('0x%02X');",cb,0x0D);
+    }
+    in_read_key = FALSE;
+    kmy_event(kmy,env,obj,KE_PRESSED,str);
+    return buf[0] != 0x0D;
+}
+
 /**
  * 打开密码键盘，返回密码键盘的句柄
  * @param arg 串口参数字符串，字符串格式为:	com=/dev/ttyUSB0(串口设备字符串),s=9600(波特率),p=N(奇偶校验),b=1(停止位),d=8(数据位数)
