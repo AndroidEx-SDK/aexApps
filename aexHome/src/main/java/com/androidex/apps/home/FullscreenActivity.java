@@ -80,7 +80,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
       @Override
       protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-
             setContentView(R.layout.aexhome_main);
             hwservice.EnterFullScreen();
             getWindow().getDecorView().setBackgroundResource(R.drawable.default_wallpaper);
@@ -150,8 +149,8 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
 
       @Override
       public void initActionBar(int resId) {
-            super.initActionBar(resId);
             Toolbar toolbar = (Toolbar) findViewById(resId);
+            super.initActionBar(resId);
             if (toolbar != null) {
                   toolbar.setLogo(com.androidex.aexapplibs.R.drawable.androidex);      //设置logo图片
                   toolbar.setNavigationIcon(com.androidex.aexapplibs.R.drawable.back);     //设置导航按钮
@@ -212,7 +211,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             // automatically handle clicks on the Home/Up button, so long
             // as you specify a parent activity in AndroidManifest.xml.
             switch (item.getItemId()) {
-                  case R.id.action_settings: {
+                  case R.id.action_settings:
                         ViewGroup v = (ViewGroup) mContentView.getChildAt(mContentView.getCurrentItem());
                         Intent mIntent = new Intent();
                         mIntent.setAction(Intent.ACTION_VIEW);
@@ -220,8 +219,8 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
                         mIntent.putExtra("back", true);
                         sendBroadcast(new Intent("com.android.action.display_navigationbar"));
                         startActivityForResult(mIntent, DLG_NETINFO);
-                  }
-                  return true;
+                        return true;
+
                   default:
                         return super.onOptionsItemSelected(item);
             }
@@ -242,15 +241,13 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             //mContentView表示在某个布局上点击才有效
             //if (times == 4 && v.equals(mContentView)) {     //连续4次点击执行事件
             //ToggleControlBar();
-            Snackbar.make(v, "FAB", Snackbar.LENGTH_LONG)
-                      .setAction("cancel", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                  //这里的单击事件代表点击消除Action后的响应事件
+            Snackbar.make(v, "FAB", Snackbar.LENGTH_LONG).setAction("cancel", new View.OnClickListener() {
+                  @Override
+                  public void onClick(View v) {
+                        //这里的单击事件代表点击消除Action后的响应事件
 
-                            }
-                      })
-                      .show();
+                  }
+            }).show();
             if (times == 1) {
                   Intent intent = new Intent(FullscreenActivity.ActionControlBar);
                   intent.putExtra("flag", "toggle");
@@ -437,14 +434,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
                         if (this instanceof NfcAdapter.ReaderCallback) {
                               nfc.enableReaderMode(this, this, aexddAndroidNfcReader.READER_FLAGS, null);
 
-                              Snackbar.make(mContentView, "FAB", Snackbar.LENGTH_LONG).setAction("cancel", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                          //这里的单击事件代表点击消除Action后的响应事件
-
-                                    }
-                              })
-                                        .show();
                         }
                   }
             }

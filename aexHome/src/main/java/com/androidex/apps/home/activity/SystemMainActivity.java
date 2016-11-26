@@ -1,6 +1,7 @@
 package com.androidex.apps.home.activity;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -85,6 +86,7 @@ public class SystemMainActivity extends AndroidExActivityBase {
             ImageView imageView = (ImageView) view.findViewById(R.id.iv_tabitem);
             //textView.setText(getResources().getStringArray(R.array.indexpage_text_tabs)[index]);
             textView.setText(tabNames.get(index));
+            textView.setTextColor(Color.WHITE);
             imageView.setImageResource(tabIcs[index]);
             return view;
       }
