@@ -21,7 +21,7 @@
             android:background="?attr/colorPrimary"
             android:subtitle="专注于工控解决方案"
             android:title="@string/app_name"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            app:popupTheme="@style/ToolbarPopupTheme">
 
         </android.support.v7.widget.Toolbar>
 
