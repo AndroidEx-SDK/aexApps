@@ -16,6 +16,8 @@ import com.androidex.logger.MessageOnlyLogFilter;
  */
 
 public class aexLogFragment extends LogFragment {
+    public static final String TAG = "LOG";
+
     public aexLogFragment() {
     }
 
@@ -43,6 +45,7 @@ public class aexLogFragment extends LogFragment {
         LogWrapper logWrapper = (LogWrapper) Log.getLogNode();
         MessageOnlyLogFilter msgFilter = (MessageOnlyLogFilter)logWrapper.getNext();
         msgFilter.setNext(this.getLogView());
+        Log.i(TAG,"就绪");
     }
 
 }

@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager.LayoutParams;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -76,13 +75,14 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
       }
 
       public void initView() {
-            Button exit = (Button) psetview.findViewById(R.id.btn_exit);
-            exit.setOnClickListener(new View.OnClickListener() {
+            //Button exit = (Button) psetview.findViewById(R.id.btn_exit);
+            /*exit.setOnClickListener(new View.OnClickListener() {
                   @Override
                   public void onClick(View v) {
                         System.exit(0);
                   }
             });
+            */
       }
 
       @Override
