@@ -101,9 +101,6 @@ public class TransactionActivity extends AndroidExActivityBase {
            // setSupportActionBar(toolBar);
             toolBar.setLogo(R.drawable.ic_launcher);
         }
-
-
-
     }
 
     /**

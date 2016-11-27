@@ -35,7 +35,7 @@ public class SystemMainActivity extends AndroidExActivityBase {
       private static final String TAB_NAME_2 = "系统设置";
       private static final String TAB_NAME_3 = "网络设置";
       private static final String TAB_NAME_4 = "启动设置";
-      private static final Integer[] tabIcs = {R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher};
+      private static final Integer[] tabIcs = {R.mipmap.emoji_11, R.mipmap.systemset, R.mipmap.wifiset, R.mipmap.sdartset};
       private List<String> tabNames;
       private static List<Fragment> fragments;
 

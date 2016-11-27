@@ -5,10 +5,11 @@
 
     <ImageView
         android:id="@+id/picsw"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.41"
-        android:src="@drawable/androidex"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:scaleType="centerInside"
+        />
 
     <!--为了测试方便增加的退出按钮-->
     <Button
@@ -16,6 +17,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="退出"/>
-
 
 </RelativeLayout>
