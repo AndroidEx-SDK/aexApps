@@ -1,6 +1,7 @@
 package com.androidex.apps.home;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,17 @@ public class aexLogFragment extends LogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater,container,savedInstanceState);
+    }
+
+    @Override
+    public View inflateViews() {
+        return super.inflateViews();
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initializeLogging();
     }
 
     /** Create a chain of targets that will receive log data
