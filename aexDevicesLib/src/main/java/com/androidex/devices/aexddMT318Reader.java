@@ -38,6 +38,16 @@ public class aexddMT318Reader extends aexddPoscReader {
         return mContext.getString(R.string.DEVICE_READER_MT318);
     }
 
+    /**
+     * 接受读卡器返回的事件
+     * @param _code
+     * @param _msg
+     */
+    @Override
+    public void onBackCallEvent(int _code, String _msg) {
+        super.onBackCallEvent(_code, _msg);
+    }
+
     @Override
     public boolean Open() {
         String printerPort = mParams.optString(PORT_ADDRESS);
@@ -252,6 +262,7 @@ public class aexddMT318Reader extends aexddPoscReader {
     // Apdu 指令
     public  native int      native_mt318_CPU_Apdu(byte[] data, int len,int timeout);
 
+    public  native int mt318ReadCardLoop(int fd,int timeout);
     public  native void mt318SendCmd(int fd,String cmd,int size);
     public  native void mt318SendHexCmd(int fd,String hexcmd);
 

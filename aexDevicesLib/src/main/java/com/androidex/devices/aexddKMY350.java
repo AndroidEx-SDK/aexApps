@@ -3,6 +3,7 @@ package com.androidex.devices;
 import android.content.Context;
 
 import com.androidex.apps.aexdeviceslib.R;
+import com.androidex.common.SoundPoolUtil;
 import com.androidex.logger.Log;
 
 import org.json.JSONException;
@@ -35,6 +36,37 @@ public class aexddKMY350 extends aexddPasswordKeypad {
     @Override
     public String getDeviceName() {
         return mContext.getString(R.string.DEVICE_PK_KMY350);
+    }
+
+    /**
+     * 接收返按键返回信息的事件或者JNI的其他事件信息。
+     * <ul>
+     *     <li>_code == 0x10100   表示按键信息，_msg表示按键的ASCII码</li>
+     * </ul>
+     * @param _code     事件代码
+     * @param _msg      事件消息
+     */
+    @Override
+    public void onBackCallEvent(int _code, String _msg) {
+        //KE_PRESSED = 0x10100
+        switch (_code){
+            case 0x10100: {
+                //按键信息
+                try {
+                    JSONObject msgArgs = new JSONObject(_msg);
+                    int key = Integer.parseInt(msgArgs.optString("key"),16);
+
+                    if(key >= 0 && key <= 9) {
+                        SoundPoolUtil.getSoundPoolUtil().loadVoice(mContext, key);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+            default:
+                break;
+        }
     }
 
     @Override
@@ -85,7 +117,7 @@ public class aexddKMY350 extends aexddPasswordKeypad {
     }
 
     /**
-     *
+     * 读取键盘按键信息，按键通过onBackCallEvent返回。
      * @return
      */
     @Override
@@ -93,7 +125,7 @@ public class aexddKMY350 extends aexddPasswordKeypad {
         Runnable run=new Runnable() {
             public void run() {
                 //在线程中执行jni函数
-                //OnBackCall.ONBACKCALL_RECIVEDATA；
+                int r = kmyReadKeyLoop(mSerialFd,10000*delayUint);
             }
         };
         pthread = new Thread(run);
@@ -212,24 +244,69 @@ public class aexddKMY350 extends aexddPasswordKeypad {
     }
 
     /**
-     *
+     * 设置加密模式
      * @param mode
      */
     public void pkSetEncryptMode(int mode)
     {
+        String r = "";
+        switch (mode){
+            case 0:
+            {
+                pkSendHexCmd("03460020");
+                r = ReciveDataHex(255,3000*delayUint);
+                pkSendHexCmd("03460120");
+                r = ReciveDataHex(255,3000*delayUint);
+            }
+                break;
+            case 1:
+            {
+                pkSendHexCmd("03460030");
+                r = ReciveDataHex(255,3000*delayUint);
+                pkSendHexCmd("03460130");
+                r = ReciveDataHex(255,3000*delayUint);
+            }
+                break;
+        }
 
     }
 
+    /**
+     * 数据 MAC 运算 (ANSI X9.9)
+     * <p>命令:02h+<Ln>+41h+<字符串>+<BCC>+[03h]</p>
+     * <p>描述:将 Ln(5~247)个字节明文字符串，用当前的工作密钥(DES/3DES)以 CBC 方式进行加密运算 C1=eK(P1)及 Ci=eK(Pi⊕C i-1)i=2,3, ...,n。返回 8 字节 MAC 字串数据。返回 MAC 信息后关闭加密状态。</p>
+     * <p>返回:02h+09h+<ST>+<MAC 字串>+<BCC>+[03h]。 ST 可能是 04h、15h、A4h、B5h、C4h、D5h、E0h。 </p>
+     * <p>注意:MAC 是按 8 字节进行分组，每组需要 25/75mS 等待 DES/3DES 运算，根据此确立等待返回时间。</p>
+     * @param mode  设置Mac加密模式
+     */
     public void pkSetEncryptMac(int mode)
     {
 
     }
 
+    /**
+     * 下载工作密钥
+     *  <p>命令: 02h+0Bh+33h+<M>+<N>+<WP>+<BCC>+[03h] 或 02h+13h+33h+<M>+<N>+<WP>+<BCC>+[03h] 或 02h+1Bh+33h+<M>+<N>+<WP>+<BCC>+[03h]</p>
+     *  <p>描述:工作密钥密文 WP 均为 8/16/24 字节(对应 DES/3DES)。用主密钥号为 M 的主密钥(DES/3DES) ，以 ECB 方式解密得到工作密钥 WK，保存到指定的工作密钥号 N(00~03h)中。如果命令中工作密钥号 N =40h~7Fh，保存到对应的工作密钥号 N(00~3Fh)中，此时以验证方式返回信息。返回信息后关闭加 密状态。</p>
+     *  <p>返回:02h+01h+<ST>+<BCC>+[03h]。ST 可能是 04h、15h、A4h、B5h、C4h、D5h、E0h。 注:验证方式返回 02h+05h+ST+<DATA>+<BCC>+[03h]。其中<DATA>4 个字节返回码作验证用。</p>
+     * @param mKeyNo    主秘钥序号
+     * @param wKeyNo    工作秘钥序号
+     * @param wKeyAsc   工作秘钥
+     */
     public void pkDownloadWorkKey(int mKeyNo,int wKeyNo,String wKeyAsc)
     {
 
     }
 
+    /**
+     * 激活工作密钥
+     * <p>命令:02h+03h+43h+<M>+<N>+<BCC>+[03h]</p>
+     * <p>描述:如果在 B.16 命令中，指定主密钥作为当前工作密钥的方案，激活的是 M(00~0Fh)号的主密钥，与工作密钥无关，但会验证主密钥有效性。如果在 B.16 命令中，指定工作密钥作为当前工作密钥的方 案，将主密钥号为 M 所属工作密钥号为 N 激活为当前工作密钥，也会验证主密钥有效性。但是这种 情况下，如果工作密钥号 N=40~7Fh，与主密钥 M 无关，不验证主密钥有效性。</p>
+     * <p>      总之一旦激活了当前工作密钥，以后所有密码运算用都是指定该当前工作密钥。返回信息后不关闭加密状态。</p>
+     * <p>返回: 02h+01h+<ST>+<BCC>+[03h]。ST 可能是 04h、15h、A4h、B5h、C4h、D5h、E0h。</p>
+     * @param mKeyNo    主秘钥序号
+     * @param wKeyNo    工作秘钥序号
+     */
     public void pkActiveWorkKey(int mKeyNo,int wKeyNo)
     {
 
@@ -284,6 +361,7 @@ public class aexddKMY350 extends aexddPasswordKeypad {
         return ret;
     }
 
+    public  native int  kmyReadKeyLoop(int fd,int timeout);
     public  native void kmySendCmd(int fd,String cmd,int size);
     public  native void kmySendHexCmd(int fd,String hexcmd,int size);
 
