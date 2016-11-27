@@ -73,7 +73,9 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
                               Message message = handler.obtainMessage(1);
                               handler.sendMessageDelayed(message, 1000);
                         } else {
-                              finish(); //进入广告界面,暂时用finish代替
+                              if (AUTO_HIDE) {
+                                    delayedHide(1000);
+                              }
                         }
                   }
             }
