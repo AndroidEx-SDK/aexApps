@@ -2,7 +2,6 @@ package com.androidex.devices;
 
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.androidex.aexapplibs.appLibsConfig;
 
@@ -42,7 +41,7 @@ public class appDevicesConfig extends appLibsConfig {
                 }
             }else {
                 
-                Toast.makeText(context, "打印机未成功链接", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "打印机未成功链接", Toast.LENGTH_SHORT).show();
             }
             mConfigBankReader = propertys.optJSONObject(BANK_READER);
             if (mConfigBankReader!=null){
@@ -53,7 +52,9 @@ public class appDevicesConfig extends appLibsConfig {
                        e.printStackTrace();
                    }
                }
-           }else Toast.makeText(context, "银行卡设备未成功链接", Toast.LENGTH_SHORT).show();
+           }else {
+                //Toast.makeText(context, "银行卡设备未成功链接", Toast.LENGTH_SHORT).show();
+            }
 
             mConfigCasReader = propertys.optJSONObject(CAS_READER);
             if (mConfigCasReader!=null){
@@ -64,7 +65,9 @@ public class appDevicesConfig extends appLibsConfig {
                         e.printStackTrace();
                     }
                 }
-            }else Toast.makeText(context, "燃气卡设备未连接", Toast.LENGTH_SHORT).show();
+            }else {
+                //Toast.makeText(context, "燃气卡设备未连接", Toast.LENGTH_SHORT).show();
+            }
 
             mConfigPasswordKeypad = propertys.optJSONObject(PASSWORD_KEYPAD);
             if (mConfigPasswordKeypad!=null){
@@ -75,7 +78,9 @@ public class appDevicesConfig extends appLibsConfig {
                         e.printStackTrace();
                     }
                 }
-            }else Toast.makeText(context, "密码键盘未成功链接", Toast.LENGTH_SHORT).show();
+            }else {
+                //Toast.makeText(context, "密码键盘未成功链接", Toast.LENGTH_SHORT).show();
+            }
 
         }else{
             //读取配置失败

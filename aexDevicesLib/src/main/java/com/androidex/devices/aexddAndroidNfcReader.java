@@ -12,6 +12,7 @@ import com.androidex.devices.tech.FelicaReader;
 import com.androidex.devices.tech.pboc.StandardPboc;
 import com.androidex.logger.Log;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -108,7 +109,12 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
         final IsoDep isodep = IsoDep.get(tag);
         if (isodep != null) {
             try {
-                StandardPboc.readCard(isodep);
+                JSONObject r = StandardPboc.readCard(isodep);
+                try {
+                    Log.d(TAG,r.toString(4));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
@@ -121,7 +127,12 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
         final NfcF nfcf = NfcF.get(tag);
         if (nfcf != null) {
             try {
-                FelicaReader.readCard(nfcf);
+                JSONObject r = FelicaReader.readCard(nfcf);
+                try {
+                    Log.d(TAG,r.toString(4));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
