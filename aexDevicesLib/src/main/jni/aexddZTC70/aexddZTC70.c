@@ -1,5 +1,5 @@
 #include <jni.h>
-#include "com_androidex_devices_aexddKMY350.h"
+#include "com_androidex_devices_aexddZTC70.h"
 #include <memory.h>
 #include <pthread.h>
 
@@ -16,7 +16,7 @@
 #include <dirent.h>
 #include "../include/Des.h"
 #include "../include/utils.h"
-#include "aexddKMY350.h"
+#include "aexddZTC70.h"
 
 #include <android/log.h>
 
@@ -24,20 +24,20 @@
  * 相当于java中的具体功能的实现类（认为）
  */
 
-static ON_KMY_EVENT on_kmy_event=NULL;
+static ON_ZTC_EVENT on_ztc_event=NULL;
 
 /**
  * 设置回调函数，在JNI的代码里会调用它来设置处理事件的回调函数
  */
-void kmy_set_event(ON_KMY_EVENT oke)
+void ztc_set_event(ON_ZTC_EVENT oke)
 {
-	on_kmy_event = oke;
+	on_ztc_event = oke;
 }
 
 /**
  * 密码键盘事件的入口函数，静态函数只能在本文件中调用
  */
-static int kmy_event(HKMY env,HKMY obj,int code,char *pszFormat,...)
+static int ztc_event(HZTC env,HZTC obj,int code,char *pszFormat,...)
 {
 	char pszDest[2048];
 	va_list args;
@@ -47,8 +47,8 @@ static int kmy_event(HKMY env,HKMY obj,int code,char *pszFormat,...)
 	va_end(args);
 
 	//只有设置了事件回调函数，此函数才会调用事件，否则什么也不做
-	if(on_kmy_event){
-		on_kmy_event(env,obj,code,pszDest);
+	if(on_ztc_event){
+		on_ztc_event(env,obj,code,pszDest);
 	}
 	return 0;
 }
@@ -200,12 +200,12 @@ static int gTriDes(char *DataInput, char *key, char *DataOutput) {
  * @param end 结束字符串
  * @param timeout 每次接收的超时时间
  */
-static int kmy_recv_by_end(int fd,char *end,int timeout)
+static int ztc_recv_by_end(int fd,char *end,int timeout)
 {
 	char buf[512];
 	int len=0,times=0;
 	//从键盘获得结果
-	// __android_log_print(ANDROID_LOG_INFO, "kmy", "kmy_recv_by_end(%d,%s,%d)",fd,end,timeout);
+	// __android_log_print(ANDROID_LOG_INFO, "kmy", "ztc_recv_by_end(%d,%s,%d)",fd,end,timeout);
 	while(times<1){
 		memset(buf,0,sizeof(buf));
 		len = com_recive(fd,buf,sizeof(buf),timeout);
@@ -221,7 +221,7 @@ static int kmy_recv_by_end(int fd,char *end,int timeout)
 	return 0;
 }
 
-static char *kmy_get_st_msg(unsigned  st){
+static char *ztc_get_st_msg(unsigned  st){
 	switch(st){
 	case 0x15:
 		return "命令参数错";
@@ -265,7 +265,7 @@ static char *kmy_get_st_msg(unsigned  st){
 	}
 }
 
-static unsigned int kmy_readlen(char * buf){
+static unsigned int ztc_readlen(char * buf){
 	char hex[3]="00";
 	unsigned int len=0,r=0;
 
@@ -281,7 +281,7 @@ static unsigned int kmy_readlen(char * buf){
 	return r;
 }
 
-static int kmy_check_return(char *buf){
+static int ztc_check_return(char *buf){
 	char st[3]="00";
 	unsigned int lst=0;
 
@@ -301,7 +301,7 @@ static int kmy_check_return(char *buf){
  * @param fd 串口句柄
  * @param timeout 每次接收的超时时间
  */
-static int kmy_recv_by_len(int fd,char *buf,int bufsize,int timeout)
+static int ztc_recv_by_len(int fd,char *buf,int bufsize,int timeout)
 {
 	int len=0;
 	int mlen = 0;
@@ -324,14 +324,14 @@ static int kmy_recv_by_len(int fd,char *buf,int bufsize,int timeout)
 		char hex[3]="00";
 		unsigned int lhex=0,r=0;
 
-		if((r = kmy_check_return(buf))<=0){
+		if((r = ztc_check_return(buf))<=0){
 			return r;
 		}
 		memset(hex,0,sizeof(hex));
 		sprintf(hex,"%c%c",buf[1],buf[2]);
 		sscanf(hex,"%x",&lhex);
 		mlen = lhex*2+5;
-		//__android_log_print(ANDROID_LOG_INFO, "kmy", "kmy_recv_by_len：len=%d,lhex=%d,mlen=%d,buf=\\0x%02X%s,hex=%s",len,lhex,mlen,buf[0],buf+1,hex);
+		//__android_log_print(ANDROID_LOG_INFO, "kmy", "ztc_recv_by_len：len=%d,lhex=%d,mlen=%d,buf=\\0x%02X%s,hex=%s",len,lhex,mlen,buf[0],buf+1,hex);
 		if(lhex > 512-5){
 			// __android_log_print(ANDROID_LOG_INFO, "kmy","kmy recive len error : %d",lhex);
 			return -2;	//长度超出范围，说明格式有问题
@@ -350,7 +350,7 @@ static int kmy_recv_by_len(int fd,char *buf,int bufsize,int timeout)
 			}
 		}
 		tcflush(fd,TCIOFLUSH);	//清除缓冲区
-		__android_log_print(ANDROID_LOG_INFO, "kmy", "kmy_recv_by_len：mlen=%d,buf=(%d)\\0x%02X%s", mlen,strlen(buf),buf[0],buf+1);
+		__android_log_print(ANDROID_LOG_INFO, "kmy", "ztc_recv_by_len：mlen=%d,buf=(%d)\\0x%02X%s", mlen,strlen(buf),buf[0],buf+1);
 		buf[mlen] = '\0';	//删除BCC以后的数据
 	}else{
 		return -2;	//第一次接收的数据有问题，没有发现有效的长度
@@ -363,7 +363,7 @@ static int kmy_recv_by_len(int fd,char *buf,int bufsize,int timeout)
  * @param fd 串口句柄
  * @param cmd 命令字符串
  */
-int kmy_send_cmd(HKMY env,HKMY obj,int fd,char *cmd,int size)
+int ztc_send_cmd(HZTC env,HZTC obj,int fd,char *cmd,int size)
 {
 	char chSendCmd[256];
 	unsigned int nLen, ret;
@@ -383,7 +383,7 @@ int kmy_send_cmd(HKMY env,HKMY obj,int fd,char *cmd,int size)
 	return ret;
 }
 
-int kmy_send_hexcmd(HKMY env,HKMY obj,int fd,char *hexcmd,int size)
+int ztc_send_hexcmd(HZTC env,HZTC obj,int fd,char *hexcmd,int size)
 {
 	char chSendCmd[256];
 	int nLen, ret;
@@ -397,7 +397,7 @@ int kmy_send_hexcmd(HKMY env,HKMY obj,int fd,char *hexcmd,int size)
 	return ret;
 }
 
-int kmy_read_key_loop(HKMY env,HKMY obj,int fd,int timeout)
+int ztc_read_key_loop(HZTC env,HZTC obj,int fd,int timeout)
 {
     char buf[512],str[512];
     int times = 6,r = 0,irecvlen=0;
@@ -418,14 +418,14 @@ int kmy_read_key_loop(HKMY env,HKMY obj,int fd,int timeout)
         }
 
         if(buf[0] == 0x1B || buf[0] == 0x0D || buf[0] == 0x00){
-            kmy_event(env,obj,KE_PRESSED,str);
+            ztc_event(env,obj,KE_PRESSED,str);
             break;
         }else if(buf[0] == 0x08){
             irecvlen--;
-            kmy_event(env,obj,KE_PRESSED,str);
+            ztc_event(env,obj,KE_PRESSED,str);
             times++;	//按了删除键
         }else{
-            kmy_event(env,obj,KE_PRESSED,str);
+            ztc_event(env,obj,KE_PRESSED,str);
         }
         times--;
     }while(r>0 && times > 0 && buf[0] != 0x00);

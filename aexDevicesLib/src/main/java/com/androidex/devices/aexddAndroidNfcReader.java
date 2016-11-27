@@ -5,15 +5,17 @@ import android.content.Context;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
+import android.nfc.tech.NfcF;
 import android.os.Build;
 
+import com.androidex.devices.tech.FelicaReader;
+import com.androidex.devices.tech.pboc.StandardPboc;
 import com.androidex.logger.Log;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.util.Arrays;
 
 /**
  * Created by yangjun on 2016/11/6.
@@ -72,6 +74,7 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
         //
         // In order to communicate with a device using HCE, the discovered tag should be processed
         // using the IsoDep class.
+        /*
         IsoDep isoDep = IsoDep.get(tag);
         if (isoDep != null) {
             try {
@@ -99,6 +102,28 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
                 }
             } catch (IOException e) {
                 Log.e(TAG, "与卡通讯发生错误: " + e.toString());
+            }
+        }
+        */
+        final IsoDep isodep = IsoDep.get(tag);
+        if (isodep != null) {
+            try {
+                StandardPboc.readCard(isodep);
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        final NfcF nfcf = NfcF.get(tag);
+        if (nfcf != null) {
+            try {
+                FelicaReader.readCard(nfcf);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }

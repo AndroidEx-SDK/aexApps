@@ -47,6 +47,7 @@ public class appDevicesManager extends appLibsDevices {
         super(ctx);
         mConfig = new appDevicesConfig(ctx);
         mHwservice = new appDevicesService(ctx);
+        mNfcReader = new aexddAndroidNfcReader(ctx);
 
         mPrinter = new aexddB58Printer(ctx,mConfig.mConfigPrinter);
         mBankCardReader = new aexddMT318Reader(ctx,mConfig.mConfigBankReader);
@@ -54,9 +55,6 @@ public class appDevicesManager extends appLibsDevices {
         if (mConfig.mConfigPasswordKeypad!=null){
             mPasswordKeypad = new aexddKMY350(ctx, mConfig.mConfigPasswordKeypad);
         }
-
-        mNfcReader = new aexddAndroidNfcReader(ctx);
-
     }
 
     public void setContext(Context ctx)

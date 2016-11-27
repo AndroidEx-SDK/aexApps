@@ -78,7 +78,7 @@ public class SmartBizMainActivity extends AppCompatActivity {
                                     try {
                                           mDevices.mPrinter.WriteData(str.getBytes("GBK"), str.getBytes().length);
                                           aexddB58Printer printer = (aexddB58Printer) (mDevices.mPrinter);
-                                          printer.newline(3);
+                                          printer.ln();
                                     } catch (UnsupportedEncodingException e) {
                                           e.printStackTrace();
                                     }
