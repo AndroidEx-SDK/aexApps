@@ -7,6 +7,8 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,6 +28,8 @@ import android.widget.TextView;
 
 import com.androidex.aexlibs.WebJavaBridge;
 import com.androidex.apps.home.activity.SystemMainActivity;
+import com.androidex.apps.home.utils.MyAnimation;
+import com.androidex.apps.home.view.CountDownView;
 import com.androidex.common.AndroidExActivityBase;
 import com.androidex.common.DummyContent;
 import com.androidex.common.LogFragment;
@@ -57,6 +61,24 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
        */
       private ViewPager mContentView;
       private View mControlsView;
+      private int recyle = 20;
+      final Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                  super.handleMessage(msg);
+                  if (msg.what == 1) {
+                        recyle--;
+                        countDownView.setText("" + recyle);
+                        if (recyle > 0) {
+                              Message message = handler.obtainMessage(1);
+                              handler.sendMessageDelayed(message, 1000);
+                        } else {
+                              finish(); //进入广告界面,暂时用finish代替
+                        }
+                  }
+            }
+      };
+
       /**
        * Touch listener to use for in-layout UI controls to delay hiding the
        * system UI. This is to prevent the jarring behavior of controls going away
@@ -66,7 +88,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                   if (AUTO_HIDE) {
-                        delayedHide(AUTO_HIDE_DELAY_MILLIS);
+                        delayedHide(1000);
                   }
                   return false;
             }
@@ -77,6 +99,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
       private static AboutFragment mAboutFragment = new AboutFragment();
       private static aexLogFragment mLogFragment = new aexLogFragment();
       private static AdvertFragment mAdvertFragment = new AdvertFragment();
+      private CountDownView countDownView;
 
       @Override
       protected void onCreate(Bundle savedInstanceState) {
@@ -84,39 +107,29 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             setContentView(R.layout.aexhome_main);
             hwservice.EnterFullScreen();
             getWindow().getDecorView().setBackgroundResource(R.drawable.default_wallpaper);
-            initActionBar(R.id.toolbar);
+            initView();
             // Create the adapter that will return a fragment for each of the three
             // primary sections of the activity.
             mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
             // Set up the ViewPager with the sections adapter.
-            mContentView = (ViewPager) findViewById(R.id.fullscreen_content);
             mContentView.setAdapter(mSectionsPagerAdapter);
-            mContentView.setBackgroundResource(R.drawable.default_wallpaper);
-            //registerMultClickListener(mContentView, this);
-
-            mControlsView = findViewById(R.id.dummy_button);
-            // Upon interacting with UI controls, delay any scheduled hide()
-            // operations to prevent the jarring behavior of controls going away
-            // while interacting with the UI.
-            mControlsView.setOnTouchListener(mDelayHideTouchListener);
-            if (mAdvertFragment.getView()!=null){
-
-                  registerMultClickListener(mAdvertFragment.getView(), this);
-            }else
-                  Snackbar.make(mContentView, "FAB", Snackbar.LENGTH_LONG).setAction("cancel", new View.OnClickListener() {
-                                  @Override
-                                  public void onClick(View v) {
-                                        //这里的单击事件代表点击消除Action后的响应事件
-
-                                  }
-                            })
-                            .show();
+            registerMultClickListener(mContentView, this);
 
             setFullScreenView(mContentView);
             setFullScreen(true);
+            timeCount(countDownView);//实现倒计时功能 并在textview上显示
+            delayedHide(1000);
+      }
 
-            // mLogFragment.getView().setOnTouchListener(mDelayHideTouchListener);
-
+      public void initView() {
+            initActionBar(R.id.toolbar);
+            mContentView = (ViewPager) findViewById(R.id.fullscreen_content);
+            countDownView = (CountDownView) findViewById(R.id.count_downView);
+            mControlsView = findViewById(R.id.dummy_button);
+            mControlsView.setOnTouchListener(mDelayHideTouchListener);
+            mContentView.setBackgroundResource(R.drawable.default_wallpaper);
+            //给ViewPager添加动画
+            mContentView.setPageTransformer(true, MyAnimation.Instance().new MyPageTransformer());
       }
 
       @Override
@@ -127,9 +140,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             //    CheckPassword();
             hwservice.ExitFullScreen();
             EnableFullScreen();
-
       }
-
 
 
       @Override
@@ -149,6 +160,15 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             return super.onKeyDown(keyCode, event);
       }
 
+      /**
+       * 倒计时
+       *
+       * @param time_count
+       */
+      private void timeCount(CountDownView time_count) {
+            Message message = handler.obtainMessage(1);
+            handler.sendMessageDelayed(message, 1000);
+      }
 
       @Override
       protected void onDestroy() {
@@ -164,7 +184,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             // created, to briefly hint to the user that UI controls
             // are available.
             //在这里设置隐藏
-            //delayedHide(AUTO_HIDE_DELAY_MILLIS);
+            delayedHide(AUTO_HIDE_DELAY_MILLIS);
       }
 
       @Override

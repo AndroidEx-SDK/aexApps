@@ -2,26 +2,100 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.androidex.apps.home.Fragment.FrontBankcard">
+    tools:context="com.androidex.apps.home.fragment.FrontBankcard"
+    android:background="#f8f8f8">
 
     <!-- TODO: Update blank fragment layout -->
 
 
+        <ImageView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_centerVertical="true"
+            android:scaleType="fitXY"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/ic_launcher"
+            android:id="@+id/iv_image"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="首先插入银行卡"
-        android:gravity="center"
-        android:id="@+id/textView"
-        android:layout_below="@id/toolbar"
-        />
+        android:background="@drawable/bg_white_radius_5"
+        android:text="@string/prompt_show"
+        android:textSize="20sp"
+        android:layout_alignTop="@+id/iv_image"
+        android:layout_toEndOf="@+id/iv_image"
+        android:layout_marginStart="10dp"
+        android:id="@+id/textView" />
 
-    <Button
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:id="@+id/ll_next"
+    android:layout_gravity="bottom"
+    android:layout_alignParentBottom="true"
+    android:layout_alignStart="@+id/textView"
+    android:orientation="horizontal"
+android:background="@drawable/bg_white_radius_5"
+    android:layout_marginBottom="@dimen/marginPadding10dp"
+    >
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:text="@string/back"
+        android:gravity="center"
+        android:textSize="15sp"
+        android:textColor="#333"
+        android:id="@+id/tv_finish"/>
+
+<View
+    android:layout_width="0.5dp"
+    android:layout_height="40dp"
+    android:background="#ddd">
+
+</View>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:text="@string/next"
+        android:gravity="center"
+        android:textSize="15sp"
+        android:textColor="#333"
+        android:id="@+id/tv_next"/>
+</LinearLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="下一步"
-        android:layout_alignParentBottom="true"
-        android:textColor="#000"
-        android:id="@+id/btn_next"
-        />
+        android:layout_height="60dp"
+        android:background="@drawable/bg_white_radius_5"
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/textView"
+       >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/type"
+            android:textSize="15sp"
+            android:textColor="#666"
+            android:id="@+id/tv_select"/>
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/tv_select"
+            android:layout_marginStart="10dp"
+            >
+
+        </Spinner>
+
+    </RelativeLayout>
+
+
 </RelativeLayout>

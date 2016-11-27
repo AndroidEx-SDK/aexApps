@@ -445,8 +445,20 @@ kk30外围设备? - 读卡器，键盘一体机特点:
     <string name="tca9535">TCA9535按键板</string>
     <string name="ttyso">ttyS0作为调试串口</string>
     <string name="prompt">温馨提示：请先按打开按钮打开设备，若提示打开成功，才能继续测试　</string>
-
+    <string name="prompt_show">请按照正确的提示进行操作</string>
+    <string name="back">退出</string>
+    <string name="next">下一步</string>
+    <string name="before">上一步</string>
+    <string name="finish">完成</string>
+    <string name="type">请选择需要充值的卡类型</string>
+    <string name="input_money">请输入金额</string>
+    <string name="title_alert">提示信息</string>
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="solemn_hint_text">   您还未对此设备进行初始化，初始化后的设备将具有固化的唯一标识
+    ，即使重新烧录古剑也不会丢失。该唯一标识采用GUID的格式存储。设置成功后Android ID会使用该GUID的后16位
+    您的应用程序可以使用读GUID作为设备的唯一标识，也可以取用Android ID。</string>
 </resources>

@@ -22,7 +22,7 @@ public class AboutFragment extends WebviewFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, container, savedInstanceState);
 
-        loadUrl("file:///android_asset/fragment_aboutlocal.html");
+        loadUrl("file:///android_asset/about.html");
         return v;
     }
 

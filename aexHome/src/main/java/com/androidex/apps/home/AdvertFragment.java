@@ -19,7 +19,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.androidex.apps.home.utils.AssetsUtil;
 import com.androidex.common.IniReader;
+import com.androidex.common.OnMultClickListener;
 import com.androidex.logger.Log;
 
 import java.io.File;
@@ -27,7 +29,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class AdvertFragment extends Fragment {
+public class AdvertFragment extends Fragment implements OnMultClickListener {
       public View psetview = null;
       //统一文件存储路径便于管理
       public String advertPath = "/mnt/sdcard/advertpic/";
@@ -35,13 +37,19 @@ public class AdvertFragment extends Fragment {
       public String sdcardPath = "advertpic";
       public String iniNmae = "advert.ini";
       public String configname = "/mnt/sdcard/advertpic/advert.ini";
+      public String defaultPath = "imagelist/";
+      public String defaultImagePath = "imagelist/a1.jpg";
+      //public String defaultPath = "file:///android_asset/imagelist/";
+      public static int ONCLICKTIMES = 5;
+      public static final String TAG = "AssetsUtil";
 
       Bitmap bm = null;
       public ImageView iview;
       public String[] result = new String[256];
       public int advertnum = 0;
-      public int nSeconds = 3;
+      public int nSeconds = 5;
       public int count = 0;
+      public int imagename = 1;
       public int nPicCount = 0;
 
       SDcardLinsenerReceiver receiver;
@@ -63,6 +71,7 @@ public class AdvertFragment extends Fragment {
             }
             initView();
             startPlayPic();
+            FullscreenActivity.registerMultClickListener(psetview, this);
             return psetview;
       }
 
@@ -95,14 +104,12 @@ public class AdvertFragment extends Fragment {
                   if (!ff.mkdirs()) {
                         Log.e("adplay", String.format("Create %s fail.", advertPath));
                   }
-            } else
-                  Toast.makeText(getActivity(), "U盘为插入", Toast.LENGTH_SHORT).show();
-
+            }
 
             //获取图片控件
             iview = (ImageView) psetview.findViewById(R.id.picsw);
             //全屏显示
-            //iview.setScaleType(ImageView.ScaleType.FIT_XY);
+            iview.setScaleType(ImageView.ScaleType.FIT_XY);
 
             IntentFilter filter = new IntentFilter();
             filter.addAction(Intent.ACTION_MEDIA_BAD_REMOVAL);
@@ -118,10 +125,14 @@ public class AdvertFragment extends Fragment {
             copyFile(srcName, dstName);
             showToast("开始读取配置!");
             //读取配置
-            readfile();
-            serachFiles(advertPath);
+            if (readfile() == null) {
+                  android.util.Log.e("======", "读取配置readfile为空");
+                  serachFiles(defaultPath);
+            } else {
+                  serachFiles(advertPath);
+            }
             //开始定时器
-            handler.postDelayed(runnable, 3000);
+            handler.postDelayed(runnable, 5000);
       }
 
       Handler handler = new Handler();
@@ -152,11 +163,27 @@ public class AdvertFragment extends Fragment {
                   }
                   count++;
             }
+
+            if (filename.equals("/mnt/sdcard/advertpic/null")) {
+                  if (imagename > 0 && imagename < 8) {
+                        filename = "imagelist/a" + imagename + ".jpg";
+                        imagename++;
+                  } else if (imagename==8){
+                        filename = "imagelist/a" + imagename + ".jpg";
+                        imagename = 1;
+                  }else {
+                        filename = defaultImagePath;
+                  }
+                  android.util.Log.e("=====defaultPath", "finame=" + filename);
+                  bm = AssetsUtil.getImgFromAssets(getContext(), filename);
+            } else {
+                  android.util.Log.e("=====", "filename=" + filename);
+                  //横屏版本
+                  bm = getBitmapFromFile(filename, 1920, 1080);
+                  //竖屏版本
+                  //bm = getBitmapFromFile(filename, 1080,1920);
+            }
             //获取图片源
-            //横屏版本
-            bm = getBitmapFromFile(filename, 1920, 1080);
-            //竖屏版本
-            //bm = getBitmapFromFile(filename, 1080,1920);
             iview.setImageBitmap(bm);
             count++;
             //设置透明
@@ -230,15 +257,50 @@ public class AdvertFragment extends Fragment {
             advertnum = 0;
             int number = 0;
             File root = new File(dir); //输入文件夹路径
+
             File[] filesOrDirs = root.listFiles(); //获取该文件夹下的所有文件（夹）
-            for (int i = 0; i < filesOrDirs.length; i++) {
-                  if (!filesOrDirs[i].isDirectory()) {//如果不是文件夹,说明是文件
-                        String strPicName = filesOrDirs[i].getName();
-                        if (strPicName.indexOf(".jpg") > 0) {
-                              result[number] = strPicName; //把文件名存储在String[]中
-                              advertnum++;
-                              number++;
+            if (filesOrDirs != null) {
+                  for (int i = 0; i < filesOrDirs.length; i++) {
+                        if (!filesOrDirs[i].isDirectory()) {//如果不是文件夹,说明是文件
+                              String strPicName = filesOrDirs[i].getName();
+                              showToast(strPicName);
+                              android.util.Log.e("strPicName", strPicName);
+                              if (strPicName.indexOf(".jpg") > 0) {
+                                    result[number] = strPicName; //把文件名存储在String[]中
+                                    advertnum++;
+                                    number++;
+                              }
                         }
+                  }
+            } else {
+                  /*****先从USB读取并复制，如果USB没有图片会从assets直接读取。此代码块读取不到文件，图片是直接从assets中读取的******/
+                  try {
+                        String str[] = getContext().getAssets().list(defaultPath);
+                        android.util.Log.e("str======str.length", str.length + "");
+                        if (str.length > 0) {//如果是目录
+                              File file = new File(advertPath);
+                              file.mkdirs();
+                              android.util.Log.e("====", "str:\t" + defaultPath);
+                              for (String string : str) {
+                                    defaultPath = defaultPath + "/" + string;
+                                    android.util.Log.e("====", "str:\t" + defaultPath);
+                                    // textView.setText(textView.getText()+"\t"+path+"\t");
+                                    serachFiles(defaultPath);
+                                    defaultPath = defaultPath.substring(0, defaultPath.lastIndexOf('/'));
+                              }
+                              android.util.Log.e("str=====defaultPath", defaultPath);
+                        } else {
+                              for (String strPicName : str) {
+                                    if (strPicName.indexOf(".jpg") > 0) {
+                                          result[number] = strPicName; //把文件名存储在String[]中
+                                          advertnum++;
+                                          number++;
+                                    }
+                              }
+                              android.util.Log.e("str====advertnum", advertnum + "");
+                        }
+                  } catch (IOException e) {
+                        e.printStackTrace();
                   }
             }
       }
@@ -254,8 +316,12 @@ public class AdvertFragment extends Fragment {
             showToast(strTip);
             showToast("请拔出U盘!");
             //读取配置
-            readfile();
-            serachFiles(advertPath);
+            if (readfile() == null) {
+                  showToast("readfile为空");
+                  serachFiles(defaultPath);
+            } else {
+                  serachFiles(advertPath);
+            }
             //开始定时器
             handler.postDelayed(runnable, 5000);
       }
@@ -313,6 +379,19 @@ public class AdvertFragment extends Fragment {
             }
       }
 
+      @Override
+      public boolean OnMultClick(View view, int times) {
+            if (times == ONCLICKTIMES) {
+                  Intent intent = new Intent(FullscreenActivity.ActionControlBar);
+                  intent.putExtra("flag", "toggle");
+                  intent.putExtra("bar", true);
+                  psetview.getContext().sendBroadcast(intent);
+                  showToast("发送广播");
+                  return true;
+            }
+            return false;
+      }
+
       /**
        * ** 监听U盘插拔
        */
@@ -333,21 +412,22 @@ public class AdvertFragment extends Fragment {
       }
 
       //读取配置
-      public void readfile() {
+      public String readfile() {
             try {
                   IniReader ini = new IniReader(configname);
                   String strSeconds = ini.getValue("config", "seconds");
                   System.out.println(strSeconds);
                   showToast("读取配置中设置时间间隔秒数为" + strSeconds);
-
                   nSeconds = Integer.parseInt(strSeconds);
                   if (nSeconds <= 0) {
                         nSeconds = 3;
                   }
+                  return "1";
             } catch (IOException e1) {
                   showToast("默认配置时间间隔秒数为3!");
                   // TODO Auto-generated catch block
                   e1.printStackTrace();
+                  return null;
             }
       }
 
