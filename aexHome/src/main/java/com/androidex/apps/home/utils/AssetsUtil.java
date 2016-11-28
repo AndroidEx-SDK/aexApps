@@ -11,6 +11,12 @@ import java.io.InputStream;
 public class AssetsUtil {
 	private static final String TAG = "AssetsUtil";
 
+	/**
+	 * 从assets中取文本文件
+	 * @param context
+	 * @param fileName
+       * @return
+       */
 	public static String getTxtFromAssets(Context context, String fileName) {
 		String result = "";
 		try {
@@ -24,7 +30,13 @@ public class AssetsUtil {
 		}
 		return result;
 	}
-	
+
+	/**
+	 * 从assets中取图片
+	 * @param context
+	 * @param fileName
+       * @return
+       */
 	public static Bitmap getImgFromAssets(Context context, String fileName) {
 		Bitmap bitmap = null;
 		try {
@@ -41,6 +53,14 @@ public class AssetsUtil {
 		return bitmap;
 	}
 
+
+	/**
+	 * 从文件中读取图片
+	 * @param dst
+	 * @param width
+	 * @param height
+       * @return
+       */
 	public static Bitmap getBitmapFromFile(String dst, int width, int height) {
 		if (null != dst) {
 			BitmapFactory.Options opts = null;
