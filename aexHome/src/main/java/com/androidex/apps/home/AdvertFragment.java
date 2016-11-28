@@ -123,7 +123,7 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
             String srcName = getSDPath() + "/" + iniNmae;
             String dstName = advertPath + iniNmae;
             copyFile(srcName, dstName);
-            // showToast("开始读取配置!");
+            showToast("开始读取配置!");
             //读取配置
             if (readfile() == null) {
                   android.util.Log.e("======", "读取配置readfile为空");
@@ -276,16 +276,19 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
                   /*****先从USB读取并复制，如果USB没有图片会从assets直接读取。此代码块读取不到文件，图片是直接从assets中读取的******/
                   try {
                         String str[] = getContext().getAssets().list(defaultPath);
+                        android.util.Log.e("str======str.length", str.length + "");
                         if (str.length > 0) {//如果是目录
                               File file = new File(advertPath);
                               file.mkdirs();
                               android.util.Log.e("====", "str:\t" + defaultPath);
                               for (String string : str) {
                                     defaultPath = defaultPath + "/" + string;
+                                    android.util.Log.e("====", "str:\t" + defaultPath);
                                     // textView.setText(textView.getText()+"\t"+path+"\t");
                                     serachFiles(defaultPath);
                                     defaultPath = defaultPath.substring(0, defaultPath.lastIndexOf('/'));
                               }
+                              android.util.Log.e("str=====defaultPath", defaultPath);
                         } else {
                               for (String strPicName : str) {
                                     if (strPicName.indexOf(".jpg") > 0) {
@@ -314,6 +317,7 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
             showToast("请拔出U盘!");
             //读取配置
             if (readfile() == null) {
+                  showToast("readfile为空");
                   serachFiles(defaultPath);
             } else {
                   serachFiles(advertPath);
@@ -382,6 +386,7 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
                   intent.putExtra("flag", "toggle");
                   intent.putExtra("bar", true);
                   psetview.getContext().sendBroadcast(intent);
+                  showToast("发送广播");
                   return true;
             }
             return false;
@@ -412,7 +417,7 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
                   IniReader ini = new IniReader(configname);
                   String strSeconds = ini.getValue("config", "seconds");
                   System.out.println(strSeconds);
-                  //showToast("读取配置中设置时间间隔秒数为" + strSeconds);
+                  showToast("读取配置中设置时间间隔秒数为" + strSeconds);
                   nSeconds = Integer.parseInt(strSeconds);
                   if (nSeconds <= 0) {
                         nSeconds = 3;
