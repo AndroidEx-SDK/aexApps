@@ -52,9 +52,7 @@ public class appDevicesManager extends appLibsDevices {
         mPrinter = new aexddB58Printer(ctx,mConfig.mConfigPrinter);
         mBankCardReader = new aexddMT318Reader(ctx,mConfig.mConfigBankReader);
         mCasCardReader = new aexddMT318Reader(ctx,mConfig.mConfigCasReader);
-        if (mConfig.mConfigPasswordKeypad!=null){
-            mPasswordKeypad = new aexddKMY350(ctx, mConfig.mConfigPasswordKeypad);
-        }
+        mPasswordKeypad = new aexddKMY350(ctx, mConfig.mConfigPasswordKeypad);
     }
 
     public void setContext(Context ctx)
