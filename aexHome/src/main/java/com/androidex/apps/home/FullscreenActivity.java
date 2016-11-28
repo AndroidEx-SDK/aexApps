@@ -23,6 +23,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidex.aexlibs.WebJavaBridge;
 import com.androidex.apps.home.activity.SystemMainActivity;
@@ -33,9 +34,13 @@ import com.androidex.common.DummyContent;
 import com.androidex.common.LogFragment;
 import com.androidex.common.OnMultClickListener;
 import com.androidex.devices.aexddAndroidNfcReader;
+import com.androidex.devices.aexddB58Printer;
 import com.androidex.devices.aexddNfcReader;
+import com.androidex.devices.appDeviceDriver;
 import com.androidex.devices.appDevicesManager;
 import com.androidex.logger.Log;
+
+import java.io.UnsupportedEncodingException;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -67,6 +72,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
       private static aexLogFragment mLogFragment = new aexLogFragment();
       private static AdvertFragment mAdvertFragment = new AdvertFragment();
       private CircleTextProgressbar progressbar;
+      private appDevicesManager mDevices;
 
       /**
        * Touch listener to use for in-layout UI controls to delay hiding the
@@ -126,6 +132,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             //给ViewPager添加动画
             mContentView.setPageTransformer(true, MyAnimation.Instance().new MyPageTransformer());
             progressbar.setCountdownProgressListener(2, progressListener);
+            mDevices = new appDevicesManager(this);
       }
 
       @Override
@@ -171,6 +178,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             super.onDestroy();
             hwservice.ExitFullScreen();
             DisableFullScreen();
+            mDevices.mPrinter.Close();
       }
 
       @Override
@@ -232,6 +240,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             // Inflate the menu; this adds items to the action bar if it is present.
             getMenuInflater().inflate(R.menu.main, menu);
             MenuItem m4 = menu.add(R.string.str_quit);
+
             m4.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                   public boolean onMenuItemClick(MenuItem item) {
                         showExitDialog();
@@ -259,6 +268,35 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
                         startActivityForResult(mIntent, DLG_NETINFO);
                         return true;
 
+                  case R.id.action_print:
+
+                        Log.i(TAG, "打印测试程序...");
+
+                        if (mDevices.mPrinter.Open()) {
+                              try {
+                                    mDevices.mPrinter.selfTest();
+                                    String str = "安卓工控";
+                                    try {
+                                          mDevices.mPrinter.WriteData(str.getBytes("GBK"), str.getBytes().length);
+                                          aexddB58Printer printer = (aexddB58Printer) (mDevices.mPrinter);
+                                          printer.ln();
+                                    } catch (UnsupportedEncodingException e) {
+                                          e.printStackTrace();
+                                    }
+                                    mDevices.mPrinter.WriteDataHex("1D564200");
+                                    mDevices.mPrinter.Close();
+                              } catch (Exception e) {
+                                    Log.i(TAG, e.getLocalizedMessage());
+                                    e.printStackTrace();
+                              }
+                              Log.i(TAG, "打印测试结束，关闭打印机设备。");
+                        } else {
+                              String s = String.format("Open printer fial:%s", mDevices.mPrinter.mParams.optString(appDeviceDriver.PORT_ADDRESS));
+                              Log.i(TAG, s);
+                              Toast.makeText(this, s, Toast.LENGTH_LONG).show();
+                        }
+
+                        return true;
                   default:
                         return super.onOptionsItemSelected(item);
             }
