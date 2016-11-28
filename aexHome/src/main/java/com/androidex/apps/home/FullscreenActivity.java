@@ -26,8 +26,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidex.aexlibs.WebJavaBridge;
-import com.androidex.apps.home.activity.SystemMainActivity;
-import com.androidex.apps.home.utils.MyAnimation;
 import com.androidex.apps.home.view.CircleTextProgressbar;
 import com.androidex.common.AndroidExActivityBase;
 import com.androidex.common.DummyContent;
@@ -64,7 +62,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
        */
       private ViewPager mContentView;
       private View mControlsView;
-      private int recyle = 20;
 
       public static WebJavaBridge.OnJavaBridgeListener mJbListener;
       private static MainFragment mMainFragment = new MainFragment();
@@ -130,7 +127,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             mControlsView.setOnTouchListener(mDelayHideTouchListener);
             mContentView.setBackgroundResource(R.drawable.default_wallpaper);
             //给ViewPager添加动画
-            mContentView.setPageTransformer(true, MyAnimation.Instance().new MyPageTransformer());
+           // mContentView.setPageTransformer(true, MyAnimation.Instance().new MyPageTransformer());
             progressbar.setCountdownProgressListener(2, progressListener);
             mDevices = new appDevicesManager(this);
       }
@@ -207,9 +204,9 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             toolbar.setOnClickListener(new View.OnClickListener() {
                   @Override
                   public void onClick(View v) {
-                        android.util.Log.e("============", "运行了");
-                        Intent intent = new Intent(FullscreenActivity.this, SystemMainActivity.class);
-                        startActivity(intent);
+//                        android.util.Log.e("============", "运行了");
+//                        Intent intent = new Intent(FullscreenActivity.this, SystemMainActivity.class);
+//                        startActivity(intent);
                   }
             });
       }
@@ -271,25 +268,29 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
                   case R.id.action_print:
 
                         Log.i(TAG, "打印测试程序...");
-
                         if (mDevices.mPrinter.Open()) {
-                              try {
-                                    mDevices.mPrinter.selfTest();
-                                    String str = "安卓工控";
-                                    try {
-                                          mDevices.mPrinter.WriteData(str.getBytes("GBK"), str.getBytes().length);
-                                          aexddB58Printer printer = (aexddB58Printer) (mDevices.mPrinter);
-                                          printer.ln();
-                                    } catch (UnsupportedEncodingException e) {
-                                          e.printStackTrace();
+
+                              new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                          mDevices.mPrinter.selfTest();
+                                          String str = "安卓工控";
+                                          try {
+                                                mDevices.mPrinter.WriteData(str.getBytes("GBK"), str.getBytes().length);
+                                                aexddB58Printer printer = (aexddB58Printer) (mDevices.mPrinter);
+                                                printer.ln();
+                                          } catch (UnsupportedEncodingException e) {
+                                                e.printStackTrace();
+                                          }
+                                          mDevices.mPrinter.WriteDataHex("1D564200");
+                                          mDevices.mPrinter.Close();
+
+                                          Log.i(TAG, "打印测试结束，关闭打印机设备。");
+
                                     }
-                                    mDevices.mPrinter.WriteDataHex("1D564200");
-                                    mDevices.mPrinter.Close();
-                              } catch (Exception e) {
-                                    Log.i(TAG, e.getLocalizedMessage());
-                                    e.printStackTrace();
-                              }
-                              Log.i(TAG, "打印测试结束，关闭打印机设备。");
+                              }).start();
+
+
                         } else {
                               String s = String.format("Open printer fial:%s", mDevices.mPrinter.mParams.optString(appDeviceDriver.PORT_ADDRESS));
                               Log.i(TAG, s);

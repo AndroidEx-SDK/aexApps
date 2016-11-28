@@ -5,17 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager.LayoutParams;
+import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.androidex.apps.home.utils.AssetsUtil;
@@ -28,6 +27,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import static com.androidex.apps.home.utils.AssetsUtil.getBitmapFromFile;
+
 public class AdvertFragment extends Fragment implements OnMultClickListener {
       public View psetview = null;
       //统一文件存储路径便于管理
@@ -36,21 +37,22 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
       public String sdcardPath = "advertpic";
       public String iniNmae = "advert.ini";
       public String configname = "/mnt/sdcard/advertpic/advert.ini";
-      public String defaultPath = "imagelist/";
       public String defaultImagePath = "imagelist/a1.jpg";
-      //public String defaultPath = "file:///android_asset/imagelist/";
       public static int ONCLICKTIMES = 5;
       public static final String TAG = "AssetsUtil";
+      public static final String NULL_PATH = "/mnt/sdcard/advertpic/null";
+      private static String IMAGEPATH_NAME = "imagelist/a%d.jpg";
 
       Bitmap bm = null;
       public ImageView iview;
       public String[] result = new String[256];
       public int advertnum = 0;
-      public int nSeconds = 5;
+      public static int nSeconds = 5;
       public int count = 0;
       public int imagename = 1;
       public int nPicCount = 0;
-
+      Handler handler = new Handler();
+      Runnable runnable;
       SDcardLinsenerReceiver receiver;
 
       public AdvertFragment() {
@@ -64,7 +66,7 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
       @Override
       public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             super.onCreateView(inflater, container, savedInstanceState);
-            LinearLayout.LayoutParams wvParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+            //LinearLayout.LayoutParams wvParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
             if (psetview == null) {
                   psetview = inflater.inflate(R.layout.advert_main, null);
             }
@@ -83,6 +85,26 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
             }
             super.onDestroyView();
       }
+
+      /**
+       * 获得屏幕显示的参数，返回宽度x高度字符串。程序可以利用这个参数根据屏幕分辨率选择播放不同的图片。
+       *
+       * @return 宽度x高度 字符串
+       */
+      public String getDisplayInfo() {
+            /*WindowManager wm = (WindowManager) this.getActivity().getSystemService(Context.WINDOW_SERVICE);
+            int width = wm.getDefaultDisplay().getWidth();
+            int height = wm.getDefaultDisplay().getHeight();
+*/
+            WindowManager manager = this.getActivity().getWindowManager();
+            DisplayMetrics outMetrics = new DisplayMetrics();
+            manager.getDefaultDisplay().getMetrics(outMetrics);
+            int width = outMetrics.widthPixels;
+            int height = outMetrics.heightPixels;
+
+            return String.format("%dx%d", width, height);
+      }
+
 
       public void startPlayPic() {
             //创建广告播放存储配置和图片的根目录
@@ -111,28 +133,22 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
             String srcName = getSDPath() + "/" + iniNmae;
             String dstName = advertPath + iniNmae;
             copyFile(srcName, dstName);
-            showToast("开始读取配置!");
+            //showToast("开始读取配置!");
             //读取配置
-            if (readfile() == null) {
-                  android.util.Log.e("======", "读取配置readfile为空");
-                  serachFiles(defaultPath);
-            } else {
-                  serachFiles(advertPath);
+            if (readfile() != null) serachFiles(advertPath);
+            if (runnable == null) {
+                  runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                              //依次显示图片序列
+                              showPic();
+                              //定时刷新
+                              handler.postDelayed(this, nSeconds * 1000);
+                        }
+                  };
+                  handler.postDelayed(runnable, 1000); //开始定时器
             }
-            //开始定时器
-            handler.postDelayed(runnable, 5000);
       }
-
-      Handler handler = new Handler();
-      Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                  //依次显示图片序列
-                  showPic();
-                  //定时刷新
-                  handler.postDelayed(this, nSeconds * 1000);
-            }
-      };
 
       public void showPic() {
             // 防止内存泄露
@@ -152,106 +168,41 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
                   count++;
             }
 
-            if (filename.equals("/mnt/sdcard/advertpic/null")) {
+            //判断文件名字是否为空,为空就从assets中读取图片
+            if (filename.equals(NULL_PATH)) {
                   if (imagename > 0 && imagename < 8) {
-                        filename = "imagelist/a" + imagename + ".jpg";
+                        filename = String.format(IMAGEPATH_NAME, imagename);
+                        android.util.Log.e("filename=====", filename);
                         imagename++;
-                  } else if (imagename==8){
-                        filename = "imagelist/a" + imagename + ".jpg";
+                  } else if (imagename == 8) {
+                        filename = String.format(IMAGEPATH_NAME, imagename);
                         imagename = 1;
-                  }else {
+                  } else {
                         filename = defaultImagePath;
                   }
-                  android.util.Log.e("=====defaultPath", "finame=" + filename);
                   bm = AssetsUtil.getImgFromAssets(getContext(), filename);
             } else {
-                  android.util.Log.e("=====", "filename=" + filename);
                   //横屏版本
                   bm = getBitmapFromFile(filename, 1920, 1080);
                   //竖屏版本
                   //bm = getBitmapFromFile(filename, 1080,1920);
+                  count++;
             }
             //获取图片源
             iview.setImageBitmap(bm);
-            count++;
             //设置透明
             //iview.setAlpha(255);
-      }
-
-      private Bitmap getBitmapFromFile(String dst, int width, int height) {
-            // TODO Auto-generated method stub
-            if (null != dst) {
-                  BitmapFactory.Options opts = null;
-                  if (width > 0 && height > 0) {
-                        opts = new BitmapFactory.Options();
-                        opts.inJustDecodeBounds = true;
-                        BitmapFactory.decodeFile(dst, opts);
-                        // 计算图片缩放比例
-                        final int minSideLength = Math.min(width, height);
-                        opts.inSampleSize = computeSampleSize(opts, minSideLength,
-                                  width * height);
-                        opts.inJustDecodeBounds = false;
-                        opts.inInputShareable = true;
-                        opts.inPurgeable = true;
-                  }
-                  try {
-                        return BitmapFactory.decodeFile(dst, opts);
-                  } catch (OutOfMemoryError e) {
-                        e.printStackTrace();
-                  }
-            }
-            return null;
-      }
-
-      public int computeSampleSize(BitmapFactory.Options options, int minSideLength, int maxNumOfPixels) {
-            int initialSize = computeInitialSampleSize(options, minSideLength, maxNumOfPixels);
-            int roundedSize;
-            if (initialSize <= 8) {
-                  roundedSize = 1;
-                  while (roundedSize < initialSize) {
-                        roundedSize <<= 1;
-                  }
-            } else {
-                  roundedSize = (initialSize + 7) / 8 * 8;
-            }
-            return roundedSize;
-      }
-
-      private int computeInitialSampleSize(BitmapFactory.Options options,
-                                           int minSideLength, int maxNumOfPixels) {
-            double w = options.outWidth;
-            double h = options.outHeight;
-
-            int lowerBound = (maxNumOfPixels == -1) ? 1 : (int) Math.ceil(Math
-                      .sqrt(w * h / maxNumOfPixels));
-            int upperBound = (minSideLength == -1) ? 128 : (int) Math.min(Math
-                      .floor(w / minSideLength), Math.floor(h / minSideLength));
-
-            if (upperBound < lowerBound) {
-                  // return the larger one when there is no overlapping zone.
-                  return lowerBound;
-            }
-
-            if ((maxNumOfPixels == -1) && (minSideLength == -1)) {
-                  return 1;
-            } else if (minSideLength == -1) {
-                  return lowerBound;
-            } else {
-                  return upperBound;
-            }
       }
 
       public void serachFiles(String dir) {
             advertnum = 0;
             int number = 0;
             File root = new File(dir); //输入文件夹路径
-
             File[] filesOrDirs = root.listFiles(); //获取该文件夹下的所有文件（夹）
             if (filesOrDirs != null) {
                   for (int i = 0; i < filesOrDirs.length; i++) {
                         if (!filesOrDirs[i].isDirectory()) {//如果不是文件夹,说明是文件
                               String strPicName = filesOrDirs[i].getName();
-                              showToast(strPicName);
                               android.util.Log.e("strPicName", strPicName);
                               if (strPicName.indexOf(".jpg") > 0) {
                                     result[number] = strPicName; //把文件名存储在String[]中
@@ -260,42 +211,14 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
                               }
                         }
                   }
-            } else {
-                  /*****先从USB读取并复制，如果USB没有图片会从assets直接读取。此代码块读取不到文件，图片是直接从assets中读取的******/
-                  try {
-                        String str[] = getContext().getAssets().list(defaultPath);
-                        android.util.Log.e("str======str.length", str.length + "");
-                        if (str.length > 0) {//如果是目录
-                              File file = new File(advertPath);
-                              file.mkdirs();
-                              android.util.Log.e("====", "str:\t" + defaultPath);
-                              for (String string : str) {
-                                    defaultPath = defaultPath + "/" + string;
-                                    android.util.Log.e("====", "str:\t" + defaultPath);
-                                    // textView.setText(textView.getText()+"\t"+path+"\t");
-                                    serachFiles(defaultPath);
-                                    defaultPath = defaultPath.substring(0, defaultPath.lastIndexOf('/'));
-                              }
-                              android.util.Log.e("str=====defaultPath", defaultPath);
-                        } else {
-                              for (String strPicName : str) {
-                                    if (strPicName.indexOf(".jpg") > 0) {
-                                          result[number] = strPicName; //把文件名存储在String[]中
-                                          advertnum++;
-                                          number++;
-                                    }
-                              }
-                              android.util.Log.e("str====advertnum", advertnum + "");
-                        }
-                  } catch (IOException e) {
-                        e.printStackTrace();
-                  }
             }
       }
 
       public void checkfile() {
             //停止定时器
-            handler.removeCallbacks(runnable);
+            if (runnable!=null){
+                  handler.removeCallbacks(runnable);
+            }
             //删除之前文件
             delAllFile(advertPath);
             String fileName = ukeyPath + sdcardPath;
@@ -304,21 +227,15 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
             showToast(strTip);
             showToast("请拔出U盘!");
             //读取配置
-            if (readfile() == null) {
-                  showToast("readfile为空");
-                  serachFiles(defaultPath);
-            } else {
-                  serachFiles(advertPath);
-            }
+            if (readfile() != null) serachFiles(advertPath);
             //开始定时器
-            handler.postDelayed(runnable, 5000);
+            handler.postDelayed(runnable, 1000);
       }
 
       public String getSDPath() {
             File sdDir = null;
             boolean sdCardExist = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);   //判断sd卡是否存在
-            if (sdCardExist)      //如果SD卡存在，则获取跟目录
-            {
+            if (sdCardExist) {     //如果SD卡存在，则获取跟目录
                   sdDir = Environment.getExternalStorageDirectory();//获取跟目录
             }
             return sdDir.toString();
@@ -374,7 +291,7 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
                   intent.putExtra("flag", "toggle");
                   intent.putExtra("bar", true);
                   psetview.getContext().sendBroadcast(intent);
-                  showToast("发送广播");
+                  //showToast("发送广播");
                   return true;
             }
             return false;
@@ -405,15 +322,14 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
                   IniReader ini = new IniReader(configname);
                   String strSeconds = ini.getValue("config", "seconds");
                   System.out.println(strSeconds);
-                  showToast("读取配置中设置时间间隔秒数为" + strSeconds);
+                  //showToast("读取配置中设置时间间隔秒数为" + strSeconds);
                   nSeconds = Integer.parseInt(strSeconds);
                   if (nSeconds <= 0) {
-                        nSeconds = 3;
+                        nSeconds = 5;
                   }
                   return "1";
             } catch (IOException e1) {
-                  showToast("默认配置时间间隔秒数为3!");
-                  // TODO Auto-generated catch block
+                  //showToast("默认配置时间间隔秒数为3!");
                   e1.printStackTrace();
                   return null;
             }
@@ -446,9 +362,7 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
             } catch (Exception e) {
                   System.out.println("复制单个文件操作出错");
                   e.printStackTrace();
-
             }
-
       }
 
       /**
@@ -494,8 +408,6 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
             } catch (Exception e) {
                   System.out.println("复制整个文件夹内容操作出错");
                   e.printStackTrace();
-
             }
-
       }
 }
