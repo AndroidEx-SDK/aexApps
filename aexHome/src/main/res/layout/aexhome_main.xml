@@ -50,9 +50,8 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="bottom|left"
-        android:onClick="onClick"
+        android:layout_margin="@dimen/fab_margin"
         android:text="60s"
-        android:visibility="gone"
         app:in_circle_color="@color/state_color"/>
 
 </android.support.design.widget.CoordinatorLayout>
