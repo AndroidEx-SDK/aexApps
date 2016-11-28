@@ -26,7 +26,7 @@ public class AssetsUtil {
 			is.read(buffer);
 			result = new String(buffer, "utf8");
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.d(TAG,"==getTxtFromAssets()中抛异常");
 		}
 		return result;
 	}
@@ -47,8 +47,9 @@ public class AssetsUtil {
 				Log.d(TAG, "is not instanceof AssetInputStream");
 			}
 			bitmap = BitmapFactory.decodeStream(is);
+			return bitmap;
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.d(TAG,"==getImgFromAssets()中抛异常");
 		}
 		return bitmap;
 	}
@@ -79,7 +80,7 @@ public class AssetsUtil {
 			try {
 				return BitmapFactory.decodeFile(dst, opts);
 			} catch (OutOfMemoryError e) {
-				e.printStackTrace();
+				Log.d(TAG,"==getBitmapFromFile()中抛异常");
 			}
 		}
 		return null;
