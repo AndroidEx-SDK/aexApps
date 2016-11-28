@@ -69,21 +69,13 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
             if (psetview == null) {
                   psetview = inflater.inflate(R.layout.advert_main, null);
             }
-            initView();
+
             startPlayPic();
             FullscreenActivity.registerMultClickListener(psetview, this);
             return psetview;
       }
 
-      public void initView() {
-            Button exit = (Button) psetview.findViewById(R.id.btn_exit);
-            exit.setOnClickListener(new View.OnClickListener() {
-                  @Override
-                  public void onClick(View v) {
-                        System.exit(0);
-                  }
-            });
-      }
+     
 
       @Override
       public void onDestroyView() {

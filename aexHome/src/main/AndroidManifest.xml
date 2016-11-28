@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.androidex.apps.home">
 
@@ -55,7 +56,7 @@
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
-        <receiver android:name="com.androidex.apps.home.BootBroadcastReceiver">
+        <receiver android:name="com.androidex.apps.home.brocast.BootBroadcastReceiver">
 
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
@@ -70,7 +71,8 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name="com.androidex.apps.home.activity.TransactionActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden">
 
         </activity>
     </application>

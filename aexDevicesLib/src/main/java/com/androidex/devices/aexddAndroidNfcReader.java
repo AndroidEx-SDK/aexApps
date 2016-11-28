@@ -2,6 +2,7 @@ package com.androidex.devices;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
@@ -112,6 +113,11 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
                 JSONObject r = StandardPboc.readCard(isodep);
                 try {
                     Log.d(TAG,r.toString(4));
+                    //发送广播
+                    Intent intent = new Intent();
+                    intent.setAction(START_ACTION);
+                    intent.putExtra("cardinfo",r.toString());
+                    mContext.sendBroadcast(intent);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -128,6 +134,10 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
         if (nfcf != null) {
             try {
                 JSONObject r = FelicaReader.readCard(nfcf);
+                //发送广播
+                Intent intent = new Intent();
+                intent.setAction(NFCF);
+                mContext.sendBroadcast(intent);
                 try {
                     Log.d(TAG,r.toString(4));
                 } catch (JSONException e) {
@@ -138,7 +148,8 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
             }
         }
     }
-
+    public static final String START_ACTION = "com.androidex.apps.home.transationactivity.isdep";
+    public static final String NFCF = "com.androidex.apps.home.transationactivity.nfcf";
     /**
      * Build APDU for SELECT AID command. This command indicates which service a reader is
      * interested in communicating with. See ISO 7816-4.

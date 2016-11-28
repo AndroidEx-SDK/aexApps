@@ -1,6 +1,5 @@
 package com.androidex.apps.home.fragment;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,7 +10,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.androidex.apps.home.R;
-import com.androidex.apps.home.view.CustomDialog;
+import com.androidex.apps.home.brocast.CardInfoBrocast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import static com.androidex.apps.home.fragment.FrontBankcard.action_fb_back;
 
 
 public class OtherCard extends Fragment implements View.OnClickListener{
@@ -20,9 +24,9 @@ public class OtherCard extends Fragment implements View.OnClickListener{
     private View mView = null;
     private EditText et_input ;
     private double money ;
-    private TextView tv_sure;   //确认
     private TextView tv_back; //退出
     private TextView tv_before; //上一步
+    private TextView tv_cardinfo ; //显示卡的信息
 
     public OtherCard() {
         // Required empty public constructor
@@ -51,13 +55,19 @@ public class OtherCard extends Fragment implements View.OnClickListener{
 
     private void initView(){
         et_input = (EditText) mView.findViewById(R.id.et_input);
-        tv_sure = (TextView)mView.findViewById(R.id.tv_sure);
         tv_back = (TextView) mView.findViewById(R.id.tv_back);
         tv_before = (TextView)mView.findViewById(R.id.tv_before);
+        tv_cardinfo = (TextView)mView.findViewById(R.id.tv_cardinfo);
 
         tv_before.setOnClickListener(this);
-        tv_sure.setOnClickListener(this);
         tv_back.setOnClickListener(this);
+
+        CardInfoBrocast cifb = new CardInfoBrocast();
+        String r =cifb.cardInfo;
+        if (!r.isEmpty()){
+            getString(r);
+            tv_cardinfo.setText(cardInfoStr);//显示卡的信息
+        }
 
         String result = et_input.getText().toString().trim();
         if(!result.isEmpty()){
@@ -71,21 +81,16 @@ public class OtherCard extends Fragment implements View.OnClickListener{
         Intent intent = new Intent();
         switch (v.getId()){
 
-            case R.id.tv_sure:
+
+            case R.id.tv_back ://退出or下一步
             {
-                //弹出对话框提示信息
-                showDalig("确认为xxxx卡充值"+money+"金额？","提示",true);
-            }
-            break;
-            case R.id.tv_back ://退出
-            {
-                intent.setAction(FrontBankcard.action_fb_back);
+                intent.setAction(FrontBankcard.str);
                 getActivity().sendBroadcast(intent);
             }
             break;
             case R.id.tv_before :
             {
-                intent.setAction(action_back);
+                intent.setAction(action_fb_back);
                 getActivity().sendBroadcast(intent);
             }
             break;
@@ -94,27 +99,18 @@ public class OtherCard extends Fragment implements View.OnClickListener{
         }
     }
 
-    private void showDalig(String message ,String title,boolean flag){
-        CustomDialog.Builder builder = new CustomDialog.Builder(getActivity());
-        builder.setMessage(message);
-        builder.setTitle(title);
-        if(flag){
-            builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    showDalig("正在充值，请稍后...","",false);
-                }
-            });
-            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-        }
-        builder.create().show();
+    private StringBuilder cardInfoStr = new StringBuilder();
+    private void getString(String str){
 
+        JSONObject jsb = null;
+        try {
+            jsb = new JSONObject(str);
+            String id = jsb.optString("id");
+            String balance = jsb.optString("balance");
+            cardInfoStr.append("类型:"+id+"\n"+"余额:"+balance+"\n");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public static final String action_back = "com.androidex.othercard.back";

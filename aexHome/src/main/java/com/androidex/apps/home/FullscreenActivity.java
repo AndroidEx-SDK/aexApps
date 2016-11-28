@@ -2,6 +2,7 @@ package com.androidex.apps.home;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 
 import com.androidex.aexlibs.WebJavaBridge;
 import com.androidex.apps.home.activity.SystemMainActivity;
+import com.androidex.apps.home.brocast.CardInfoBrocast;
 import com.androidex.apps.home.utils.MyAnimation;
 import com.androidex.apps.home.view.CircleTextProgressbar;
 import com.androidex.common.AndroidExActivityBase;
@@ -67,7 +69,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
       private static aexLogFragment mLogFragment = new aexLogFragment();
       private static AdvertFragment mAdvertFragment = new AdvertFragment();
       private CircleTextProgressbar progressbar;
-
+      private CardInfoBrocast st;
       /**
        * Touch listener to use for in-layout UI controls to delay hiding the
        * system UI. This is to prevent the jarring behavior of controls going away
@@ -114,6 +116,11 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             setFullScreen(true);
             //timeCount(progressbar);//实现倒计时功能 并在textview上显示
             delayedHide(1000);
+            //注册广播
+            st = new CardInfoBrocast();
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(aexddAndroidNfcReader.START_ACTION);
+            registerReceiver(st,intentFilter);
       }
 
       public void initView() {
@@ -171,6 +178,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             super.onDestroy();
             hwservice.ExitFullScreen();
             DisableFullScreen();
+            unregisterReceiver(st);
       }
 
       @Override
@@ -457,6 +465,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
                   if ((lNfcReader != null) && (lNfcReader instanceof NfcAdapter.ReaderCallback)) {
                         NfcAdapter.ReaderCallback nfcReader = (NfcAdapter.ReaderCallback) lNfcReader;
                         nfcReader.onTagDiscovered(tag);
+
                   }
             }
       }
@@ -506,5 +515,4 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
                   }
             });
       }
-
 }
