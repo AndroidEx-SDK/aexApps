@@ -45,18 +45,14 @@
         app:rippleColor="@null"
         />
 
-    <com.androidex.apps.home.view.CountDownView
-        android:id="@+id/count_downView"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+    <com.androidex.apps.home.view.CircleTextProgressbar
+        android:id="@+id/progressbar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_gravity="bottom|left"
-        android:layout_margin="@dimen/fab_margin"
-        app:background_color="@color/gray_background"
-        app:border_color="@color/link_color"
-        app:border_width="3dp"
-        app:text="15s"
-        app:text_color="@color/white"
-        app:text_size="14dp"/>
-
+        android:onClick="onClick"
+        android:text="60s"
+        android:visibility="gone"
+        app:in_circle_color="@color/state_color"/>
 
 </android.support.design.widget.CoordinatorLayout>

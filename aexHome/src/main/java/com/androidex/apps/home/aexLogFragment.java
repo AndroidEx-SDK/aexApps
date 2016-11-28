@@ -15,22 +15,26 @@ import com.androidex.logger.MessageOnlyLogFilter;
  */
 
 public class aexLogFragment extends LogFragment {
-    public aexLogFragment() {
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return super.onCreateView(inflater,container,savedInstanceState);
-    }
+      private View logView;
 
-    /** Create a chain of targets that will receive log data
-     *
-     * */
-    public void initializeLogging() {
-        // On screen logging via a fragment with a TextView.
-        LogWrapper logWrapper = (LogWrapper) Log.getLogNode();
-        MessageOnlyLogFilter msgFilter = (MessageOnlyLogFilter)logWrapper.getNext();
-        msgFilter.setNext(this.getLogView());
-    }
+      public aexLogFragment() {
+      }
+
+      @Override
+      public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+            return super.getLogView();
+      }
+
+      /**
+       * Create a chain of targets that will receive log data
+       */
+      public void initializeLogging() {
+            // On screen logging via a fragment with a TextView.
+            LogWrapper logWrapper = (LogWrapper) Log.getLogNode();
+            MessageOnlyLogFilter msgFilter = (MessageOnlyLogFilter) logWrapper.getNext();
+            msgFilter.setNext(this.getLogView());
+      }
 
 }

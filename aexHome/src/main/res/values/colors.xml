@@ -21,7 +21,7 @@
     <color name="clear">#00000000</color>
     <color name="colorPrimary">#FF000000</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#ffffff</color>
+    <color name="colorAccent">#FF4081</color>
     <color name="button_text">#444</color>
     <color name="action_bar">#fff</color>
     <color name="action_bar_pressed">#ffd0d0d0</color>

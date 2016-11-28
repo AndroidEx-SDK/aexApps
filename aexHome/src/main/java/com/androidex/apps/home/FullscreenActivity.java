@@ -7,8 +7,6 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -29,7 +27,7 @@ import android.widget.TextView;
 import com.androidex.aexlibs.WebJavaBridge;
 import com.androidex.apps.home.activity.SystemMainActivity;
 import com.androidex.apps.home.utils.MyAnimation;
-import com.androidex.apps.home.view.CountDownView;
+import com.androidex.apps.home.view.CircleTextProgressbar;
 import com.androidex.common.AndroidExActivityBase;
 import com.androidex.common.DummyContent;
 import com.androidex.common.LogFragment;
@@ -62,24 +60,13 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
       private ViewPager mContentView;
       private View mControlsView;
       private int recyle = 20;
-      final Handler handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                  super.handleMessage(msg);
-                  if (msg.what == 1) {
-                        recyle--;
-                        countDownView.setText("" + recyle);
-                        if (recyle > 0) {
-                              Message message = handler.obtainMessage(1);
-                              handler.sendMessageDelayed(message, 1000);
-                        } else {
-                              if (AUTO_HIDE) {
-                                    delayedHide(1000);
-                              }
-                        }
-                  }
-            }
-      };
+
+      public static WebJavaBridge.OnJavaBridgeListener mJbListener;
+      private static MainFragment mMainFragment = new MainFragment();
+      private static AboutFragment mAboutFragment = new AboutFragment();
+      private static aexLogFragment mLogFragment = new aexLogFragment();
+      private static AdvertFragment mAdvertFragment = new AdvertFragment();
+      private CircleTextProgressbar progressbar;
 
       /**
        * Touch listener to use for in-layout UI controls to delay hiding the
@@ -96,12 +83,18 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             }
       };
 
-      public static WebJavaBridge.OnJavaBridgeListener mJbListener;
-      private static MainFragment mMainFragment = new MainFragment();
-      private static AboutFragment mAboutFragment = new AboutFragment();
-      private static aexLogFragment mLogFragment = new aexLogFragment();
-      private static AdvertFragment mAdvertFragment = new AdvertFragment();
-      private CountDownView countDownView;
+      private CircleTextProgressbar.OnCountdownProgressListener progressListener = new CircleTextProgressbar.OnCountdownProgressListener() {
+            @Override
+            public void onProgress(int what, int progress) {
+                  if (what == 1) {
+                        progressbar.setText(progress + "s");
+                  } else if (what == 2) {
+                        progressbar.setText(progress + "s");
+                  }
+                  // 比如在首页，这里可以判断进度，进度到了100或者0的时候，你可以做跳过操作。
+            }
+      };
+
 
       @Override
       protected void onCreate(Bundle savedInstanceState) {
@@ -119,19 +112,20 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
 
             setFullScreenView(mContentView);
             setFullScreen(true);
-            timeCount(countDownView);//实现倒计时功能 并在textview上显示
+            //timeCount(progressbar);//实现倒计时功能 并在textview上显示
             delayedHide(1000);
       }
 
       public void initView() {
             initActionBar(R.id.toolbar);
             mContentView = (ViewPager) findViewById(R.id.fullscreen_content);
-            countDownView = (CountDownView) findViewById(R.id.count_downView);
+            progressbar = (CircleTextProgressbar) findViewById(R.id.progressbar);
             mControlsView = findViewById(R.id.dummy_button);
             mControlsView.setOnTouchListener(mDelayHideTouchListener);
             mContentView.setBackgroundResource(R.drawable.default_wallpaper);
             //给ViewPager添加动画
             mContentView.setPageTransformer(true, MyAnimation.Instance().new MyPageTransformer());
+            progressbar.setCountdownProgressListener(2, progressListener);
       }
 
       @Override
@@ -162,15 +156,15 @@ public class FullscreenActivity extends AndroidExActivityBase implements OnMultC
             return super.onKeyDown(keyCode, event);
       }
 
-      /**
-       * 倒计时
-       *
-       * @param time_count
-       */
-      private void timeCount(CountDownView time_count) {
-            Message message = handler.obtainMessage(1);
-            handler.sendMessageDelayed(message, 1000);
-      }
+//      /**
+//       * 倒计时
+//       *
+//       * @param time_count
+//       */
+//      private void timeCount(CountDownView time_count) {
+//            Message message = handler.obtainMessage(1);
+//            handler.sendMessageDelayed(message, 1000);
+//      }
 
       @Override
       protected void onDestroy() {

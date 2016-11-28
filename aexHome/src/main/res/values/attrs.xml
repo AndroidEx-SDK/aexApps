@@ -34,13 +34,8 @@
         <attr name="kswAutoAdjustTextPosition" format="boolean"/>
     </declare-styleable>
 
-    <declare-styleable name="CountDownView">
-        <attr name="background_color" format="color" />
-        <attr name="border_width" format="dimension" />
-        <attr name="border_color" format="color" />
-        <attr name="text" format="string" />
-        <attr name="text_size" format="dimension" />
-        <attr name="text_color" format="color" />
+    <declare-styleable name="CircleTextProgressbar">
+        <attr name="in_circle_color" format="color" />
     </declare-styleable>
 
 </resources>
