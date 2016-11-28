@@ -1,5 +1,5 @@
 #include <jni.h>
-#include "com_androidex_devices_aexddMT318.h"
+#include "com_androidex_devices_aexddMT319.h"
 #include <memory.h>
 #include <pthread.h>
 
@@ -15,7 +15,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include "../include/utils.h"
-#include "aexddMT318.h"
+#include "aexddMT319.h"
 
 #include <android/log.h>
 
@@ -139,7 +139,7 @@ static int kkcard_recv_by_len(HKKC env,HKKC obj,int fd,char *buf,int bufsize,int
 }
 
 /**
- *发送键盘命令的函数，发送后会等待键盘返回结果
+ *发送命令的函数，发送后会等待键盘返回结果
  * @param fd 串口句柄
  * @param cmd 命令字符串
  */
@@ -159,15 +159,12 @@ int kkcard_send_cmd(HKKC env,HKKC obj,int fd,char *cmd,int size)
 	*p++ = nLen&0xFF;
 	for(i=0;i<size;i++){
 		*p++ = cmd[i];
-		// __android_log_print(ANDROID_LOG_DEBUG,"kkcard","cmd[%d]=0x%02X",i,(char)cmd[i]);
 	}
 	*p++ = 0x03;
 	ret = BCC(chSendCmd, size+4);
 	*p++ = ret&0xFF;
 
 	int r = com_write(fd, chSendCmd, size+5);
-	// __android_log_print(ANDROID_LOG_DEBUG,"kkcard","sendCmd(\\x%02X\\x%02X\\x%02X【%s】\\x03\\x%02X) return %d"
-	//		,0x02,(nLen>>8)&0xFF,nLen&0xFF, cmd, ret&0xFF,r);
 	return ret;
 }
 
