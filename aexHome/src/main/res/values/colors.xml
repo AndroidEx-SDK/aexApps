@@ -48,5 +48,6 @@
     <color name="line_background">#dddddd</color>
     <color name="floatbutton_back">#3aa12b</color>
 
+    <color name="rb_money_select_color">#6699ff</color>
 
 </resources>
