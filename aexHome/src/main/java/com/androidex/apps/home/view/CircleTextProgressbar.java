@@ -32,7 +32,7 @@ import android.widget.TextView;
 import com.androidex.apps.home.R;
 
 /**
- * Created by liyp on 16/11/27.
+ * liyp
  */
 public class CircleTextProgressbar extends TextView {
 
@@ -76,17 +76,21 @@ public class CircleTextProgressbar extends TextView {
     private RectF mArcRect = new RectF();
 
     /**
+     * 进度倒计时时间。
+     */
+    private static long timeMillis = 30 * 1000;
+    /**
      * 进度。
      */
-    private int progress = 100;
+    private static int progress = (int) (getTimeMillis() / 1000);
+    /**
+     * 将进度条分为的份数
+     */
+    private static int Num = (int) (getTimeMillis() / 1000);
     /**
      * 进度条类型。
      */
     private ProgressType mProgressType = ProgressType.COUNT_BACK;
-    /**
-     * 进度倒计时时间。
-     */
-    private long timeMillis = 3000;
 
     /**
      * View的显示区域。
@@ -215,8 +219,8 @@ public class CircleTextProgressbar extends TextView {
      * @return 返回真正的进度值。
      */
     private int validateProgress(int progress) {
-        if (progress > 100)
-            progress = 100;
+        if (progress > this.progress)
+            progress = this.progress;
         else if (progress < 0)
             progress = 0;
         return progress;
@@ -225,10 +229,18 @@ public class CircleTextProgressbar extends TextView {
     /**
      * 拿到此时的进度。
      *
-     * @return 进度值，最大100，最小0。
+     * @return 进度值，最大60，最小0。
      */
     public int getProgress() {
         return progress;
+    }
+
+    public void setNum(int num) {
+        Num = num;
+    }
+
+    private int getNum() {
+        return Num;
     }
 
     /**
@@ -238,6 +250,7 @@ public class CircleTextProgressbar extends TextView {
      */
     public void setTimeMillis(long timeMillis) {
         this.timeMillis = timeMillis;
+        this.Num= (int) (timeMillis/1000);
         invalidate();
     }
 
@@ -246,8 +259,8 @@ public class CircleTextProgressbar extends TextView {
      *
      * @return 毫秒。
      */
-    public long getTimeMillis() {
-        return this.timeMillis;
+    public static long getTimeMillis() {
+        return timeMillis;
     }
 
     /**
@@ -270,7 +283,7 @@ public class CircleTextProgressbar extends TextView {
                 progress = 0;
                 break;
             case COUNT_BACK:
-                progress = 100;
+                progress = (int) (getTimeMillis() / 1000);
                 break;
         }
     }
@@ -353,7 +366,7 @@ public class CircleTextProgressbar extends TextView {
         int deleteWidth = progressLineWidth + outLineWidth;
         mArcRect.set(bounds.left + deleteWidth / 2, bounds.top + deleteWidth / 2, bounds.right - deleteWidth / 2, bounds.bottom - deleteWidth / 2);
 
-        canvas.drawArc(mArcRect, 0, 360 * progress / 100, false, mPaint);
+        canvas.drawArc(mArcRect, 0, 360 * progress / Num, false, mPaint);
     }
 
     @Override
@@ -387,11 +400,11 @@ public class CircleTextProgressbar extends TextView {
                     progress -= 1;
                     break;
             }
-            if (progress >= 0 && progress <= 60) {
+            if (progress >= 0 && progress <= Num) {
                 if (mCountdownProgressListener != null)
                     mCountdownProgressListener.onProgress(listenerWhat, progress);
                 invalidate();
-                postDelayed(progressChangeTask, timeMillis / 60);
+                postDelayed(progressChangeTask, 1000);
             } else
                 progress = validateProgress(progress);
         }
