@@ -2,12 +2,14 @@ package com.androidex.apps.home.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidex.apps.home.R;
 import com.androidex.apps.home.brocast.CardInfoBrocast;
@@ -62,17 +64,21 @@ public class OtherCard extends Fragment implements View.OnClickListener{
         tv_before.setOnClickListener(this);
         tv_back.setOnClickListener(this);
 
-        CardInfoBrocast cifb = new CardInfoBrocast();
-        String r =cifb.cardInfo;
-        if (!r.isEmpty()){
+        String r = CardInfoBrocast.getCardInfo();
+        if (r!=null){
             getString(r);
             tv_cardinfo.setText(cardInfoStr);//显示卡的信息
         }
-
         String result = et_input.getText().toString().trim();
         if(!result.isEmpty()){
             money = Double.parseDouble(result);
         }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
     }
 
     public static final String action = "com.androidex.othercard.finish";
@@ -106,7 +112,8 @@ public class OtherCard extends Fragment implements View.OnClickListener{
         try {
             jsb = new JSONObject(str);
             String id = jsb.optString("id");
-            String balance = jsb.optString("balance");
+            JSONObject jsb_b = jsb.getJSONObject("balance");
+            String balance = jsb_b.optString("balance");
             cardInfoStr.append("类型:"+id+"\n"+"余额:"+balance+"\n");
         } catch (JSONException e) {
             e.printStackTrace();

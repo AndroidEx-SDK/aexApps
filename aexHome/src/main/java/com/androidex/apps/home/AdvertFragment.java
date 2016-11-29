@@ -217,7 +217,7 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
 
       public void checkfile() {
             //停止定时器
-            if (runnable!=null){
+            if (runnable != null) {
                   handler.removeCallbacks(runnable);
             }
             //删除之前文件
@@ -331,8 +331,10 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
                   return "1";
             } catch (IOException e1) {
                   //showToast("默认配置时间间隔秒数为3!");
-                  e1.printStackTrace();
+                  android.util.Log.d("readfile()方法中"," 读不到文件:"+configname );
                   return null;
+            } finally {
+
             }
       }
 
@@ -344,13 +346,15 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
        * @return boolean
        */
       public void copyFile(String oldPath, String newPath) {
+            FileInputStream inStream = null;
+            FileOutputStream fs = null;
             try {
                   int bytesum = 0;
                   int byteread = 0;
                   File oldfile = new File(oldPath);
                   if (!oldfile.exists()) { //文件不存在时
-                        FileInputStream inStream = new FileInputStream(oldPath); //读入原文件
-                        FileOutputStream fs = new FileOutputStream(newPath);
+                        inStream = new FileInputStream(oldPath); //读入原文件
+                        fs = new FileOutputStream(newPath);
                         byte[] buffer = new byte[1444];
                         int length;
                         while ((byteread = inStream.read(buffer)) != -1) {
@@ -358,11 +362,21 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
                               System.out.println(bytesum);
                               fs.write(buffer, 0, byteread);
                         }
-                        inStream.close();
                   }
             } catch (Exception e) {
                   System.out.println("复制单个文件操作出错");
-                  e.printStackTrace();
+
+            } finally {
+                  try {
+                        if (inStream!=null){
+                              inStream.close();
+                        }
+                        if (fs!=null){
+                              fs.close();
+                        }
+                  } catch (Exception e) {
+                        e.printStackTrace();
+                  }
             }
       }
 

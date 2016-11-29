@@ -58,7 +58,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
       private static aexLogFragment mLogFragment = new aexLogFragment();
       private static AdvertFragment mAdvertFragment = new AdvertFragment();
       private CircleTextProgressbar progressbar;
-      private CardInfoBrocast st;
+      public CardInfoBrocast st;
       /**
        * Touch listener to use for in-layout UI controls to delay hiding the
        * system UI. This is to prevent the jarring behavior of controls going away
@@ -79,11 +79,9 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
       private CircleTextProgressbar.OnCountdownProgressListener progressListener = new CircleTextProgressbar.OnCountdownProgressListener() {
             @Override
             public void onProgress(int what, int progress) {
-                  if (what == 1) {
-                        progressbar.setText(progress + "s");
-                  } else if (what == 2) {
-                        progressbar.setText(progress + "s");// progress这里可以判断进度，进度到了100或者0的时候，可以做跳过操作。
-                  }
+                  //如果有多个可根据what进行判断
+                  //progress这里可以判断进度，进度到了100或者0的时候，可以做跳过操作。
+                  progressbar.setText(progress + "s");
             }
       };
 
@@ -106,20 +104,27 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(aexddAndroidNfcReader.START_ACTION);
             registerReceiver(st,intentFilter);
-
+            initProgressBar();
       }
 
       public void initView() {
             initActionBar(R.id.toolbar);
             mContentView = (ViewPager) findViewById(R.id.fullscreen_content);
-            progressbar = (CircleTextProgressbar) findViewById(R.id.progressbar);
+
             mControlsView = findViewById(R.id.dummy_button);
             mControlsView.setOnTouchListener(mDelayHideTouchListener);
             mContentView.setBackgroundResource(R.drawable.default_wallpaper);
-            //给ViewPager添加动画
-            // mContentView.setPageTransformer(true, MyAnimation.Instance().new MyPageTransformer());
-            progressbar.setCountdownProgressListener(2, progressListener);
+            // mContentView.setPageTransformer(true, MyAnimation.Instance().new MyPageTransformer());//给ViewPager添加动画
+
             mDevices = new appDevicesManager(this);
+
+      }
+
+      public void initProgressBar() {
+            progressbar = (CircleTextProgressbar) findViewById(R.id.progressbar);
+            progressbar.setCountdownProgressListener(2, progressListener);
+            progressbar.setTimeMillis(60 * 1000);
+
       }
 
       @Override

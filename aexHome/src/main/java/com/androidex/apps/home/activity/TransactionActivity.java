@@ -38,8 +38,6 @@ public class TransactionActivity extends AndroidExActivityBase {
 
     private NextBrodcastResive nbr;
 
-    private String id,balance; //得到卡里面的信息
-
     private int recyle = 20;
     final Handler handler = new Handler(){
         @Override

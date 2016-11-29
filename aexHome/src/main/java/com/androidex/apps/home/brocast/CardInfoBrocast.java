@@ -18,14 +18,19 @@ public class CardInfoBrocast extends BroadcastReceiver{
         super();
     }
 
-    public String cardInfo;
+    public static  String cardInfo;
     @Override
     public void onReceive(Context context, Intent intent) {
         if(intent.getAction().equals(aexddAndroidNfcReader.START_ACTION)){
             cardInfo = intent.getStringExtra("cardinfo");
-            android.util.Log.d("fullscreenactivity","cardinfo="+cardInfo);
             Intent i = new Intent(context, TransactionActivity.class);
             context.startActivity(i);
         }
+    }
+
+    public static String getCardInfo() {
+        if (cardInfo!=null)
+        return cardInfo;
+        else return null;
     }
 }
