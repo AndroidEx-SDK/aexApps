@@ -21,6 +21,7 @@
             android:background="?attr/colorPrimary"
             android:subtitle="专注于工控解决方案"
             android:title="@string/app_name"
+            android:onClick="onClick"
             app:popupTheme="@style/ToolbarPopupTheme">
 
         </android.support.v7.widget.Toolbar>
@@ -46,6 +47,7 @@
         />
 
     <com.androidex.apps.home.view.CircleTextProgressbar
+        android:onClick="onClick"
         android:id="@+id/progressbar"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -53,5 +55,6 @@
         android:layout_margin="@dimen/fab_margin"
         android:text="60s"
         app:in_circle_color="@color/state_color"/>
+
 
 </android.support.design.widget.CoordinatorLayout>
