@@ -101,7 +101,7 @@ public class SmartBizMainActivity extends AppCompatActivity {
                   @Override
                   public void onClick(View v) {
                         if (mDevices.mBankCardReader.Open()) {
-                              mDevices.mBankCardReader.reset();
+                              //mDevices.mBankCardReader.reset();
                               mDevices.mBankCardReader.ReciveDataLoop();
                               //mDevices.mBankCardReader.queryCard();
                               //mDevices.mBankCardReader.popCard();
@@ -116,7 +116,7 @@ public class SmartBizMainActivity extends AppCompatActivity {
                   @Override
                   public void onClick(View v) {
                         if (mDevices.mCasCardReader.Open()) {
-                              mDevices.mCasCardReader.reset();
+                              //mDevices.mCasCardReader.reset();
                               mDevices.mCasCardReader.ReciveDataLoop();
                               //mDevices.mCasCardReader.queryCard();
                               //mDevices.mCasCardReader.popCard();
