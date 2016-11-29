@@ -55,7 +55,7 @@ public class appDevicesConfig extends appLibsConfig {
                     e.printStackTrace();
                 }
             }
-            
+
             mConfigCasReader = propertys.optJSONObject(CAS_READER);
             if (mConfigCasReader == null){
                 mConfigCasReader = new JSONObject();

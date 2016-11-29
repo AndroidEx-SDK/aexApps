@@ -29,11 +29,11 @@ public class appDevicesManager extends appLibsDevices {
     /**
      * 银行卡读卡器接口类
      */
-    public aexddPoscReader mBankCardReader = null;
+    public aexddPbocReader mBankCardReader = null;
     /**
      * 燃气电力读卡器接口类
      */
-    public aexddPoscReader mCasCardReader = null;
+    public aexddPbocReader mCasCardReader = null;
     /**
      * 非接触读卡器类
      */

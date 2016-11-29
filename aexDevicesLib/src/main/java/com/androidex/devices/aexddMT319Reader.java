@@ -3,7 +3,6 @@ package com.androidex.devices;
 import android.content.Context;
 
 import com.androidex.apps.aexdeviceslib.R;
-import com.androidex.common.Base16;
 import com.androidex.logger.Log;
 
 import org.json.JSONException;
@@ -13,7 +12,7 @@ import org.json.JSONObject;
  * Created by yangjun on 2016/10/24.
  */
 
-public class aexddMT319Reader extends aexddPoscReader {
+public class aexddMT319Reader extends aexddPbocReader {
     static
     {
         try {
@@ -35,7 +34,7 @@ public class aexddMT319Reader extends aexddPoscReader {
 
     @Override
     public String getDeviceName() {
-        return mContext.getString(R.string.DEVICE_READER_MT318);
+        return mContext.getString(R.string.DEVICE_READER_MT319);
     }
 
     /**
@@ -50,27 +49,13 @@ public class aexddMT319Reader extends aexddPoscReader {
 
     @Override
     public boolean Open() {
-        String printerPort = mParams.optString(PORT_ADDRESS);
-
-        if(mSerialFd > 0)
-            Close();
-        String ret = native_mt318_Open(printerPort);
-        try {
-            JSONObject r = new JSONObject(ret);
-            mSerialFd = r.optInt("fd",0);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return mSerialFd > 0;
+        return super.Open();
     }
 
     @Override
     public boolean Close()
     {
-        native_mt318_Close();
-        mSerialFd = 0;
-        return true;
+        return super.Close();
     }
 
     /**
@@ -119,7 +104,7 @@ public class aexddMT319Reader extends aexddPoscReader {
             public void run() {
                 //在线程中执行jni函数
                 //OnBackCall.ONBACKCALL_RECIVEDATA
-                native_mt318_ReadCard("",0);
+                mt319ReadCardLoop(mSerialFd,0);
             }
         };
         pthread = new Thread(run);
@@ -127,143 +112,186 @@ public class aexddMT319Reader extends aexddPoscReader {
         return 0;
     }
 
-    @Override
+    public byte[]   pbocReadPacket(int timeout)
+    {
+        return mt319ReadPacket(mSerialFd,timeout);
+    }
+
+    public int      pbocReadCardLoop(int timeout)
+    {
+        return mt319ReadCardLoop(mSerialFd,timeout);
+    }
+
+    public void     pbocSendCmd(String cmd,int size)
+    {
+        mt319SendCmd(mSerialFd,cmd,size);
+    }
+
+    public void     pbocSendHexCmd(String hexcmd)
+    {
+        mt319SendHexCmd(mSerialFd,hexcmd);
+    }
+
     public boolean selfTest() {
+        Log.i(TAG,String.format("Version:%s",getVersion()));
+        Log.i(TAG,String.format("Status:%s",getCardStatusString(queryStatus())));
         return true;
     }
 
-    @Override
-    public boolean reset()
+    /**
+     * 获得读卡器版本信息
+     * @return      成功返回版本字符串，否则返回空
+     */
+    public String getVersion()
     {
-        boolean ret = false;
-        //
-        mt318SendHexCmd(mSerialFd,"3040");
-        String r = ReciveDataHex(255,3000*delayUint);
-        Log.d(TAG,String.format("readerReset:%s",r));
-        ret = r.length() > 0;
-        //native_mt318_Reset(3000*delayUint);
-        return ret;
+        String result = null;
+        pbocSendHexCmd("3140");
+        byte[] r = pbocReadPacket(3000*delayUint);
+        if(r != null && r.length > 5){
+            int mlen = (r[1]<<8) | r[2];
+            if(r[3] == 0x31 && r[4] == 0x40)
+                result = new String(r,5,mlen - 2);
+        }
+        return result;
     }
 
-    @Override
-    public boolean popCard(){
-        boolean ret = false;
-        String rhex = "";
-        //
-        mt318SendHexCmd(mSerialFd,"3240");
-        byte[] r = ReciveData(255,3000*delayUint);
-        try {
-           // rhex = Base16.encode(r);
-            rhex = Base16.encode(r) ;
-            Log.d(TAG,String.format("readerPopCard:%s",rhex));
-        } catch (Exception e) {
-            e.printStackTrace();
+    public int queryStatus()
+    {
+        int result = 0;
+        pbocSendHexCmd("3144");
+        byte[] r = pbocReadPacket(3000*delayUint);
+        if(r != null && r.length > 6){
+            int s1 = r[5];
+            int s2 = r[6];
+            result = (s1<<8) | s2;
         }
-        if(r.length > 5) {
-            ret = r[5] == 0x59;     //rd[5] = 0x59
-        }
-        return ret;
+        return result;
     }
 
-    @Override
-    public int m1Serial(){
-        int ret = 0;
-        String rhex = "";
-        //
-        mt318SendHexCmd(mSerialFd,"3431");
-        byte[] r = ReciveData(255,3000*delayUint);
-        try {
-            rhex = Base16.encode(r);
-            Log.d(TAG,String.format("readerM1Serial:%s", rhex));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if(r.length > 9) {
-            if(r[5] == 'Y'){
-                ret = r[6]<<24 + r[7]<<16 + r[8]<<8 + r[9];
+    /**
+     * 读取磁道信息，如果相应的磁道有读到数据则设置，否则为空或者未设置。
+     * <ul>
+     * <li>磁道1：track1</li>
+     * <li>磁道2：track2</li>
+     * <li>磁道3：track3</li>
+     * </ul>
+     * @return  存储磁道信息的JSON对象
+     */
+    public JSONObject getTrackInfo()
+    {
+        JSONObject track = new JSONObject();
+        pbocSendHexCmd("3B35");
+        byte[] r = pbocReadPacket(3000*delayUint);
+        if(r != null && r.length > 5){
+            int mlen = (r[1]<<8) | r[2];
+            if(r[3] == 0x3B && r[4] == 0x35) {
+                if(r[5] == 0x4E){
+                    //读磁道错误
+                    if(r[6] != 0x03) {
+                        //三个磁道有部分正确
+                        try {
+                            int len1 = 1;
+                            if(r[6] != 0xE1) {
+                                while (r[6 + len1] != 0x00) len1++;
+                                track.put("tarck1", new String(r, 6, len1++));
+                            }else len1++;
+                            int len2 = 1;
+                            if(r[6+len1] != 0xE2) {
+                                while (r[6 + len1 + len2] != 0x00) len2++;
+                                track.put("tarck2", new String(r, 6 + len1, len2++));
+                            }else len2++;
+                            int len3 = 1;
+                            if(r[6+len1+len2] != 0xE3) {
+                                while (r[6 + len1 + len2 + len3] != 0x00) len3++;
+                                track.put("tarck3", new String(r, 6 + len1 + len2, len3));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    return track;
+                }else if(r[5] == 0x59){
+                    //三个磁道均读正确
+                    int len1 = 0;
+                    while(r[6+len1] != 0x00)len1++;
+                    try {
+                        track.put("tarck1",new String(r,6,len1++));
+                        int len2 = 0;
+                        while(r[6+len1+len2] != 0x00)len2++;
+                        track.put("tarck2",new String(r,6+len1,len2++));
+                        int len3 = 0;
+                        while(r[6+len1+len2+len3] != 0x00)len3++;
+                        track.put("tarck3",new String(r,6+len1+len2,len3));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
-        return ret;
+        return track;
     }
 
+    /**
+     * S1:卡座状态
+     * <ul>
+     * <li>S1=0x30 卡机内无卡</li>
+     * <li>S1=0x31 卡机内有接触式IC卡</li>
+     * <li>S1=0x32 卡机内有非接触式A卡</li>
+     * <li>S1=0x33 卡机内有非接触式B卡</li>
+     * <li>S1=0x34 卡机内有非接触式M1卡</li>
+     * <li>S1=0x3f 卡机内有无法识别卡</li>
+     * </ul>
+     * S2: 是否有可读磁卡信息
+     * <ul>
+     * <li>S2=0x30 无可读磁卡信息
+     * <li>S2=0x31 有可读磁卡信息
+     * </ul>
+     * @param type      状态
+     * @return  返回状态字符串信息
+     */
     @Override
     public String getCardStatusString(int type)
     {
-        switch(type){
-            case 0x3F: // 卡机内无卡或卡机内有未知类型卡
-                return "卡机内无卡或卡机内有未知类型卡";
-            case 0x31: // 接触式cpu卡
-                return "接触式CPU卡";
-            case 0x32: // RF--TYPE B CPU卡
-                return "RF--TYPE B CPU卡";
-            case 0x33: // RF—TYPE A CPU卡
-                return "RF--TYPE A CPU卡";
-            case 0x34: // RF—M1卡
-                return "RF-M1卡";
-            case 0x37: // 磁卡
-                return "磁卡";
-            case 0x38: // 磁卡和M1卡
-                return "磁卡和M1卡";
-            case 0x39: // 磁卡和接触式cpu卡
-                return "磁卡和接触式cpu卡";
-            case 0x3A: // 接触式cpu卡和M1卡
-                return "接触式cpu卡和M1卡";
-            case 0x3B: // 磁卡、接触式cpu卡和M1卡
-                return "磁卡、接触式cpu卡和M1卡";
+        String s1 = "" ,s2 = "";
+        switch(type&0xFF00){
+            case 0x3000:
+                s1 = "卡机内无卡";
+                break;
+            case 0x3100:
+                s1 = "卡机内有接触式IC卡";
+                break;
+            case 0x3200:
+                s1 = "卡机内有非接触式A卡";
+                break;
+            case 0x3300:
+                s1 = "卡机内有非接触式B卡";
+                break;
+            case 0x3400:
+                s1 = "卡机内有非接触式M1卡";
+                break;
+            case 0x3F00:
+                s1 = "卡机内有无法识别卡";
+                break;
             default :
-                return "未知代码";
+                s1 = "未知";
         }
+        switch(type&0x00FF){
+            case 0x30:
+                s2 = "无可读磁卡信息";
+                break;
+            case 0x31:
+                s2 = "有可读磁卡信息";
+                break;
+            default :
+                s2 = "未知";
+        }
+
+        return String.format("%s-%s",s1,s2);
     }
 
-    @Override
-    public int queryCard()
-    {
-        int ret = 0;
-        String rhex = "";
-        //
-        mt318SendHexCmd(mSerialFd,"3144");
-        byte[] r = ReciveData(255,3000*delayUint);
-        try {
-            rhex = Base16.encode(r);
-            Log.d(TAG,String.format("readerQueryCard:%s", rhex));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if(r.length > 9) {
-            if(r[3] == 0x31 && r[4] == 0x44 && (r[5] == 0x30 || r[5] == 0x31)){
-                ret = r[6];
-            }
-        }
-        return ret;
-    }
-
-    public native String    native_mt318_Open(String arg);						           // 打开打印机
-    public native int       native_mt318_Close();								           // 关闭打印机
-    public  native String  	native_mt318_Reset(int timeout);
-    public  native int 	    native_mt318_ReadCard(String callback,int timeout);
-    // 兼容 世融通读卡器
-    public  native int      native_mt318_RFM_13_Ring(int timeout);
-    public  native int      native_mt318_RFM_13_ReadGuid(int timeout);
-    public  native int      native_mt318_RFM_13_ReadCard(int sectorid, int blockid, int timeout);
-    public  native int      native_mt318_RFM_13_WriteCard(int sectorid, byte[] data0, int len0, byte[] data1, int len1, byte[] data2, int len2);
-    // 兼容 峰华科技 MF-30 读卡器
-    public  native int      native_mt318_MF_30_ReadCard(int sectorid, int blockid, int timeout);
-    public  native int      native_mt318_MF_30_WriteCard(int sectorid,int blockid, byte[] data0, int len0);
-    public  native int      native_mt318_MF_30_ReadGuid(int timeout);
-    public  native int      native_mt318_MF_30_GetVer(int timeout);
-    public  native int      native_mt318_MF_30_ReadCardbyPwd(int sectorid, int blockid, byte[] passwd, int pwdlen,int timeout);
-    // 兼容 峰华科技 S3 cpu读卡器
-    // 复位读卡器
-    public  native int      native_mt318_CPU_Reset(int timeout);
-    // 上电
-    public native int       native_mt318_CPU_PowerOn(int timeout);
-    // 下电
-    public native int       native_mt318_CPU_PowerOff(int timeout);
-    // Apdu 指令
-    public  native int      native_mt318_CPU_Apdu(byte[] data, int len,int timeout);
-
-    public  native int mt318ReadCardLoop(int fd,int timeout);
-    public  native void mt318SendCmd(int fd,String cmd,int size);
-    public  native void mt318SendHexCmd(int fd,String hexcmd);
+    public  native byte[]   mt319ReadPacket(int fd,int timeout);
+    public  native int      mt319ReadCardLoop(int fd,int timeout);
+    public  native void     mt319SendCmd(int fd,String cmd,int size);
+    public  native void     mt319SendHexCmd(int fd,String hexcmd);
 
 }

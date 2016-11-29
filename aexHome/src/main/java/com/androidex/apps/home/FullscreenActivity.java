@@ -24,9 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidex.aexlibs.WebJavaBridge;
-import com.androidex.apps.home.activity.SystemMainActivity;
 import com.androidex.apps.home.brocast.CardInfoBrocast;
-import com.androidex.apps.home.utils.MyAnimation;
 import com.androidex.apps.home.view.CircleTextProgressbar;
 import com.androidex.common.AndroidExActivityBase;
 import com.androidex.common.DummyContent;
@@ -45,9 +43,7 @@ import java.io.UnsupportedEncodingException;
  * status bar and navigation/system bar) with user interaction.
  */
 @TargetApi(Build.VERSION_CODES.KITKAT)
-
-
-public class FullscreenActivity extends AndroidExActivityBase implements NfcAdapter.ReaderCallback{
+public class FullscreenActivity extends AndroidExActivityBase implements NfcAdapter.ReaderCallback {
 	public static final String LOG = "Log";
 	public static final int DLG_NETINFO = 1004;
 	private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -80,7 +76,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
 			} else if (what == 2) {
 				progressbar.setText(progress + "s");
 			}
-			if (progress==1){
+			if (progress == 1) {
 				delayedHide(AUTO_HIDE_DELAY_MILLIS);
 			}
 			// 比如在首页，这里可以判断进度，进度到了100或者0的时候，你可以做跳过操作。
@@ -103,7 +99,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
 		st = new CardInfoBrocast();
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(aexddAndroidNfcReader.START_ACTION);
-		registerReceiver(st,intentFilter);
+		registerReceiver(st, intentFilter);
 		initProgressBar();
 	}
 
@@ -302,7 +298,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
 				progressbar.reStart();
 				break;
 			case R.id.progressbar:
-				progressbar.setTimeMillis(30*1000);
+				progressbar.setTimeMillis(30 * 1000);
 				progressbar.setNum(30);
 				progressbar.reStart();
 				break;
@@ -337,7 +333,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-						 Bundle savedInstanceState) {
+								 Bundle savedInstanceState) {
 			final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 			TextView textView = (TextView) rootView.findViewById(R.id.section_label);
 			textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
@@ -502,3 +498,5 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
 		});
 	}
 }
+
+

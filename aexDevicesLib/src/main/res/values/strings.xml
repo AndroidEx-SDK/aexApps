@@ -2,7 +2,7 @@
     <string name="app_name">aexDevicesLib</string>
     <string name="DEVICE_PRINTER_B58">微型热敏打印机B58</string>
     <string name="DEVICE_PK_KMY350">凯名扬密码键盘KMY350</string>
-    <string name="DEVICE_READER_MT318">多合一读卡器MT318</string>
-    <string name="DEVICE_PK_ZTC70">政通密码键盘</string>
+    <string name="DEVICE_READER_MT319">多合一读卡器MT319</string>
+    <string name="DEVICE_PK_ZTC70">证通密码键盘</string>
 
 </resources>
