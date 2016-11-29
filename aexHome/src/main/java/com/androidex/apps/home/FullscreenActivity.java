@@ -45,459 +45,460 @@ import java.io.UnsupportedEncodingException;
  * status bar and navigation/system bar) with user interaction.
  */
 @TargetApi(Build.VERSION_CODES.KITKAT)
-public class FullscreenActivity extends AndroidExActivityBase implements NfcAdapter.ReaderCallback, View.OnClickListener {
-      public static final String LOG = "Log";
-      public static final int DLG_NETINFO = 1004;
-      private SectionsPagerAdapter mSectionsPagerAdapter;
-      private ViewPager mContentView;
-      private View mControlsView;
-      private appDevicesManager mDevices;
-      public static WebJavaBridge.OnJavaBridgeListener mJbListener;
-      private static MainFragment mMainFragment = new MainFragment();
-      private static AboutFragment mAboutFragment = new AboutFragment();
-      private static aexLogFragment mLogFragment = new aexLogFragment();
-      private static AdvertFragment mAdvertFragment = new AdvertFragment();
-      private CircleTextProgressbar progressbar;
-      public CardInfoBrocast st;
-      /**
-       * Touch listener to use for in-layout UI controls to delay hiding the
-       * system UI. This is to prevent the jarring behavior of controls going away
-       * while interacting with activity UI.
-       */
 
 
-      private final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                  if (AUTO_HIDE) {
-                        delayedHide(1000);
-                  }
-                  return false;
-            }
-      };
+public class FullscreenActivity extends AndroidExActivityBase implements NfcAdapter.ReaderCallback{
+	public static final String LOG = "Log";
+	public static final int DLG_NETINFO = 1004;
+	private SectionsPagerAdapter mSectionsPagerAdapter;
+	private ViewPager mContentView;
+	private View mControlsView;
+	private CircleTextProgressbar progressbar;
+	private appDevicesManager mDevices;
+	public static WebJavaBridge.OnJavaBridgeListener mJbListener;
+	private static MainFragment mMainFragment = new MainFragment();
+	private static AboutFragment mAboutFragment = new AboutFragment();
+	private static aexLogFragment mLogFragment = new aexLogFragment();
+	private static AdvertFragment mAdvertFragment = new AdvertFragment();
+	public CardInfoBrocast st;
 
-      private CircleTextProgressbar.OnCountdownProgressListener progressListener = new CircleTextProgressbar.OnCountdownProgressListener() {
-            @Override
-            public void onProgress(int what, int progress) {
-                  //如果有多个可根据what进行判断
-                  //progress这里可以判断进度，进度到了100或者0的时候，可以做跳过操作。
-                  progressbar.setText(progress + "s");
-            }
-      };
+	private final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
+		@Override
+		public boolean onTouch(View view, MotionEvent motionEvent) {
+			if (AUTO_HIDE) {
+				delayedHide(1000);
+			}
+			return false;
+		}
+	};
 
-      @Override
-      protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.aexhome_main);
-            hwservice.EnterFullScreen();
-            getWindow().getDecorView().setBackgroundResource(R.drawable.default_wallpaper);
-            initView();
-            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-            mContentView.setAdapter(mSectionsPagerAdapter);
+	private CircleTextProgressbar.OnCountdownProgressListener progressListener = new CircleTextProgressbar.OnCountdownProgressListener() {
+		@Override
+		public void onProgress(int what, int progress) {
+			if (what == 1) {
 
-            setFullScreenView(mContentView);
-            setFullScreen(true);
-            //timeCount(progressbar);//实现倒计时功能 并在textview上显示
-            delayedHide(1000);
-            //注册广播
-            st = new CardInfoBrocast();
-            IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(aexddAndroidNfcReader.START_ACTION);
-            registerReceiver(st,intentFilter);
-            initProgressBar();
-      }
+			} else if (what == 2) {
+				progressbar.setText(progress + "s");
+			}
+			if (progress==1){
+				delayedHide(AUTO_HIDE_DELAY_MILLIS);
+			}
+			// 比如在首页，这里可以判断进度，进度到了100或者0的时候，你可以做跳过操作。
+		}
+	};
 
-      public void initView() {
-            initActionBar(R.id.toolbar);
-            mContentView = (ViewPager) findViewById(R.id.fullscreen_content);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.aexhome_main);
+		hwservice.EnterFullScreen();
+		getWindow().getDecorView().setBackgroundResource(R.drawable.default_wallpaper);
+		initView();
+		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+		mContentView.setAdapter(mSectionsPagerAdapter);
 
-            mControlsView = findViewById(R.id.dummy_button);
-            mControlsView.setOnTouchListener(mDelayHideTouchListener);
-            mContentView.setBackgroundResource(R.drawable.default_wallpaper);
-            // mContentView.setPageTransformer(true, MyAnimation.Instance().new MyPageTransformer());//给ViewPager添加动画
+		setFullScreenView(mContentView);
+		setFullScreen(true);
+		//注册广播
+		st = new CardInfoBrocast();
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction(aexddAndroidNfcReader.START_ACTION);
+		registerReceiver(st,intentFilter);
+		initProgressBar();
+	}
 
-            mDevices = new appDevicesManager(this);
+	public void initView() {
+		initActionBar(R.id.toolbar);
+		mContentView = (ViewPager) findViewById(R.id.fullscreen_content);
 
-      }
+		mControlsView = findViewById(R.id.dummy_button);
+		mControlsView.setOnTouchListener(mDelayHideTouchListener);
+		mContentView.setBackgroundResource(R.drawable.default_wallpaper);
+		// mContentView.setPageTransformer(true, MyAnimation.Instance().new MyPageTransformer());//给ViewPager添加动画
 
-      public void initProgressBar() {
-            progressbar = (CircleTextProgressbar) findViewById(R.id.progressbar);
-            progressbar.setCountdownProgressListener(2, progressListener);
-            progressbar.setTimeMillis(60 * 1000);
+		mDevices = new appDevicesManager(this);
 
-      }
+	}
 
-      @Override
-      protected void onResume() {
-            super.onResume();
-            enableReaderMode();
-            //if(verify_password == 0)
-            //    CheckPassword();
-            hwservice.ExitFullScreen();
-            EnableFullScreen();
-      }
+	public void initProgressBar() {
+		progressbar = (CircleTextProgressbar) findViewById(R.id.progressbar);
+		progressbar.setCountdownProgressListener(2, progressListener);
+		//progressbar.setTimeMillis(60 * 1000);
+
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		enableReaderMode();
+		//if(verify_password == 0)
+		//    CheckPassword();
+		hwservice.ExitFullScreen();
+		EnableFullScreen();
+	}
 
 
-      @Override
-      protected void onPause() {
-            super.onPause();
-            disableReaderMode();
-            hwservice.ExitFullScreen();
-            DisableFullScreen();
-      }
+	@Override
+	protected void onPause() {
+		super.onPause();
+		disableReaderMode();
+		hwservice.ExitFullScreen();
+		DisableFullScreen();
+	}
 
-      @Override
-      public boolean onKeyDown(int keyCode, KeyEvent event) {
-            if (keyCode == KeyEvent.KEYCODE_BACK) {
-                  showExitDialog();
-                  return false;
-            }
-            return super.onKeyDown(keyCode, event);
-      }
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			showExitDialog();
+			return false;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 
-      @Override
-      protected void onDestroy() {
-            super.onDestroy();
-            hwservice.ExitFullScreen();
-            DisableFullScreen();
-            unregisterReceiver(st);
-            mDevices.mPrinter.Close();
-      }
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		hwservice.ExitFullScreen();
+		DisableFullScreen();
+		mDevices.mPrinter.Close();
+	}
 
-      @Override
-      protected void onPostCreate(Bundle savedInstanceState) {
-            super.onPostCreate(savedInstanceState);
-            // are available.
-            //在这里设置开启自动隐藏toolbar
-            delayedHide(AUTO_HIDE_DELAY_MILLIS);
-      }
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		// are available.
+		//在这里设置开启自动隐藏toolbar
+		delayedHide(AUTO_HIDE_DELAY_MILLIS);
+	}
 
-      @Override
-      public void initActionBar(int resId) {
-            Toolbar toolbar = (Toolbar) findViewById(resId);
-            super.initActionBar(resId);
-            if (toolbar != null) {
-                  toolbar.setLogo(com.androidex.aexapplibs.R.drawable.androidex);      //设置logo图片
-                  toolbar.setNavigationIcon(com.androidex.aexapplibs.R.drawable.back);     //设置导航按钮
-                  toolbar.setTitle(R.string.app_name);          //设置标题
-                  toolbar.setSubtitle(R.string.app_subtitle);   //设置子标题
-                  toolbar.setTitleTextColor(Color.WHITE);
-                  toolbar.setSubtitleTextColor(Color.WHITE);
-                  setSupportActionBar(toolbar);
-            }
-      }
+	@Override
+	public void initActionBar(int resId) {
+		Toolbar toolbar = (Toolbar) findViewById(resId);
+		super.initActionBar(resId);
+		if (toolbar != null) {
+			toolbar.setLogo(com.androidex.aexapplibs.R.drawable.androidex);      //设置logo图片
+			toolbar.setNavigationIcon(com.androidex.aexapplibs.R.drawable.back);     //设置导航按钮
+			toolbar.setTitle(R.string.app_name);          //设置标题
+			toolbar.setSubtitle(R.string.app_subtitle);   //设置子标题
+			toolbar.setTitleTextColor(Color.WHITE);
+			toolbar.setSubtitleTextColor(Color.WHITE);
+			setSupportActionBar(toolbar);
+		}
+	}
 
-      @Override
-      public void ShowControlBar() {
-            mControlsView.setVisibility(View.VISIBLE);
-            super.ShowControlBar();
-      }
+	@Override
+	public void ShowControlBar() {
+		mControlsView.setVisibility(View.VISIBLE);
+		super.ShowControlBar();
+	}
 
-      @Override
-      public void HideControlBar() {
-            mControlsView.setVisibility(View.GONE);
-            super.HideControlBar();
-      }
+	@Override
+	public void HideControlBar() {
+		mControlsView.setVisibility(View.GONE);
+		super.HideControlBar();
+	}
 
-      /**
-       * Create a chain of targets that will receive log data
-       */
-      @Override
-      public void initializeLogging() {
-            super.initializeLogging();
-            mLogFragment.initializeLogging();
-      }
+	/**
+	 * Create a chain of targets that will receive log data
+	 */
+	@Override
+	public void initializeLogging() {
+		super.initializeLogging();
+		mLogFragment.initializeLogging();
+	}
 
-      @Override
-      public boolean onCreateOptionsMenu(Menu menu) {
-            getMenuInflater().inflate(R.menu.main, menu);
-            MenuItem m4 = menu.add(R.string.str_quit);
-            m4.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                  public boolean onMenuItemClick(MenuItem item) {
-                        showExitDialog();
-                        return true;
-                  }
-            });
-            return super.onCreateOptionsMenu(menu);
-      }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.main, menu);
+		MenuItem m4 = menu.add(R.string.str_quit);
+		m4.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				showExitDialog();
+				return true;
+			}
+		});
+		return super.onCreateOptionsMenu(menu);
+	}
 
-      @Override
-      public boolean onOptionsItemSelected(MenuItem item) {
-            switch (item.getItemId()) {
-                  case R.id.action_settings:
-                        ViewGroup v = (ViewGroup) mContentView.getChildAt(mContentView.getCurrentItem());
-                        Intent mIntent = new Intent();
-                        mIntent.setAction(Intent.ACTION_VIEW);
-                        mIntent.setClassName("com.android.settings", "com.android.settings.Settings");
-                        mIntent.putExtra("back", true);
-                        sendBroadcast(new Intent("com.android.action.display_navigationbar"));
-                        startActivityForResult(mIntent, DLG_NETINFO);
-                        return true;
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.action_settings:
+				ViewGroup v = (ViewGroup) mContentView.getChildAt(mContentView.getCurrentItem());
+				Intent mIntent = new Intent();
+				mIntent.setAction(Intent.ACTION_VIEW);
+				mIntent.setClassName("com.android.settings", "com.android.settings.Settings");
+				mIntent.putExtra("back", true);
+				sendBroadcast(new Intent("com.android.action.display_navigationbar"));
+				startActivityForResult(mIntent, DLG_NETINFO);
+				return true;
 
-                  case R.id.action_print:
-                        Log.i(TAG, "打印测试程序...");
-                        if (mDevices.mPrinter.Open()) {
-                              new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                          mDevices.mPrinter.selfTest();
-                                          String str = "安卓工控";
-                                          try {
-                                                mDevices.mPrinter.WriteData(str.getBytes("GBK"), str.getBytes().length);
-                                                aexddB58Printer printer = (aexddB58Printer) (mDevices.mPrinter);
-                                                printer.ln();
-                                          } catch (UnsupportedEncodingException e) {
-                                                e.printStackTrace();
-                                          }
-                                          mDevices.mPrinter.WriteDataHex("1D564200");
-                                          mDevices.mPrinter.Close();
-                                          Log.i(TAG, "打印测试结束，关闭打印机设备。");
-                                    }
-                              }).start();
+			case R.id.action_print:
+				Log.i(TAG, "打印测试程序...");
+				if (mDevices.mPrinter.Open()) {
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							mDevices.mPrinter.selfTest();
+							String str = "安卓工控";
+							try {
+								mDevices.mPrinter.WriteData(str.getBytes("GBK"), str.getBytes().length);
+								aexddB58Printer printer = (aexddB58Printer) (mDevices.mPrinter);
+								printer.ln();
+							} catch (UnsupportedEncodingException e) {
+								e.printStackTrace();
+							}
+							mDevices.mPrinter.WriteDataHex("1D564200");
+							mDevices.mPrinter.Close();
+							Log.i(TAG, "打印测试结束，关闭打印机设备。");
+						}
+					}).start();
 
-                        } else {
-                              String s = String.format("Open printer fial:%s", mDevices.mPrinter.mParams.optString(appDeviceDriver.PORT_ADDRESS));
-                              Log.i(TAG, s);
-                              Toast.makeText(this, s, Toast.LENGTH_LONG).show();
-                        }
+				} else {
+					String s = String.format("Open printer fial:%s", mDevices.mPrinter.mParams.optString(appDeviceDriver.PORT_ADDRESS));
+					Log.i(TAG, s);
+					Toast.makeText(this, s, Toast.LENGTH_LONG).show();
+				}
 
-                        return true;
-                  default:
-                        return super.onOptionsItemSelected(item);
-            }
-      }
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
 
-      @Override
-      public void onStart() {
-            super.onStart();
-      }
+	@Override
+	public void onStart() {
+		super.onStart();
+	}
 
-      @Override
-      public void onStop() {
-            super.onStop();
-      }
+	@Override
+	public void onStop() {
+		super.onStop();
+	}
 
-      static {
-            DummyContent.addItem(new DummyContent.DummyItem("log", "日志", "", LogFragment.class, "url=log", true, 0));
-      }
+	static {
+		DummyContent.addItem(new DummyContent.DummyItem("log", "日志", "", LogFragment.class, "url=log", true, 0));
+	}
 
-      /**
-       * 根据Fragment的字符串标识来启动显示。
-       *
-       * @param id
-       */
-      public void showFragment(String id) {
-            DummyContent.DummyItem aItem = DummyContent.findItemByTag(id);
-            if (aItem != null) {
-                  showFragment(mMainFragment.getView().getId(), aItem);
-                  mJbListener = (WebJavaBridge.OnJavaBridgeListener) aItem.getView();
-                  DummyContent.setActive(aItem);
-            }
-      }
+	/**
+	 * 根据Fragment的字符串标识来启动显示。
+	 *
+	 * @param id
+	 */
+	public void showFragment(String id) {
+		DummyContent.DummyItem aItem = DummyContent.findItemByTag(id);
+		if (aItem != null) {
+			showFragment(mMainFragment.getView().getId(), aItem);
+			mJbListener = (WebJavaBridge.OnJavaBridgeListener) aItem.getView();
+			DummyContent.setActive(aItem);
+		}
+	}
 
-      @Override
-      public void onClick(View v) {
-            switch (v.getId()) {
-                  case R.id.toolbar:
+	public void onClick(View v) {
+		switch (v.getId()) {
+			case R.id.toolbar:
 //                        Intent intent = new Intent(FullscreenActivity.this, SystemMainActivity.class);
 //                        startActivity(intent);
-                        break;
-                  case R.id.progressbar:
-                        progressbar.reStart();
-                        break;
-            }
-      }
+				progressbar.reStart();
+				break;
+			case R.id.progressbar:
+				progressbar.setTimeMillis(30*1000);
+				progressbar.setNum(30);
+				progressbar.reStart();
+				break;
 
-      /**
-       * A placeholder fragment containing a simple view.
-       */
-      public static class PlaceholderFragment extends Fragment {
-            /**
-             * The fragment argument representing the section number for this
-             * fragment.
-             */
-            private static final String ARG_SECTION_NUMBER = "section_number";
+		}
+	}
 
-            public PlaceholderFragment() {
-            }
+	/**
+	 * A placeholder fragment containing a simple view.
+	 */
+	public static class PlaceholderFragment extends Fragment {
+		/**
+		 * The fragment argument representing the section number for this
+		 * fragment.
+		 */
+		private static final String ARG_SECTION_NUMBER = "section_number";
 
-            /**
-             * Returns a new instance of this fragment for the given section
-             * number.
-             */
-            public static PlaceholderFragment newInstance(int sectionNumber) {
-                  PlaceholderFragment fragment = new PlaceholderFragment();
-                  Bundle args = new Bundle();
-                  args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-                  fragment.setArguments(args);
-                  return fragment;
-            }
+		public PlaceholderFragment() {
+		}
 
-            @Override
-            public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                     Bundle savedInstanceState) {
-                  final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-                  TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-                  textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-                  rootView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                              Log.d("Fullscreen", "mContentView click");
-                              Intent intent = new Intent(FullscreenActivity.ActionControlBar);
-                              intent.putExtra("flag", "toggle");
-                              intent.putExtra("bar", true);
-                              rootView.getContext().sendBroadcast(intent);
-                        }
-                  });
-                  switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
-                        case 1:
-                              rootView.setBackgroundResource(R.drawable.default_wallpaper);
-                              break;
-                        case 2:
-                              rootView.setBackgroundResource(R.drawable.wallpaper01);
-                              break;
-                        case 3:
-                        default:
-                              rootView.setBackgroundResource(R.drawable.wallpaper02);
-                              break;
-                  }
-                  return rootView;
-            }
-      }
+		/**
+		 * Returns a new instance of this fragment for the given section
+		 * number.
+		 */
+		public static PlaceholderFragment newInstance(int sectionNumber) {
+			PlaceholderFragment fragment = new PlaceholderFragment();
+			Bundle args = new Bundle();
+			args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+			fragment.setArguments(args);
+			return fragment;
+		}
 
-      /**
-       * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-       * one of the sections/tabs/pages.
-       * 主页面的ViewPagers的页面生成Adapter，主页面的数量和内容在这里产生。
-       */
-      public class SectionsPagerAdapter extends FragmentPagerAdapter {
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+						 Bundle savedInstanceState) {
+			final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+			TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+			textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+			rootView.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					Log.d("Fullscreen", "mContentView click");
+					Intent intent = new Intent(FullscreenActivity.ActionControlBar);
+					intent.putExtra("flag", "toggle");
+					intent.putExtra("bar", true);
+					rootView.getContext().sendBroadcast(intent);
+				}
+			});
+			switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
+				case 1:
+					rootView.setBackgroundResource(R.drawable.default_wallpaper);
+					break;
+				case 2:
+					rootView.setBackgroundResource(R.drawable.wallpaper01);
+					break;
+				case 3:
+				default:
+					rootView.setBackgroundResource(R.drawable.wallpaper02);
+					break;
+			}
+			return rootView;
+		}
+	}
 
-            public static final int PAGER_COUNT = 3;
+	/**
+	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+	 * one of the sections/tabs/pages.
+	 * 主页面的ViewPagers的页面生成Adapter，主页面的数量和内容在这里产生。
+	 */
+	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-            public SectionsPagerAdapter(FragmentManager fm) {
-                  super(fm);
-            }
+		public static final int PAGER_COUNT = 3;
 
-            /**
-             * 获得页面数量
-             *
-             * @return 返回实际的页面数量
-             */
-            @Override
-            public int getCount() {
-                  // Show 3 total pages.
-                  return PAGER_COUNT;
-            }
+		public SectionsPagerAdapter(FragmentManager fm) {
+			super(fm);
+		}
 
-            /**
-             * 获得指定序号的页面Fragment对象
-             *
-             * @param position
-             * @return
-             */
-            @Override
-            public Fragment getItem(int position) {
-                  // getItem is called to instantiate the fragment for the given page.
-                  // Return a PlaceholderFragment (defined as a static inner class below).
-                  switch (position) {
-                        case 0: {
-                              return mAdvertFragment;
-                        }
-                        case 1: {
-                              return mAboutFragment;
-                        }
-                        case 2:     //日志Fragment
-                        {
-                              return mLogFragment;
-                        }
-                        default:
-                              return null;
-                  }
-                  //return PlaceholderFragment.newInstance(position + 1);
-            }
+		/**
+		 * 获得页面数量
+		 *
+		 * @return 返回实际的页面数量
+		 */
+		@Override
+		public int getCount() {
+			// Show 3 total pages.
+			return PAGER_COUNT;
+		}
 
-            /**
-             * 获得Pager的标题
-             *
-             * @param position Pager的序号
-             * @return
-             */
-            @Override
-            public CharSequence getPageTitle(int position) {
-                  switch (position) {
-                        case 0:
-                              return "Main";    //主页面
-                        case 1:
-                              return "About";     //关于本机页面
-                        case 2:
-                              return "Log";       //运行日志页面
-                        default:
-                              return "Unknown";
-                  }
-            }
-      }
+		/**
+		 * 获得指定序号的页面Fragment对象
+		 *
+		 * @param position
+		 * @return
+		 */
+		@Override
+		public Fragment getItem(int position) {
+			// getItem is called to instantiate the fragment for the given page.
+			// Return a PlaceholderFragment (defined as a static inner class below).
+			switch (position) {
+				case 0: {
+					return mAdvertFragment;
+				}
+				case 1: {
+					return mAboutFragment;
+				}
+				case 2:     //日志Fragment
+				{
+					return mLogFragment;
+				}
+				default:
+					return null;
+			}
+			//return PlaceholderFragment.newInstance(position + 1);
+		}
 
-      /**
-       * 此函数实现NfcAdapter.ReaderCallback接口，这里调用NFC Reader类的接口来实现该函数的功能。
-       * 这里只是为了把这个调用映射到此Activity而已。
-       *
-       * @param tag
-       */
-      @Override
-      public void onTagDiscovered(Tag tag) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                  aexddNfcReader lNfcReader = appDevicesManager.getDevicesManager(this).mNfcReader;
-                  if ((lNfcReader != null) && (lNfcReader instanceof NfcAdapter.ReaderCallback)) {
-                        NfcAdapter.ReaderCallback nfcReader = (NfcAdapter.ReaderCallback) lNfcReader;
-                        nfcReader.onTagDiscovered(tag);
+		/**
+		 * 获得Pager的标题
+		 *
+		 * @param position Pager的序号
+		 * @return
+		 */
+		@Override
+		public CharSequence getPageTitle(int position) {
+			switch (position) {
+				case 0:
+					return "Main";    //主页面
+				case 1:
+					return "About";     //关于本机页面
+				case 2:
+					return "Log";       //运行日志页面
+				default:
+					return "Unknown";
+			}
+		}
+	}
 
-                  }
-            }
-      }
+	/**
+	 * 此函数实现NfcAdapter.ReaderCallback接口，这里调用NFC Reader类的接口来实现该函数的功能。
+	 * 这里只是为了把这个调用映射到此Activity而已。
+	 *
+	 * @param tag
+	 */
+	@Override
+	public void onTagDiscovered(Tag tag) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			aexddNfcReader lNfcReader = appDevicesManager.getDevicesManager(this).mNfcReader;
+			if ((lNfcReader != null) && (lNfcReader instanceof NfcAdapter.ReaderCallback)) {
+				NfcAdapter.ReaderCallback nfcReader = (NfcAdapter.ReaderCallback) lNfcReader;
+				nfcReader.onTagDiscovered(tag);
+			}
+		}
+	}
 
-      /**
-       * 启用NFC读卡
-       */
-      public void enableReaderMode() {
-            Log.i(TAG, "启用读卡模式");
-            NfcAdapter nfc = NfcAdapter.getDefaultAdapter(this);
-            if (nfc != null) {
-                  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        if (this instanceof NfcAdapter.ReaderCallback) {
-                              nfc.enableReaderMode(this, this, aexddAndroidNfcReader.READER_FLAGS, null);
+	/**
+	 * 启用NFC读卡
+	 */
+	public void enableReaderMode() {
+		Log.i(TAG, "启用读卡模式");
+		NfcAdapter nfc = NfcAdapter.getDefaultAdapter(this);
+		if (nfc != null) {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+				if (this instanceof NfcAdapter.ReaderCallback) {
+					nfc.enableReaderMode(this, this, aexddAndroidNfcReader.READER_FLAGS, null);
 
-                        }
-                  }
-            }
-      }
+				}
+			}
+		}
+	}
 
-      /**
-       * 禁用NFC读卡
-       */
-      public void disableReaderMode() {
-            Log.i(TAG, "禁用读卡模式");
-            NfcAdapter nfc = NfcAdapter.getDefaultAdapter(this);
-            if (nfc != null) {
-                  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        nfc.disableReaderMode(this);
-                  }
-            }
-      }
+	/**
+	 * 禁用NFC读卡
+	 */
+	public void disableReaderMode() {
+		Log.i(TAG, "禁用读卡模式");
+		NfcAdapter nfc = NfcAdapter.getDefaultAdapter(this);
+		if (nfc != null) {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+				nfc.disableReaderMode(this);
+			}
+		}
+	}
 
-      /**
-       * 当NFC读卡器读到AID后调用此函数事件通知此Activity。
-       *
-       * @param account
-       */
-      public void onAccountReceived(final String account) {
-            // This callback is run on a background thread, but updates to UI elements must be performed
-            // on the UI thread.
-            this.runOnUiThread(new Runnable() {
-                  @Override
-                  public void run() {
-                        //mAccountField.setText(account);
-                        Log.i(TAG, String.format("NFC:%s", account));
-                  }
-            });
-      }
+	/**
+	 * 当NFC读卡器读到AID后调用此函数事件通知此Activity。
+	 *
+	 * @param account
+	 */
+	public void onAccountReceived(final String account) {
+		// This callback is run on a background thread, but updates to UI elements must be performed
+		// on the UI thread.
+		this.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				//mAccountField.setText(account);
+				Log.i(TAG, String.format("NFC:%s", account));
+			}
+		});
+	}
 }

@@ -50,8 +50,8 @@ public class appDevicesManager extends appLibsDevices {
         mNfcReader = new aexddAndroidNfcReader(ctx);
 
         mPrinter = new aexddB58Printer(ctx,mConfig.mConfigPrinter);
-        mBankCardReader = new aexddMT318Reader(ctx,mConfig.mConfigBankReader);
-        mCasCardReader = new aexddMT318Reader(ctx,mConfig.mConfigCasReader);
+        mBankCardReader = new aexddMT319Reader(ctx,mConfig.mConfigBankReader);
+        mCasCardReader = new aexddMT319Reader(ctx,mConfig.mConfigCasReader);
         mPasswordKeypad = new aexddKMY350(ctx, mConfig.mConfigPasswordKeypad);
     }
 

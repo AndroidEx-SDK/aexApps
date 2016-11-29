@@ -13,7 +13,7 @@ import org.json.JSONObject;
  * Created by yangjun on 2016/10/24.
  */
 
-public class aexddMT318Reader extends aexddPoscReader {
+public class aexddMT319Reader extends aexddPoscReader {
     static
     {
         try {
@@ -25,11 +25,11 @@ public class aexddMT318Reader extends aexddPoscReader {
 
     public static final String TAG = "mt318";
 
-    public aexddMT318Reader(Context ctx) {
+    public aexddMT319Reader(Context ctx) {
         super(ctx);
     }
 
-    public aexddMT318Reader(Context ctx, JSONObject args) {
+    public aexddMT319Reader(Context ctx, JSONObject args) {
         super(ctx, args);
     }
 

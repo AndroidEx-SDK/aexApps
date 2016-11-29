@@ -31,55 +31,55 @@ public class appDevicesConfig extends appLibsConfig {
         if(loadFromUserInfo()) {
             //成功读取配置
             mConfigPrinter = propertys.optJSONObject(PRINTER);
-            if (mConfigPrinter!=null){
-                if(mConfigPrinter.optString(appDeviceDriver.PORT_ADDRESS,"") == ""){
-                    try {
-                        mConfigPrinter.put(appDeviceDriver.PORT_ADDRESS,PORT_ADDR_PRINTER);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }else {
-                
+            if (mConfigPrinter == null){
+                mConfigPrinter = new JSONObject();
                 //Toast.makeText(context, "打印机未成功链接", Toast.LENGTH_SHORT).show();
             }
-            mConfigBankReader = propertys.optJSONObject(BANK_READER);
-            if (mConfigBankReader!=null){
-               if(mConfigBankReader.optString(appDeviceDriver.PORT_ADDRESS,"") == ""){
-                   try {
-                       mConfigBankReader.put(appDeviceDriver.PORT_ADDRESS,PORT_ADDR_BANKREADER);
-                   } catch (JSONException e) {
-                       e.printStackTrace();
-                   }
-               }
-           }else {
-                //Toast.makeText(context, "银行卡设备未成功链接", Toast.LENGTH_SHORT).show();
+            if(mConfigPrinter.optString(appDeviceDriver.PORT_ADDRESS,"") == ""){
+                try {
+                    mConfigPrinter.put(appDeviceDriver.PORT_ADDRESS,PORT_ADDR_PRINTER);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
-            mConfigCasReader = propertys.optJSONObject(CAS_READER);
-            if (mConfigCasReader!=null){
-                if(mConfigCasReader.optString(appDeviceDriver.PORT_ADDRESS,"") == ""){
-                    try {
-                        mConfigCasReader.put(appDeviceDriver.PORT_ADDRESS,PORT_ADDR_CASREADER);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+            mConfigBankReader = propertys.optJSONObject(BANK_READER);
+            if (mConfigBankReader == null){
+                mConfigBankReader = new JSONObject();
+                //Toast.makeText(context, "银行卡设备未成功链接", Toast.LENGTH_SHORT).show();
+            }
+            if(mConfigBankReader.optString(appDeviceDriver.PORT_ADDRESS,"") == ""){
+                try {
+                    mConfigBankReader.put(appDeviceDriver.PORT_ADDRESS,PORT_ADDR_BANKREADER);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            }else {
+            }
+            
+            mConfigCasReader = propertys.optJSONObject(CAS_READER);
+            if (mConfigCasReader == null){
+                mConfigCasReader = new JSONObject();
                 //Toast.makeText(context, "燃气卡设备未连接", Toast.LENGTH_SHORT).show();
+            }
+            if(mConfigCasReader.optString(appDeviceDriver.PORT_ADDRESS,"") == ""){
+                try {
+                    mConfigCasReader.put(appDeviceDriver.PORT_ADDRESS,PORT_ADDR_CASREADER);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             mConfigPasswordKeypad = propertys.optJSONObject(PASSWORD_KEYPAD);
-            if (mConfigPasswordKeypad!=null){
-                if(mConfigPasswordKeypad.optString(appDeviceDriver.PORT_ADDRESS,"") == ""){
-                    try {
-                        mConfigPasswordKeypad.put(appDeviceDriver.PORT_ADDRESS,PORT_ADDR_PASSWORD_KEYPAD);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }else {
+            if (mConfigPasswordKeypad == null){
+                mConfigPasswordKeypad = new JSONObject();
                 //Toast.makeText(context, "密码键盘未成功链接", Toast.LENGTH_SHORT).show();
+            }
+            if(mConfigPasswordKeypad.optString(appDeviceDriver.PORT_ADDRESS,"") == ""){
+                try {
+                    mConfigPasswordKeypad.put(appDeviceDriver.PORT_ADDRESS,PORT_ADDR_PASSWORD_KEYPAD);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
         }else{

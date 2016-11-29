@@ -4,8 +4,8 @@
 #include     <stdlib.h>
 #include     <locale.h>
 #include     <wchar.h>
-#include "com_androidex_devices_aexddMT318.h"
-#include "aexddMT318.h"
+#include "com_androidex_devices_aexddMT319.h"
+#include "aexddMT319.h"
 #include <android/log.h>
 #include "../include/utils.h"
 
@@ -16,30 +16,30 @@
  * 密码键盘的全局句柄，在未调用kmy_open的命令前，此变量为NULL。
  * 在调用kmy_close后恢复为NULL
  */
-static jclass mt318Provider=NULL;
+static jclass mt319Provider=NULL;
 static jmethodID javakkcEvent=NULL;
 
-JNIEXPORT jint JNICALL aexddMT318_JNI_OnLoad(JavaVM* vm, void* reserved)
+JNIEXPORT jint JNICALL aexddMT319_JNI_OnLoad(JavaVM* vm, void* reserved)
 {
 	return JNI_VERSION_1_4;
 }
 
-JNIEXPORT void JNICALL aexddMT318_JNI_OnUnload(JavaVM* vm, void* reserved)
+JNIEXPORT void JNICALL aexddMT319_JNI_OnUnload(JavaVM* vm, void* reserved)
 {
 }
 
 static jclass getProvider(JNIEnv* env)
 {
-	return (*env)->FindClass(env,"com/androidex/devices/aexddMT318Reader");
+	return (*env)->FindClass(env,"com/androidex/devices/aexddMT319Reader");
 }
 
 static jmethodID getMethod(JNIEnv* env,char *func,char *result)
 {
-	if(mt318Provider==NULL)
-		mt318Provider = getProvider(env);
-	if(mt318Provider)
+	if(mt319Provider==NULL)
+		mt319Provider = getProvider(env);
+	if(mt319Provider)
 	{
-		return (*env)->GetMethodID(env, mt318Provider, func,result);
+		return (*env)->GetMethodID(env, mt319Provider, func,result);
 	}else{
 		return NULL;
 	}
@@ -70,14 +70,14 @@ static int jni_kkcard_event(JNIEnv* env,jobject obj,int code,char *msg)
 	return TRUE;
 }
 
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT318Reader_mt318ReadCardLoop
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT319Reader_mt319ReadCardLoop
         (JNIEnv *env, jobject this, jint fd,jint timeout)
 {
     kkcard_set_event(jni_kkcard_event);
     return kkcard_read_loop(env,this,fd,timeout);
 }
 
-JNIEXPORT void JNICALL Java_com_androidex_devices_aexddMT318Reader_mt318SendCmd
+JNIEXPORT void JNICALL Java_com_androidex_devices_aexddMT319Reader_mt319SendCmd
         (JNIEnv *env, jobject this, jint fd, jstring cmd, jint size)
 {
     char *strCmd = (char *) (*env)->GetStringUTFChars(env,cmd, 0);
@@ -87,7 +87,7 @@ JNIEXPORT void JNICALL Java_com_androidex_devices_aexddMT318Reader_mt318SendCmd
     (*env)->ReleaseStringUTFChars(env, cmd, strCmd);
 }
 
-JNIEXPORT void JNICALL Java_com_androidex_devices_aexddMT318Reader_mt318SendHexCmd
+JNIEXPORT void JNICALL Java_com_androidex_devices_aexddMT319Reader_mt319SendHexCmd
         (JNIEnv *env, jobject this, jint fd, jstring hexcmd)
 {
     char *strCmd = (char *) (*env)->GetStringUTFChars(env,hexcmd, 0);
