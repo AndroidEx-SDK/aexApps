@@ -50,4 +50,6 @@
 
     <color name="rb_money_select_color">#6699ff</color>
 
+    <color name="_yello">#f2ea47</color>
+    <color name="blue">#2c364d</color>
 </resources>
