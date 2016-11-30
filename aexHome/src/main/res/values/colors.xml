@@ -47,6 +47,7 @@
     <color name="title_background">#545454</color>
     <color name="line_background">#dddddd</color>
     <color name="floatbutton_back">#3aa12b</color>
-
+    <color name="_yello">#f2ea47</color>
+    <color name="blue">#2c364d</color>
 
 </resources>
