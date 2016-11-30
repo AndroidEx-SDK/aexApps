@@ -32,6 +32,7 @@ typedef int (*ON_KKCARD_EVENT)(HKKC env,HKKC obj,int code,char *msg);
 void kkcard_set_event(ON_KKCARD_EVENT oke);
 int kkcard_event(HKKC env,HKKC obj,int code,char *pszFormat,...);
 
+int kkcard_recive_packet(HKKC env,HKKC obj,int fd,char *buf,int bufsize,int timeout);
 int kkcard_read_loop(HKKC env,HKKC obj,int fd,int timeout);
 int kkcard_send_cmd(HKKC env,HKKC obj,int fd,char *cmd,int size);
 

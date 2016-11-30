@@ -92,3 +92,19 @@ JNIEXPORT void JNICALL Java_com_androidex_devices_aexddKMY350_kmySendHexCmd
     kmy_send_hexcmd(env,this,fd,strCmd,size);
     (*env)->ReleaseStringUTFChars(env, hexcmd, strCmd);
 }
+
+JNIEXPORT jbyteArray JNICALL Java_com_androidex_devices_aexddKMY350_kmyReadPacket
+        (JNIEnv *env, jobject this, jint fd,jint timeout)
+{
+    char buf[255];
+
+    kmy_set_event(jni_kmy_event);
+    int ret = kmy_recive_packet(env,this,fd,buf,sizeof(buf),timeout);
+    if(ret > 0){
+        jbyteArray  r = (*env)->NewByteArray(env,ret);
+        (*env)->SetByteArrayRegion(env,r, 0, ret, buf);
+        return r;
+    }else{
+        return NULL;
+    }
+}

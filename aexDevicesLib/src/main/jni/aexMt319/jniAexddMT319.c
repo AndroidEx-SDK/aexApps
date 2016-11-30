@@ -77,14 +77,31 @@ JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT319Reader_mt319ReadCard
     return kkcard_read_loop(env,this,fd,timeout);
 }
 
-JNIEXPORT void JNICALL Java_com_androidex_devices_aexddMT319Reader_mt319SendCmd
-        (JNIEnv *env, jobject this, jint fd, jstring cmd, jint size)
+JNIEXPORT jbyteArray JNICALL Java_com_androidex_devices_aexddMT319Reader_mt319ReadPacket
+        (JNIEnv *env, jobject this, jint fd,jint timeout)
 {
-    char *strCmd = (char *) (*env)->GetStringUTFChars(env,cmd, 0);
+    char buf[255];
+
+    kkcard_set_event(jni_kkcard_event);
+    int ret = kkcard_recive_packet(env,this,fd,buf,sizeof(buf),timeout);
+    if(ret > 0){
+        jbyteArray  r = (*env)->NewByteArray(env,ret);
+        (*env)->SetByteArrayRegion(env,r, 0, ret, buf);
+        return r;
+    }else{
+        return NULL;
+    }
+}
+
+JNIEXPORT void JNICALL Java_com_androidex_devices_aexddMT319Reader_mt319SendCmd
+        (JNIEnv *env, jobject this, jint fd, jbyteArray cmd, jint size)
+{
+    char *strCmd = (char *) (*env)->GetByteArrayElements(env,cmd,JNI_FALSE);;
 
     kkcard_set_event(jni_kkcard_event);
     kkcard_send_cmd(env,this,fd,strCmd,size);
-    (*env)->ReleaseStringUTFChars(env, cmd, strCmd);
+    (*env)->ReleaseByteArrayElements(env,cmd,strCmd,0);  //释放掉
+    //(*env)->ReleaseStringUTFChars(env, cmd, strCmd);
 }
 
 JNIEXPORT void JNICALL Java_com_androidex_devices_aexddMT319Reader_mt319SendHexCmd

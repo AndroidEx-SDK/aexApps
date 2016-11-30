@@ -1,9 +1,10 @@
-package com.androidex.apps.home;
+package com.androidex.apps.home.brocast;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.androidex.apps.home.FullscreenActivity;
 import com.androidex.logger.Log;
 
 public class BootBroadcastReceiver extends BroadcastReceiver {    

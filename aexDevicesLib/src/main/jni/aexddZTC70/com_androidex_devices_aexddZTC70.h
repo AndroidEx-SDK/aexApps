@@ -12,12 +12,13 @@ extern "C" {
 JNIEXPORT jint JNICALL aexddZTC70_JNI_OnLoad(JavaVM *vm, void *reserved);
 JNIEXPORT void JNICALL aexddZTC70_JNI_OnUnload(JavaVM* vm, void* reserved);
 
-
-JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddZTC70_kmyReadKeyLoop
+JNIEXPORT jbyteArray JNICALL Java_com_androidex_devices_aexddZTC70_ztReadPacket
+        (JNIEnv *, jobject, jint,jint);
+JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddZTC70_ztReadKeyLoop
         (JNIEnv *, jobject, jint, jint);
-JNIEXPORT void JNICALL Java_com_androidex_devices_aexddZTC70_kmySendCmd
+JNIEXPORT void JNICALL Java_com_androidex_devices_aexddZTC70_ztSendCmd
         (JNIEnv *, jobject, jint, jstring, jint);
-JNIEXPORT void JNICALL Java_com_androidex_devices_aexddZTC70_kmySendHexCmd
+JNIEXPORT void JNICALL Java_com_androidex_devices_aexddZTC70_ztSendHexCmd
         (JNIEnv *, jobject, jint, jstring, jint);
 
 #ifdef __cplusplus

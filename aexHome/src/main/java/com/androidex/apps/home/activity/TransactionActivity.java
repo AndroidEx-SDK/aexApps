@@ -16,6 +16,7 @@ import android.view.Window;
 import android.widget.TextView;
 
 import com.androidex.apps.home.R;
+import com.androidex.apps.home.fragment.AfterBankcard;
 import com.androidex.apps.home.fragment.FrontBankcard;
 import com.androidex.apps.home.fragment.OtherCard;
 import com.androidex.apps.home.view.NoScrollViewPager;
@@ -119,8 +120,8 @@ public class TransactionActivity extends AndroidExActivityBase {
      */
     private List<Fragment> initData(){
         mFragmentList = new ArrayList<Fragment>();
-        mFragmentList.add(new FrontBankcard());
         mFragmentList.add(new OtherCard());
+        mFragmentList.add(new AfterBankcard());
         return mFragmentList;
     }
 

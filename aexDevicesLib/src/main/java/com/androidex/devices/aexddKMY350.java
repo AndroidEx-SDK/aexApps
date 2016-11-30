@@ -111,9 +111,10 @@ public class aexddKMY350 extends aexddPasswordKeypad {
         return obj;
     }
 
+
     @Override
-    public boolean selfTest() {
-        return false;
+    public int ReciveDataLoop() {
+        return 0;
     }
 
     /**
@@ -121,11 +122,11 @@ public class aexddKMY350 extends aexddPasswordKeypad {
      * @return
      */
     @Override
-    public int ReciveDataLoop() {
+    public int pkReadLoop(final int timeout) {
         Runnable run=new Runnable() {
             public void run() {
                 //在线程中执行jni函数
-                int r = kmyReadKeyLoop(mSerialFd,10000*delayUint);
+                int r = kmyReadKeyLoop(mSerialFd,timeout);
             }
         };
         pthread = new Thread(run);
@@ -133,6 +134,36 @@ public class aexddKMY350 extends aexddPasswordKeypad {
         return 0;
     }
 
+    @Override
+    public byte[]   pkReadPacket(int timeout)
+    {
+        return kmyReadPacket(mSerialFd,timeout);
+    }
+
+    /**
+     * 发送键盘命令。
+     * @param cmd   命令内容，不包含头、尾和BCC
+     */
+    @Override
+    public void     pkSendCmd(byte[] cmd,int size)
+    {
+        kmySendCmd(mSerialFd,cmd,size);
+    }
+
+    /**
+     * 发送Base16格式命令。
+     * @param hexcmd   Base16命令内容，不包含头、尾和BCC
+     */
+    @Override
+    public void     pkSendHexCmd(String hexcmd)
+    {
+        kmySendHexCmd(mSerialFd,hexcmd,hexcmd.length()/2);
+    }
+
+    @Override
+    public boolean selfTest() {
+        return false;
+    }
     @Override
     public String getStatusStr(int st)
     {
@@ -177,24 +208,6 @@ public class aexddKMY350 extends aexddPasswordKeypad {
                     return "未知错误代码";
                 }
         }
-    }
-
-    /**
-     * 发送键盘命令。
-     * @param cmd   命令内容，不包含头、尾和BCC
-     */
-    public void pkSendCmd(String cmd)
-    {
-        kmySendCmd(mSerialFd,cmd,cmd.length());
-    }
-
-    /**
-     * 发送Base16格式命令。
-     * @param cmd   Base16命令内容，不包含头、尾和BCC
-     */
-    public void pkSendHexCmd(String cmd)
-    {
-        kmySendHexCmd(mSerialFd,cmd,cmd.length());
     }
 
     /**
@@ -361,8 +374,9 @@ public class aexddKMY350 extends aexddPasswordKeypad {
         return ret;
     }
 
-    public  native int  kmyReadKeyLoop(int fd,int timeout);
-    public  native void kmySendCmd(int fd,String cmd,int size);
-    public  native void kmySendHexCmd(int fd,String hexcmd,int size);
+    public  native byte[]   kmyReadPacket(int fd,int timeout);
+    public  native int      kmyReadKeyLoop(int fd,int timeout);
+    public  native void     kmySendCmd(int fd,byte[] cmd,int size);
+    public  native void     kmySendHexCmd(int fd,String hexcmd,int size);
 
 }

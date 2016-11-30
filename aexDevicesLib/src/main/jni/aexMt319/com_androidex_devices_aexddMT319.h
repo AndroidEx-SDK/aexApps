@@ -11,10 +11,12 @@ extern "C" {
 JNIEXPORT jint JNICALL aexddMT319_JNI_OnLoad(JavaVM* vm, void* reserved);
 void JNICALL aexddMT319_JNI_OnUnload(JavaVM* vm, void* reserved);
 
+JNIEXPORT jbyteArray JNICALL Java_com_androidex_devices_aexddMT319Reader_mt319ReadPacket
+        (JNIEnv *, jobject, jint,jint);
 JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddMT319Reader_mt319ReadCardLoop
         (JNIEnv *, jobject, jint,jint);
 JNIEXPORT void JNICALL Java_com_androidex_devices_aexddMT319Reader_mt319SendCmd
-        (JNIEnv *, jobject, jint, jstring, jint);
+        (JNIEnv *, jobject, jint, jbyteArray , jint);
 JNIEXPORT void JNICALL Java_com_androidex_devices_aexddMT319Reader_mt319SendHexCmd
         (JNIEnv *, jobject, jint, jstring);
 
