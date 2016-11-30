@@ -28,6 +28,7 @@ typedef int (*ON_ZTC_EVENT)(HZTC env,HZTC obj,int code,char *pszFormat,...);
  */
 void ztc_set_event(ON_ZTC_EVENT oke);
 
+int ztc_recive_packet(HZTC env,HZTC obj,int fd,char *buf,int bufsize,int timeout);
 int ztc_read_key_loop(HZTC env,HZTC obj,int fd,int timeout);
 int ztc_send_cmd(HZTC env,HZTC obj,int fd,char *cmd,int size);
 int ztc_send_hexcmd(HZTC env,HZTC obj,int fd,char *hexcmd,int size);

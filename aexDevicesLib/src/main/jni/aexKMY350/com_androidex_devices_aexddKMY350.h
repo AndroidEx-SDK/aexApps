@@ -11,7 +11,8 @@ extern "C" {
 JNIEXPORT jint JNICALL aexddKMY350_JNI_OnLoad(JavaVM *vm, void *reserved);
 JNIEXPORT void JNICALL aexddKMY350_JNI_OnUnload(JavaVM* vm, void* reserved);
 
-
+JNIEXPORT jbyteArray JNICALL Java_com_androidex_devices_aexddKMY350_kmyReadPacket
+        (JNIEnv *, jobject, jint,jint);
 JNIEXPORT jint JNICALL Java_com_androidex_devices_aexddKMY350_kmyReadKeyLoop
         (JNIEnv *, jobject, jint, jint);
 JNIEXPORT void JNICALL Java_com_androidex_devices_aexddKMY350_kmySendCmd

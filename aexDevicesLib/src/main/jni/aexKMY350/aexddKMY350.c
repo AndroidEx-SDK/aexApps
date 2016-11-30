@@ -432,3 +432,55 @@ int kmy_read_key_loop(HKMY env,HKMY obj,int fd,int timeout)
     return buf[0] != 0x0D;
 }
 
+/**
+ * 读取一个数据包的函数，抛弃前面的无效数据直到找到一个0x02的数据包头。
+ * 然后读取一个完整的数据包：0x02+Len(2字节的长度)+Data(Len字节)+0x03+BCC
+ * 返回：
+ *      > 0     数据包总长度
+ *      == 0    读取超时
+ *      < 0     读取错误
+ */
+int kmy_recive_packet(HKMY env,HKMY obj,int fd,char *buf,int bufsize,int timeout)
+{
+    int len = 0;
+    int mlen = 0;
+    char *p = buf;
+
+    memset(p, 0, bufsize);
+    len = com_recive(fd, p, 1, timeout);
+    while (len == 1 && *p != 0x02) {
+        //丢弃数据包头之前的数据
+        len = com_recive(fd, p, 1, timeout);
+    }
+    if (len <= 0){
+        //如果超时或者发生错误则返回
+        return len;
+    }
+    //找到了数据包头0x02
+    p++;    //移到下一字节处
+    len = com_recive(fd, p, 1, timeout);    //读长度
+    if(len == 1){
+        //读到一个字节
+        mlen = (*p++);
+    }else{
+        //读取长度错误
+        return -1000;
+    }
+    int lhex = mlen + 2;
+    while(lhex > 0){
+        //读取包内容、包尾及BCC
+        len = com_recive(fd,p,lhex,timeout);
+        if(len > 0){
+            lhex -= len;        //欲读取的字节数减少
+            p += len;           //缓冲区移位
+            if(lhex > 0)        //剩余的字节数不为0，则继续读
+                continue;
+        }else if(len == -1){
+            return -1;		//接收失败
+        }else if(len == 0){
+            return 0;		//接收超时
+        }
+    }
+    return mlen + 4;    //返回总数据包长
+}
+

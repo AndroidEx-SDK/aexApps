@@ -114,23 +114,6 @@ public class aexddZTC70 extends aexddPasswordKeypad {
         return false;
     }
 
-    /**
-     * 读取键盘按键信息，按键通过onBackCallEvent返回。
-     * @return
-     */
-    @Override
-    public int ReciveDataLoop() {
-        Runnable run=new Runnable() {
-            public void run() {
-                //在线程中执行jni函数
-                int r = ztReadKeyLoop(mSerialFd,10000*delayUint);
-            }
-        };
-        pthread = new Thread(run);
-        pthread.start();
-        return 0;
-    }
-
     @Override
     public String getStatusStr(int st)
     {
@@ -178,12 +161,39 @@ public class aexddZTC70 extends aexddPasswordKeypad {
     }
 
     /**
+     * 读取键盘按键信息，按键通过onBackCallEvent返回。
+     * @return
+     */
+    @Override
+    public int ReciveDataLoop() {
+        Runnable run=new Runnable() {
+            public void run() {
+                //在线程中执行jni函数
+                int r = ztReadKeyLoop(mSerialFd,10000*delayUint);
+            }
+        };
+        pthread = new Thread(run);
+        pthread.start();
+        return 0;
+    }
+
+    @Override
+    public int pkReadLoop(int i) {
+        return 0;
+    }
+
+    @Override
+    public byte[] pkReadPacket(int timeout) {
+        return ztReadPacket(mSerialFd,timeout);
+    }
+
+    /**
      * 发送键盘命令。
      * @param cmd   命令内容，不包含头、尾和BCC
      */
-    public void pkSendCmd(String cmd)
+    public void pkSendCmd(byte[] cmd,int size)
     {
-        ztSendCmd(mSerialFd,cmd,cmd.length());
+        ztSendCmd(mSerialFd,cmd,size);
     }
 
     /**
@@ -359,8 +369,9 @@ public class aexddZTC70 extends aexddPasswordKeypad {
         return ret;
     }
 
-    public  native int  ztReadKeyLoop(int fd,int timeout);
-    public  native void ztSendCmd(int fd,String cmd,int size);
-    public  native void ztSendHexCmd(int fd,String hexcmd,int size);
+    public  native byte[]   ztReadPacket(int fd,int timeout);
+    public  native int      ztReadKeyLoop(int fd,int timeout);
+    public  native void     ztSendCmd(int fd,byte[] cmd,int size);
+    public  native void     ztSendHexCmd(int fd,String hexcmd,int size);
 
 }

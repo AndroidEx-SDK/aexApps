@@ -28,6 +28,7 @@ typedef int (*ON_KMY_EVENT)(HKMY env,HKMY obj,int code,char *pszFormat,...);
  */
 void kmy_set_event(ON_KMY_EVENT oke);
 
+int kmy_recive_packet(HKMY env,HKMY obj,int fd,char *buf,int bufsize,int timeout);
 int kmy_read_key_loop(HKMY env,HKMY obj,int fd,int timeout);
 int kmy_send_cmd(HKMY env,HKMY obj,int fd,char *cmd,int size);
 int kmy_send_hexcmd(HKMY env,HKMY obj,int fd,char *hexcmd,int size);
