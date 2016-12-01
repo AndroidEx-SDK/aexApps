@@ -434,7 +434,7 @@ int kmy_read_key_loop(HKMY env,HKMY obj,int fd,int timeout)
 
 /**
  * 读取一个数据包的函数，抛弃前面的无效数据直到找到一个0x02的数据包头。
- * 然后读取一个完整的数据包：0x02+Len(2字节的长度)+Data(Len字节)+0x03+BCC
+ * 然后读取一个完整的数据包：0x02+Len(1字节的长度)+Data(Len字节)+BCC+0x03
  * 返回：
  *      > 0     数据包总长度
  *      == 0    读取超时

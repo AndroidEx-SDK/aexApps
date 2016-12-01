@@ -20,11 +20,11 @@ public class aexddMT319Reader extends aexddPbocReader {
 		try {
 			System.loadLibrary("appDevicesLibs");
 		} catch (UnsatisfiedLinkError e) {
-			Log.d("B58TPrinter", "appDevicesLibs.so library not found!");
+			Log.d("MT319Reader", "appDevicesLibs.so library not found!");
 		}
 	}
 
-	public static final String TAG = "mt318";
+	public static final String TAG = "mt319";
 
 	public aexddMT319Reader(Context ctx) {
 		super(ctx);
