@@ -22,11 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * DialogFragment的管理类
+ *
  * Created by liyp on 16/12/1.
  */
 
 public class DialogFragmentManger extends DialogFragment {
-
     List<Fragment> list = new ArrayList();
     private DisplayMetrics displayMetrics = new DisplayMetrics();
     /**
@@ -37,6 +38,7 @@ public class DialogFragmentManger extends DialogFragment {
     private RelativeLayout parentLayout;
     private static DialogFragmentManger dialogFragmentManger;
     private boolean isCancelable = false;
+    public ViewPager viewPager;
 
     private DialogFragmentManger() {
     }
@@ -48,20 +50,21 @@ public class DialogFragmentManger extends DialogFragment {
         return dialogFragmentManger;
     }
 
-    public DialogFragmentManger setListFragment(List<Fragment> list){
-        if (list==null||list.size()<0){
-            Toast.makeText(getContext(),"list不可为空",Toast.LENGTH_SHORT).show();
+    public DialogFragmentManger setListFragment(List<Fragment> list) {
+        if (list == null || list.size() < 0) {
+            Toast.makeText(getContext(), "list不可为空", Toast.LENGTH_SHORT).show();
             return null;
         }
-        this.list=list;
+        this.list = list;
         return this;
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dialog_manger, container);
         parentLayout = (RelativeLayout) view.findViewById(R.id.parentLayout);
-        ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+        viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         viewPager.setAdapter(new MyPagerAdapter(getChildFragmentManager()));
 
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);

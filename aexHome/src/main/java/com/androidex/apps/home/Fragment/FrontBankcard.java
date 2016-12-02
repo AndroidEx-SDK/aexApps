@@ -12,10 +12,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.androidex.apps.home.FullscreenActivity;
 import com.androidex.apps.home.R;
 
 
-public class FrontBankcard extends Fragment implements View.OnClickListener{
+public class FrontBankcard extends Fragment implements View.OnClickListener {
     private static final String TAG = "FrontBankcard";
     private View mView = null;
     private TextView next;
@@ -24,21 +25,23 @@ public class FrontBankcard extends Fragment implements View.OnClickListener{
     public FrontBankcard() {
         // Required empty public constructor
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if(mView==null){
+        if (mView == null) {
             mView = inflater.inflate(R.layout.fragment_front_bankcard, container, false);
         }
         next = (TextView) mView.findViewById(R.id.tv_next);
         next.setOnClickListener(this);
 
-        back = (TextView) mView.findViewById(R.id.tv_finish) ;
+        back = (TextView) mView.findViewById(R.id.tv_finish);
         back.setOnClickListener(this);
 
         initSpinner(R.id.spinner);
@@ -48,15 +51,16 @@ public class FrontBankcard extends Fragment implements View.OnClickListener{
 
     /**
      * 设置spinner
+     *
      * @param spinner
      */
     private void initSpinner(int spinner) {
-        final Spinner mSpinner = (Spinner) mView .findViewById(spinner);
+        final Spinner mSpinner = (Spinner) mView.findViewById(spinner);
         mSpinner.setBackground(getResources().getDrawable(R.drawable.wp_spinner_bg));
 
-        String [] mItems = getResources().getStringArray(R.array.select_type);
+        String[] mItems = getResources().getStringArray(R.array.select_type);
 
-        ArrayAdapter <String> mAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item,mItems);
+        ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, mItems);
 
         mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
 
@@ -77,28 +81,23 @@ public class FrontBankcard extends Fragment implements View.OnClickListener{
     }
 
 
-    public static final String action_fb_back= "com.androidex.frontbankcard_back";
-    public static final String str = "com.androidex.frontbankcard";
     @Override
     public void onClick(View v) {
-       switch (v.getId()){
-           case R.id.tv_next:
-           {
-                Intent intent = new Intent();
-                intent.setAction(str);
+        Intent intent = new Intent();
+        switch (v.getId()) {
+            case R.id.tv_next: {
+                intent.setAction(FullscreenActivity.action_next);
                 getActivity().sendBroadcast(intent);
-           }
-           break;
-           case R.id.tv_finish:
-           {
-               Log.d(TAG,"send finish broadcast");
-               Intent intent = new Intent();
-               intent.setAction(action_fb_back);
-               getActivity().sendBroadcast(intent);
-           }
+            }
             break;
-           default:
+            case R.id.tv_finish: {
+                Log.d(TAG, "send finish broadcast");
+                intent.setAction(FullscreenActivity.action_finish);
+                getActivity().sendBroadcast(intent);
+            }
+            break;
+            default:
                 break;
-       }
+        }
     }
 }

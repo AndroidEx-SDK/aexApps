@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.androidex.apps.home.FullscreenActivity;
 import com.androidex.apps.home.R;
 
 
@@ -41,14 +42,14 @@ public class AfterBankcard extends Fragment implements View.OnClickListener{
             case R.id.tv_above://上一步
             {
                 Intent intent = new Intent();
-                intent.setAction(OtherCard.action_back);
+                intent.setAction(FullscreenActivity.action_back);
                 getActivity().sendBroadcast(intent);
             }
             break;
             case R.id.tv_exit://退出
             {
                 Intent intent = new Intent();
-                intent.setAction(FrontBankcard.action_fb_back);
+                intent.setAction(FullscreenActivity.action_back);
                 getActivity().sendBroadcast(intent);
             }
         }

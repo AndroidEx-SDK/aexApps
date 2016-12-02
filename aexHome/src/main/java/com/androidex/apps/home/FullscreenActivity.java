@@ -1,6 +1,8 @@
 package com.androidex.apps.home;
 
 import android.annotation.TargetApi;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -48,9 +50,13 @@ import java.util.List;
  * status bar and navigation/system bar) with user interaction.
  */
 @TargetApi(Build.VERSION_CODES.KITKAT)
-public class FullscreenActivity extends AndroidExActivityBase implements NfcAdapter.ReaderCallback {
+public class FullscreenActivity extends AndroidExActivityBase implements NfcAdapter.ReaderCallback, View.OnClickListener {
     public static final String LOG = "Log";
     public static final int DLG_NETINFO = 1004;
+    public static final String action_back = "com.androidex.back";
+    public static final String action_next = "com.androidex.next";
+    public static final String action_finish = "com.androidex.finish";
+    public static final String action_cancle = "com.androidex.cancle";
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mContentView;
     private View mControlsView;
@@ -62,6 +68,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     private static aexLogFragment mLogFragment = new aexLogFragment();
     private static AdvertFragment mAdvertFragment = new AdvertFragment();
     public CardInfoBrocast st;
+    private NextBrodcastResive nbr;
 
     private final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
         @Override
@@ -73,7 +80,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         }
     };
 
-    private CircleTextProgressbar.OnCountdownProgressListener progressListener = new CircleTextProgressbar.OnCountdownProgressListener() {
+    public CircleTextProgressbar.OnCountdownProgressListener progressListener = new CircleTextProgressbar.OnCountdownProgressListener() {
         @Override
         public void onProgress(int what, int progress) {
             if (what == 1) {
@@ -106,6 +113,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         intentFilter.addAction(aexddAndroidNfcReader.START_ACTION);
         registerReceiver(st, intentFilter);
         initProgressBar();
+        initBroadCast();
     }
 
     public void initView() {
@@ -118,7 +126,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         // mContentView.setPageTransformer(true, MyAnimation.Instance().new MyPageTransformer());//给ViewPager添加动画
 
         mDevices = new appDevicesManager(this);
-        showDialog(getFragments());
+
     }
 
     public void initProgressBar() {
@@ -126,6 +134,15 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         progressbar.setCountdownProgressListener(2, progressListener);
         //progressbar.setTimeMillis(60 * 1000);
 
+    }
+
+    public void initBroadCast() {
+        nbr = new NextBrodcastResive();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(action_next);
+        intentFilter.addAction(action_finish);
+        intentFilter.addAction(action_back);
+        registerReceiver(nbr, intentFilter);
     }
 
     /**
@@ -194,6 +211,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         hwservice.ExitFullScreen();
         DisableFullScreen();
         mDevices.mPrinter.Close();
+        unregisterReceiver(nbr);
     }
 
     @Override
@@ -216,6 +234,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             toolbar.setTitleTextColor(Color.WHITE);
             toolbar.setSubtitleTextColor(Color.WHITE);
             setSupportActionBar(toolbar);
+            toolbar.setOnClickListener(this);
         }
     }
 
@@ -330,16 +349,41 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.toolbar:
+                showDialog(getFragments());
 //                        Intent intent = new Intent(FullscreenActivity.this, SystemMainActivity.class);
 //                        startActivity(intent);
-                progressbar.reStart();
+
                 break;
             case R.id.progressbar:
                 progressbar.setTimeMillis(30 * 1000);
-                progressbar.setNum(30);
                 progressbar.reStart();
                 break;
 
+        }
+    }
+
+    /**
+     * 实现viewpager切换Fragment的广播
+     */
+    private class NextBrodcastResive extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()){
+                case action_next:
+                    DialogFragmentManger.Instance().viewPager.setCurrentItem(1);
+                    break;
+                case action_back:
+                    DialogFragmentManger.Instance().viewPager.setCurrentItem(0);
+                    break;
+                case action_cancle:
+                    dismissDialog();
+                    break;
+                case action_finish:
+                    dismissDialog();
+
+                    delayedHide(AUTO_HIDE_DELAY_MILLIS);
+                    break;
+            }
         }
     }
 

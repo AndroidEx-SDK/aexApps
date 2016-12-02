@@ -88,7 +88,7 @@
                 android:textSize="10sp"/>
 
             <EditText
-                android:id="@+id/tv_uuid"
+                android:id="@+id/et_uuid"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_marginLeft="@dimen/abc_button_inset_vertical_material"

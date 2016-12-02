@@ -9,19 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.androidex.apps.home.FullscreenActivity;
 import com.androidex.apps.home.R;
 import com.androidex.apps.home.brocast.CardInfoBrocast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.androidex.apps.home.fragment.FrontBankcard.action_fb_back;
+import static com.androidex.apps.home.FullscreenActivity.action_back;
 
 
-public class OtherCard extends Fragment implements View.OnClickListener{
-    public static final String TAG = "OtherCard";
+public class OtherCardFragment extends Fragment implements View.OnClickListener{
+    public static final String TAG = "OtherCardFragment";
 
     private View mView = null;
     private EditText et_input ;
@@ -30,7 +30,7 @@ public class OtherCard extends Fragment implements View.OnClickListener{
     private TextView tv_before; //上一步
     private TextView tv_cardinfo ; //显示卡的信息
 
-    public OtherCard() {
+    public OtherCardFragment() {
         // Required empty public constructor
     }
 
@@ -81,22 +81,20 @@ public class OtherCard extends Fragment implements View.OnClickListener{
 
     }
 
-    public static final String action = "com.androidex.othercard.finish";
     @Override
     public void onClick(View v) {
         Intent intent = new Intent();
         switch (v.getId()){
 
-
             case R.id.tv_back ://退出or下一步
             {
-                intent.setAction(FrontBankcard.str);
+                intent.setAction(FullscreenActivity.action_next);
                 getActivity().sendBroadcast(intent);
             }
             break;
             case R.id.tv_before :
             {
-                intent.setAction(action_fb_back);
+                intent.setAction(action_back);
                 getActivity().sendBroadcast(intent);
             }
             break;
@@ -119,7 +117,5 @@ public class OtherCard extends Fragment implements View.OnClickListener{
             e.printStackTrace();
         }
     }
-
-    public static final String action_back = "com.androidex.othercard.back";
 
 }

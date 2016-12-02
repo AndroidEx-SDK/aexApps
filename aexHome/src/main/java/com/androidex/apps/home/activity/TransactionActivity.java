@@ -1,9 +1,5 @@
 package com.androidex.apps.home.activity;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,14 +7,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Window;
 import android.widget.TextView;
 
 import com.androidex.apps.home.R;
 import com.androidex.apps.home.fragment.AfterBankcard;
-import com.androidex.apps.home.fragment.FrontBankcard;
-import com.androidex.apps.home.fragment.OtherCard;
+import com.androidex.apps.home.fragment.OtherCardFragment;
 import com.androidex.apps.home.view.NoScrollViewPager;
 import com.androidex.common.AndroidExActivityBase;
 
@@ -35,8 +29,6 @@ public class TransactionActivity extends AndroidExActivityBase {
     public TransactionPagerAdapter mAdapter;
 
     public TextView time_count;
-
-    private NextBrodcastResive nbr;
 
     private int recyle = 20;
     final Handler handler = new Handler(){
@@ -68,13 +60,6 @@ public class TransactionActivity extends AndroidExActivityBase {
         init();
         timeCount(time_count);//实现倒计时功能 并在textview上显示
 
-        nbr = new NextBrodcastResive();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(FrontBankcard.str);
-        intentFilter.addAction(OtherCard.action);
-        intentFilter.addAction(OtherCard.action_back);
-        intentFilter.addAction(FrontBankcard.action_fb_back);//关闭
-        registerReceiver(nbr,intentFilter);
     }
 
     /**
@@ -120,7 +105,7 @@ public class TransactionActivity extends AndroidExActivityBase {
      */
     private List<Fragment> initData(){
         mFragmentList = new ArrayList<Fragment>();
-        mFragmentList.add(new OtherCard());
+        mFragmentList.add(new OtherCardFragment());
         mFragmentList.add(new AfterBankcard());
         return mFragmentList;
     }
@@ -145,26 +130,11 @@ public class TransactionActivity extends AndroidExActivityBase {
         }
     }
 
-    /**
-     * 实现viewpager切换Fragment的广播
-     */
-    private  class NextBrodcastResive extends BroadcastReceiver{
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if(intent.getAction().equals(FrontBankcard.str)){//下一步
-                mViewPager.setCurrentItem(1);
-            }else if(intent.getAction().equals(OtherCard.action_back)){//返回
-                mViewPager.setCurrentItem(0);
-            }else if(intent.getAction().equals(FrontBankcard.action_fb_back)){//退出
-                Log.d(TAG,"关闭");
-                finish();
-            }
-        }
-    }
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(nbr);
+
     }
 }

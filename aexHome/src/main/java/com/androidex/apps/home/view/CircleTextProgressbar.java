@@ -369,15 +369,15 @@ public class CircleTextProgressbar extends TextView {
         canvas.drawArc(mArcRect, 0, 360 * progress / Num, false, mPaint);
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int lineWidth = 4 * (outLineWidth + progressLineWidth);
-        int width = getMeasuredWidth();
-        int height = getMeasuredHeight();
-        int size = (width > height ? width : height) + lineWidth;
-        setMeasuredDimension(size, size);
-    }
+//    @Override
+//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+//        int lineWidth = 4 * (outLineWidth + progressLineWidth);
+//        int width = getMeasuredWidth();
+//        int height = getMeasuredHeight();
+//        int size = (width > height ? width : height) + lineWidth;
+//        setMeasuredDimension(size, size);
+//    }
 
     @Override
     protected void drawableStateChanged() {
