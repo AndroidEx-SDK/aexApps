@@ -130,14 +130,27 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
 
     /**
      * 显示Dialog
+     * setListFragment  此方法为必调方法
+     * setWidthPerHeight设置宽高比（暂时无效，因此设置默认0.75f）
+     * setPadding       距离屏幕左右宽度
+     * setIsCancelable  外部是否可点
+     *
      * @param listFragment
      */
     public void showDialog(List<Fragment> listFragment) {
-        new DialogFragmentManger(listFragment).setWidthPerHeight(0.75f)
+        if (listFragment.size() < 0 || listFragment == null) return;
+        DialogFragmentManger.Instance()
+                .setListFragment(listFragment)
+                .setWidthPerHeight(0.75f)
                 .setPadding(150)
-                .show(getSupportFragmentManager(), "");
+                .setIsCancelable(false)
+                .show(getSupportFragmentManager(), "dialog");
+
     }
 
+    public void dismissDialog() {
+        DialogFragmentManger.Instance().dismiss();
+    }
 
 
     private List<Fragment> getFragments() {

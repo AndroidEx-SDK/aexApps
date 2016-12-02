@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.androidex.apps.home.R;
 import com.androidex.apps.home.utils.DisplayUtil;
@@ -24,7 +25,7 @@ import java.util.List;
  * Created by liyp on 16/12/1.
  */
 
-public class DialogFragmentManger extends DialogFragment{
+public class DialogFragmentManger extends DialogFragment {
 
     List<Fragment> list = new ArrayList();
     private DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -34,11 +35,27 @@ public class DialogFragmentManger extends DialogFragment{
     private float widthPerHeight = 0.75f;
     private int padding = 44;
     private RelativeLayout parentLayout;
+    private static DialogFragmentManger dialogFragmentManger;
+    private boolean isCancelable = false;
 
-   public DialogFragmentManger(List<Fragment> list){
-       this.list=list;
-   }
+    private DialogFragmentManger() {
+    }
 
+    public static DialogFragmentManger Instance() {
+        if (dialogFragmentManger == null) {
+            dialogFragmentManger = new DialogFragmentManger();
+        }
+        return dialogFragmentManger;
+    }
+
+    public DialogFragmentManger setListFragment(List<Fragment> list){
+        if (list==null||list.size()<0){
+            Toast.makeText(getContext(),"list不可为空",Toast.LENGTH_SHORT).show();
+            return null;
+        }
+        this.list=list;
+        return this;
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,11 +65,10 @@ public class DialogFragmentManger extends DialogFragment{
         viewPager.setAdapter(new MyPagerAdapter(getChildFragmentManager()));
 
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        setCancelable(false);
+        setCancelable(isCancelable);
         //setRootContainerHeight();//设置dialog的宽高比
         return view;
     }
-
 
 
     public DialogFragmentManger setWidthPerHeight(float widthPerHeight) {
@@ -64,6 +80,11 @@ public class DialogFragmentManger extends DialogFragment{
     public DialogFragmentManger setPadding(int padding) {
         this.padding = padding;
 
+        return this;
+    }
+
+    public DialogFragmentManger setIsCancelable(boolean isShow) {
+        this.isCancelable = isShow;
         return this;
     }
 

@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Process;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -141,6 +142,7 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
 				  runnable = new Runnable() {
 						@Override
 						public void run() {
+							Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
 							  //依次显示图片序列
 							  showPic();
 							  //定时刷新

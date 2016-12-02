@@ -145,6 +145,9 @@ public class TransactionActivity extends AndroidExActivityBase {
         }
     }
 
+    /**
+     * 实现viewpager切换Fragment的广播
+     */
     private  class NextBrodcastResive extends BroadcastReceiver{
         @Override
         public void onReceive(Context context, Intent intent) {
