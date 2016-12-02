@@ -11,7 +11,7 @@ import android.view.Window;
 import android.widget.TextView;
 
 import com.androidex.apps.home.R;
-import com.androidex.apps.home.fragment.AfterBankcard;
+import com.androidex.apps.home.fragment.AfterBankcardFragment;
 import com.androidex.apps.home.fragment.OtherCardFragment;
 import com.androidex.apps.home.view.NoScrollViewPager;
 import com.androidex.common.AndroidExActivityBase;
@@ -106,7 +106,7 @@ public class TransactionActivity extends AndroidExActivityBase {
     private List<Fragment> initData(){
         mFragmentList = new ArrayList<Fragment>();
         mFragmentList.add(new OtherCardFragment());
-        mFragmentList.add(new AfterBankcard());
+        mFragmentList.add(new AfterBankcardFragment());
         return mFragmentList;
     }
 

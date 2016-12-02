@@ -11,12 +11,14 @@ import android.widget.TextView;
 import com.androidex.apps.home.FullscreenActivity;
 import com.androidex.apps.home.R;
 
+/**
+ * 后插入银行卡
+ */
 
-
-public class AfterBankcard extends Fragment implements View.OnClickListener{
+public class AfterBankcardFragment extends Fragment implements View.OnClickListener{
 
     private View mView = null;
-    public AfterBankcard() {
+    public AfterBankcardFragment() {
         // Required empty public constructor
     }
     public TextView tv_above;

@@ -26,8 +26,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidex.aexlibs.WebJavaBridge;
-import com.androidex.apps.home.brocast.CardInfoBrocast;
+import com.androidex.apps.home.fragment.AfterBankcardFragment;
 import com.androidex.apps.home.fragment.DialogFragmentManger;
+import com.androidex.apps.home.fragment.FrontBankcardFragment;
+import com.androidex.apps.home.fragment.OtherCardFragment;
 import com.androidex.apps.home.fragment.SetPassWordFragment;
 import com.androidex.apps.home.fragment.SetUUIDFragment;
 import com.androidex.apps.home.view.CircleTextProgressbar;
@@ -67,8 +69,8 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     private static AboutFragment mAboutFragment = new AboutFragment();
     private static aexLogFragment mLogFragment = new aexLogFragment();
     private static AdvertFragment mAdvertFragment = new AdvertFragment();
-    public CardInfoBrocast st;
     private NextBrodcastResive nbr;
+    public static String cardInfo;//读取卡信息
 
     private final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
         @Override
@@ -107,13 +109,9 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
 
         setFullScreenView(mContentView);
         setFullScreen(true);
-        //注册广播
-        st = new CardInfoBrocast();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(aexddAndroidNfcReader.START_ACTION);
-        registerReceiver(st, intentFilter);
+
         initProgressBar();
-        initBroadCast();
+        initBroadCast(); //注册广播
     }
 
     public void initView() {
@@ -142,6 +140,9 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         intentFilter.addAction(action_next);
         intentFilter.addAction(action_finish);
         intentFilter.addAction(action_back);
+        intentFilter.addAction(action_cancle);
+        intentFilter.addAction(aexddAndroidNfcReader.START_ACTION);
+
         registerReceiver(nbr, intentFilter);
     }
 
@@ -166,14 +167,31 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     }
 
     public void dismissDialog() {
-        DialogFragmentManger.Instance().dismiss();
+        DialogFragmentManger.Instance().dimissDialog();
     }
 
-
+    /**
+     * 第一次启动是需要设置UUID和密码的fragment的list
+     *
+     * @return
+     */
     private List<Fragment> getFragments() {
         List<Fragment> list = new ArrayList();
         list.add(new SetUUIDFragment());
         list.add(new SetPassWordFragment());
+        return list;
+    }
+
+    /**
+     * 刷卡或者插卡的fragment的list
+     *
+     * @return
+     */
+    private List<Fragment> getCarFragments() {
+        List<Fragment> list = new ArrayList();
+        list.add(new FrontBankcardFragment());
+        list.add(new AfterBankcardFragment());
+        list.add(new OtherCardFragment());
         return list;
     }
 
@@ -318,16 +336,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
     static {
         DummyContent.addItem(new DummyContent.DummyItem("log", "日志", "", LogFragment.class, "url=log", true, 0));
     }
@@ -368,9 +376,10 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     private class NextBrodcastResive extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            switch (intent.getAction()){
+            switch (intent.getAction()) {
                 case action_next:
-                    DialogFragmentManger.Instance().viewPager.setCurrentItem(1);
+                    int page = intent.getIntExtra("page", 0);
+                    DialogFragmentManger.Instance().viewPager.setCurrentItem(page);
                     break;
                 case action_back:
                     DialogFragmentManger.Instance().viewPager.setCurrentItem(0);
@@ -380,8 +389,14 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     break;
                 case action_finish:
                     dismissDialog();
-
                     delayedHide(AUTO_HIDE_DELAY_MILLIS);
+                    break;
+                case aexddAndroidNfcReader.START_ACTION://接收读取卡的信息
+
+                    cardInfo = intent.getStringExtra("cardinfo");
+                    android.util.Log.e("接收读取卡的信息====", cardInfo + "0000");
+                    dismissDialog();
+                    showDialog(getCarFragments());
                     break;
             }
         }

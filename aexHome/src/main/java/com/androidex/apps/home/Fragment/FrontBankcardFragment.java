@@ -15,14 +15,16 @@ import android.widget.TextView;
 import com.androidex.apps.home.FullscreenActivity;
 import com.androidex.apps.home.R;
 
-
-public class FrontBankcard extends Fragment implements View.OnClickListener {
-    private static final String TAG = "FrontBankcard";
+/**
+ * 先插入银行卡的Fragment
+ */
+public class FrontBankcardFragment extends Fragment implements View.OnClickListener {
+    private static final String TAG = "FrontBankcardFragment";
     private View mView = null;
     private TextView next;
     private TextView back;//退出
 
-    public FrontBankcard() {
+    public FrontBankcardFragment() {
         // Required empty public constructor
     }
 

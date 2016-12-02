@@ -70,6 +70,8 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
                 intent.putExtra("flag", "hide");
                 intent.putExtra("bar", true);
                 psetview.getContext().sendBroadcast(intent);
+            } else if (progress == 0) {
+                progressbar.setText("30s");
             }
         }
     };

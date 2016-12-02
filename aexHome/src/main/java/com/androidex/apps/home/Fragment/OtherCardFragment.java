@@ -12,14 +12,15 @@ import android.widget.TextView;
 
 import com.androidex.apps.home.FullscreenActivity;
 import com.androidex.apps.home.R;
-import com.androidex.apps.home.brocast.CardInfoBrocast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import static com.androidex.apps.home.FullscreenActivity.action_back;
 
-
+/**
+ * 插入其他银行卡
+ */
 public class OtherCardFragment extends Fragment implements View.OnClickListener{
     public static final String TAG = "OtherCardFragment";
 
@@ -64,7 +65,7 @@ public class OtherCardFragment extends Fragment implements View.OnClickListener{
         tv_before.setOnClickListener(this);
         tv_back.setOnClickListener(this);
 
-        String r = CardInfoBrocast.getCardInfo();
+        String r = FullscreenActivity.cardInfo;
         if (r!=null){
             getString(r);
             tv_cardinfo.setText(cardInfoStr);//显示卡的信息

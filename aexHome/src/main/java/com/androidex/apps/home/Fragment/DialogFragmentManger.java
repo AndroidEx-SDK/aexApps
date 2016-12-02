@@ -80,6 +80,12 @@ public class DialogFragmentManger extends DialogFragment {
         return this;
     }
 
+    public DialogFragmentManger dimissDialog(){
+        if (dialogFragmentManger.isVisible()){
+            dialogFragmentManger.dismiss();
+        }
+        return this;
+    }
     public DialogFragmentManger setPadding(int padding) {
         this.padding = padding;
 
