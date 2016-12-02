@@ -3,7 +3,6 @@ package com.androidex.apps.home.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,9 +40,8 @@ public class FrontBankcardFragment extends Fragment implements View.OnClickListe
             mView = inflater.inflate(R.layout.fragment_front_bankcard, container, false);
         }
         next = (TextView) mView.findViewById(R.id.tv_next);
+        back = (TextView) mView.findViewById(R.id.tv_exit);
         next.setOnClickListener(this);
-
-        back = (TextView) mView.findViewById(R.id.tv_finish);
         back.setOnClickListener(this);
 
         initSpinner(R.id.spinner);
@@ -88,13 +86,14 @@ public class FrontBankcardFragment extends Fragment implements View.OnClickListe
         Intent intent = new Intent();
         switch (v.getId()) {
             case R.id.tv_next: {
+                intent.putExtra("page",1);
                 intent.setAction(FullscreenActivity.action_next);
                 getActivity().sendBroadcast(intent);
             }
             break;
-            case R.id.tv_finish: {
-                Log.d(TAG, "send finish broadcast");
-                intent.setAction(FullscreenActivity.action_finish);
+            case R.id.tv_exit: {
+
+                intent.setAction(FullscreenActivity.action_cancle);
                 getActivity().sendBroadcast(intent);
             }
             break;

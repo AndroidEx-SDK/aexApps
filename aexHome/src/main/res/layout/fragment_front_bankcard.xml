@@ -1,96 +1,97 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.androidex.apps.home.fragment.FrontBankcardFragment"
-    android:background="#f8f8f8">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#f8f8f8"
+                tools:context="com.androidex.apps.home.fragment.FrontBankcardFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
 
-        <ImageView
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:layout_centerVertical="true"
-            android:scaleType="fitXY"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/ic_launcher"
-            android:id="@+id/iv_image"/>
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/ic_launcher"
+        android:scaleType="fitXY"/>
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/iv_image"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/iv_image"
         android:background="@drawable/bg_white_radius_5"
         android:text="@string/prompt_show"
-        android:textSize="20sp"
-        android:layout_alignTop="@+id/iv_image"
-        android:layout_toEndOf="@+id/iv_image"
-        android:layout_marginStart="10dp"
-        android:id="@+id/textView" />
+        android:textSize="20sp"/>
 
 
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:id="@+id/ll_next"
-    android:layout_gravity="bottom"
-    android:layout_alignParentBottom="true"
-    android:layout_alignStart="@+id/textView"
-    android:orientation="horizontal"
-android:background="@drawable/bg_white_radius_5"
-    android:layout_marginBottom="@dimen/marginPadding10dp"
-    >
-    <TextView
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/ll_next"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_weight="1"
-        android:text="@string/back"
-        android:gravity="center"
-        android:textSize="15sp"
-        android:textColor="#333"
-        android:id="@+id/tv_finish"/>
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/textView"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/marginPadding10dp"
+        android:background="@drawable/bg_white_radius_5"
+        android:orientation="horizontal"
+        >
 
-<View
-    android:layout_width="0.5dp"
-    android:layout_height="40dp"
-    android:background="#ddd">
+        <TextView
+            android:id="@+id/tv_exit"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/back"
+            android:textColor="#333"
+            android:textSize="15sp"/>
 
-</View>
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_weight="1"
-        android:text="@string/next"
-        android:gravity="center"
-        android:textSize="15sp"
-        android:textColor="#333"
-        android:id="@+id/tv_next"/>
-</LinearLayout>
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="40dp"
+            android:background="#ddd">
+
+        </View>
+
+        <TextView
+            android:id="@+id/tv_next"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/next"
+            android:textColor="#333"
+            android:textSize="15sp"/>
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@drawable/bg_white_radius_5"
-        android:layout_centerVertical="true"
         android:layout_alignStart="@+id/textView"
-       >
+        android:layout_centerVertical="true"
+        android:background="@drawable/bg_white_radius_5"
+        >
 
         <TextView
+            android:id="@+id/tv_select"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/type"
-            android:textSize="15sp"
             android:textColor="#666"
-            android:id="@+id/tv_select"/>
+            android:textSize="15sp"/>
 
         <Spinner
+            android:id="@+id/spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/spinner"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/tv_select"
             android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/tv_select"
             >
 
         </Spinner>

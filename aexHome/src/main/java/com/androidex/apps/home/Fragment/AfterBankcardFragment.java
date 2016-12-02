@@ -15,18 +15,21 @@ import com.androidex.apps.home.R;
  * 后插入银行卡
  */
 
-public class AfterBankcardFragment extends Fragment implements View.OnClickListener{
+public class AfterBankcardFragment extends Fragment implements View.OnClickListener {
 
     private View mView = null;
+
     public AfterBankcardFragment() {
         // Required empty public constructor
     }
+
     public TextView tv_above;
     public TextView tv_exit;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if(mView==null){
+        if (mView == null) {
             mView = inflater.inflate(R.layout.fragment_after_bankcard, container, false);
         }
         tv_above = (TextView) mView.findViewById(R.id.tv_above);
@@ -40,20 +43,18 @@ public class AfterBankcardFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        Intent intent = new Intent();
+        switch (v.getId()) {
             case R.id.tv_above://上一步
-            {
-                Intent intent = new Intent();
+                intent.putExtra("page", 0);
                 intent.setAction(FullscreenActivity.action_back);
                 getActivity().sendBroadcast(intent);
-            }
-            break;
+                break;
             case R.id.tv_exit://退出
-            {
-                Intent intent = new Intent();
-                intent.setAction(FullscreenActivity.action_back);
+                intent.setAction(FullscreenActivity.action_cancle);
                 getActivity().sendBroadcast(intent);
-            }
+            default:
+                break;
         }
     }
 }

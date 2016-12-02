@@ -374,15 +374,19 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
      * 实现viewpager切换Fragment的广播
      */
     private class NextBrodcastResive extends BroadcastReceiver {
+
+        private int page;
+
         @Override
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()) {
                 case action_next:
-                    int page = intent.getIntExtra("page", 0);
+                    page = intent.getIntExtra("page", 0);
                     DialogFragmentManger.Instance().viewPager.setCurrentItem(page);
                     break;
                 case action_back:
-                    DialogFragmentManger.Instance().viewPager.setCurrentItem(0);
+                    page = intent.getIntExtra("page", 0);
+                    DialogFragmentManger.Instance().viewPager.setCurrentItem(page);
                     break;
                 case action_cancle:
                     dismissDialog();
@@ -392,7 +396,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     delayedHide(AUTO_HIDE_DELAY_MILLIS);
                     break;
                 case aexddAndroidNfcReader.START_ACTION://接收读取卡的信息
-
                     cardInfo = intent.getStringExtra("cardinfo");
                     android.util.Log.e("接收读取卡的信息====", cardInfo + "0000");
                     dismissDialog();

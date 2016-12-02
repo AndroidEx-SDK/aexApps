@@ -53,7 +53,8 @@
         android:layout_gravity="bottom|left"
         android:layout_margin="@dimen/fab_margin"
         android:text="30s"
+        android:visibility="gone"
         app:in_circle_color="@color/state_color"/>
-
+    
 
 </android.support.design.widget.CoordinatorLayout>
