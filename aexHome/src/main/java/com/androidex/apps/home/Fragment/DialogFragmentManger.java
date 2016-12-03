@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -55,6 +56,10 @@ public class DialogFragmentManger extends DialogFragment {
             Toast.makeText(getContext(), "list不可为空", Toast.LENGTH_SHORT).show();
             return null;
         }
+        //this.list.clear();m
+        if (this.list!=null){
+            this.list.remove(this.list);
+        }
         this.list = list;
         return this;
     }
@@ -65,11 +70,19 @@ public class DialogFragmentManger extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_dialog_manger, container);
         parentLayout = (RelativeLayout) view.findViewById(R.id.parentLayout);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+        ImageView close = (ImageView) view.findViewById(R.id.iv_close);
+
         viewPager.setAdapter(new MyPagerAdapter(getChildFragmentManager()));
 
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         setCancelable(isCancelable);
         //setRootContainerHeight();//设置dialog的宽高比
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogFragmentManger.dimissDialog();
+            }
+        });
         return view;
     }
 

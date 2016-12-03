@@ -69,6 +69,11 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     private static AboutFragment mAboutFragment = new AboutFragment();
     private static aexLogFragment mLogFragment = new aexLogFragment();
     private static AdvertFragment mAdvertFragment = new AdvertFragment();
+    private Fragment mSetUUIDFragment = new SetUUIDFragment();
+    private Fragment mSetPassWordFragment = new SetPassWordFragment();
+    private Fragment mFrontBankcardFragment = new FrontBankcardFragment();
+    private Fragment mAfterBankcardFragment = new AfterBankcardFragment();
+    private Fragment mOtherCardFragment = new OtherCardFragment();
     private NextBrodcastResive nbr;
     public static String cardInfo;//读取卡信息
 
@@ -142,7 +147,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         intentFilter.addAction(action_back);
         intentFilter.addAction(action_cancle);
         intentFilter.addAction(aexddAndroidNfcReader.START_ACTION);
-
         registerReceiver(nbr, intentFilter);
     }
 
@@ -177,8 +181,8 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
      */
     private List<Fragment> getFragments() {
         List<Fragment> list = new ArrayList();
-        list.add(new SetUUIDFragment());
-        list.add(new SetPassWordFragment());
+        list.add(mSetUUIDFragment);
+        list.add(mSetPassWordFragment);
         return list;
     }
 
@@ -189,9 +193,9 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
      */
     private List<Fragment> getCarFragments() {
         List<Fragment> list = new ArrayList();
-        list.add(new FrontBankcardFragment());
-        list.add(new AfterBankcardFragment());
-        list.add(new OtherCardFragment());
+        list.add(mFrontBankcardFragment);
+        list.add(mAfterBankcardFragment);
+        list.add(mOtherCardFragment);
         return list;
     }
 
