@@ -15,6 +15,11 @@
         android:showAsAction="never"
         android:title="测试燃气卡"/>
     <item
+        android:id="@+id/action_password_key"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="测试密码键盘"/>
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"

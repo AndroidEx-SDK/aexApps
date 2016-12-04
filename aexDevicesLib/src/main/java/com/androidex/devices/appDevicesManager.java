@@ -42,6 +42,7 @@ public class appDevicesManager extends appLibsDevices {
      * 加密密码键盘接口类
      */
     public aexddPasswordKeypad mPasswordKeypad = null;
+    public aexddPasswordKeypad mZTPasswordKeypad = null;
 
     public appDevicesManager(Context ctx) {
         super(ctx);
@@ -53,6 +54,7 @@ public class appDevicesManager extends appLibsDevices {
         mBankCardReader = new aexddMT319Reader(ctx,mConfig.mConfigBankReader);
         mCasCardReader = new aexddMT319Reader(ctx,mConfig.mConfigCasReader);
         mPasswordKeypad = new aexddKMY350(ctx, mConfig.mConfigPasswordKeypad);
+        mZTPasswordKeypad = new aexddZTC70(ctx, mConfig.mConfigPasswordKeypad);
     }
 
     public void setContext(Context ctx)

@@ -44,6 +44,8 @@ import com.androidex.common.DummyContent;
 import com.androidex.common.LogFragment;
 import com.androidex.devices.aexddAndroidNfcReader;
 import com.androidex.devices.aexddB58Printer;
+import com.androidex.devices.aexddMT319Reader;
+import com.androidex.devices.aexddZTC70;
 import com.androidex.devices.aexddNfcReader;
 import com.androidex.devices.appDeviceDriver;
 import com.androidex.devices.appDevicesManager;
@@ -179,20 +181,16 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         // viewPager.setOffscreenPageLimit(1);//预加载的页数
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
-        getFocus(viewPager);
-
         tabLayout.setupWithViewPager(viewPager);
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
             tabLayout.getTabAt(i).setCustomView(addTab(this, i));
         }
-
         //tabLayout.getTabAt(0).getCustomView().setSelected(true);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition(), true);
                 viewPager.setVisibility(View.VISIBLE);
-
             }
 
             @Override
@@ -210,22 +208,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return true;
-    }
-
-    private void getFocus(View view) {
-        viewPager.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                viewPager.setFocusable(true);
-                viewPager.setFocusableInTouchMode(true);
-                viewPager.requestFocus();
-                return false;
-            }
-        });
-//        view.setFocusable(true);
-//        view.setFocusableInTouchMode(true);
-//        view.requestFocus();
-        Toast.makeText(this, "抢到焦点", Toast.LENGTH_SHORT).show();
     }
 
     public View addTab(Context context, int index) {
@@ -256,7 +238,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 .setPadding(150)
                 .setIsCancelable(false)
                 .show(getSupportFragmentManager(), "dialog");
-
     }
 
     public void dismissDialog() {
@@ -426,27 +407,33 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 return true;
             case R.id.action_reader:
                 if (mDevices.mBankCardReader.Open()) {
-                    //mDevices.mBankCardReader.reset();
-                    mDevices.mBankCardReader.ReciveDataLoop();
-                    //mDevices.mBankCardReader.queryCard();
-                    //mDevices.mBankCardReader.popCard();
-                    //mDevices.mBankCardReader.Close();
+                    aexddMT319Reader reader = (aexddMT319Reader) mDevices.mBankCardReader;
+                    reader.selfTest();
+                    mDevices.mBankCardReader.Close();
                 } else {
-                    Toast.makeText(this, String.format("Open bank reader fial:%s", mDevices.mBankCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS)), Toast.LENGTH_LONG).show();
+                    String s = String.format("Open bank reader fial:%s", mDevices.mBankCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS));
+                    Log.i(TAG, s);
+                    Toast.makeText(this, s, Toast.LENGTH_LONG).show();
                 }
-
                 return true;
-
             case R.id.action_cas_reader:
-
-                if (mDevices.mCasCardReader.Open()) {
-                    //mDevices.mCasCardReader.reset();
-                    mDevices.mCasCardReader.ReciveDataLoop();
-                    //mDevices.mCasCardReader.queryCard();
-                    //mDevices.mCasCardReader.popCard();
-                    //mDevices.mCasCardReader.Close();
+                if (mDevices.mBankCardReader.Open()) {
+                    aexddMT319Reader reader = (aexddMT319Reader) mDevices.mCasCardReader;
+                    reader.selfTest();
+                    mDevices.mCasCardReader.Close();
                 } else {
-                    Toast.makeText(this, String.format("Open cas reader fial:%s", mDevices.mCasCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS)), Toast.LENGTH_LONG).show();
+                    String s = String.format("Open cas reader fial:%s", mDevices.mCasCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS));
+                    Log.i(TAG, s);
+                    Toast.makeText(this, s, Toast.LENGTH_LONG).show();
+                }
+                return true;
+            case R.id.action_password_key:
+                if (mDevices.mPasswordKeypad.Open()) {
+                    aexddZTC70 passworkkeypad = (aexddZTC70) mDevices.mZTPasswordKeypad;
+                    passworkkeypad.selfTest();
+                    int i = mDevices.mPasswordKeypad.ReciveDataLoop();
+                    Log.i("按键：",i+"");
+                    mDevices.mPasswordKeypad.Close();
                 }
                 return true;
             default:
