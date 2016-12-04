@@ -10,6 +10,7 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -22,16 +23,21 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidex.aexlibs.WebJavaBridge;
+import com.androidex.apps.home.fragment.AboutLocalFragment;
 import com.androidex.apps.home.fragment.AfterBankcardFragment;
 import com.androidex.apps.home.fragment.DialogFragmentManger;
 import com.androidex.apps.home.fragment.FrontBankcardFragment;
+import com.androidex.apps.home.fragment.NetWorkSettingFragment;
 import com.androidex.apps.home.fragment.OtherCardFragment;
 import com.androidex.apps.home.fragment.SetPassWordFragment;
 import com.androidex.apps.home.fragment.SetUUIDFragment;
+import com.androidex.apps.home.fragment.StartSettingFragment;
+import com.androidex.apps.home.fragment.SystemSettingFragment;
 import com.androidex.apps.home.view.CircleTextProgressbar;
 import com.androidex.common.AndroidExActivityBase;
 import com.androidex.common.DummyContent;
@@ -59,23 +65,35 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     public static final String action_next = "com.androidex.next";
     public static final String action_finish = "com.androidex.finish";
     public static final String action_cancle = "com.androidex.cancle";
+    public static final String action_Viewpager_gone = "com.androidex.action.viewpager.gone";
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mContentView;
     private View mControlsView;
     private CircleTextProgressbar progressbar;
     private appDevicesManager mDevices;
     public static WebJavaBridge.OnJavaBridgeListener mJbListener;
-    private static MainFragment mMainFragment = new MainFragment();
-    private static AboutFragment mAboutFragment = new AboutFragment();
+    private static Fragment mMainFragment = new MainFragment();
+    private static Fragment mAboutFragment = new AboutFragment();
     private static aexLogFragment mLogFragment = new aexLogFragment();
-    private static AdvertFragment mAdvertFragment = new AdvertFragment();
-    private Fragment mSetUUIDFragment = new SetUUIDFragment();
-    private Fragment mSetPassWordFragment = new SetPassWordFragment();
-    private Fragment mFrontBankcardFragment = new FrontBankcardFragment();
-    private Fragment mAfterBankcardFragment = new AfterBankcardFragment();
-    private Fragment mOtherCardFragment = new OtherCardFragment();
+    private static Fragment mAdvertFragment = new AdvertFragment();
+    private static Fragment mSetUUIDFragment = new SetUUIDFragment();
+    private static Fragment mSetPassWordFragment = new SetPassWordFragment();
+    private static Fragment mFrontBankcardFragment = new FrontBankcardFragment();
+    private static Fragment mAfterBankcardFragment = new AfterBankcardFragment();
+    private static Fragment mOtherCardFragment = new OtherCardFragment();
+    private static Fragment mAboutLocalFragment = new AboutLocalFragment();
+    private static Fragment mSystemSettingFragment = new SystemSettingFragment();
+    private static Fragment mNetWorkSettingFragment = new NetWorkSettingFragment();
+    private static Fragment mStartSettingFragment = new StartSettingFragment();
     private NextBrodcastResive nbr;
+
     public static String cardInfo;//读取卡信息
+    private static final Integer[] tabIcs = {R.mipmap.emoji_11, R.mipmap.systemset, R.mipmap.wifiset, R.mipmap.sdartset};
+    private static final String[] names = {"关于本机", "系统设置", "网络设置", "启动设置"};
+
+    private static List<Fragment> fragments;
+    public TabLayout tabLayout;
+    private ViewPager viewPager;
 
     private final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
         @Override
@@ -90,15 +108,13 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     public CircleTextProgressbar.OnCountdownProgressListener progressListener = new CircleTextProgressbar.OnCountdownProgressListener() {
         @Override
         public void onProgress(int what, int progress) {
-            if (what == 1) {
-
-            } else if (what == 2) {
+            if (what == 2) {
                 progressbar.setText(progress + "s");
             }
             if (progress == 1) {
                 delayedHide(AUTO_HIDE_DELAY_MILLIS);
+                viewPager.setVisibility(View.GONE);
             }
-            // 比如在首页，这里可以判断进度，进度到了100或者0的时候，你可以做跳过操作。
         }
     };
 
@@ -117,6 +133,8 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
 
         initProgressBar();
         initBroadCast(); //注册广播
+        initTablayoutAndViewPager();
+
     }
 
     public void initView() {
@@ -148,6 +166,77 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         intentFilter.addAction(action_cancle);
         intentFilter.addAction(aexddAndroidNfcReader.START_ACTION);
         registerReceiver(nbr, intentFilter);
+    }
+
+    private void initTablayoutAndViewPager() {
+        fragments = new ArrayList<>();
+        fragments.add(mAboutLocalFragment);
+        fragments.add(mSystemSettingFragment);
+        fragments.add(mNetWorkSettingFragment);
+        fragments.add(mStartSettingFragment);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        tabLayout = (TabLayout) findViewById(R.id.tablayout);
+        // viewPager.setOffscreenPageLimit(1);//预加载的页数
+        PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(pagerAdapter);
+        getFocus(viewPager);
+
+        tabLayout.setupWithViewPager(viewPager);
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            tabLayout.getTabAt(i).setCustomView(addTab(this, i));
+        }
+
+        //tabLayout.getTabAt(0).getCustomView().setSelected(true);
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition(), true);
+                viewPager.setVisibility(View.VISIBLE);
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return true;
+    }
+
+    private void getFocus(View view) {
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                viewPager.setFocusable(true);
+                viewPager.setFocusableInTouchMode(true);
+                viewPager.requestFocus();
+                return false;
+            }
+        });
+//        view.setFocusable(true);
+//        view.setFocusableInTouchMode(true);
+//        view.requestFocus();
+        Toast.makeText(this, "抢到焦点", Toast.LENGTH_SHORT).show();
+    }
+
+    public View addTab(Context context, int index) {
+        View view = View.inflate(context, R.layout.fragment_main_tabitem, null);
+        TextView textView = (TextView) view.findViewById(R.id.tv_tabitem);
+        ImageView imageView = (ImageView) view.findViewById(R.id.iv_tabitem);
+        //textView.setText(getResources().getStringArray(R.array.indexpage_text_tabs)[index]);
+        textView.setText(names[index]);
+        textView.setTextColor(Color.WHITE);
+        imageView.setImageResource(tabIcs[index]);
+        return view;
     }
 
     /**
@@ -335,6 +424,31 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 }
 
                 return true;
+            case R.id.action_reader:
+                if (mDevices.mBankCardReader.Open()) {
+                    //mDevices.mBankCardReader.reset();
+                    mDevices.mBankCardReader.ReciveDataLoop();
+                    //mDevices.mBankCardReader.queryCard();
+                    //mDevices.mBankCardReader.popCard();
+                    //mDevices.mBankCardReader.Close();
+                } else {
+                    Toast.makeText(this, String.format("Open bank reader fial:%s", mDevices.mBankCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS)), Toast.LENGTH_LONG).show();
+                }
+
+                return true;
+
+            case R.id.action_cas_reader:
+
+                if (mDevices.mCasCardReader.Open()) {
+                    //mDevices.mCasCardReader.reset();
+                    mDevices.mCasCardReader.ReciveDataLoop();
+                    //mDevices.mCasCardReader.queryCard();
+                    //mDevices.mCasCardReader.popCard();
+                    //mDevices.mCasCardReader.Close();
+                } else {
+                    Toast.makeText(this, String.format("Open cas reader fial:%s", mDevices.mCasCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS)), Toast.LENGTH_LONG).show();
+                }
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -374,6 +488,23 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         }
     }
 
+    static class PagerAdapter extends FragmentPagerAdapter {
+
+        public PagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return fragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return fragments == null ? 0 : fragments.size();
+        }
+    }
+
     /**
      * 实现viewpager切换Fragment的广播
      */
@@ -404,6 +535,9 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     android.util.Log.e("接收读取卡的信息====", cardInfo + "0000");
                     dismissDialog();
                     showDialog(getCarFragments());
+                    break;
+                case action_Viewpager_gone:
+                    viewPager.setVisibility(View.GONE);
                     break;
             }
         }

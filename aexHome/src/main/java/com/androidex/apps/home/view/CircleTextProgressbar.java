@@ -63,7 +63,7 @@ public class CircleTextProgressbar extends TextView {
     /**
      * 进度条的宽度。
      */
-    private int progressLineWidth = 8;
+    private int progressLineWidth = 6;
 
     /**
      * 画笔。
@@ -312,7 +312,8 @@ public class CircleTextProgressbar extends TextView {
      */
     public void start() {
         stop();
-        post(progressChangeTask);
+       // post(progressChangeTask);
+        postDelayed(progressChangeTask, 500);
     }
 
     /**

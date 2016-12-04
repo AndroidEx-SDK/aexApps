@@ -50,7 +50,7 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
     public CircleTextProgressbar progressbar;
     public String[] result = new String[256];
     public int advertnum = 0;
-    public static int nSeconds = 5;
+    public int nSeconds = 5;
     public int count = 0;
     public int imagename = 1;        //默认广告图片名字的序号
     public int nPicCount = 0;
@@ -64,13 +64,15 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
             if (what == 2) {
                 progressbar.setText(progress + "s");
             }
-            if (progress == 1) {
+            if (progress == 0) {
                 //activity.delayedHide(1000);
                 Intent intent = new Intent(FullscreenActivity.ActionControlBar);
+                Intent intent_gone = new Intent(FullscreenActivity.action_Viewpager_gone);
                 intent.putExtra("flag", "hide");
                 intent.putExtra("bar", true);
+                startPlayPic();
                 psetview.getContext().sendBroadcast(intent);
-            } else if (progress == 0) {
+                psetview.getContext().sendBroadcast(intent_gone);
                 progressbar.setText("30s");
             }
         }
@@ -91,10 +93,12 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
         if (psetview == null) {
             psetview = inflater.inflate(R.layout.advert_main, null);
         }
-
-        startPlayPic();
-        FullscreenActivity.registerMultClickListener(psetview, this);
+        progressbar = (CircleTextProgressbar) psetview.findViewById(R.id.progressbar);
         progressbar.setCountdownProgressListener(2, progressListener);
+        progressbar.setTimeMillis(30 * 1000);
+        progressbar.reStart();
+        FullscreenActivity.registerMultClickListener(psetview, this);
+
         return psetview;
     }
 
@@ -141,7 +145,7 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
 
         //获取图片控件
         iview = (ImageView) psetview.findViewById(R.id.picsw);
-        progressbar = (CircleTextProgressbar) psetview.findViewById(R.id.progressbar);
+
         //全屏显示
         iview.setScaleType(ImageView.ScaleType.FIT_XY);
 
@@ -320,6 +324,8 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
             psetview.getContext().sendBroadcast(intent);
             //showToast("发送广播");
 
+            handler.removeCallbacks(runnable);
+            runnable = null;
             return true;
         }
 

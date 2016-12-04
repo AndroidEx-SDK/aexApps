@@ -23,15 +23,35 @@
             android:title="@string/app_name"
             app:popupTheme="@style/ToolbarPopupTheme">
 
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tablayout"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:tabMode="fixed"
+                app:tabIndicatorHeight="0dp"
+                app:tabSelectedTextColor="@android:color/white"
+                app:tabTextAppearance="@style/MyCustomTextAppearance"/>
+
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
+
 
     <android.support.v4.view.ViewPager
         android:id="@+id/fullscreen_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
+
+    <com.androidex.apps.home.view.NoScrollViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="800dp"
+        android:layout_height="700dp"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:visibility="gone"
+        >
+    </com.androidex.apps.home.view.NoScrollViewPager>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/dummy_button"
@@ -46,12 +66,12 @@
         />
 
     <com.androidex.apps.home.view.CircleTextProgressbar
-        android:onClick="onClick"
         android:id="@+id/progressbar"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_gravity="bottom|left"
         android:layout_margin="@dimen/fab_margin"
+        android:onClick="onClick"
         android:text="30s"
         android:visibility="gone"
         app:in_circle_color="@color/state_color"/>

@@ -1,14 +1,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/action_print"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="测试打印机"/>
+    <item
         android:id="@+id/action_reader"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="测试读卡器"/>
     <item
-        android:id="@+id/action_print"
+        android:id="@+id/action_cas_reader"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="测试打印机"/>
+        android:title="测试燃气卡"/>
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
