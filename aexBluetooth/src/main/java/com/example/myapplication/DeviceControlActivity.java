@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
@@ -93,7 +94,7 @@ public class DeviceControlActivity extends Activity {
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 displayGattServices(mBluetoothLeService.getSupportedGattServices());
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-                displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));//读出数据
+                displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));//读取设备
             }
         }
     };
@@ -125,14 +126,21 @@ public class DeviceControlActivity extends Activity {
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
-        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               //传输开门指令
-            }
-        });
-    }
+        button = (Button) findViewById(R.id.button);
+        if (!mConnected){
+            button.setClickable(false);
+        }else{
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //传输开门指令
 
+                }
+            });
+        }
+
+    }
+    private Button button;
     @Override
     protected void onResume() {
         super.onResume();
@@ -201,11 +209,10 @@ public class DeviceControlActivity extends Activity {
         Log.d(TAG, "displayData: "+sb.toString());
     }
 
-    // Demonstrates how to iterate through the supported GATT
-    // Services/Characteristics.
-    // In this sample, we populate the data structure that is bound to the
-    // ExpandableListView
-    // on the UI.
+    /**
+     * 遍历bleservices 得到相匹配的特征
+     * @param gattServices
+     */
     private void displayGattServices(List<BluetoothGattService> gattServices) {
         if (gattServices == null)
             return;
@@ -221,6 +228,8 @@ public class DeviceControlActivity extends Activity {
                     Log.e("console", "2gatt Characteristic: " + uuid);
                     mBluetoothLeService.setCharacteristicNotification(gattCharacteristic, true);
                     mBluetoothLeService.readCharacteristic(gattCharacteristic);
+                    //可以在这里写入数据
+                    mBluetoothLeService.wirteCharacteristic(gattCharacteristic);
                 }
             }
         }
