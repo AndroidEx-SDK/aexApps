@@ -1,6 +1,5 @@
 package com.example.myapplication;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ListActivity;
@@ -12,10 +11,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,21 +43,21 @@ public class DeviceScanActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+     /*   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
                     && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 String[] permissions = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
                 ActivityCompat.requestPermissions(this, permissions, 10);
                 return;
             }
-        }
+        }*/
         mHandler = new Handler();
 
         // 检查当前手机是否支持ble 蓝牙,如果不支持退出程序
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-            Toast.makeText(this,"不支持" ,Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "不支持", Toast.LENGTH_SHORT).show();
             finish();
-        }else{
+        } else {
 
         }
 
@@ -80,19 +77,20 @@ public class DeviceScanActivity extends ListActivity {
     private BroadcastReceiver bluetoothReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if(BluetoothDevice.ACTION_FOUND.equals(action)){
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent
                         .getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 mLeDeviceListAdapter.addDevice(device);
                 mLeDeviceListAdapter.notifyDataSetChanged();
-            }else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)){
+            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 unregisterReceiver(this);
                 mScanning = true;
             }
         }
     };
+
     //注册广播
-    private void registerReceiverBlue(){
+    private void registerReceiverBlue() {
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothDevice.ACTION_FOUND);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
@@ -148,8 +146,6 @@ public class DeviceScanActivity extends ListActivity {
         setListAdapter(mLeDeviceListAdapter);
         scanLeDevice(true);
         registerReceiverBlue();
-
-        
     }
 
     @Override
@@ -183,7 +179,7 @@ public class DeviceScanActivity extends ListActivity {
         intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, device.getName());
         intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, device.getAddress());
         if (mScanning) {
-           // mBluetoothAdapter.stopLeScan(mLeScanCallback);
+            // mBluetoothAdapter.stopLeScan(mLeScanCallback);
             mBluetoothAdapter.cancelDiscovery();
             mScanning = false;
         }
@@ -197,7 +193,7 @@ public class DeviceScanActivity extends ListActivity {
                 @Override
                 public void run() {
                     mScanning = false;
-                   // mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                    // mBluetoothAdapter.stopLeScan(mLeScanCallback);
                     mBluetoothAdapter.cancelDiscovery();
                     invalidateOptionsMenu();
                 }
@@ -234,8 +230,7 @@ public class DeviceScanActivity extends ListActivity {
         }
     };*/
 
-    private static byte[] reverseBytes(byte[] a)
-    {
+    private static byte[] reverseBytes(byte[] a) {
         int len = a.length;
         byte[] b = new byte[len];
         for (int k = 0; k < len; k++) {
@@ -269,7 +264,7 @@ public class DeviceScanActivity extends ListActivity {
         }
 
         public void addDevice(BluetoothDevice device) {
-            if(!mLeDevices.contains(device)) {
+            if (!mLeDevices.contains(device)) {
                 mLeDevices.add(device);
             }
         }
@@ -317,7 +312,7 @@ public class DeviceScanActivity extends ListActivity {
             final String deviceRSSI = BluetoothDevice.EXTRA_RSSI;
             if (deviceName != null && deviceName.length() > 0)
                 viewHolder.deviceName.setText(deviceName);
-            else if(deviceRSSI != null && deviceRSSI.length() > 0)
+            else if (deviceRSSI != null && deviceRSSI.length() > 0)
                 viewHolder.deviceRSSI.setText(deviceRSSI);
             else
                 viewHolder.deviceName.setText(R.string.unknown_device);
