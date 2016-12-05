@@ -186,7 +186,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
             tabLayout.getTabAt(i).setCustomView(addTab(this, i));
         }
-        //tabLayout.getTabAt(0).getCustomView().setSelected(true);
+//        tabLayout.getTabAt(0).getCustomView().setSelected(true);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

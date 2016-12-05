@@ -17,5 +17,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/marginPadding6"
+        android:textSize="@dimen/text_size12"
         android:text="@string/abc_account"/>
 </LinearLayout>

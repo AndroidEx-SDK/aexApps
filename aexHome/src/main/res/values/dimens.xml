@@ -25,6 +25,7 @@
     <dimen name="marginPadding50">37.5dp</dimen>
     <dimen name="marginPadding40">30dp</dimen>
     <dimen name="marginPadding37">27.75dp</dimen>
+    <dimen name="marginPadding36">36dp</dimen>
     <dimen name="marginPadding32">24dp</dimen>
     <dimen name="marginPadding30">22.5dp</dimen>
     <dimen name="marginPadding25">19dp</dimen>

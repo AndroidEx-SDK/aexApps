@@ -115,10 +115,10 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
                 try {
                     Log.d(TAG,r.toString(4));
                     //发送广播
-                    Intent intent = new Intent();
-                    intent.setAction(START_ACTION);
-                    intent.putExtra("cardinfo",r.toString());
-                    mContext.sendBroadcast(intent);
+//                    Intent intent = new Intent();
+//                    intent.setAction(START_ACTION);
+//                    intent.putExtra("cardinfo",r.toString());
+//                    mContext.sendBroadcast(intent);
                     android.util.Log.e("-----发送成功",r.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -132,14 +132,20 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
             }
         }else Toast.makeText(mContext,"无效卡",Toast.LENGTH_SHORT).show();
 
+        //发送广播
+        Intent intent = new Intent();
+        intent.setAction(START_ACTION);
+        //intent.putExtra("cardinfo",r.toString());
+        mContext.sendBroadcast(intent);
+
         final NfcF nfcf = NfcF.get(tag);
         if (nfcf != null) {
             try {
                 JSONObject r = FelicaReader.readCard(nfcf);
                 //发送广播
-                Intent intent = new Intent();
+                Intent intent1 = new Intent();
                 intent.setAction(NFCF);
-                mContext.sendBroadcast(intent);
+                mContext.sendBroadcast(intent1);
                 try {
                     Log.d(TAG,r.toString(4));
                 } catch (JSONException e) {
