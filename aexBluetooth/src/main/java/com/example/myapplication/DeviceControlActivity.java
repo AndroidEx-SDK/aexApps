@@ -43,6 +43,7 @@ public class DeviceControlActivity extends Activity {
     private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics = new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
 
     private boolean mConnected = false;
+    private boolean mFindService = false;
 
     private final String LIST_NAME = "NAME";
     private final String LIST_UUID = "UUID";
@@ -84,15 +85,17 @@ public class DeviceControlActivity extends Activity {
             final String action = intent.getAction();
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
                 mConnected = true;
+                button.setClickable(true);
                 updateConnectionState(R.string.connected);
                 invalidateOptionsMenu();
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
+                button.setClickable(false);
                 updateConnectionState(R.string.disconnected);
                 invalidateOptionsMenu();
                 clearUI();
-            } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
-                displayGattServices(mBluetoothLeService.getSupportedGattServices());
+            } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {//找到服务了
+                mFindService = true;
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
                 displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));//读取设备
             }
@@ -129,16 +132,17 @@ public class DeviceControlActivity extends Activity {
         button = (Button) findViewById(R.id.button);
         if (!mConnected){
             button.setClickable(false);
-        }else{
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //传输开门指令
-
-                }
-            });
         }
-
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG,"displayGattServices:"+mFindService);
+                //传输开门指令
+                if(mFindService){
+                    displayGattServices(mBluetoothLeService.getSupportedGattServices());
+                }
+            }
+        });
     }
     private Button button;
     @Override
@@ -214,21 +218,25 @@ public class DeviceControlActivity extends Activity {
      * @param gattServices
      */
     private void displayGattServices(List<BluetoothGattService> gattServices) {
-        if (gattServices == null)
+        if (gattServices == null){
+            Log.d(TAG,"displayGattServices: in this doing");
             return;
+        }
         String uuid = null;
         // Loops through available GATT Services.
         for (BluetoothGattService gattService : gattServices) {
             uuid = gattService.getUuid().toString();
-            Log.d(TAG, "displayGattServices: "+uuid);
+            Log.d(TAG, "displayGattServices: "+uuid);//service的uuid
             List<BluetoothGattCharacteristic> gattCharacteristics = gattService.getCharacteristics();
             for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
                 uuid = gattCharacteristic.getUuid().toString();
+                Log.d(TAG,"gattCharacteristic:"+uuid);
                 if (uuid.contains("fff4")) {
                     Log.e("console", "2gatt Characteristic: " + uuid);
                     mBluetoothLeService.setCharacteristicNotification(gattCharacteristic, true);
                     mBluetoothLeService.readCharacteristic(gattCharacteristic);
                     //可以在这里写入数据
+
                     mBluetoothLeService.wirteCharacteristic(gattCharacteristic);
                 }
             }

@@ -74,8 +74,7 @@ public class DeviceScanActivity extends ListActivity {
             finish();
             return;
         }
-        scanLeDevice(true);
-        registerReceiverBlue();
+
     }
 
     private BroadcastReceiver bluetoothReceiver = new BroadcastReceiver() {
@@ -148,6 +147,9 @@ public class DeviceScanActivity extends ListActivity {
         mLeDeviceListAdapter = new LeDeviceListAdapter();
         setListAdapter(mLeDeviceListAdapter);
         scanLeDevice(true);
+        registerReceiverBlue();
+
+        
     }
 
     @Override
