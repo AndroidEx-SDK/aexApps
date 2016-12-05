@@ -18,7 +18,7 @@ import com.androidex.apps.home.R;
  * 启动设置
  */
 
-public class StartSettingFragment extends Fragment implements View.OnTouchListener, View.OnClickListener {
+public class StartSettingFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "systemsetfragment";
     private View rootView;
 
@@ -28,12 +28,13 @@ public class StartSettingFragment extends Fragment implements View.OnTouchListen
         rootView = inflater.inflate(R.layout.fragment_start_setting, container, false);
         ImageView close = (ImageView) rootView.findViewById(R.id.iv_close);
         close.setOnClickListener(this);
+        rootView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
         return rootView;
-    }
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        return true;
     }
 
     @Override

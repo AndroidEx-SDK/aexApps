@@ -19,7 +19,7 @@ import com.androidex.apps.home.R;
  * 网络设置
  */
 
-public class NetWorkSettingFragment extends Fragment implements View.OnTouchListener, OnClickListener {
+public class NetWorkSettingFragment extends Fragment implements OnClickListener {
     private static final String TAG = "systemsetfragment";
     private View rootView;
 
@@ -29,12 +29,13 @@ public class NetWorkSettingFragment extends Fragment implements View.OnTouchList
         rootView = inflater.inflate(R.layout.fragment_internet_setting, container, false);
         ImageView close = (ImageView) rootView.findViewById(R.id.iv_close);
         close.setOnClickListener(this);
+        rootView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
         return rootView;
-    }
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        return true;
     }
 
     @Override
