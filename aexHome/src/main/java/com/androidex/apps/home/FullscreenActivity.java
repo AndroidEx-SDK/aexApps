@@ -166,6 +166,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         intentFilter.addAction(action_finish);
         intentFilter.addAction(action_back);
         intentFilter.addAction(action_cancle);
+        intentFilter.addAction(action_Viewpager_gone);
         intentFilter.addAction(aexddAndroidNfcReader.START_ACTION);
         registerReceiver(nbr, intentFilter);
     }
