@@ -23,48 +23,29 @@
             android:title="@string/app_name"
             app:popupTheme="@style/ToolbarPopupTheme">
 
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tablayout"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:tabIndicatorHeight="0dp"
-                app:tabMode="fixed"
-                app:tabSelectedTextColor="@android:color/white"
-                app:tabTextAppearance="@style/MyCustomTextAppearance"/>
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:visibility="gone"
                 >
 
-                <!--<TextView
-                    android:layout_width="?attr/actionBarSize"
-                    android:layout_height="?attr/actionBarSize"
-                    android:gravity="center_horizontal"
-                    android:text="@string/app_name"
-                    android:drawableTop="@mipmap/ic_launcher"
-                    android:textSize="@dimen/text_size12"
-                    android:drawablePadding="-30dp"/>-->
-
                 <LinearLayout
-                    android:layout_gravity="center"
                     android:id="@+id/about_local"
                     android:layout_width="wrap_content"
                     android:layout_height="?attr/actionBarSize"
+                    android:layout_gravity="center"
                     android:orientation="vertical">
 
                     <ImageView
-
                         style="@style/aexhome_tab_image"
-                        android:src="@mipmap/ic_launcher"/>
+                        android:src="@mipmap/emoji_11"/>
 
                     <TextView
                         style="@style/aexhome_tab_text"
-                        android:text="@string/abc_account"
+                        android:text="@string/about_this"
                         />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -76,12 +57,13 @@
 
                     <ImageView
                         style="@style/aexhome_tab_image"
-                        android:src="@mipmap/ic_launcher"/>
+                        android:src="@mipmap/systemset"/>
 
                     <TextView
                         style="@style/aexhome_tab_text"
-                        android:text="@string/abc_account"
+                        android:text="@string/system_seting"
                         />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -93,11 +75,11 @@
 
                     <ImageView
                         style="@style/aexhome_tab_image"
-                        android:src="@mipmap/ic_launcher"/>
+                        android:src="@mipmap/wifiset"/>
 
                     <TextView
                         style="@style/aexhome_tab_text"
-                        android:text="@string/abc_account"
+                        android:text="@string/intnet_set"
                         />
                 </LinearLayout>
 
@@ -110,29 +92,17 @@
 
                     <ImageView
                         style="@style/aexhome_tab_image"
-                        android:src="@mipmap/ic_launcher"/>
+                        android:src="@mipmap/sdartset"/>
 
                     <TextView
                         style="@style/aexhome_tab_text"
-                        android:text="@string/abc_account"
+                        android:text="@string/start_set"
                         />
                 </LinearLayout>
             </LinearLayout>
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
-
-
-    <com.androidex.apps.home.view.NoScrollViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="800dp"
-        android:layout_height="600dp"
-        android:layout_gravity="center|top"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:background="@color/black"
-        android:visibility="gone"
-        >
-    </com.androidex.apps.home.view.NoScrollViewPager>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/dummy_button"
@@ -163,5 +133,15 @@
         android:layout_height="wrap_content"
         />
 
+    <com.androidex.apps.home.view.NoScrollViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="800dp"
+        android:layout_height="650dp"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:background="@color/black"
+        android:visibility="gone"
+        >
+    </com.androidex.apps.home.view.NoScrollViewPager>
 
 </android.support.design.widget.CoordinatorLayout>

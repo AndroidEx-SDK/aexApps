@@ -462,4 +462,5 @@ kk30外围设备? - 读卡器，键盘一体机特点:
     ，即使重新烧录古剑也不会丢失。该唯一标识采用GUID的格式存储。设置成功后Android ID会使用该GUID的后16位。
     \n\t\t您的应用程序可以使用读GUID作为设备的唯一标识，也可以取用Android ID。</string>
     <string name="ready1">就绪</string>
+
 </resources>

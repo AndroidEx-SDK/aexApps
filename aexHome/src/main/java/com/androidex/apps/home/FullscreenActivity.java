@@ -23,7 +23,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,8 +45,8 @@ import com.androidex.common.LogFragment;
 import com.androidex.devices.aexddAndroidNfcReader;
 import com.androidex.devices.aexddB58Printer;
 import com.androidex.devices.aexddMT319Reader;
-import com.androidex.devices.aexddZTC70;
 import com.androidex.devices.aexddNfcReader;
+import com.androidex.devices.aexddZTC70;
 import com.androidex.devices.appDeviceDriver;
 import com.androidex.devices.appDevicesManager;
 import com.androidex.logger.Log;
@@ -91,7 +91,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
 
     public static String cardInfo;//读取卡信息
     private static final Integer[] tabIcs = {R.mipmap.emoji_11, R.mipmap.systemset, R.mipmap.wifiset, R.mipmap.sdartset};
-    private static final String[] names = {"关于本机", "系统设置", "网络设置", "启动设置"};
 
     private static List<Fragment> fragments;
     public TabLayout tabLayout;
@@ -134,21 +133,28 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         setFullScreen(true);
 
         initProgressBar();
-        initBroadCast(); //注册广播
         initTablayoutAndViewPager();
+        initBroadCast(); //注册广播
 
     }
 
     public void initView() {
+        mDevices = new appDevicesManager(this);
         initActionBar(R.id.toolbar);
         mContentView = (ViewPager) findViewById(R.id.fullscreen_content);
 
+        LinearLayout system_set = (LinearLayout) findViewById(R.id.system_set);
+        LinearLayout about_local = (LinearLayout) findViewById(R.id.about_local);
+        LinearLayout intnet_set = (LinearLayout) findViewById(R.id.intnet_set);
+        LinearLayout start_set = (LinearLayout) findViewById(R.id.start_set);
         mControlsView = findViewById(R.id.dummy_button);
         mControlsView.setOnTouchListener(mDelayHideTouchListener);
         mContentView.setBackgroundResource(R.drawable.default_wallpaper);
         // mContentView.setPageTransformer(true, MyAnimation.Instance().new MyPageTransformer());//给ViewPager添加动画
-
-        mDevices = new appDevicesManager(this);
+        system_set.setOnClickListener(this);
+        about_local.setOnClickListener(this);
+        intnet_set.setOnClickListener(this);
+        start_set.setOnClickListener(this);
 
     }
 
@@ -178,48 +184,9 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         fragments.add(mNetWorkSettingFragment);
         fragments.add(mStartSettingFragment);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
-        tabLayout = (TabLayout) findViewById(R.id.tablayout);
         // viewPager.setOffscreenPageLimit(1);//预加载的页数
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
-        tabLayout.setupWithViewPager(viewPager);
-        for (int i = 0; i < tabLayout.getTabCount(); i++) {
-            tabLayout.getTabAt(i).setCustomView(addTab(this, i));
-        }
-//        tabLayout.getTabAt(0).getCustomView().setSelected(true);
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition(), true);
-                viewPager.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        return true;
-    }
-
-    public View addTab(Context context, int index) {
-        View view = View.inflate(context, R.layout.fragment_main_tabitem, null);
-        TextView textView = (TextView) view.findViewById(R.id.tv_tabitem);
-        ImageView imageView = (ImageView) view.findViewById(R.id.iv_tabitem);
-        //textView.setText(getResources().getStringArray(R.array.indexpage_text_tabs)[index]);
-        textView.setText(names[index]);
-        textView.setTextColor(Color.WHITE);
-        imageView.setImageResource(tabIcs[index]);
-        return view;
     }
 
     /**
@@ -433,7 +400,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     aexddZTC70 passworkkeypad = (aexddZTC70) mDevices.mZTPasswordKeypad;
                     passworkkeypad.selfTest();
                     int i = mDevices.mPasswordKeypad.ReciveDataLoop();
-                    Log.i("按键：",i+"");
+                    Log.i("按键：", i + "");
                     mDevices.mPasswordKeypad.Close();
                 }
                 return true;
@@ -464,13 +431,31 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         switch (v.getId()) {
             case R.id.toolbar:
                 showDialog(getFragments());
-//                        Intent intent = new Intent(FullscreenActivity.this, SystemMainActivity.class);
-//                        startActivity(intent);
-
                 break;
             case R.id.progressbar:
                 progressbar.setTimeMillis(30 * 1000);
                 progressbar.reStart();
+                break;
+            case R.id.about_local:
+                viewPager.setVisibility(View.VISIBLE);
+                viewPager.setCurrentItem(0);
+                Toast.makeText(this,"关于本机",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.system_set:
+                viewPager.setVisibility(View.VISIBLE);
+                viewPager.setCurrentItem(1);
+                Toast.makeText(this,"关于本机",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.intnet_set:
+                viewPager.setVisibility(View.VISIBLE);
+                viewPager.setCurrentItem(2);
+                Toast.makeText(this,"关于本机",Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.start_set:
+                viewPager.setVisibility(View.VISIBLE);
+                viewPager.setCurrentItem(3);
+                Toast.makeText(this,"关于本机",Toast.LENGTH_SHORT).show();
                 break;
 
         }

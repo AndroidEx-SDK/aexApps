@@ -72,6 +72,12 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
     @Override
     public void onTagDiscovered(Tag tag) {
         Log.i(TAG, "发现新卡");
+        //发送广播
+        Intent intent = new Intent();
+        intent.setAction(START_ACTION);
+        //intent.putExtra("cardinfo",r.toString());
+        mContext.sendBroadcast(intent);
+
         // Android's Host-based Card Emulation (HCE) feature implements the ISO-DEP (ISO 14443-4)
         // protocol.
         //
@@ -132,11 +138,6 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
             }
         }else Toast.makeText(mContext,"无效卡",Toast.LENGTH_SHORT).show();
 
-        //发送广播
-        Intent intent = new Intent();
-        intent.setAction(START_ACTION);
-        //intent.putExtra("cardinfo",r.toString());
-        mContext.sendBroadcast(intent);
 
         final NfcF nfcf = NfcF.get(tag);
         if (nfcf != null) {
