@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:background="@null"
               android:orientation="vertical">
 
     <LinearLayout
@@ -27,6 +28,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/marginPadding5"
             android:text="@string/solemn_hint_text"/>
 
 
@@ -34,6 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
+            android:layout_marginTop="@dimen/marginPadding5"
             android:text="'@2013-2016 AndroidEx"/>
 
         <TextView
@@ -93,16 +96,19 @@
                 android:layout_height="40dp"
                 android:layout_marginLeft="@dimen/abc_button_inset_vertical_material"
                 android:layout_toRightOf="@id/btn_auto"
-                android:gravity="center"
                 android:hint="FFFFFFFF-FFFF-FFFF-FFFFFFFFFFFF"
                 android:singleLine="true"
                 android:textColor="@color/black"
+                android:layout_weight="1"
                 android:textSize="@dimen/text_size17"/>
 
             <ImageView
+                android:id="@+id/iv_clear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                android:src="@mipmap/clear"
+                android:padding="@dimen/marginPadding5"
+                android:layout_gravity="center_vertical"
                 />
         </LinearLayout>
 
@@ -120,6 +126,7 @@
                 />
 
             <Button
+                android:id="@+id/btn_write"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/marginPadding16"
