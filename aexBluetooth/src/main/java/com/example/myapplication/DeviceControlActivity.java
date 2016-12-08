@@ -22,7 +22,6 @@ import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @SuppressLint("NewApi")
@@ -40,7 +39,6 @@ public class DeviceControlActivity extends Activity {
     private ExpandableListView mGattServicesList;
     public static BluetoothGatt mBluetoothGatt;
     private BluetoothLeService mBluetoothLeService;
-    private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics = new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
 
     private boolean mConnected = false;
     private boolean mFindService = false;
@@ -98,6 +96,8 @@ public class DeviceControlActivity extends Activity {
                 mFindService = true;
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
                 displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));//读取设备
+            }else if(BluetoothLeService.ACTION_WRITE.equals(action)){
+                mDataField.setText("写入成功");
             }
         }
     };
@@ -218,31 +218,24 @@ public class DeviceControlActivity extends Activity {
      * @param gattServices
      */
     private void displayGattServices(List<BluetoothGattService> gattServices) {
-        if (gattServices == null){
-            Log.d(TAG,"displayGattServices: in this doing");
+        if (gattServices == null)
             return;
-        }
         String uuid = null;
         // Loops through available GATT Services.
         for (BluetoothGattService gattService : gattServices) {
             uuid = gattService.getUuid().toString();
-            Log.d(TAG, "displayGattServices: "+uuid);//service的uuid
+            Log.d(TAG, "displayGattServices: "+uuid);
             List<BluetoothGattCharacteristic> gattCharacteristics = gattService.getCharacteristics();
             for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
                 uuid = gattCharacteristic.getUuid().toString();
-                Log.d(TAG,"gattCharacteristic:"+uuid);
+                Log.d(TAG, "gattCharacteristic: "+uuid);
                 if (uuid.contains("fff4")) {
                     Log.e("console", "2gatt Characteristic: " + uuid);
-                    mBluetoothLeService.setCharacteristicNotification(gattCharacteristic, true);
-                    mBluetoothLeService.readCharacteristic(gattCharacteristic);
-                    //可以在这里写入数据
-
-                    mBluetoothLeService.wirteCharacteristic(gattCharacteristic);
+                   writeData(gattCharacteristic);
                 }
             }
         }
     }
-
     /**
      *
      * @return
@@ -256,6 +249,14 @@ public class DeviceControlActivity extends Activity {
         intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
         intentFilter.addAction(BluetoothLeService.EXTRA_DATA);
         return intentFilter;
+    }
+    /**
+     * 向可写特征 写入数据
+     */
+    public void writeData(BluetoothGattCharacteristic gattCharacteristic){
+        //mBluetoothLeService.readCharacteristic(gattCharacteristic);
+        mBluetoothLeService.wirteCharacteristic(gattCharacteristic);
+        mBluetoothLeService.setCharacteristicNotification(gattCharacteristic, true);
     }
 
     /**
