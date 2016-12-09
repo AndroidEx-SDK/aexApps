@@ -1,6 +1,7 @@
 package com.androidex.devices;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.androidex.apps.aexdeviceslib.R;
 import com.androidex.common.SoundPoolUtil;
@@ -114,6 +115,7 @@ public class aexddZTC70 extends aexddPasswordKeypad {
     @Override
     public boolean selfTest() {
         Log.i(TAG, String.format("Version:%s", pkGetVersion()));
+        Toast.makeText(mContext,String.format("Version:%s", pkGetVersion()),Toast.LENGTH_SHORT).show();
        // Log.i(TAG, String.format("Status:%s", getStatusStr(queryStatus())));
         return true;
     }
