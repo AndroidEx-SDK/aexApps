@@ -3,11 +3,15 @@ package com.androidex.devices;
 import android.content.Context;
 
 import com.androidex.apps.aexdeviceslib.R;
+import com.androidex.common.Base16;
 import com.androidex.common.SoundPoolUtil;
 import com.androidex.logger.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 
 /**
  * Created by yangjun on 2016/10/24.
@@ -225,12 +229,74 @@ public class aexddKMY350 extends aexddPasswordKeypad {
     public boolean pkReset()
     {
         boolean ret = false;
-        String rhex = "";
+        byte[] r;
 
         pkSendHexCmd("0131");
-        rhex = ReciveDataHex(255,3000*delayUint);
-        ret = !rhex.isEmpty();
+        r = pkReadPacket(3000*delayUint);
+        if(r != null && r.length > 3) {
+            int st = r[2];
+            Log.d(TAG,String.format("自检复位：%s",getResultString(st)));
+            ret = st == 0x04;
+        }
         return ret;
+    }
+
+    private String getResultString(int st) {
+        String status = "";
+        switch(st){
+            case 0x04:
+                status = "命令执行成功";
+                break;
+            case 0x15:
+                status = "命令参数错误";
+                break;
+            case 0x80:
+                status = "超时错误";
+                break;
+            case 0xA4:
+                status = "命令可成功执行，但主密钥无效";
+                break;
+            case 0xB5:
+                status = "命令无效，且主密钥无效";
+                break;
+            case 0xC4:
+                status = "命令可成功执行，但电池可能损坏";
+                break;
+            case 0xD5:
+                status = "命令无效，且电池可能损坏";
+                break;
+            case 0xE0:
+                status = "无效命令";
+                break;
+            case 0xF0:
+                status = "自检CPU错(没装E2ROM芯片?)";
+                break;
+            case 0xF1:
+                status = "自检SRAM错";
+                break;
+            case 0xF2:
+                status = "自检键盘有短路错";
+                break;
+            case 0xF3:
+                status = "自检串口电平错";
+                break;
+            case 0xF4:
+                status = "自检CPU卡出错";
+                break;
+            case 0xF5:
+                status = "自检电池可能损坏";
+                break;
+            case 0xF6:
+                status = "自检主密钥失效";
+                break;
+            case 0xF7:
+                status = "自检杂项错";
+                break;
+            default:
+                status = "未知返回状态";
+                break;
+        }
+        return status;
     }
 
     /**
@@ -248,11 +314,24 @@ public class aexddKMY350 extends aexddPasswordKeypad {
     public String pkGetVersion()
     {
         String ret = "";
-        String rhex = "";
 
         pkSendHexCmd("0130");
-        rhex = ReciveDataHex(255,3000*delayUint);
-        ret = rhex;
+        byte[] r = pkReadPacket(3000*delayUint);
+        if(r != null && r.length > 3) {
+            int st = r[2];
+            if(st == 0x04) {
+                Log.d(TAG, String.format("自检复位：%s", getResultString(st)));
+                try {
+                    ret = new String(r,3,16,"utf8");
+                    String sn = Base16.encode(Arrays.copyOfRange(r,19,23));
+                    Log.d(TAG,String.format("%s-%s",ret,sn));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         return ret;
     }
 

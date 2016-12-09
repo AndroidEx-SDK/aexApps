@@ -10,7 +10,6 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -69,12 +68,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     public static final String action_finish = "com.androidex.finish";
     public static final String action_cancle = "com.androidex.cancle";
     public static final String action_Viewpager_gone = "com.androidex.action.viewpager.gone";
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ViewPager mContentView;
-    private View mControlsView;
-    private CircleTextProgressbar progressbar;
-    private appDevicesManager mDevices;
-    public static WebJavaBridge.OnJavaBridgeListener mJbListener;
+    public static final String UUID_PATH= "com.androidex.action.WriteHex";
     private static Fragment mMainFragment = new MainFragment();
     private static Fragment mAboutFragment = new AboutFragment();
     private static aexLogFragment mLogFragment = new aexLogFragment();
@@ -88,14 +82,16 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     private static Fragment mSystemSettingFragment = new SystemSettingFragment();
     private static Fragment mNetWorkSettingFragment = new NetWorkSettingFragment();
     private static Fragment mStartSettingFragment = new StartSettingFragment();
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private ViewPager mContentView;         //整体大布局的Viewpager
+    private ViewPager viewPager;            //有关系统设置的Viewpager
+    private View mControlsView;             //当前activity的布局
+    private CircleTextProgressbar progressbar;
+    private appDevicesManager mDevices;
+    public static WebJavaBridge.OnJavaBridgeListener mJbListener;
     private NextBrodcastResive nbr;
-
-    public static String cardInfo;//读取卡信息
-    private static final Integer[] tabIcs = {R.mipmap.emoji_11, R.mipmap.systemset, R.mipmap.wifiset, R.mipmap.sdartset};
-
+    public static String cardInfo;          //读取卡信息
     private static List<Fragment> fragments;
-    public TabLayout tabLayout;
-    private ViewPager viewPager;
 
     private final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
         @Override
@@ -125,30 +121,37 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aexhome_main);
         hwservice.EnterFullScreen();
-        getWindow().getDecorView().setBackgroundResource(R.drawable.default_wallpaper);
-        initView();
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mContentView.setAdapter(mSectionsPagerAdapter);
-
-        setFullScreenView(mContentView);
-        setFullScreen(true);
-
-        initProgressBar();
-        initTablayoutAndViewPager();
-        initBroadCast(); //注册广播
-
+        mContentView = (ViewPager) findViewById(R.id.fullscreen_content);
+        mControlsView = findViewById(R.id.dummy_button);
+        //这里要获得UUID，判断UUID等不等"FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF"不等于就说明被写入了UUID
+        if (!hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")){
+            getWindow().getDecorView().setBackgroundResource(R.drawable.default_wallpaper);
+            initView();
+            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+            mContentView.setAdapter(mSectionsPagerAdapter);
+            setFullScreenView(mContentView);
+            setFullScreen(true);
+            initProgressBar();
+            initTablayoutAndViewPager();
+            initBroadCast(); //注册广播
+            android.util.Log.e("uuid=======:",hwservice.get_uuid());
+            Toast.makeText(this,hwservice.get_uuid(),Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this,"请设置UUID",Toast.LENGTH_LONG).show();
+            android.util.Log.e("uuid默认=======:",hwservice.get_uuid());
+            SetUUIDFragment.instance().show(getSupportFragmentManager(),"uuidfragment");
+        }
     }
 
     public void initView() {
         mDevices = new appDevicesManager(this);
         initActionBar(R.id.toolbar);
-        mContentView = (ViewPager) findViewById(R.id.fullscreen_content);
 
         LinearLayout system_set = (LinearLayout) findViewById(R.id.system_set);
         LinearLayout about_local = (LinearLayout) findViewById(R.id.about_local);
         LinearLayout intnet_set = (LinearLayout) findViewById(R.id.intnet_set);
         LinearLayout start_set = (LinearLayout) findViewById(R.id.start_set);
-        mControlsView = findViewById(R.id.dummy_button);
+
         mControlsView.setOnTouchListener(mDelayHideTouchListener);
         mContentView.setBackgroundResource(R.drawable.default_wallpaper);
         // mContentView.setPageTransformer(true, MyAnimation.Instance().new MyPageTransformer());//给ViewPager添加动画
@@ -156,7 +159,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         about_local.setOnClickListener(this);
         intnet_set.setOnClickListener(this);
         start_set.setOnClickListener(this);
-
     }
 
     public void initProgressBar() {
@@ -201,7 +203,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
      */
     public void showDialog(List<Fragment> listFragment) {
         if (listFragment.size() < 0 || listFragment == null) return;
-        DialogFragmentManger.Instance()
+        DialogFragmentManger.instance()
                 .setListFragment(listFragment)
                 .setWidthPerHeight(0.75f)
                 .setPadding(150)
@@ -210,19 +212,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     }
 
     public void dismissDialog() {
-        DialogFragmentManger.Instance().dimissDialog();
-    }
-
-    /**
-     * 第一次启动是需要设置UUID和密码的fragment的list
-     *
-     * @return
-     */
-    private List<Fragment> getFragments() {
-        List<Fragment> list = new ArrayList();
-        list.add(mSetUUIDFragment);
-        list.add(mSetPassWordFragment);
-        return list;
+        DialogFragmentManger.instance().dissMissDialog();
     }
 
     /**
@@ -439,7 +429,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.toolbar:
-                showDialog(getFragments());
                 break;
             case R.id.progressbar:
                 progressbar.setTimeMillis(30 * 1000);
@@ -499,11 +488,11 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             switch (intent.getAction()) {
                 case action_next:
                     page = intent.getIntExtra("page", 0);
-                    DialogFragmentManger.Instance().viewPager.setCurrentItem(page);
+                    DialogFragmentManger.instance().viewPager.setCurrentItem(page);
                     break;
                 case action_back:
                     page = intent.getIntExtra("page", 0);
-                    DialogFragmentManger.Instance().viewPager.setCurrentItem(page);
+                    DialogFragmentManger.instance().viewPager.setCurrentItem(page);
                     break;
                 case action_cancle:
                     dismissDialog();

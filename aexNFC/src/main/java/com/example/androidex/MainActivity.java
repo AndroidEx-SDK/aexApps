@@ -17,15 +17,16 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
     public static int READER_FLAGS =
             NfcAdapter.FLAG_READER_NFC_A | NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK ;
 
+
     //public LoyaltyCardReader mLoyaltyCardReader;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-
     }
     private void enableReaderMode() {
         Log.i("", "启用读卡模式");

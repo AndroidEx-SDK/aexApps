@@ -2,7 +2,6 @@ package com.androidex.apps.home.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -28,27 +27,17 @@ import java.util.List;
  * Created by liyp on 16/12/1.
  */
 
-public class DialogFragmentManger extends DialogFragment {
+public class DialogFragmentManger extends BaseDialogFragment {
     List<Fragment> list = new ArrayList();
     private DisplayMetrics displayMetrics = new DisplayMetrics();
     /**
      * 弹窗的宽高比
      */
-    private float widthPerHeight = 0.75f;
-    private int padding = 44;
     private RelativeLayout parentLayout;
     private static DialogFragmentManger dialogFragmentManger;
-    private boolean isCancelable = false;
     public ViewPager viewPager;
 
-    private DialogFragmentManger() {
-    }
-
-    public static DialogFragmentManger Instance() {
-        if (dialogFragmentManger == null) {
-            dialogFragmentManger = new DialogFragmentManger();
-        }
-        return dialogFragmentManger;
+    DialogFragmentManger() {
     }
 
     public DialogFragmentManger setListFragment(List<Fragment> list) {
@@ -56,7 +45,7 @@ public class DialogFragmentManger extends DialogFragment {
             Toast.makeText(getContext(), "list不可为空", Toast.LENGTH_SHORT).show();
             return null;
         }
-        //this.list.clear();m
+        //this.list.clear();
         if (this.list!=null){
             this.list.remove(this.list);
         }
@@ -67,41 +56,48 @@ public class DialogFragmentManger extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_dialog_manger, container);
         parentLayout = (RelativeLayout) view.findViewById(R.id.parentLayout);
-        viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         ImageView close = (ImageView) view.findViewById(R.id.iv_close);
+        viewPager = (ViewPager) view.findViewById(R.id.viewPager);
 
         viewPager.setAdapter(new MyPagerAdapter(getChildFragmentManager()));
 
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         setCancelable(isCancelable);
-        //setRootContainerHeight();//设置dialog的宽高比
+        //setRootContainerHeight();             //设置dialog的宽高比
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogFragmentManger.dimissDialog();
+                dialogFragmentManger.dissMissDialog();
             }
         });
         return view;
     }
 
-
-    public DialogFragmentManger setWidthPerHeight(float widthPerHeight) {
-        this.widthPerHeight = widthPerHeight;
-
-        return this;
+    public static DialogFragmentManger instance() {
+        if (dialogFragmentManger == null) {
+            dialogFragmentManger = new DialogFragmentManger();
+        }
+        return dialogFragmentManger;
     }
 
-    public DialogFragmentManger dimissDialog(){
+    @Override
+    public BaseDialogFragment dissMissDialog() {
         if (dialogFragmentManger.isVisible()){
             dialogFragmentManger.dismiss();
         }
         return this;
     }
+
+    public DialogFragmentManger setWidthPerHeight(float widthPerHeight) {
+        this.widthPerHeight = widthPerHeight;
+        return this;
+    }
+
     public DialogFragmentManger setPadding(int padding) {
         this.padding = padding;
-
         return this;
     }
 
@@ -110,7 +106,7 @@ public class DialogFragmentManger extends DialogFragment {
         return this;
     }
 
-    private void setRootContainerHeight() {
+    public void setRootContainerHeight() {
 
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int widthPixels = displayMetrics.widthPixels;
