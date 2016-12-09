@@ -2,9 +2,11 @@ package com.androidex.apps.home.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -13,12 +15,14 @@ import android.widget.Toast;
 import com.androidex.apps.home.FullscreenActivity;
 import com.androidex.apps.home.R;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * 设置UUID的FragMent
  * Created by liyp on 16/12/1.
  */
 
-public class SetUUIDFragment extends BaseDialogFragment implements View.OnClickListener {
+public class SetUUIDFragment extends DialogFragment implements View.OnClickListener {
     private static final String TAG = "setuuidfragment";
     private static final String UUID_PATH = "/sys/class/androidex_parameters/androidex/uuid";
     private static SetUUIDFragment setUUIDFragment;
@@ -26,7 +30,10 @@ public class SetUUIDFragment extends BaseDialogFragment implements View.OnClickL
     private FullscreenActivity activity;
     private EditText et_uuid;
     private boolean flag = false;
-
+    /**
+     * 8 位 UCS 转换格式
+     */
+    public static final String UTF_8 = "UTF-8";
 
     @Nullable
     @Override
@@ -35,6 +42,7 @@ public class SetUUIDFragment extends BaseDialogFragment implements View.OnClickL
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.set_uuid, container, false);
         }
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         activity = (FullscreenActivity) getActivity();
         iniView();
         return rootView;
@@ -47,8 +55,8 @@ public class SetUUIDFragment extends BaseDialogFragment implements View.OnClickL
         return setUUIDFragment;
     }
 
-    @Override
-    public BaseDialogFragment dissMissDialog() {
+
+    public SetUUIDFragment dissMissDialog() {
         if (setUUIDFragment.isVisible()) {
             setUUIDFragment.dismiss();
         }
@@ -71,56 +79,65 @@ public class SetUUIDFragment extends BaseDialogFragment implements View.OnClickL
             case R.id.btn_write:
                 /********uuid********/
                 String newuuid = et_uuid.getText().toString().trim();
-                //String newuuid = uuid.replaceAll("-", "");
-                if (newuuid.length() >=32) {
-                    activity.hwservice.setAndroidExParameter(UUID_PATH, newuuid);
-                    flag = true;
-                    Toast.makeText(getContext(), newuuid, Toast.LENGTH_LONG).show();
-                    android.util.Log.e("======newnewuuid++", newuuid);
-                } else {
-                    Toast.makeText(getContext(), "请输入正确的UUID", Toast.LENGTH_LONG).show();
+                try {
+                    String utf8 = toUTF_8(newuuid);
+                    Toast.makeText(getContext(), "utf8:" + utf8, Toast.LENGTH_LONG).show();
+                    android.util.Log.e("======utf8++", utf8);
+
+                    //String newuuid = uuid.replaceAll("-", "");
+                    if (newuuid.length() >= 32) {
+                        activity.hwservice.setAndroidExParameter(UUID_PATH, utf8);
+                        flag = true;
+                        Toast.makeText(getContext(), ""+utf8, Toast.LENGTH_LONG).show();
+                        android.util.Log.e("======newnewuuid++", utf8);
+                    } else {
+                        Toast.makeText(getContext(), "请输入正确的UUID", Toast.LENGTH_LONG).show();
+                    }
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
                 }
 
                 if (activity.hwservice.getAndroidExParameter(UUID_PATH).equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
-                    Toast.makeText(getContext(), "原始UUID："+activity.hwservice.get_uuid(), Toast.LENGTH_LONG).show();
-                    android.util.Log.e("原始UUID:", activity.hwservice.get_uuid());
+                    Toast.makeText(getContext(), "写入UUID失败：" + activity.hwservice.get_uuid(), Toast.LENGTH_LONG).show();
+                    android.util.Log.e("写入UUID失败:", activity.hwservice.get_uuid());
                 } else {
-                    Toast.makeText(getContext(), "newnewuuid："+activity.hwservice.get_uuid(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "newnewuuid：" + activity.hwservice.get_uuid(), Toast.LENGTH_LONG).show();
                     android.util.Log.e("======newnewuuid++", activity.hwservice.get_uuid());
                 }
 
                 /****用户信息*******/
-                String userInfo1= activity.hwservice.getUserInfo();
-                Toast.makeText(getContext(), "原始用户信息："+userInfo1, Toast.LENGTH_LONG).show();
+                String userInfo1 = activity.hwservice.getUserInfo();
+                Toast.makeText(getContext(), "原始用户信息：" + userInfo1, Toast.LENGTH_LONG).show();
                 android.util.Log.e("原始用户信息：", userInfo1);
                 activity.hwservice.setUserInfo(newuuid);
                 String userInfo2 = activity.hwservice.getUserInfo();
                 if (userInfo2.equals(userInfo1)) {
-                    Toast.makeText(getContext(), "用户信息写入失败："+activity.hwservice.getUserInfo(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "用户信息写入失败：" + activity.hwservice.getUserInfo(), Toast.LENGTH_LONG).show();
                     android.util.Log.e("用户信息写入失败：=====", activity.hwservice.getUserInfo());
-                }else {
-                    Toast.makeText(getContext(), "用户信息写入成功："+activity.hwservice.getUserInfo(), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getContext(), "用户信息写入成功：" + activity.hwservice.getUserInfo(), Toast.LENGTH_LONG).show();
                     android.util.Log.e("用户信息写入成功：", activity.hwservice.getUserInfo());
                 }
 
                 /********密码********/
                 String pass1 = activity.hwservice.get_pass();
-                Toast.makeText(getContext(), "原始密码: "+pass1, Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "原始密码: " + pass1, Toast.LENGTH_LONG).show();
                 android.util.Log.e("原始密码: ", pass1);
 
                 activity.hwservice.set_pass("123456789");
                 String pass2 = activity.hwservice.get_pass();
                 if (pass2.equals("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF")) {
-                    Toast.makeText(getContext(), "密码修改失败: "+pass2, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "密码修改失败: " + pass2, Toast.LENGTH_LONG).show();
                     android.util.Log.e("密码修改失败: ", pass2);
 
-                }else {
-                    Toast.makeText(getContext(), "新的密码："+pass2, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getContext(), "新的密码：" + pass2, Toast.LENGTH_LONG).show();
                     android.util.Log.e("新的密码：", pass2);
                 }
                 break;
 
             case R.id.finish:
+                dissMissDialog();
                 if (flag) {
                     //activity.hwservice.runReboot();
                     Toast.makeText(getContext(), flag + "", Toast.LENGTH_LONG).show();
@@ -133,5 +150,25 @@ public class SetUUIDFragment extends BaseDialogFragment implements View.OnClickL
                 et_uuid.setText(null);
                 break;
         }
+    }
+
+    public String toUTF_8(String str) throws UnsupportedEncodingException {
+        return this.changeCharset(str, UTF_8);
+    }
+
+    /**
+     * 字符串编码转换的实现方法
+     *
+     * @param str        待转换的字符串
+     * @param newCharset 目标编码
+     */
+    public String changeCharset(String str, String newCharset)
+            throws UnsupportedEncodingException {
+        if (str != null) {
+            // 用默认字符编码解码字符串。与系统相关，中文windows默认为GB2312
+            byte[] bs = str.getBytes();
+            return new String(bs, newCharset); // 用新的字符编码生成字符串
+        }
+        return null;
     }
 }
