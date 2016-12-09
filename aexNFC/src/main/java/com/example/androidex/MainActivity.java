@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
     public static int READER_FLAGS =
             NfcAdapter.FLAG_READER_NFC_A | NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK ;
 
-    public LoyaltyCardReader mLoyaltyCardReader;
+    //public LoyaltyCardReader mLoyaltyCardReader;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
             Activity activity = this;
             NfcAdapter nfc = NfcAdapter.getDefaultAdapter(activity);
             if (nfc != null) {
-                nfc.enableReaderMode(activity, mLoyaltyCardReader, READER_FLAGS, null);
+               // nfc.enableReaderMode(activity, mLoyaltyCardReader, READER_FLAGS, null);
             }
         }
     }

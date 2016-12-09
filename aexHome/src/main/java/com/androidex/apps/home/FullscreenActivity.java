@@ -44,6 +44,7 @@ import com.androidex.common.DummyContent;
 import com.androidex.common.LogFragment;
 import com.androidex.devices.aexddAndroidNfcReader;
 import com.androidex.devices.aexddB58Printer;
+import com.androidex.devices.aexddLCC1Reader;
 import com.androidex.devices.aexddMT319Reader;
 import com.androidex.devices.aexddNfcReader;
 import com.androidex.devices.aexddZTC70;
@@ -385,9 +386,16 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 }
                 return true;
             case R.id.action_cas_reader:
-                if (mDevices.mBankCardReader.Open()) {
-                    aexddMT319Reader reader = (aexddMT319Reader) mDevices.mCasCardReader;
+                if (mDevices.mCasCardReader.Open()) {
+                    final aexddLCC1Reader reader = (aexddLCC1Reader) mDevices.mCasCardReader;
+
+                   // int b = reader.WriteDataHex("AAB40007800000000000148D");//鸣响
+                   // int a =reader.WriteDataHex("AAB70007800000018500041A");//打开蜂鸣指令
+                    int cc =reader.WriteDataHex("AA20800520000000002F");//上电
+                    byte [] bytes = reader.ReciveData(120,1000*1000*1000);
+                    printHexString(bytes);
                     reader.selfTest();
+                  //
                     mDevices.mCasCardReader.Close();
                 } else {
                     String s = String.format("Open cas reader fial:%s", mDevices.mCasCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS));
@@ -412,6 +420,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     static {
         DummyContent.addItem(new DummyContent.DummyItem("log", "日志", "", LogFragment.class, "url=log", true, 0));
     }
+
 
     /**
      * 根据Fragment的字符串标识来启动显示。
@@ -707,6 +716,28 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             }
         });
     }
+    public static void printHexString( byte[] b)
+    {
+        if(b!=null){
+            StringBuffer string=new StringBuffer();
+            for (int i = 0; i < b.length; i++)
+            {
+                String hex = Integer.toHexString(b[i] & 0xFF);
+                if (hex.length() == 1)
+                {
+                    hex = '0' + hex;
+
+                }
+                string.append(hex.toUpperCase() + " ");
+                android.util.Log.d("111111",hex.toUpperCase() + " ");
+            }
+            android.util.Log.d("111111",string + " ");
+            System.out.println("");
+        }else{
+            android.util.Log.d("111111","w为空");
+        }
+        }
+
 }
 
 
