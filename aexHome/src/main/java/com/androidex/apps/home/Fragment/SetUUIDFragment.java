@@ -69,9 +69,10 @@ public class SetUUIDFragment extends BaseDialogFragment implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_write:
-                String uuid = et_uuid.getText().toString().trim();
-                String newuuid = uuid.replaceAll("-", "");
-                if (newuuid.length() == 32) {
+                /********uuid********/
+                String newuuid = et_uuid.getText().toString().trim();
+                //String newuuid = uuid.replaceAll("-", "");
+                if (newuuid.length() >=32) {
                     activity.hwservice.setAndroidExParameter(UUID_PATH, newuuid);
                     flag = true;
                     Toast.makeText(getContext(), newuuid, Toast.LENGTH_LONG).show();
@@ -80,22 +81,42 @@ public class SetUUIDFragment extends BaseDialogFragment implements View.OnClickL
                     Toast.makeText(getContext(), "请输入正确的UUID", Toast.LENGTH_LONG).show();
                 }
 
-                if (activity.hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
-                    Toast.makeText(getContext(), newuuid, Toast.LENGTH_LONG).show();
-                    android.util.Log.e("原始密码", activity.hwservice.get_uuid());
+                if (activity.hwservice.getAndroidExParameter(UUID_PATH).equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
+                    Toast.makeText(getContext(), "原始UUID："+activity.hwservice.get_uuid(), Toast.LENGTH_LONG).show();
+                    android.util.Log.e("原始UUID:", activity.hwservice.get_uuid());
                 } else {
-                    Toast.makeText(getContext(), activity.hwservice.get_uuid(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "newnewuuid："+activity.hwservice.get_uuid(), Toast.LENGTH_LONG).show();
                     android.util.Log.e("======newnewuuid++", activity.hwservice.get_uuid());
                 }
 
+                /****用户信息*******/
+                String userInfo1= activity.hwservice.getUserInfo();
+                Toast.makeText(getContext(), "原始用户信息："+userInfo1, Toast.LENGTH_LONG).show();
+                android.util.Log.e("原始用户信息：", userInfo1);
                 activity.hwservice.setUserInfo(newuuid);
-                String userInfo = activity.hwservice.getUserInfo();
-                if (userInfo.equals(newuuid)) {
-                    Toast.makeText(getContext(), newuuid, Toast.LENGTH_LONG).show();
-                    android.util.Log.e("userInfo=====", activity.hwservice.getUserInfo());
+                String userInfo2 = activity.hwservice.getUserInfo();
+                if (userInfo2.equals(userInfo1)) {
+                    Toast.makeText(getContext(), "用户信息写入失败："+activity.hwservice.getUserInfo(), Toast.LENGTH_LONG).show();
+                    android.util.Log.e("用户信息写入失败：=====", activity.hwservice.getUserInfo());
                 }else {
-                    Toast.makeText(getContext(), newuuid, Toast.LENGTH_LONG).show();
-                    android.util.Log.e("userInfo=====", activity.hwservice.getUserInfo());
+                    Toast.makeText(getContext(), "用户信息写入成功："+activity.hwservice.getUserInfo(), Toast.LENGTH_LONG).show();
+                    android.util.Log.e("用户信息写入成功：", activity.hwservice.getUserInfo());
+                }
+
+                /********密码********/
+                String pass1 = activity.hwservice.get_pass();
+                Toast.makeText(getContext(), "原始密码: "+pass1, Toast.LENGTH_LONG).show();
+                android.util.Log.e("原始密码: ", pass1);
+
+                activity.hwservice.set_pass("123456789");
+                String pass2 = activity.hwservice.get_pass();
+                if (pass2.equals("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF")) {
+                    Toast.makeText(getContext(), "密码修改失败: "+pass2, Toast.LENGTH_LONG).show();
+                    android.util.Log.e("密码修改失败: ", pass2);
+
+                }else {
+                    Toast.makeText(getContext(), "新的密码："+pass2, Toast.LENGTH_LONG).show();
+                    android.util.Log.e("新的密码：", pass2);
                 }
                 break;
 
