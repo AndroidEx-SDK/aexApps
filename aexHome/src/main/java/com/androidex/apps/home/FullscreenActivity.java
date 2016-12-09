@@ -427,6 +427,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.toolbar:
+                SetPassWordFragment.instance().show(getSupportFragmentManager(),"passwordfragment");
                 break;
             case R.id.progressbar:
                 progressbar.setTimeMillis(30 * 1000);
@@ -435,23 +436,19 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             case R.id.about_local:
                 viewPager.setVisibility(View.VISIBLE);
                 viewPager.setCurrentItem(0);
-                Toast.makeText(this,"关于本机",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.system_set:
                 viewPager.setVisibility(View.VISIBLE);
                 viewPager.setCurrentItem(1);
-                Toast.makeText(this,"关于本机",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.intnet_set:
                 viewPager.setVisibility(View.VISIBLE);
                 viewPager.setCurrentItem(2);
-                Toast.makeText(this,"关于本机",Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.start_set:
                 viewPager.setVisibility(View.VISIBLE);
                 viewPager.setCurrentItem(3);
-                Toast.makeText(this,"关于本机",Toast.LENGTH_SHORT).show();
                 break;
 
         }

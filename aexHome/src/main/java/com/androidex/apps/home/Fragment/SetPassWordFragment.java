@@ -63,7 +63,7 @@ public class SetPassWordFragment extends DialogFragment implements View.OnClickL
                 Toast.makeText(getContext(), "原始密码: " + pass1, Toast.LENGTH_LONG).show();
                 android.util.Log.e("原始密码: ", pass1);
 
-                activity.hwservice.set_pass("123456789");
+                activity.hwservice.set_pass(newPassWork);
                 String pass2 = activity.hwservice.get_pass();
                 if (pass2.equals("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF")) {
                     Toast.makeText(getContext(), "密码修改失败: " + pass2, Toast.LENGTH_LONG).show();
