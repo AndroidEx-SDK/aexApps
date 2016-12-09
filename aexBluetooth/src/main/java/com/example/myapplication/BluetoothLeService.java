@@ -44,8 +44,8 @@ public class BluetoothLeService extends Service {
     public final static String ACTION_GATT_SERVICES_DISCOVERED = "com.choicemmed.bledemo.ACTION_GATT_SERVICES_DISCOVERED";
     public final static String ACTION_DATA_AVAILABLE = "com.choicemmed.bledemo.ACTION_DATA_AVAILABLE";
     public final static String EXTRA_DATA = "com.choicemmed.bledemo.EXTRA_DATA";
-
-    public static String CLIENT_CHARACTERISTIC_CONFIG = "00002902-0000-1000-8000-00805f9b34fb";
+    public final static String ACTION_WRITE = "com.androidex.write";
+    public static String CLIENT_CHARACTERISTIC_CONFIG = "00002a01-0000-1000-8000-00805f9b34fb";
 
 
     // Implements callback methods for GATT events that the app cares about. For
@@ -59,6 +59,7 @@ public class BluetoothLeService extends Service {
             if (newState == BluetoothProfile.STATE_CONNECTED) { //连接成功
                 intentAction = ACTION_GATT_CONNECTED;
                 mConnectionState = STATE_CONNECTED;
+                mBluetoothGatt.discoverServices();//发现服务
                 broadcastUpdate(intentAction);
                 Log.i(TAG, "Connected to GATT server.");
                 // Attempts to discover services after successful connection.
@@ -94,8 +95,9 @@ public class BluetoothLeService extends Service {
         @Override//当向设备Descriptor中写数据时，会回调该函数
         public void onCharacteristicWrite(BluetoothGatt gatt,
                                           BluetoothGattCharacteristic characteristic, int status) {
-            System.out.println("--------write success----- status:" + status);
+            broadcastUpdate(ACTION_WRITE);
         };
+
 
         /*
          * when connected successfully will callback this method

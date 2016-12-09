@@ -52,7 +52,8 @@ public class appDevicesManager extends appLibsDevices {
 
         mPrinter = new aexddB58Printer(ctx,mConfig.mConfigPrinter);
         mBankCardReader = new aexddMT319Reader(ctx,mConfig.mConfigBankReader);
-        mCasCardReader = new aexddMT319Reader(ctx,mConfig.mConfigCasReader);
+        mCasCardReader = new aexddLCC1Reader(ctx,mConfig.mConfigCasReader);//莱卡
+        //mCasCardReader = new aexddMT319Reader(ctx,mConfig.mConfigCasReader);
         mPasswordKeypad = new aexddKMY350(ctx, mConfig.mConfigPasswordKeypad);
         mZTPasswordKeypad = new aexddZTC70(ctx, mConfig.mConfigPasswordKeypad);
     }

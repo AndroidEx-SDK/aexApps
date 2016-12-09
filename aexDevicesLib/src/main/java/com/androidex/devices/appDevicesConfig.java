@@ -21,6 +21,7 @@ public class appDevicesConfig extends appLibsConfig {
     public String PORT_ADDR_PASSWORD_KEYPAD = "/dev/ttyS2,9600,N,1,8";
     public String PORT_ADDR_BANKREADER = "/dev/ttyS4,9600,N,1,8";
     public String PORT_ADDR_CASREADER = "/dev/ttyS6,9600,N,1,8";
+    public String PORT_ADDR_CASREADER_LCC = "/dev/ttyS4,9600,N,1,8";//莱卡的s4串口
     public JSONObject mConfigPrinter;
     public JSONObject mConfigBankReader;
     public JSONObject mConfigCasReader;
@@ -63,7 +64,7 @@ public class appDevicesConfig extends appLibsConfig {
             }
             if(mConfigCasReader.optString(appDeviceDriver.PORT_ADDRESS,"") == ""){
                 try {
-                    mConfigCasReader.put(appDeviceDriver.PORT_ADDRESS,PORT_ADDR_CASREADER);
+                    mConfigCasReader.put(appDeviceDriver.PORT_ADDRESS,PORT_ADDR_CASREADER_LCC);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -98,7 +99,7 @@ public class appDevicesConfig extends appLibsConfig {
             }
             mConfigCasReader = new JSONObject();
             try {
-                mConfigCasReader.put(appDeviceDriver.PORT_ADDRESS,PORT_ADDR_CASREADER);
+                mConfigCasReader.put(appDeviceDriver.PORT_ADDRESS,PORT_ADDR_CASREADER_LCC);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

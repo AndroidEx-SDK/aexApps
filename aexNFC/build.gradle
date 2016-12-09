@@ -14,7 +14,12 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
-
+    sourceSets {
+        main {
+            jni.srcDirs = []
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 
     buildTypes {
         release {
@@ -22,7 +27,24 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
+/** 导入so文件 */
+    task nativeLibsToJar(type: Zip, description: "create a jar archive of the native libs") {
+        destinationDir file("$projectDir/libs")
+        baseName "jniaexlib"
+        extension "jar"
+        from fileTree(dir: "src/main/jniLibs", include: "**/*.so")
+        into "lib"
+    }
+    tasks.withType(JavaCompile) {
+        compileTask -> compileTask.dependsOn(nativeLibsToJar)
+    }
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+    productFlavors {
+    }
 
 }
 
@@ -30,6 +52,8 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.android.support:design:22.2.1'
+    compile project(':aexDevicesLib')
+    compile 'com.google.android.gms:play-services-appindexing:9.8.0'
     compile 'com.android.support:support-v4:22.2.1'
     testCompile 'junit:junit:4.12'
 }

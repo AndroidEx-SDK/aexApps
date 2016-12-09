@@ -4,10 +4,16 @@ import android.content.Context;
 
 import com.androidex.logger.Log;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Arrays;
+
+import static android.R.attr.type;
 
 /**
  * Created by cts on 16/12/1.
+ * 莱卡读卡器
  */
 
 public class aexddLCC1Reader extends aexddPbocReader {
@@ -30,79 +36,314 @@ public class aexddLCC1Reader extends aexddPbocReader {
     }
 
     @Override
+    public boolean Open() {
+        return super.Open();
+    }
+
+    @Override
+    public boolean Close() {
+        return super.Close();
+    }
+
+    @Override
+    public void onBackCallEvent(int _code, String _msg) {
+        super.onBackCallEvent(_code, _msg);
+    }
+
+    @Override
+    public JSONObject onExecute(String action, JSONObject args, String callbackId) {
+        return super.onExecute(action, args, callbackId);
+    }
+
+    @Override
     public int ReciveDataLoop() {
+        Runnable run=new Runnable() {
+            public void run() {
+                //在线程中执行jni函数
+                //OnBackCall.ONBACKCALL_RECIVEDATA
+                lcc1ReadCardLoop(mSerialFd,0);
+            }
+        };
+        pthread = new Thread(run);
+        pthread.start();
         return 0;
     }
 
     @Override
-    public byte[] pbocReadPacket(int i) {
-        return new byte[0];
+    public byte[] pbocReadPacket(int timeout) {
+        return lcc1ReadPacket(mSerialFd,timeout);
     }
 
     @Override
-    public int pbocReadCardLoop(int i) {
-        return 0;
+    public int pbocReadCardLoop(int timeout) {
+
+        return lcc1ReadCardLoop(mSerialFd,timeout);
     }
 
     @Override
-    public void pbocSendCmd(byte[] bytes, int i) {
-
+    public void pbocSendCmd(byte[] cmd, int size) {
+        lcc1SendCmd(mSerialFd,cmd,size);
     }
 
     @Override
-    public void pbocSendHexCmd(String s) {
-
+    public void pbocSendHexCmd(String hexcmd) {
+        lcc1SendHexCmd(mSerialFd,hexcmd);
     }
+
+
 
     @Override
     public String getCardStatusString(int i) {
-        return null;
+        String s1 = "" ,s2 = "";
+        switch(type&0xFF00){
+            case 0x3000:
+                s1 = "卡机内无卡";
+                break;
+            case 0x3100:
+                s1 = "卡机内有接触式IC卡";
+                break;
+            case 0x3200:
+                s1 = "卡机内有非接触式A卡";
+                break;
+            case 0x3300:
+                s1 = "卡机内有非接触式B卡";
+                break;
+            case 0x3400:
+                s1 = "卡机内有非接触式M1卡";
+                break;
+            case 0x3F00:
+                s1 = "卡机内有无法识别卡";
+                break;
+            default :
+                s1 = "未知";
+        }
+        switch(type&0x00FF){
+            case 0x30:
+                s2 = "无可读磁卡信息";
+                break;
+            case 0x31:
+                s2 = "有可读磁卡信息";
+                break;
+            default :
+                s2 = "未知";
+        }
+
+        return String.format("%s-%s",s1,s2);
     }
 
     @Override
     public boolean selfTest() {
-        return false;
+        return true;
     }
 
     @Override
     public String getVersion() {
-        return null;
+        String result = null;
+        pbocSendHexCmd("3140");
+        byte[] r = pbocReadPacket(3000*delayUint);
+        if(r != null && r.length > 5){
+            int mlen = (r[1]<<8) | r[2];
+            if(r[3] == 0x31 && r[4] == 0x40)
+                result = new String(r,5,mlen - 2);
+        }
+        return result;
     }
-
+    /**
+     * 查询设备的状态，将状态S1和S2合并，status=S1<<8 | S2。
+     * @return  合并后的状态码
+     */
     @Override
     public int queryStatus() {
-        return 0;
+        int result = 0;
+        pbocSendHexCmd("3144");
+        byte[] r = pbocReadPacket(3000*delayUint);
+        if(r != null && r.length > 6){
+            int s1 = r[5];
+            int s2 = r[6];
+            result = (s1<<8) | s2;
+        }
+        return result;
     }
-
+    /**
+     * 读取磁道信息，如果相应的磁道有读到数据则设置，否则为空或者未设置。
+     * <ul>
+     * <li>磁道1：track1</li>
+     * <li>磁道2：track2</li>
+     * <li>磁道3：track3</li>
+     * </ul>
+     * @return  存储磁道信息的JSON对象
+     */
     @Override
     public JSONObject getTrackInfo() {
+        JSONObject track = new JSONObject();
+        pbocSendHexCmd("3B35");
+        byte[] r = pbocReadPacket(3000*delayUint);
+        if(r != null && r.length > 5){
+            int mlen = (r[1]<<8) | r[2];
+            if(r[3] == 0x3B && r[4] == 0x35) {
+                if(r[5] == 0x4E){
+                    //读磁道错误
+                    if(r[6] != 0x03) {
+                        //三个磁道有部分正确
+                        try {
+                            int len1 = 1;
+                            if(r[6] != 0xE1) {
+                                while (r[6 + len1] != 0x00) len1++;
+                                track.put("tarck1", new String(r, 6, len1++));
+                            }else len1++;
+                            int len2 = 1;
+                            if(r[6+len1] != 0xE2) {
+                                while (r[6 + len1 + len2] != 0x00) len2++;
+                                track.put("tarck2", new String(r, 6 + len1, len2++));
+                            }else len2++;
+                            int len3 = 1;
+                            if(r[6+len1+len2] != 0xE3) {
+                                while (r[6 + len1 + len2 + len3] != 0x00) len3++;
+                                track.put("tarck3", new String(r, 6 + len1 + len2, len3));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    return track;
+                }else if(r[5] == 0x59){
+                    //三个磁道均读正确
+                    int len1 = 0;
+                    while(r[6+len1] != 0x00)len1++;
+                    try {
+                        track.put("tarck1",new String(r,6,len1++));
+                        int len2 = 0;
+                        while(r[6+len1+len2] != 0x00)len2++;
+                        track.put("tarck2",new String(r,6+len1,len2++));
+                        int len3 = 0;
+                        while(r[6+len1+len2+len3] != 0x00)len3++;
+                        track.put("tarck3",new String(r,6+len1+len2,len3));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        return track;
+    }
+    /**
+     * 清读磁卡标志
+     * READER 返回:
+     *  操作状态字 P=‘Y’(0x59) 清标志成功 P=‘N’(0x4E) 清标志失败
+     * @return  成功返回true，否则返回false
+     */
+    @Override
+    public boolean clearTrackInfo() {
+        boolean result = false;
+        pbocSendHexCmd("3B36");
+        byte[] r = pbocReadPacket(3000*delayUint);
+        if(r != null && r.length == 8){
+            if(r[3] == 0x3B && r[4] == 0x36){
+                result = r[5] == 0x59;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 上电复位
+     * @return
+     *      <ul>
+     *          <li>返回 0 表示指令执行失败</li>
+     *          <li>返回 0x59(Y)  上电复位成功</li>
+     *          <li>返回 0x4E(N)  复位失败</li>
+     *          <li>返回 0x45(E)  机内无卡</li>
+     *      </ul>
+     */
+    @Override
+    public int cpuPOR() {
+        int result = 0;
+        pbocSendHexCmd("3740");
+        byte[] r = pbocReadPacket(3000*delayUint);
+        if(r != null && r.length >= 8){
+            if(r[3] == 0x37 && r[4] == 0x40){
+                result = r[5];
+            }
+        }
+        return result;
+    }
+    /**
+     * 热复位
+     * @return
+     *      <ul>
+     *          <li>返回 0 表示指令执行失败</li>
+     *          <li>返回 0x59(Y)  上电复位成功</li>
+     *          <li>返回 0x4E(N)  复位失败</li>
+     *          <li>返回 0x45(E)  机内无卡</li>
+     *      </ul>
+     */
+    @Override
+    public int cpuReset() {
+        int result = 0;
+        pbocSendHexCmd("3741");
+        byte[] r = pbocReadPacket(3000*delayUint);
+        if(r != null && r.length >= 8){
+            if(r[3] == 0x37 && r[4] == 0x41){
+                result = r[5];
+            }
+        }
+        return result;
+    }
+    /**
+     * 下电休眠
+     * @return
+     *      <ul>
+     *          <li>返回 0 表示指令执行失败</li>
+     *          <li>返回 0x59(Y)  上电复位成功</li>
+     *          <li>返回 0x4E(N)  复位失败</li>
+     *          <li>返回 0x45(E)  机内无卡</li>
+     *      </ul>
+     */
+    @Override
+    public int cpuHibernate() {
+
+        int result = 0;
+        pbocSendHexCmd("3742");
+        byte[] r = pbocReadPacket(3000*delayUint);
+        if(r != null && r.length >= 8){
+            if(r[3] == 0x37 && r[4] == 0x42){
+                result = r[5];
+            }
+        }
+        return result;
+    }
+    /**
+     * CPU卡执行APDU指令，返回APDU指令执行结果。
+     * @param apdu  apdu指令
+     * @return  返回apdu指令执行结果
+     */
+    @Override
+    public byte[] cpuApdu(byte[] apdu) {
+        int index = 0;
+        byte[] data = new byte[apdu.length+4];
+
+        data[index++] = 0x37;
+        data[index++] = 0x43;
+        data[index++] = (byte) ((apdu.length>>8) & 0xFF);
+        data[index++] = (byte) (apdu.length&0xFF);
+        for (byte b:apdu) {
+            data[index++] = b;
+        }
+        pbocSendCmd(data,data.length);
+        byte[] r = pbocReadPacket(3000*delayUint);
+        if(r != null && r.length >= 8){
+            if(r[3] == 0x37 && r[4] == 0x42){
+                if(r[5] == 0x59) {
+                    int len = (r[6]<<8) | r[7];
+                    return Arrays.copyOfRange(r, 8, len + 8);
+                }
+            }
+        }
         return null;
     }
 
-    @Override
-    public boolean clearTrackInfo() {
-        return false;
-    }
-
-    @Override
-    public int cpuPOR() {
-        return 0;
-    }
-
-    @Override
-    public int cpuReset() {
-        return 0;
-    }
-
-    @Override
-    public int cpuHibernate() {
-        return 0;
-    }
-
-    @Override
-    public byte[] cpuApdu(byte[] bytes) {
-        return new byte[0];
-    }
-
-
+    public native  int lcc1ReadCardLoop (int fd,int timeout);
+    public native  byte [] lcc1ReadPacket(int fd ,int timeout);
+    public native  void  lcc1SendCmd(int fd,byte [] cmd, int size);
+    public native void lcc1SendHexCmd(int fd,String hexcmd);
 }
