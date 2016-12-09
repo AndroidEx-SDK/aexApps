@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.androidex.apps.home.FullscreenActivity;
 import com.androidex.apps.home.R;
 
 /**
@@ -23,18 +25,21 @@ public class SetPassWordFragment extends DialogFragment implements View.OnClickL
     private static final String TAG = "setpassword";
     private View rootView;
     private static SetPassWordFragment setPassWordFragment;
+    private FullscreenActivity activity;
+    private EditText et_password;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.set_password, container, false);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        activity = (FullscreenActivity) getActivity();
         initView();
         return rootView;
     }
 
     public void initView() {
-        EditText password = (EditText) rootView.findViewById(R.id.et_password);
+        et_password = (EditText) rootView.findViewById(R.id.et_password);
         Button cancle = (Button) rootView.findViewById(R.id.btn_cancle);
         Button ok = (Button) rootView.findViewById(R.id.btn_ok);
         cancle.setOnClickListener(this);
@@ -43,13 +48,31 @@ public class SetPassWordFragment extends DialogFragment implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent();
         switch (v.getId()) {
             case R.id.btn_cancle:
-
+                dissMissDialog();
+                Intent intent = new Intent(FullscreenActivity.ActionControlBar);
+                intent.putExtra("flag", "hide");
+                intent.putExtra("bar", true);
+                getContext().sendBroadcast(intent);
                 break;
             case R.id.btn_ok:
-              
+                String newPassWork = et_password.getText().toString().trim();
+                /********密码********/
+                String pass1 = activity.hwservice.get_pass();
+                Toast.makeText(getContext(), "原始密码: " + pass1, Toast.LENGTH_LONG).show();
+                android.util.Log.e("原始密码: ", pass1);
+
+                activity.hwservice.set_pass("123456789");
+                String pass2 = activity.hwservice.get_pass();
+                if (pass2.equals("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF")) {
+                    Toast.makeText(getContext(), "密码修改失败: " + pass2, Toast.LENGTH_LONG).show();
+                    android.util.Log.e("密码修改失败: ", pass2);
+
+                } else {
+                    Toast.makeText(getContext(), "新的密码：" + pass2, Toast.LENGTH_LONG).show();
+                    android.util.Log.e("新的密码：", pass2);
+                }
                 break;
         }
     }

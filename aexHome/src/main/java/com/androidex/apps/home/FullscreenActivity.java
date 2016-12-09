@@ -68,7 +68,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     public static final String action_finish = "com.androidex.finish";
     public static final String action_cancle = "com.androidex.cancle";
     public static final String action_Viewpager_gone = "com.androidex.action.viewpager.gone";
-    public static final String UUID_PATH= "com.androidex.action.WriteHex";
     private static Fragment mMainFragment = new MainFragment();
     private static Fragment mAboutFragment = new AboutFragment();
     private static aexLogFragment mLogFragment = new aexLogFragment();
@@ -124,7 +123,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         mContentView = (ViewPager) findViewById(R.id.fullscreen_content);
         mControlsView = findViewById(R.id.dummy_button);
         //这里要获得UUID，判断UUID等不等"FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF"不等于就说明被写入了UUID
-        if (!hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")){
+        //if (!hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")){
             getWindow().getDecorView().setBackgroundResource(R.drawable.default_wallpaper);
             initView();
             mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -136,11 +135,11 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             initBroadCast(); //注册广播
             android.util.Log.e("uuid=======:",hwservice.get_uuid());
             Toast.makeText(this,hwservice.get_uuid(),Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(this,"请设置UUID",Toast.LENGTH_LONG).show();
-            android.util.Log.e("uuid默认=======:",hwservice.get_uuid());
-            SetUUIDFragment.instance().show(getSupportFragmentManager(),"uuidfragment");
-        }
+//        } else {
+//            Toast.makeText(this,"请设置UUID",Toast.LENGTH_LONG).show();
+//            android.util.Log.e("uuid默认=======:",hwservice.get_uuid());
+//            SetPassWordFragment.instance().show(getSupportFragmentManager(),"uuidfragment");
+//        }
     }
 
     public void initView() {
@@ -237,7 +236,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         hwservice.ExitFullScreen();
         EnableFullScreen();
     }
-
 
     @Override
     protected void onPause() {
