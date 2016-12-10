@@ -27,6 +27,7 @@ public class SetPassWordFragment extends DialogFragment implements View.OnClickL
     private View rootView;
     private static SetPassWordFragment setPassWordFragment;
     private FullscreenActivity activity;
+    public boolean isCancelable = false;
     private EditText et_password;
     private TextView tv_title;
     private String pass;
@@ -35,6 +36,7 @@ public class SetPassWordFragment extends DialogFragment implements View.OnClickL
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.set_password, container, false);
+        setCancelable(isCancelable);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         activity = (FullscreenActivity) getActivity();
         initView();

@@ -123,7 +123,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         mContentView = (ViewPager) findViewById(R.id.fullscreen_content);
         mControlsView = findViewById(R.id.dummy_button);
         //这里要获得UUID，判断UUID等不等"FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF"不等于就说明被写入了UUID
-        //if (!hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")){
+        if (!hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")){
             getWindow().getDecorView().setBackgroundResource(R.drawable.default_wallpaper);
             initView();
             mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -135,11 +135,11 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             initBroadCast(); //注册广播
             android.util.Log.e("uuid=======:",hwservice.get_uuid());
             Toast.makeText(this,hwservice.get_uuid(),Toast.LENGTH_LONG).show();
-//        } else {
-//            Toast.makeText(this,"请设置UUID",Toast.LENGTH_LONG).show();
-//            android.util.Log.e("uuid默认=======:",hwservice.get_uuid());
-//            SetPassWordFragment.instance().show(getSupportFragmentManager(),"uuidfragment");
-//        }
+        } else {
+            Toast.makeText(this,"请设置UUID",Toast.LENGTH_LONG).show();
+            android.util.Log.e("uuid默认=======:",hwservice.get_uuid());
+            SetUUIDFragment.instance().show(getSupportFragmentManager(),"uuidfragment");
+        }
     }
 
     public void initView() {
