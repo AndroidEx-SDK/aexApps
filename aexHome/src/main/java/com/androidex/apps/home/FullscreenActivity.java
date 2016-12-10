@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.androidex.aexlibs.WebJavaBridge;
 import com.androidex.apps.home.fragment.AboutLocalFragment;
 import com.androidex.apps.home.fragment.AfterBankcardFragment;
+import com.androidex.apps.home.fragment.CameraFragment;
 import com.androidex.apps.home.fragment.DialogFragmentManger;
 import com.androidex.apps.home.fragment.FrontBankcardFragment;
 import com.androidex.apps.home.fragment.NetWorkSettingFragment;
@@ -123,7 +124,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         mContentView = (ViewPager) findViewById(R.id.fullscreen_content);
         mControlsView = findViewById(R.id.dummy_button);
         //这里要获得UUID，判断UUID等不等"FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF"不等于就说明被写入了UUID
-        if (!hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")){
+        //if (!hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")){
             getWindow().getDecorView().setBackgroundResource(R.drawable.default_wallpaper);
             initView();
             mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -135,11 +136,11 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             initBroadCast(); //注册广播
             android.util.Log.e("uuid=======:",hwservice.get_uuid());
             Toast.makeText(this,hwservice.get_uuid(),Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(this,"请设置UUID",Toast.LENGTH_LONG).show();
-            android.util.Log.e("uuid默认=======:",hwservice.get_uuid());
-            SetUUIDFragment.instance().show(getSupportFragmentManager(),"uuidfragment");
-        }
+//        } else {
+//            Toast.makeText(this,"请设置UUID",Toast.LENGTH_LONG).show();
+//            android.util.Log.e("uuid默认=======:",hwservice.get_uuid());
+//            SetUUIDFragment.instance().show(getSupportFragmentManager(),"uuidfragment");
+//        }
     }
 
     public void initView() {
@@ -402,7 +403,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 return true;
 
             case R.id.action_camera:
-
+                CameraFragment.instance().show(getSupportFragmentManager(),"camerafragment");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
