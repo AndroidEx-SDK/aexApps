@@ -400,6 +400,10 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     mDevices.mPasswordKeypad.Close();
                 }
                 return true;
+
+            case R.id.action_camera:
+
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
