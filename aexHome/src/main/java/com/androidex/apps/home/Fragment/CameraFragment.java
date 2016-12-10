@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.androidex.apps.home.FullscreenActivity;
 import com.androidex.apps.home.R;
@@ -34,6 +35,7 @@ public class CameraFragment extends DialogFragment implements SurfaceHolder.Call
     private SurfaceView sv;
     private SurfaceHolder sh;
     private static CameraFragment cameraFragment;
+    private ImageView iv_close;
 
     @Nullable
     @Override
@@ -56,15 +58,10 @@ public class CameraFragment extends DialogFragment implements SurfaceHolder.Call
         sh.addCallback(this);
 
         btn_camera = (Button) rootView.findViewById(R.id.btn_camera);
+        iv_close = (ImageView) rootView.findViewById(R.id.iv_close);
         btn_camera.setOnClickListener(this);
-        btn_camera.setOnClickListener(new View.OnClickListener() {
+        iv_close.setOnClickListener(this);
 
-            @Override
-            public void onClick(View v) {
-
-
-            }
-        });
     }
 
     public static CameraFragment instance() {
@@ -199,7 +196,7 @@ public class CameraFragment extends DialogFragment implements SurfaceHolder.Call
                 // 设置相片格式
                 parameters.setPictureFormat(ImageFormat.JPEG);
                 // 设置预览大小
-                parameters.setPreviewSize(800, 480);
+                parameters.setPreviewSize(800, 800);
                 // 设置对焦方式，这里设置自动对焦
                 parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
                 mCamera.autoFocus(new Camera.AutoFocusCallback() {
