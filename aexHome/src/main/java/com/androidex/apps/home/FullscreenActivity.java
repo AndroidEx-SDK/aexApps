@@ -315,7 +315,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         m4.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 showExitDialog();
-                return true;
+                return false;
             }
         });
         return super.onCreateOptionsMenu(menu);
