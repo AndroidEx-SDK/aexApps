@@ -9,9 +9,9 @@ import android.view.MotionEvent;
  * Created by cts on 16/11/25.
  */
 
-public class NoScrollViewPager extends ViewPager{
+public class NoScrollViewPager extends ViewPager {
 
-    private boolean noScroll = true;
+    private boolean noScroll = false;
 
     public NoScrollViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -22,8 +22,8 @@ public class NoScrollViewPager extends ViewPager{
         super(context);
     }
 
-    public void setNoScroll(boolean noScroll) {
-        this.noScroll = noScroll;
+    public void setNoScroll(boolean flag) {
+        noScroll = flag;
     }
 
     @Override
@@ -35,9 +35,9 @@ public class NoScrollViewPager extends ViewPager{
     public boolean onTouchEvent(MotionEvent arg0) {
         /* return false;//super.onTouchEvent(arg0); */
         if (noScroll)
-            return false;
-        else
             return super.onTouchEvent(arg0);
+        else
+            return false;
     }
 
     @Override

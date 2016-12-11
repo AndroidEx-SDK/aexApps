@@ -166,8 +166,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     public void initProgressBar() {
         progressbar = (CircleTextProgressbar) findViewById(R.id.progressbar);
         progressbar.setCountdownProgressListener(2, progressListener);
-        //progressbar.setTimeMillis(60 * 1000);
-
     }
 
     public void initBroadCast() {
@@ -203,12 +201,13 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
      *
      * @param listFragment
      */
-    public void showDialog(List<Fragment> listFragment) {
+    public void showDialog(List<Fragment> listFragment,boolean flag) {
         if (listFragment.size() < 0 || listFragment == null) return;
         DialogFragmentManger.instance()
                 .setListFragment(listFragment)
                 .setWidthPerHeight(0.75f)
-                .setPadding(150)
+                .setPadding(100)
+                .setIsScrollViewPager(flag)
                 .setIsCancelable(false)
                 .show(getSupportFragmentManager(), "dialog");
     }
@@ -431,7 +430,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 return true;
 
             case R.id.action_video:
-                showDialog(getVedioFragments());
+                showDialog(getVedioFragments(),true);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -533,7 +532,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     cardInfo = intent.getStringExtra("cardinfo");
                     android.util.Log.e("接收读取卡的信息====", cardInfo + "0000");
                     dismissDialog();
-                    showDialog(getCarFragments());
+                    showDialog(getCarFragments(),false);
                     break;
                 case action_Viewpager_gone:
                     viewPager.setVisibility(View.GONE);

@@ -3,7 +3,6 @@ package com.androidex.apps.home.fragment;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageView;
 
 import com.androidex.apps.home.FullscreenActivity;
@@ -38,6 +37,7 @@ public class VedioFragment extends LazyLoadFragment implements View.OnClickListe
             uri = Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + R.raw.love);
         }
         /**播放视频**/
+        customVideoView.setVisibility(View.VISIBLE);
         customVideoView.playVideo(uri);
     }
 
@@ -63,6 +63,14 @@ public class VedioFragment extends LazyLoadFragment implements View.OnClickListe
             case R.id.iv_close:
                 dissMissDialog();
                 break;
+        }
+    }
+    @Override
+    protected void stopLoad() {
+        super.stopLoad();
+        if (customVideoView != null) {
+            customVideoView.stopPlayback();
+            customVideoView.setVisibility(View.GONE);
         }
     }
 }
