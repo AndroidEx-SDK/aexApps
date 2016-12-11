@@ -374,6 +374,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                                 e.printStackTrace();
                             }
                             mDevices.mPrinter.WriteDataHex("1D564200");
+                            mDevices.mPrinter.cutPaper(1);
                             mDevices.mPrinter.Close();
                             Log.i(TAG, "打印测试结束，关闭打印机设备。");
                         }
