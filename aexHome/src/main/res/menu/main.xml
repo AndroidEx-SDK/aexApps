@@ -24,11 +24,17 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="系统设置"/>
+
     <item
         android:id="@+id/action_camera"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="打开相机"/>
 
+    <item
+        android:id="@+id/action_video"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="播放视频"/>
 
 </menu>

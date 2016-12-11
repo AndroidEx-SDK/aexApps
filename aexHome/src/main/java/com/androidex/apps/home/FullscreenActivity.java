@@ -38,6 +38,7 @@ import com.androidex.apps.home.fragment.SetPassWordFragment;
 import com.androidex.apps.home.fragment.SetUUIDFragment;
 import com.androidex.apps.home.fragment.StartSettingFragment;
 import com.androidex.apps.home.fragment.SystemSettingFragment;
+import com.androidex.apps.home.fragment.VedioFragment;
 import com.androidex.apps.home.view.CircleTextProgressbar;
 import com.androidex.common.AndroidExActivityBase;
 import com.androidex.common.DummyContent;
@@ -404,6 +405,10 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
 
             case R.id.action_camera:
                 CameraFragment.instance().show(getSupportFragmentManager(),"camerafragment");
+                return true;
+
+            case R.id.action_video:
+                VedioFragment.instance().show(getSupportFragmentManager(),"veddiofragment");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
