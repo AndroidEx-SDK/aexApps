@@ -702,8 +702,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         if (nfc != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 if (this instanceof NfcAdapter.ReaderCallback) {
-                    nfc.enableReaderMode(this, this, aexddAndroidNfcReader.READER_FLAGS, null);
-
+                    nfc.enableReaderMode(this, (aexddAndroidNfcReader)mDevices.mNfcReader, aexddAndroidNfcReader.READER_FLAGS, null);
                 }
             }
         }

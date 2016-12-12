@@ -39,7 +39,16 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
     // "OK" status word sent in response to SELECT AID command (0x9000)
     protected static final byte[] SELECT_OK_SW = {(byte) 0x90, (byte) 0x00};
 
-    public aexddAndroidNfcReader(Context ctx) {
+    private static aexddAndroidNfcReader mAexddAndroidNfcReader;
+
+    public static aexddAndroidNfcReader getInstance(Context ctx){
+        if (mAexddAndroidNfcReader==null){
+            mAexddAndroidNfcReader = new aexddAndroidNfcReader(ctx);
+        }
+        return mAexddAndroidNfcReader;
+    }
+
+    private aexddAndroidNfcReader(Context ctx) {
         super(ctx);
         if((ctx != null) && (ctx instanceof AccountCallback)){
             AccountCallback listener = (AccountCallback)ctx;

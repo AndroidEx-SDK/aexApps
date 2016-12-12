@@ -48,7 +48,7 @@ public class appDevicesManager extends appLibsDevices {
         super(ctx);
         mConfig = new appDevicesConfig(ctx);
         mHwservice = new appDevicesService(ctx);
-        mNfcReader = new aexddAndroidNfcReader(ctx);
+        mNfcReader = aexddAndroidNfcReader.getInstance(ctx);
 
         mPrinter = new aexddB58Printer(ctx,mConfig.mConfigPrinter);
         mBankCardReader = new aexddMT319Reader(ctx,mConfig.mConfigBankReader);

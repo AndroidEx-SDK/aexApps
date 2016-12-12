@@ -25,6 +25,19 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        enableReaderMode();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        disenableReaderMode();
+    }
+
     private void enableReaderMode() {
         Log.i("", "启用读卡模式");
         if(Build.VERSION.SDK_INT >= 19)
@@ -32,7 +45,17 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
             Activity activity = this;
             NfcAdapter nfc = NfcAdapter.getDefaultAdapter(activity);
             if (nfc != null) {
-               // nfc.enableReaderMode(activity, mLoyaltyCardReader, READER_FLAGS, null);
+                //nfc.enableReaderMode(activity, , READER_FLAGS, null);
+            }
+        }
+    }
+
+    private void disenableReaderMode(){
+        Log.i("","禁用读卡模式");
+        NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if(nfcAdapter!=null){
+            if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.KITKAT){
+                nfcAdapter.disableReaderMode(this);
             }
         }
     }
