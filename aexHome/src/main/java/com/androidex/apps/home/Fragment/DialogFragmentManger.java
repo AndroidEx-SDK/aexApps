@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +16,15 @@ import android.widget.Toast;
 
 import com.androidex.apps.home.R;
 import com.androidex.apps.home.utils.DisplayUtil;
+import com.androidex.apps.home.utils.MyAnimation;
+import com.androidex.apps.home.view.NoScrollViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * DialogFragment的管理类
- *
+ * <p>
  * Created by liyp on 16/12/1.
  */
 
@@ -35,7 +36,8 @@ public class DialogFragmentManger extends BaseDialogFragment {
      */
     private RelativeLayout parentLayout;
     private static DialogFragmentManger dialogFragmentManger;
-    public ViewPager viewPager;
+    public NoScrollViewPager viewPager;
+    private boolean isScrol;
 
     DialogFragmentManger() {
     }
@@ -45,9 +47,10 @@ public class DialogFragmentManger extends BaseDialogFragment {
             Toast.makeText(getContext(), "list不可为空", Toast.LENGTH_SHORT).show();
             return null;
         }
-        //this.list.clear();
-        if (this.list!=null){
+
+        if (this.list != null) {
             this.list.remove(this.list);
+            this.list.clear();
         }
         this.list = list;
         return this;
@@ -60,10 +63,16 @@ public class DialogFragmentManger extends BaseDialogFragment {
         View view = inflater.inflate(R.layout.fragment_dialog_manger, container);
         parentLayout = (RelativeLayout) view.findViewById(R.id.parentLayout);
         ImageView close = (ImageView) view.findViewById(R.id.iv_close);
-        viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+        viewPager = (NoScrollViewPager) view.findViewById(R.id.viewPager);
 
         viewPager.setAdapter(new MyPagerAdapter(getChildFragmentManager()));
-
+        viewPager.setPageTransformer(true, MyAnimation.Instance().new MyPageTransformer());
+        if (isScrol) {
+            viewPager.setOffscreenPageLimit(2);
+            viewPager.setNoScroll(true);
+        } else {
+            viewPager.setNoScroll(false);
+        }
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         setCancelable(isCancelable);
         //setRootContainerHeight();             //设置dialog的宽高比
@@ -83,10 +92,17 @@ public class DialogFragmentManger extends BaseDialogFragment {
         return dialogFragmentManger;
     }
 
+    public DialogFragmentManger setIsScrollViewPager(boolean flag) {
+
+        isScrol = flag;
+        return this;
+    }
+
     @Override
     public BaseDialogFragment dissMissDialog() {
-        if (dialogFragmentManger.isVisible()){
+        if (dialogFragmentManger.isVisible()) {
             dialogFragmentManger.dismiss();
+            dialogFragmentManger = null;
         }
         return this;
     }
@@ -107,7 +123,6 @@ public class DialogFragmentManger extends BaseDialogFragment {
     }
 
     public void setRootContainerHeight() {
-
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int widthPixels = displayMetrics.widthPixels;
         int totalPadding = DisplayUtil.dip2px(getActivity(), padding * 2);

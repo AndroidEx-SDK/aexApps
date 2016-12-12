@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.androidex.aexlibs.WebJavaBridge;
 import com.androidex.apps.home.fragment.AboutLocalFragment;
 import com.androidex.apps.home.fragment.AfterBankcardFragment;
+import com.androidex.apps.home.fragment.CameraFragment;
 import com.androidex.apps.home.fragment.DialogFragmentManger;
 import com.androidex.apps.home.fragment.FrontBankcardFragment;
 import com.androidex.apps.home.fragment.NetWorkSettingFragment;
@@ -37,6 +38,7 @@ import com.androidex.apps.home.fragment.SetPassWordFragment;
 import com.androidex.apps.home.fragment.SetUUIDFragment;
 import com.androidex.apps.home.fragment.StartSettingFragment;
 import com.androidex.apps.home.fragment.SystemSettingFragment;
+import com.androidex.apps.home.fragment.VedioFragment;
 import com.androidex.apps.home.view.CircleTextProgressbar;
 import com.androidex.common.AndroidExActivityBase;
 import com.androidex.common.DummyContent;
@@ -114,6 +116,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             }
         }
     };
+    private List<Fragment> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,21 +127,21 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         mControlsView = findViewById(R.id.dummy_button);
         //这里要获得UUID，判断UUID等不等"FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF"不等于就说明被写入了UUID
         //if (!hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")){
-            getWindow().getDecorView().setBackgroundResource(R.drawable.default_wallpaper);
-            initView();
-            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-            mContentView.setAdapter(mSectionsPagerAdapter);
-            setFullScreenView(mContentView);
-            setFullScreen(true);
-            initProgressBar();
-            initTablayoutAndViewPager();
-            initBroadCast(); //注册广播
-            android.util.Log.e("uuid=======:",hwservice.get_uuid());
-            Toast.makeText(this,hwservice.get_uuid(),Toast.LENGTH_LONG).show();
+        getWindow().getDecorView().setBackgroundResource(R.drawable.default_wallpaper);
+        initView();
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mContentView.setAdapter(mSectionsPagerAdapter);
+        setFullScreenView(mContentView);
+        setFullScreen(true);
+        initProgressBar();
+        initTablayoutAndViewPager();
+        initBroadCast(); //注册广播
+        android.util.Log.e("uuid=======:", hwservice.get_uuid());
+        Toast.makeText(this, hwservice.get_uuid(), Toast.LENGTH_LONG).show();
 //        } else {
 //            Toast.makeText(this,"请设置UUID",Toast.LENGTH_LONG).show();
 //            android.util.Log.e("uuid默认=======:",hwservice.get_uuid());
-//            SetPassWordFragment.instance().show(getSupportFragmentManager(),"uuidfragment");
+//            SetUUIDFragment.instance().show(getSupportFragmentManager(),"uuidfragment");
 //        }
     }
 
@@ -163,8 +166,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     public void initProgressBar() {
         progressbar = (CircleTextProgressbar) findViewById(R.id.progressbar);
         progressbar.setCountdownProgressListener(2, progressListener);
-        //progressbar.setTimeMillis(60 * 1000);
-
     }
 
     public void initBroadCast() {
@@ -200,12 +201,13 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
      *
      * @param listFragment
      */
-    public void showDialog(List<Fragment> listFragment) {
+    public void showDialog(List<Fragment> listFragment,boolean flag) {
         if (listFragment.size() < 0 || listFragment == null) return;
         DialogFragmentManger.instance()
                 .setListFragment(listFragment)
                 .setWidthPerHeight(0.75f)
-                .setPadding(150)
+                .setPadding(100)
+                .setIsScrollViewPager(flag)
                 .setIsCancelable(false)
                 .show(getSupportFragmentManager(), "dialog");
     }
@@ -220,10 +222,32 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
      * @return
      */
     private List<Fragment> getCarFragments() {
-        List<Fragment> list = new ArrayList();
+        list = new ArrayList();
         list.add(mFrontBankcardFragment);
         list.add(mAfterBankcardFragment);
         list.add(mOtherCardFragment);
+        return list;
+    }
+
+    /**
+     * 视频播放的Fragment(重用同一个Fragment)
+     *
+     * @return
+     */
+    private List<Fragment> getVedioFragments() {
+        list = new ArrayList<>();
+
+        Fragment fragment1 = new VedioFragment();
+        Bundle bundle1 = new Bundle();
+        bundle1.putInt("index", 1);
+        fragment1.setArguments(bundle1);
+        list.add(fragment1);
+
+        Fragment fragment2 = new VedioFragment();
+        Bundle bundle2 = new Bundle();
+        bundle2.putInt("index", 2);
+        fragment2.setArguments(bundle2);
+        list.add(fragment2);
         return list;
     }
 
@@ -315,7 +339,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         m4.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 showExitDialog();
-                return true;
+                return false;
             }
         });
         return super.onCreateOptionsMenu(menu);
@@ -350,6 +374,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                                 e.printStackTrace();
                             }
                             mDevices.mPrinter.WriteDataHex("1D564200");
+                            mDevices.mPrinter.cutPaper(1);
                             mDevices.mPrinter.Close();
                             Log.i(TAG, "打印测试结束，关闭打印机设备。");
                         }
@@ -377,13 +402,14 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 if (mDevices.mCasCardReader.Open()) {
                     final aexddLCC1Reader reader = (aexddLCC1Reader) mDevices.mCasCardReader;
 
-                   //int b = reader.WriteDataHex("AAB40007800000000000148D");//鸣响
-                    //int a =reader.WriteDataHex("AAB70007800000018500041A");//打开蜂鸣指令
-                    int cc =reader.WriteDataHex("AA20800520000000002F");//上电
-                    byte [] bytes = reader.ReciveData(120,1000*1000*1000);
+                    // int b = reader.WriteDataHex("AAB40007800000000000148D");//鸣响
+                    // int a =reader.WriteDataHex("AAB70007800000018500041A");//打开蜂鸣指令
+                    int cc = reader.WriteDataHex("AA20800520000000002F");//上电
+                    byte[] bytes = reader.ReciveData(120, 1000 * 1000 * 1000);
+
                     printHexString(bytes);
                     reader.selfTest();
-                  //
+                    //
                     mDevices.mCasCardReader.Close();
                 } else {
                     String s = String.format("Open cas reader fial:%s", mDevices.mCasCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS));
@@ -403,6 +429,14 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     Log.i(TAG, s);
                     Toast.makeText(this, s, Toast.LENGTH_LONG).show();
                 }
+                return true;
+
+            case R.id.action_camera:
+                CameraFragment.instance().show(getSupportFragmentManager(), "camerafragment");
+                return true;
+
+            case R.id.action_video:
+                showDialog(getVedioFragments(),true);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -431,7 +465,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.toolbar:
-                SetPassWordFragment.instance().show(getSupportFragmentManager(),"passwordfragment");
+                SetPassWordFragment.instance().show(getSupportFragmentManager(), "passwordfragment");
                 break;
             case R.id.progressbar:
                 progressbar.setTimeMillis(30 * 1000);
@@ -504,7 +538,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     cardInfo = intent.getStringExtra("cardinfo");
                     android.util.Log.e("接收读取卡的信息====", cardInfo + "0000");
                     dismissDialog();
-                    showDialog(getCarFragments());
+                    showDialog(getCarFragments(),false);
                     break;
                 case action_Viewpager_gone:
                     viewPager.setVisibility(View.GONE);
@@ -704,27 +738,25 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             }
         });
     }
-    public static void printHexString( byte[] b)
-    {
-        if(b!=null){
-            StringBuffer string=new StringBuffer();
-            for (int i = 0; i < b.length; i++)
-            {
+
+    public static void printHexString(byte[] b) {
+        if (b != null) {
+            StringBuffer string = new StringBuffer();
+            for (int i = 0; i < b.length; i++) {
                 String hex = Integer.toHexString(b[i] & 0xFF);
-                if (hex.length() == 1)
-                {
+                if (hex.length() == 1) {
                     hex = '0' + hex;
 
                 }
                 string.append(hex.toUpperCase() + " ");
-                android.util.Log.d("111111",hex.toUpperCase() + " ");
+                android.util.Log.d("111111", hex.toUpperCase() + " ");
             }
-            android.util.Log.d("111111",string + " ");
+            android.util.Log.d("111111", string + " ");
             System.out.println("");
-        }else{
-            android.util.Log.d("111111","w为空");
+        } else {
+            android.util.Log.d("111111", "w为空");
         }
-        }
+    }
 
 }
 

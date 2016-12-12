@@ -1,6 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        AndroidEx {
+            keyAlias 'AndroidExKey'
+            keyPassword 'androidex'
+            storeFile file('/Users/cts/aexApps/androidex.keystore')
+            storePassword 'androidex'
+        }
+
+    }
+
     compileSdkVersion 22
     buildToolsVersion '22.0.1'
     defaultConfig {
@@ -9,6 +19,8 @@ android {
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
+
+        signingConfig signingConfigs.AndroidEx
     }
     sourceSets {
         main {
@@ -19,8 +31,18 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            zipAlignEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.AndroidEx
         }
+        debug {
+            zipAlignEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.AndroidEx
+        }
+
+
     }
     /** 导入so文件 */
     task nativeLibsToJar(type: Zip, description: "create a jar archive of the native libs") {
