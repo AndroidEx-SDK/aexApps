@@ -392,7 +392,7 @@ int ztc_send_hexcmd(HZTC env,HZTC obj,int fd,char *hexcmd,int size)
 	memset(chSendCmd, '\0', sizeof(chSendCmd));
 	ret = HexBCC(hexcmd, size);
 	sprintf(chSendCmd, "%c%s%02X%c", 0x02, hexcmd, ret,0x03);
-	// __android_log_print(ANDROID_LOG_DEBUG,"kmy","sendCmd(\\0x%02X%s\\0x03) return 0x%02X",chSendCmd[0],chSendCmd+1,ret);
+	 __android_log_print(ANDROID_LOG_DEBUG,"zt","sendCmd(\\0x%02X%s\\0x03) return 0x%02X",chSendCmd[0],chSendCmd+1,ret);
 	ret = com_write(fd, chSendCmd, strlen(chSendCmd));
 	return ret;
 }
@@ -448,21 +448,25 @@ int ztc_recive_packet(HZTC env,HZTC obj,int fd,char *buf,int bufsize,int timeout
 
     memset(p, 0, bufsize);
     len = com_recive(fd, p, 1, timeout);
+
     while (len == 1 && *p != 0x02) {
         //丢弃数据包头之前的数据
         len = com_recive(fd, p, 1, timeout);
     }
-    if (len <= 0){
+	
+    if (len <=0){
         //如果超时或者发生错误则返回
         return len;
     }
     //找到了数据包头0x02
     p++;    //移到下一字节处
     len = com_recive(fd, p, 1, timeout);    //读长度
+
     if(len == 1){
         //读到一个字节
         mlen = (*p++);
-    }else{
+    }else if (len==0){
+	} else{
         //读取长度错误
         return -1000;
     }

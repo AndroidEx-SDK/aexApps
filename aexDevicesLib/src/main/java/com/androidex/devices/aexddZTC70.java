@@ -1,6 +1,9 @@
 package com.androidex.devices;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
+import android.widget.Toast;
 
 import com.androidex.apps.aexdeviceslib.R;
 import com.androidex.common.SoundPoolUtil;
@@ -27,10 +30,23 @@ public class aexddZTC70 extends aexddPasswordKeypad {
         super(ctx);
     }
 
+    public CallBack callBack;
+    public Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 0) {
+                int key = (int) msg.obj;
+                callBack.mCallBack(key);
+            }
+        }
+    };
+
     public aexddZTC70(Context ctx, JSONObject args) {
         super(ctx, args);
     }
 
+    //public CallBack callBack;
     @Override
     public String getDeviceName() {
 
@@ -50,14 +66,21 @@ public class aexddZTC70 extends aexddPasswordKeypad {
     public void onBackCallEvent(int _code, String _msg) {
         //KE_PRESSED = 0x10100
         switch (_code) {
+
             case 0x10100: {
                 //按键信息
                 try {
                     JSONObject msgArgs = new JSONObject(_msg);
                     int key = Integer.parseInt(msgArgs.optString("key"), 16);
 
+                    android.util.Log.e("按键：", key + "");
                     if (key >= 0 && key <= 9) {
                         SoundPoolUtil.getSoundPoolUtil().loadVoice(mContext, key);
+                        /*Message message = mHandler.obtainMessage();
+                        message.obj = key;
+                        message.what = 0;
+                        mHandler.sendMessage(message);*/
+                        //
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -67,6 +90,17 @@ public class aexddZTC70 extends aexddPasswordKeypad {
             default:
                 break;
         }
+    }
+
+
+    //设置一个回调，用于更新edxit
+
+    public interface CallBack {
+        public void mCallBack(int key);
+    }
+
+    public void setCallBack(CallBack cb) {
+        callBack = cb;
     }
 
     @Override
@@ -113,15 +147,22 @@ public class aexddZTC70 extends aexddPasswordKeypad {
 
     @Override
     public boolean selfTest() {
+        pkGetVersion();
         Log.i(TAG, String.format("Version:%s", pkGetVersion()));
-       // Log.i(TAG, String.format("Status:%s", getStatusStr(queryStatus())));
+        Toast.makeText(mContext,String.format("Version:%s", pkGetVersion()), Toast.LENGTH_LONG).show();
+        //setQuery();
+       // android.util.Log.e(TAG,String.format("Status:%s", getStatusStr(setQuery())));
         return true;
     }
-
+    public void setQuery(){
+        pkSetEncryptMode(2);
+    }
 
     @Override
     public String getStatusStr(int st) {
         switch (st) {
+            case 0x04:
+                return "命令执行成功";
             case 0x15:
                 return "命令参数错";
             case 0x80:
@@ -174,14 +215,14 @@ public class aexddZTC70 extends aexddPasswordKeypad {
         Runnable run = new Runnable() {
             public void run() {
                 //在线程中执行jni函数
-                int r = ztReadKeyLoop(mSerialFd, 10000 * delayUint);
+                r = ztReadKeyLoop(mSerialFd, 10000 * delayUint);
             }
         };
         pthread = new Thread(run);
         pthread.start();
-        return 0;
+        return r;
     }
-
+    private int r;
     @Override
     public int pkReadLoop(int i) {
         return 0;
@@ -248,11 +289,25 @@ public class aexddZTC70 extends aexddPasswordKeypad {
     @Override
     public String pkGetVersion() {
         String ret = "";
-        String rhex = "";
 
-        pkSendHexCmd("0130");
-        rhex = ReciveDataHex(255, 3000 * delayUint);
-        ret = rhex;
+        //pkSendHexCmd("0233013330333103");
+        WriteDataHex("0230313330333103");
+        byte[] r = pkReadPacket(10000*delayUint);
+        String s = hexString(r);
+        android.util.Log.d("---",s);
+        ret = s.substring(10,30);//35 41 35 34 33 35 33 39 33 38
+        //对接收的字符串进行处理
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(s.charAt(0));
+        stringBuilder.append(s.charAt(1));
+        for (int i = 1;i<=(s.length()-2)/2;i++){
+            stringBuilder.append(s.charAt(2*i+1));
+        }
+
+        String str = stringBuilder.substring(4,6);
+        Toast.makeText(mContext,getStatusStr(Integer.parseInt(str,16)),Toast.LENGTH_LONG).show();
+        Log.d("政通",getStatusStr(Integer.parseInt(str,16)));
+
         return ret;
     }
 
@@ -265,21 +320,59 @@ public class aexddZTC70 extends aexddPasswordKeypad {
         String r = "";
         switch (mode) {
             case 0: {
-                pkSendHexCmd("03460020");
+                pkSendHexCmd("03810020");
                 r = ReciveDataHex(255, 3000 * delayUint);
-                pkSendHexCmd("03460120");
+                pkSendHexCmd("03810030");
+                r = ReciveDataHex(255, 3000 * delayUint);
+                pkSendHexCmd("03810040");
                 r = ReciveDataHex(255, 3000 * delayUint);
             }
             break;
             case 1: {
-                pkSendHexCmd("03460030");
+                pkSendHexCmd("03810110");
                 r = ReciveDataHex(255, 3000 * delayUint);
-                pkSendHexCmd("03460130");
+                pkSendHexCmd("03810120");
                 r = ReciveDataHex(255, 3000 * delayUint);
+            }
+            break;
+            case 2:{
+
+               /* pkSendHexCmd("03810210");
+                r = ReciveDataHex(255, 3000 * delayUint);*/
+               /*
+                r = ReciveDataHex(500, 5000 * delayUint);
+               */
+                pkSendHexCmd("03810220");
+                byte[] b = pkReadPacket(delayUint* delayUint*30);
             }
             break;
         }
 
+    }
+
+    /**
+     * 转换成16进制
+     * @param b
+     * @return
+     */
+    public  String  hexString( byte[] b)
+    {
+        if(b!=null){
+            StringBuffer string=new StringBuffer();
+            for (int i = 0; i < b.length; i++)
+            {
+                String hex = Integer.toHexString(b[i] & 0xFF);
+                if (hex.length() == 1)
+                {
+                    hex = '0' + hex;
+
+                }
+                string.append(hex.toUpperCase() );
+            }
+            return  string.toString();
+        }else{
+            return null;
+        }
     }
 
     /**

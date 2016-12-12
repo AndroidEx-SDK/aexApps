@@ -45,10 +45,10 @@ import com.androidex.common.DummyContent;
 import com.androidex.common.LogFragment;
 import com.androidex.devices.aexddAndroidNfcReader;
 import com.androidex.devices.aexddB58Printer;
+import com.androidex.devices.aexddZTC70;
 import com.androidex.devices.aexddLCC1Reader;
 import com.androidex.devices.aexddMT319Reader;
 import com.androidex.devices.aexddNfcReader;
-import com.androidex.devices.aexddZTC70;
 import com.androidex.devices.appDeviceDriver;
 import com.androidex.devices.appDevicesManager;
 import com.androidex.logger.Log;
@@ -407,6 +407,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     // int a =reader.WriteDataHex("AAB70007800000018500041A");//打开蜂鸣指令
                     int cc = reader.WriteDataHex("AA20800520000000002F");//上电
                     byte[] bytes = reader.ReciveData(120, 1000 * 1000 * 1000);
+
                     printHexString(bytes);
                     reader.selfTest();
                     //
@@ -418,12 +419,16 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 }
                 return true;
             case R.id.action_password_key:
-                if (mDevices.mPasswordKeypad.Open()) {
-                    aexddZTC70 passworkkeypad = (aexddZTC70) mDevices.mZTPasswordKeypad;
+                if (mDevices.mZTPasswordKeypad.Open()) {
+                    aexddZTC70  passworkkeypad = (aexddZTC70) mDevices.mZTPasswordKeypad;
                     passworkkeypad.selfTest();
-                    int i = mDevices.mPasswordKeypad.ReciveDataLoop();
-                    Log.i("按键：", i + "");
-                    mDevices.mPasswordKeypad.Close();
+                    //打开dialogfragment测试
+                    //PasswordPadFragment.instance(passworkkeypad).show(getSupportFragmentManager(),"passwordpadfragment");
+                    mDevices.mZTPasswordKeypad.Close();
+                }else{
+                    String s = String.format("Open passkeypad reader fial:%s", mDevices.mPasswordKeypad.mParams.optString(appDeviceDriver.PORT_ADDRESS));
+                    Log.i(TAG, s);
+                    Toast.makeText(this, s, Toast.LENGTH_LONG).show();
                 }
                 return true;
 

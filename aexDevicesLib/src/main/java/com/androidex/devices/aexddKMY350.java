@@ -1,6 +1,7 @@
 package com.androidex.devices;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.androidex.apps.aexdeviceslib.R;
 import com.androidex.common.Base16;
@@ -166,7 +167,9 @@ public class aexddKMY350 extends aexddPasswordKeypad {
 
     @Override
     public boolean selfTest() {
-        return false;
+        Log.i(TAG, String.format("Version:%s", pkGetVersion()));
+        Toast.makeText(mContext,String.format("Version:%s", pkGetVersion()),Toast.LENGTH_SHORT).show();
+        return true;
     }
     @Override
     public String getStatusStr(int st)
