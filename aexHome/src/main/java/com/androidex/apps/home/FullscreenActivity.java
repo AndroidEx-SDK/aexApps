@@ -53,7 +53,6 @@ import com.androidex.devices.appDeviceDriver;
 import com.androidex.devices.appDevicesManager;
 import com.androidex.logger.Log;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -201,7 +200,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
      *
      * @param listFragment
      */
-    public void showDialog(List<Fragment> listFragment,boolean flag) {
+    public void showDialog(List<Fragment> listFragment, boolean flag) {
         if (listFragment.size() < 0 || listFragment == null) return;
         DialogFragmentManger.instance()
                 .setListFragment(listFragment)
@@ -364,16 +363,18 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            mDevices.mPrinter.selfTest();
-                            String str = "安卓工控";
-                            try {
-                                mDevices.mPrinter.WriteData(str.getBytes("GBK"), str.getBytes().length);
-                                aexddB58Printer printer = (aexddB58Printer) (mDevices.mPrinter);
-                                printer.ln();
-                            } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                            }
-                            mDevices.mPrinter.WriteDataHex("1D564200");
+                            aexddB58Printer printer = (aexddB58Printer) (mDevices.mPrinter);
+                            printer.selfTest();
+                            //mDevices.mPrinter.selfTest();
+                            // String str = "安卓工控";
+//                            try {
+//                                mDevices.mPrinter.WriteData(str.getBytes("GBK"), str.getBytes().length);
+//                                aexddB58Printer printer = (aexddB58Printer) (mDevices.mPrinter);
+//                                printer.ln();
+//                            } catch (UnsupportedEncodingException e) {
+//                                e.printStackTrace();
+//                            }
+//                            mDevices.mPrinter.WriteDataHex("1D564200");
                             mDevices.mPrinter.cutPaper(1);
                             mDevices.mPrinter.Close();
                             Log.i(TAG, "打印测试结束，关闭打印机设备。");
@@ -436,7 +437,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 return true;
 
             case R.id.action_video:
-                showDialog(getVedioFragments(),true);
+                showDialog(getVedioFragments(), true);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -538,7 +539,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     cardInfo = intent.getStringExtra("cardinfo");
                     android.util.Log.e("接收读取卡的信息====", cardInfo + "0000");
                     dismissDialog();
-                    showDialog(getCarFragments(),false);
+                    showDialog(getCarFragments(), false);
                     break;
                 case action_Viewpager_gone:
                     viewPager.setVisibility(View.GONE);
