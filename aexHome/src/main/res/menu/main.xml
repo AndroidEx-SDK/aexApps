@@ -19,11 +19,6 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="测试密码键盘"/>
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="系统设置"/>
 
     <item
         android:id="@+id/action_camera"
@@ -36,5 +31,15 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="播放视频"/>
+    <item
+        android:id="@+id/action_onekey_text"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="一键测试"/>
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="系统设置"/>
 
 </menu>
