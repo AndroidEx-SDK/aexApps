@@ -32,7 +32,7 @@ public class VedioFragment extends LazyLoadFragment implements View.OnClickListe
         Log.d("vediofragment","开始播放视频="+index);
         Uri uri;
         if (index == 1) {
-            uri = Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + R.raw.loveyou);
+            uri = Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + R.raw.a002);
         } else {
             uri = Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + R.raw.love);
         }
