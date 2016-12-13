@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidex.aexlibs.WebJavaBridge;
+import com.androidex.aexlibs.hwService;
 import com.androidex.apps.home.fragment.AboutLocalFragment;
 import com.androidex.apps.home.fragment.AfterBankcardFragment;
 import com.androidex.apps.home.fragment.DialogFragmentManger;
@@ -51,6 +52,9 @@ import com.androidex.devices.appDeviceDriver;
 import com.androidex.devices.appDevicesManager;
 import com.androidex.logger.Log;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -115,6 +119,29 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         }
     };
 
+    public String runShellCommand(String cmd) {
+        String ret = "";
+        byte[] retBytes = new byte[2048];
+
+        Log.d(TAG,String.format("runShellCommand(%s)",cmd));
+		try {
+            cmd += "\n";
+			Process exeEcho1 = Runtime.getRuntime().exec("su");
+			OutputStream ot = exeEcho1.getOutputStream();
+			ot.write(cmd.getBytes());
+			ot.flush();
+			ot.close();
+            InputStream in = exeEcho1.getInputStream();
+            int r = in.read(retBytes);
+            if(r > 0)
+                ret = new String(retBytes,0,r);
+		} catch (IOException e) {
+			Log.e("AexService", "shell cmd wrong:" + e.toString());
+		}
+
+        return ret;
+	}
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,8 +149,21 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         hwservice.EnterFullScreen();
         mContentView = (ViewPager) findViewById(R.id.fullscreen_content);
         mControlsView = findViewById(R.id.dummy_button);
+
+        Log.d(TAG,hwservice.getSdkVersion());
+        String userInfo = hwservice.getUserInfo();
+        Log.d(TAG,userInfo);
+        //hwservice.execShellCommand("su");
+        hwservice.setUserInfo("1234");
+        hwservice.setUserInfo(userInfo);
+        String ret = hwservice.execShellCommand("ls -la /misc");
+        hwservice.writeHex(hwservice.aexp_userinfo,"33343536373839");
+        Log.d(TAG,runShellCommand(String.format("echo \"0x34\" > %s", hwService.aexp_flag0)));
+        Log.d(TAG,runShellCommand(String.format("echo '12345'> %s", hwService.aexp_userinfo)));
+        Log.d(TAG,hwservice.getUserInfo());
         //这里要获得UUID，判断UUID等不等"FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF"不等于就说明被写入了UUID
-        //if (!hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")){
+        String uuid = hwservice.get_uuid();
+        if ( uuid != null && !uuid.equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")){
             getWindow().getDecorView().setBackgroundResource(R.drawable.default_wallpaper);
             initView();
             mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -135,11 +175,11 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             initBroadCast(); //注册广播
             android.util.Log.e("uuid=======:",hwservice.get_uuid());
             Toast.makeText(this,hwservice.get_uuid(),Toast.LENGTH_LONG).show();
-//        } else {
-//            Toast.makeText(this,"请设置UUID",Toast.LENGTH_LONG).show();
-//            android.util.Log.e("uuid默认=======:",hwservice.get_uuid());
-//            SetPassWordFragment.instance().show(getSupportFragmentManager(),"uuidfragment");
-//        }
+        } else {
+            Toast.makeText(this,"请设置UUID",Toast.LENGTH_LONG).show();
+            android.util.Log.e("uuid默认=======:",hwservice.get_uuid());
+            SetPassWordFragment.instance().show(getSupportFragmentManager(),"uuidfragment");
+        }
     }
 
     public void initView() {
