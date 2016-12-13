@@ -27,7 +27,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidex.aexlibs.WebJavaBridge;
-import com.androidex.aexlibs.hwService;
 import com.androidex.apps.home.fragment.AboutLocalFragment;
 import com.androidex.apps.home.fragment.AfterBankcardFragment;
 import com.androidex.apps.home.fragment.CameraFragment;
@@ -56,7 +55,6 @@ import com.androidex.logger.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -154,12 +152,12 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         String userInfo = hwservice.getUserInfo();
         Log.d(TAG,userInfo);
         //hwservice.execShellCommand("su");
-        hwservice.setUserInfo("1234");
-        hwservice.setUserInfo(userInfo);
-        String ret = hwservice.execShellCommand("ls -la /misc");
-        hwservice.writeHex(hwservice.aexp_userinfo,"33343536373839");
-        Log.d(TAG,runShellCommand(String.format("echo \"0x34\" > %s", hwService.aexp_flag0)));
-        Log.d(TAG,runShellCommand(String.format("echo '12345'> %s", hwService.aexp_userinfo)));
+        hwservice.setUserInfo("AAAAAAAAAAAAAAAAAA");
+        //hwservice.setUserInfo(userInfo);
+        //String ret = hwservice.execShellCommand("ls -la /misc");
+        //hwservice.writeHex(hwservice.aexp_userinfo,"33343536373839");
+        //Log.d(TAG,runShellCommand(String.format("echo \"0x34\" > %s", hwService.aexp_flag0)));
+        //Log.d(TAG,runShellCommand(String.format("echo '12345'> %s", hwService.aexp_userinfo)));
         Log.d(TAG,hwservice.getUserInfo());
         //这里要获得UUID，判断UUID等不等"FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF"不等于就说明被写入了UUID
         //if (!hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")){
