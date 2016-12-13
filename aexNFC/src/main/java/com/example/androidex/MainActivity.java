@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
     appDevicesManager mDevices ;
 
     public Mbrocast mb;
+    public Intent intent;
     //public LoyaltyCardReader mLoyaltyCardReader;
 
     @Override
@@ -49,10 +50,11 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
         mDevices = new appDevicesManager(this);
-        mb = new Mbrocast();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(aexddAndroidNfcReader.START_ACTION);
-        registerReceiver(mb,intentFilter);
+
+        regBroadCast();// 注册广播
+        //开启服务
+        intent = new Intent(this,DoorLock.class);
+        startService(intent);
     }
 
     @Override
@@ -65,6 +67,15 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
     protected void onPause() {
         super.onPause();
         disenableReaderMode();
+    }
+
+
+    //注册广播
+    private void regBroadCast(){
+        mb = new Mbrocast();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(aexddAndroidNfcReader.START_ACTION);
+        registerReceiver(mb,intentFilter);
     }
 
     private void enableReaderMode() {
@@ -97,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mb);
+        stopService(intent);
     }
 
     /**
@@ -107,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (aexddAndroidNfcReader.START_ACTION.equals(action)){
+                //发送开门的广播
                 SoundPoolUtil.getSoundPoolUtil().loadVoice(MainActivity.this,4681);
             }
         }

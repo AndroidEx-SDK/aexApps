@@ -39,7 +39,7 @@ public class DialogFragmentManger extends BaseDialogFragment {
     public NoScrollViewPager viewPager;
     private boolean isScrol;
 
-    DialogFragmentManger() {
+    public DialogFragmentManger() {
     }
 
     public DialogFragmentManger setListFragment(List<Fragment> list) {
