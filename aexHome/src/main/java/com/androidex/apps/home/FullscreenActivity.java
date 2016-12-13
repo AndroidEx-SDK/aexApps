@@ -138,7 +138,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         } catch (IOException e) {
             Log.e("AexService", "shell cmd wrong:" + e.toString());
         }
-
+        
         return ret;
     }
 
