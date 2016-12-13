@@ -77,7 +77,6 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
             }
         }
     };
-
     public AdvertFragment() {
     }
 
