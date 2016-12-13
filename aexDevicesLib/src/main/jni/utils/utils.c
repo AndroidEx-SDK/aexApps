@@ -422,7 +422,7 @@ int com_recive(int fd,char *buf,int maxLen,int timeout)
     			HexEncode(buf,len,hexbuf,&dlen);
         		__android_log_print(ANDROID_LOG_INFO, "utils", "Recive data(%d) from fd=%d,hexbuf=%s",len,fd,hexbuf);
         	}
-        	return len;
+			return len;
         }else{
         	return -1;
         }

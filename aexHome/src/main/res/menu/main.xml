@@ -19,6 +19,23 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="测试密码键盘"/>
+
+    <item
+        android:id="@+id/action_camera"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="打开相机"/>
+
+    <item
+        android:id="@+id/action_video"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="播放视频"/>
+    <item
+        android:id="@+id/action_onekey_text"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="一键测试"/>
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidex.apps.home.FullscreenActivity;
@@ -26,12 +27,16 @@ public class SetPassWordFragment extends DialogFragment implements View.OnClickL
     private View rootView;
     private static SetPassWordFragment setPassWordFragment;
     private FullscreenActivity activity;
+    public boolean isCancelable = false;
     private EditText et_password;
+    private TextView tv_title;
+    private String pass;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.set_password, container, false);
+        setCancelable(isCancelable);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         activity = (FullscreenActivity) getActivity();
         initView();
@@ -40,10 +45,20 @@ public class SetPassWordFragment extends DialogFragment implements View.OnClickL
 
     public void initView() {
         et_password = (EditText) rootView.findViewById(R.id.et_password);
+        tv_title = (TextView) rootView.findViewById(R.id.tv_title);
         Button cancle = (Button) rootView.findViewById(R.id.btn_cancle);
         Button ok = (Button) rootView.findViewById(R.id.btn_ok);
         cancle.setOnClickListener(this);
         ok.setOnClickListener(this);
+        pass = activity.hwservice.get_pass();
+        if (pass.equals("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF")) {
+            Toast.makeText(getContext(), "请设置密码", Toast.LENGTH_LONG).show();
+            android.util.Log.e("原始密码：", pass);
+            tv_title.setText("请设置密码");
+        } else {
+            Toast.makeText(getContext(), "请输入密码", Toast.LENGTH_LONG).show();
+            tv_title.setText("请输入密码");
+        }
     }
 
     @Override
@@ -72,6 +87,23 @@ public class SetPassWordFragment extends DialogFragment implements View.OnClickL
                 } else {
                     Toast.makeText(getContext(), "新的密码：" + pass2, Toast.LENGTH_LONG).show();
                     android.util.Log.e("新的密码：", pass2);
+                }
+                break;
+
+            case R.id.tv_skip:
+                if (activity.hwservice.get_pass().equals("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF")){
+                    android.util.Log.e("跳过密码设置", "");
+                    Intent intent_show= new Intent(FullscreenActivity.ActionControlBar);
+                    intent_show.putExtra("flag", "show");
+                    intent_show.putExtra("bar", true);
+                    getContext().sendBroadcast(intent_show);
+                    dissMissDialog();
+                }else {
+                    Toast.makeText(getContext(), "请输入密码", Toast.LENGTH_LONG).show();
+                    Intent intent_hide= new Intent(FullscreenActivity.ActionControlBar);
+                    intent_hide.putExtra("flag", "hide");
+                    intent_hide.putExtra("bar", true);
+                    getContext().sendBroadcast(intent_hide);
                 }
                 break;
         }

@@ -30,14 +30,15 @@ import com.androidex.aexlibs.WebJavaBridge;
 import com.androidex.aexlibs.hwService;
 import com.androidex.apps.home.fragment.AboutLocalFragment;
 import com.androidex.apps.home.fragment.AfterBankcardFragment;
+import com.androidex.apps.home.fragment.CameraFragment;
 import com.androidex.apps.home.fragment.DialogFragmentManger;
 import com.androidex.apps.home.fragment.FrontBankcardFragment;
 import com.androidex.apps.home.fragment.NetWorkSettingFragment;
 import com.androidex.apps.home.fragment.OtherCardFragment;
 import com.androidex.apps.home.fragment.SetPassWordFragment;
-import com.androidex.apps.home.fragment.SetUUIDFragment;
 import com.androidex.apps.home.fragment.StartSettingFragment;
 import com.androidex.apps.home.fragment.SystemSettingFragment;
+import com.androidex.apps.home.fragment.VedioFragment;
 import com.androidex.apps.home.view.CircleTextProgressbar;
 import com.androidex.common.AndroidExActivityBase;
 import com.androidex.common.DummyContent;
@@ -76,8 +77,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     private static Fragment mAboutFragment = new AboutFragment();
     private static aexLogFragment mLogFragment = new aexLogFragment();
     private static Fragment mAdvertFragment = new AdvertFragment();
-    private static Fragment mSetUUIDFragment = new SetUUIDFragment();
-    private static Fragment mSetPassWordFragment = new SetPassWordFragment();
     private static Fragment mFrontBankcardFragment = new FrontBankcardFragment();
     private static Fragment mAfterBankcardFragment = new AfterBankcardFragment();
     private static Fragment mOtherCardFragment = new OtherCardFragment();
@@ -118,6 +117,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             }
         }
     };
+    private List<Fragment> list;
 
     public String runShellCommand(String cmd) {
         String ret = "";
@@ -162,24 +162,23 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         Log.d(TAG,runShellCommand(String.format("echo '12345'> %s", hwService.aexp_userinfo)));
         Log.d(TAG,hwservice.getUserInfo());
         //这里要获得UUID，判断UUID等不等"FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF"不等于就说明被写入了UUID
-        String uuid = hwservice.get_uuid();
-        if ( uuid != null && !uuid.equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")){
-            getWindow().getDecorView().setBackgroundResource(R.drawable.default_wallpaper);
-            initView();
-            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-            mContentView.setAdapter(mSectionsPagerAdapter);
-            setFullScreenView(mContentView);
-            setFullScreen(true);
-            initProgressBar();
-            initTablayoutAndViewPager();
-            initBroadCast(); //注册广播
-            android.util.Log.e("uuid=======:",hwservice.get_uuid());
-            Toast.makeText(this,hwservice.get_uuid(),Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(this,"请设置UUID",Toast.LENGTH_LONG).show();
-            android.util.Log.e("uuid默认=======:",hwservice.get_uuid());
-            SetPassWordFragment.instance().show(getSupportFragmentManager(),"uuidfragment");
-        }
+        //if (!hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")){
+        getWindow().getDecorView().setBackgroundResource(R.drawable.default_wallpaper);
+        initView();
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mContentView.setAdapter(mSectionsPagerAdapter);
+        setFullScreenView(mContentView);
+        setFullScreen(true);
+        initProgressBar();
+        initTablayoutAndViewPager();
+        initBroadCast(); //注册广播
+        Log.i("uuid=======:", hwservice.get_uuid());
+        Toast.makeText(this, hwservice.get_uuid(), Toast.LENGTH_LONG).show();
+//        } else {
+//            Toast.makeText(this,"请设置UUID",Toast.LENGTH_LONG).show();
+//            android.util.Log.e("uuid默认=======:",hwservice.get_uuid());
+//            SetUUIDFragment.instance().show(getSupportFragmentManager(),"uuidfragment");
+//        }
     }
 
     public void initView() {
@@ -203,8 +202,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     public void initProgressBar() {
         progressbar = (CircleTextProgressbar) findViewById(R.id.progressbar);
         progressbar.setCountdownProgressListener(2, progressListener);
-        //progressbar.setTimeMillis(60 * 1000);
-
     }
 
     public void initBroadCast() {
@@ -240,12 +237,13 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
      *
      * @param listFragment
      */
-    public void showDialog(List<Fragment> listFragment) {
+    public void showDialog(List<Fragment> listFragment, boolean flag) {
         if (listFragment.size() < 0 || listFragment == null) return;
         DialogFragmentManger.instance()
                 .setListFragment(listFragment)
                 .setWidthPerHeight(0.75f)
-                .setPadding(150)
+                .setPadding(100)
+                .setIsScrollViewPager(flag)
                 .setIsCancelable(false)
                 .show(getSupportFragmentManager(), "dialog");
     }
@@ -260,10 +258,32 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
      * @return
      */
     private List<Fragment> getCarFragments() {
-        List<Fragment> list = new ArrayList();
+        list = new ArrayList();
         list.add(mFrontBankcardFragment);
         list.add(mAfterBankcardFragment);
         list.add(mOtherCardFragment);
+        return list;
+    }
+
+    /**
+     * 视频播放的Fragment(重用同一个Fragment)
+     *
+     * @return
+     */
+    private List<Fragment> getVedioFragments() {
+        list = new ArrayList<>();
+
+        Fragment fragment1 = new VedioFragment();
+        Bundle bundle1 = new Bundle();
+        bundle1.putInt("index", 1);
+        fragment1.setArguments(bundle1);
+        list.add(fragment1);
+
+        Fragment fragment2 = new VedioFragment();
+        Bundle bundle2 = new Bundle();
+        bundle2.putInt("index", 2);
+        fragment2.setArguments(bundle2);
+        list.add(fragment2);
         return list;
     }
 
@@ -355,7 +375,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         m4.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 showExitDialog();
-                return true;
+                return false;
             }
         });
         return super.onCreateOptionsMenu(menu);
@@ -365,83 +385,153 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                ViewGroup v = (ViewGroup) mContentView.getChildAt(mContentView.getCurrentItem());
-                Intent mIntent = new Intent();
-                mIntent.setAction(Intent.ACTION_VIEW);
-                mIntent.setClassName("com.android.settings", "com.android.settings.Settings");
-                mIntent.putExtra("back", true);
-                sendBroadcast(new Intent("com.android.action.display_navigationbar"));
-                startActivityForResult(mIntent, DLG_NETINFO);
+                system_set();//系统设置
                 return true;
 
             case R.id.action_print:
-                Log.i(TAG, "打印测试程序...");
-                if (mDevices.mPrinter.Open()) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mDevices.mPrinter.selfTest();
-                            String str = "安卓工控";
-                            try {
-                                mDevices.mPrinter.WriteData(str.getBytes("GBK"), str.getBytes().length);
-                                aexddB58Printer printer = (aexddB58Printer) (mDevices.mPrinter);
-                                printer.ln();
-                            } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                            }
-                            mDevices.mPrinter.WriteDataHex("1D564200");
-                            mDevices.mPrinter.Close();
-                            Log.i(TAG, "打印测试结束，关闭打印机设备。");
-                        }
-                    }).start();
-
-                } else {
-                    String s = String.format("Open printer fial:%s", mDevices.mPrinter.mParams.optString(appDeviceDriver.PORT_ADDRESS));
-                    Log.i(TAG, s);
-                    Toast.makeText(this, s, Toast.LENGTH_LONG).show();
-                }
-
+                printText();//打印机测试
                 return true;
+
             case R.id.action_reader:
-                if (mDevices.mBankCardReader.Open()) {
-                    aexddMT319Reader reader = (aexddMT319Reader) mDevices.mBankCardReader;
-                    reader.selfTest();
-                    mDevices.mBankCardReader.Close();
-                } else {
-                    String s = String.format("Open bank reader fial:%s", mDevices.mBankCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS));
-                    Log.i(TAG, s);
-                    Toast.makeText(this, s, Toast.LENGTH_LONG).show();
-                }
+                readerText();//读卡器测试
                 return true;
-            case R.id.action_cas_reader:
-                if (mDevices.mCasCardReader.Open()) {
-                    final aexddLCC1Reader reader = (aexddLCC1Reader) mDevices.mCasCardReader;
 
-                   // int b = reader.WriteDataHex("AAB40007800000000000148D");//鸣响
-                   // int a =reader.WriteDataHex("AAB70007800000018500041A");//打开蜂鸣指令
-                    int cc =reader.WriteDataHex("AA20800520000000002F");//上电
-                    byte [] bytes = reader.ReciveData(120,1000*1000*1000);
-                    printHexString(bytes);
-                    reader.selfTest();
-                  //
-                    mDevices.mCasCardReader.Close();
-                } else {
-                    String s = String.format("Open cas reader fial:%s", mDevices.mCasCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS));
-                    Log.i(TAG, s);
-                    Toast.makeText(this, s, Toast.LENGTH_LONG).show();
-                }
+            case R.id.action_cas_reader:
+                casReaderText();//燃气读卡器测试
                 return true;
+
             case R.id.action_password_key:
-                if (mDevices.mPasswordKeypad.Open()) {
-                    aexddZTC70 passworkkeypad = (aexddZTC70) mDevices.mZTPasswordKeypad;
-                    passworkkeypad.selfTest();
-                    int i = mDevices.mPasswordKeypad.ReciveDataLoop();
-                    Log.i("按键：", i + "");
-                    mDevices.mPasswordKeypad.Close();
-                }
+                ztPasswordKeypadText();//密码键盘测试
+                return true;
+
+            case R.id.action_camera://相机测试
+                CameraFragment.instance().show(getSupportFragmentManager(), "camerafragment");
+                return true;
+
+            case R.id.action_video:
+                showDialog(getVedioFragments(), true);//视频播放测试程序
+                return true;
+
+            case R.id.action_onekey_text:
+                printText();//打印机测试
+                readerText();//读卡器测试
+                casReaderText();//燃气读卡器测试
+                ztPasswordKeypadText();//密码键盘测试
+                CameraFragment.instance().show(getSupportFragmentManager(), "camerafragment");
+                showDialog(getVedioFragments(), true);//视频播放测试程序
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /**
+     * 燃气读卡器测试
+     */
+    private void casReaderText() {
+        if (mDevices.mCasCardReader.Open()) {
+            //lcc1ReaderText();//莱卡读卡器测试程序
+            aexddMT319Reader reader = (aexddMT319Reader) mDevices.mCasCardReader;
+            reader.selfTest();
+            mDevices.mCasCardReader.Close();
+        } else {
+            String s = String.format("Open cas reader fial:%s", mDevices.mCasCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS));
+            Log.i(TAG, s);
+            Toast.makeText(this, s, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * 系统设置
+     */
+    private void system_set() {
+        ViewGroup v = (ViewGroup) mContentView.getChildAt(mContentView.getCurrentItem());
+        Intent mIntent = new Intent();
+        mIntent.setAction(Intent.ACTION_VIEW);
+        mIntent.setClassName("com.android.settings", "com.android.settings.Settings");
+        mIntent.putExtra("back", true);
+        sendBroadcast(new Intent("com.android.action.display_navigationbar"));
+        startActivityForResult(mIntent, DLG_NETINFO);
+    }
+
+    /**
+     * 政通密码键盘测试程序
+     */
+    private void ztPasswordKeypadText() {
+        if (mDevices.mZTPasswordKeypad.Open()) {
+            aexddZTC70 passworkkeypad = (aexddZTC70) mDevices.mZTPasswordKeypad;
+            passworkkeypad.selfTest();
+            //打开dialogfragment测试
+            //PasswordPadFragment.instance(passworkkeypad).show(getSupportFragmentManager(),"passwordpadfragment");
+            mDevices.mZTPasswordKeypad.Close();
+        } else {
+            String s = String.format("Open passkeypad reader fial:%s", mDevices.mPasswordKeypad.mParams.optString(appDeviceDriver.PORT_ADDRESS));
+            Log.i(TAG, s);
+            Toast.makeText(this, s, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * 莱卡读卡器测试程序
+     */
+    private void lcc1ReaderText() {
+        final aexddLCC1Reader reader = (aexddLCC1Reader) mDevices.mCasCardReader;
+
+        // int b = reader.WriteDataHex("AAB40007800000000000148D");//鸣响
+        // int a =reader.WriteDataHex("AAB70007800000018500041A");//打开蜂鸣指令
+        int cc = reader.WriteDataHex("AA20800520000000002F");//上电
+        byte[] bytes = reader.ReciveData(120, 1000 * 1000 * 1000);
+
+        printHexString(bytes);
+        reader.selfTest();
+    }
+
+    /**
+     * 读卡器测试程序
+     */
+    private void readerText() {
+        if (mDevices.mBankCardReader.Open()) {
+            aexddMT319Reader reader = (aexddMT319Reader) mDevices.mBankCardReader;
+            reader.selfTest();
+            mDevices.mBankCardReader.Close();
+        } else {
+            String s = String.format("Open bank reader fial:%s", mDevices.mBankCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS));
+            Log.i(TAG, s);
+            Toast.makeText(this, s, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * 打印机测试程序
+     */
+    private void printText() {
+        Log.i(TAG, "打印测试程序...");
+        if (mDevices.mPrinter.Open()) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    aexddB58Printer printer = (aexddB58Printer) (mDevices.mPrinter);
+                    printer.selfTest();
+                    //mDevices.mPrinter.selfTest();
+                    // String str = "安卓工控";
+//                            try {
+//                                mDevices.mPrinter.WriteData(str.getBytes("GBK"), str.getBytes().length);
+//                                aexddB58Printer printer = (aexddB58Printer) (mDevices.mPrinter);
+//                                printer.ln();
+//                            } catch (UnsupportedEncodingException e) {
+//                                e.printStackTrace();
+//                            }
+//                            mDevices.mPrinter.WriteDataHex("1D564200");
+                    mDevices.mPrinter.cutPaper(1);
+                    mDevices.mPrinter.Close();
+                    Log.i(TAG, "打印测试结束，关闭打印机设备。");
+                }
+            }).start();
+
+        } else {
+            String s = String.format("Open printer fial:%s", mDevices.mPrinter.mParams.optString(appDeviceDriver.PORT_ADDRESS));
+            Log.i(TAG, s);
+            Toast.makeText(this, s, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -467,7 +557,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.toolbar:
-                SetPassWordFragment.instance().show(getSupportFragmentManager(),"passwordfragment");
+                SetPassWordFragment.instance().show(getSupportFragmentManager(), "passwordfragment");
                 break;
             case R.id.progressbar:
                 progressbar.setTimeMillis(30 * 1000);
@@ -540,7 +630,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     cardInfo = intent.getStringExtra("cardinfo");
                     android.util.Log.e("接收读取卡的信息====", cardInfo + "0000");
                     dismissDialog();
-                    showDialog(getCarFragments());
+                    showDialog(getCarFragments(), false);
                     break;
                 case action_Viewpager_gone:
                     viewPager.setVisibility(View.GONE);
@@ -704,8 +794,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         if (nfc != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 if (this instanceof NfcAdapter.ReaderCallback) {
-                    nfc.enableReaderMode(this, this, aexddAndroidNfcReader.READER_FLAGS, null);
-
+                    nfc.enableReaderMode(this, (aexddAndroidNfcReader) mDevices.mNfcReader, aexddAndroidNfcReader.READER_FLAGS, null);
                 }
             }
         }
@@ -740,27 +829,25 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             }
         });
     }
-    public static void printHexString( byte[] b)
-    {
-        if(b!=null){
-            StringBuffer string=new StringBuffer();
-            for (int i = 0; i < b.length; i++)
-            {
+
+    public static void printHexString(byte[] b) {
+        if (b != null) {
+            StringBuffer string = new StringBuffer();
+            for (int i = 0; i < b.length; i++) {
                 String hex = Integer.toHexString(b[i] & 0xFF);
-                if (hex.length() == 1)
-                {
+                if (hex.length() == 1) {
                     hex = '0' + hex;
 
                 }
                 string.append(hex.toUpperCase() + " ");
-                android.util.Log.d("111111",hex.toUpperCase() + " ");
+                android.util.Log.d("111111", hex.toUpperCase() + " ");
             }
-            android.util.Log.d("111111",string + " ");
+            android.util.Log.d("111111", string + " ");
             System.out.println("");
-        }else{
-            android.util.Log.d("111111","w为空");
+        } else {
+            android.util.Log.d("111111", "w为空");
         }
-        }
+    }
 
 }
 

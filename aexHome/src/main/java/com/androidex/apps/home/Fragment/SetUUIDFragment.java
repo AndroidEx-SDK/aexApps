@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.androidex.apps.home.FullscreenActivity;
 import com.androidex.apps.home.R;
+import com.androidex.common.Base16;
 
 import java.io.UnsupportedEncodingException;
 
@@ -30,6 +31,7 @@ public class SetUUIDFragment extends DialogFragment implements View.OnClickListe
     private FullscreenActivity activity;
     private EditText et_uuid;
     private boolean flag = false;
+    public boolean isCancelable = false;
     /**
      * 8 位 UCS 转换格式
      */
@@ -42,6 +44,7 @@ public class SetUUIDFragment extends DialogFragment implements View.OnClickListe
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.set_uuid, container, false);
         }
+        setCancelable(isCancelable);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         activity = (FullscreenActivity) getActivity();
         iniView();
@@ -77,33 +80,51 @@ public class SetUUIDFragment extends DialogFragment implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_write:
+
                 /********uuid********/
                 String newuuid = et_uuid.getText().toString().trim();
                 try {
-                    String utf8 = toUTF_8(newuuid);
-                    Toast.makeText(getContext(), "utf8:" + utf8, Toast.LENGTH_LONG).show();
-                    android.util.Log.e("======utf8++", utf8);
+                    if (newuuid.length()>=32){
+                        String uuid = Base16.encode(newuuid.getBytes());
+                        Toast.makeText(getContext(), "base16:" + uuid, Toast.LENGTH_LONG).show();
+                        android.util.Log.e("======base16++", uuid);
+                        activity.hwservice.writeHex(UUID_PATH,uuid);
 
-                    //String newuuid = uuid.replaceAll("-", "");
-                    if (newuuid.length() >= 32) {
-                        activity.hwservice.setAndroidExParameter(UUID_PATH, utf8);
-                        flag = true;
-                        Toast.makeText(getContext(), ""+utf8, Toast.LENGTH_LONG).show();
-                        android.util.Log.e("======newnewuuid++", utf8);
-                    } else {
+                    }else {
                         Toast.makeText(getContext(), "请输入正确的UUID", Toast.LENGTH_LONG).show();
                     }
-                } catch (UnsupportedEncodingException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-                if (activity.hwservice.getAndroidExParameter(UUID_PATH).equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
+
+//                try {
+//                    String utf8 = toUTF_8(newuuid);
+//                    Toast.makeText(getContext(), "utf8:" + utf8, Toast.LENGTH_LONG).show();
+//                    android.util.Log.e("======utf8++", utf8);
+//
+//                    if (newuuid.length() >= 32) {
+//                        activity.hwservice.setAndroidExParameter(UUID_PATH, utf8);
+//                        flag = true;
+//                        Toast.makeText(getContext(), ""+utf8, Toast.LENGTH_LONG).show();
+//                        android.util.Log.e("======newnewuuid++", utf8);
+//                    } else {
+//                        Toast.makeText(getContext(), "请输入正确的UUID", Toast.LENGTH_LONG).show();
+//                    }
+//                } catch (UnsupportedEncodingException e) {
+//                    e.printStackTrace();
+//                }
+
+                if (activity.hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
                     Toast.makeText(getContext(), "写入UUID失败：" + activity.hwservice.get_uuid(), Toast.LENGTH_LONG).show();
                     android.util.Log.e("写入UUID失败:", activity.hwservice.get_uuid());
                 } else {
-                    Toast.makeText(getContext(), "newnewuuid：" + activity.hwservice.get_uuid(), Toast.LENGTH_LONG).show();
-                    android.util.Log.e("======newnewuuid++", activity.hwservice.get_uuid());
+                    Toast.makeText(getContext(), "newuuid：" + activity.hwservice.get_uuid(), Toast.LENGTH_LONG).show();
+                    android.util.Log.e("======newuuid++", activity.hwservice.get_uuid());
                 }
+
+                /******命令行输入******/
+
 
                 /****用户信息*******/
                 String userInfo1 = activity.hwservice.getUserInfo();
