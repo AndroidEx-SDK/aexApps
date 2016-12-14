@@ -35,6 +35,7 @@ import com.androidex.apps.home.fragment.FrontBankcardFragment;
 import com.androidex.apps.home.fragment.NetWorkSettingFragment;
 import com.androidex.apps.home.fragment.OtherCardFragment;
 import com.androidex.apps.home.fragment.SetPassWordFragment;
+import com.androidex.apps.home.fragment.SetUUIDFragment;
 import com.androidex.apps.home.fragment.StartSettingFragment;
 import com.androidex.apps.home.fragment.SystemSettingFragment;
 import com.androidex.apps.home.fragment.VedioFragment;
@@ -52,6 +53,9 @@ import com.androidex.devices.appDeviceDriver;
 import com.androidex.devices.appDevicesManager;
 import com.androidex.logger.Log;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,6 +93,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     private NextBrodcastResive nbr;
     public static String cardInfo;          //读取卡信息
     private static List<Fragment> fragments;
+    private List<Fragment> list;
 
     private final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
         @Override
@@ -112,51 +117,86 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             }
         }
     };
-    private List<Fragment> list;
+
+
+    public String runShellCommand(String cmd) {
+        String ret = "";
+        byte[] retBytes = new byte[2048];
+
+        Log.d(TAG, String.format("runShellCommand(%s)", cmd));
+        try {
+            cmd += "\n";
+            Process exeEcho1 = Runtime.getRuntime().exec("su");
+            OutputStream ot = exeEcho1.getOutputStream();
+            ot.write(cmd.getBytes());
+            ot.flush();
+            ot.close();
+            InputStream in = exeEcho1.getInputStream();
+            int r = in.read(retBytes);
+            if (r > 0)
+                ret = new String(retBytes, 0, r);
+        } catch (IOException e) {
+            Log.e("AexService", "shell cmd wrong:" + e.toString());
+        }
+        
+        return ret;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aexhome_main);
         hwservice.EnterFullScreen();
-        mContentView = (ViewPager) findViewById(R.id.fullscreen_content);
-        mControlsView = findViewById(R.id.dummy_button);
-        //这里要获得UUID，判断UUID等不等"FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF"不等于就说明被写入了UUID
-        //if (!hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")){
-        getWindow().getDecorView().setBackgroundResource(R.drawable.default_wallpaper);
-        initView();
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mContentView.setAdapter(mSectionsPagerAdapter);
-        setFullScreenView(mContentView);
-        setFullScreen(true);
-        initProgressBar();
-        initTablayoutAndViewPager();
-        initBroadCast(); //注册广播
-        Log.i("uuid=======:", hwservice.get_uuid());
-        Toast.makeText(this, hwservice.get_uuid(), Toast.LENGTH_LONG).show();
-//        } else {
-//            Toast.makeText(this,"请设置UUID",Toast.LENGTH_LONG).show();
-//            android.util.Log.e("uuid默认=======:",hwservice.get_uuid());
-//            SetUUIDFragment.instance().show(getSupportFragmentManager(),"uuidfragment");
-//        }
+        initConfig();
+        if (!hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
+            initView();
+            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+            mContentView.setAdapter(mSectionsPagerAdapter);
+            initProgressBar();
+            enableReaderMode();//启动NFC
+            initTablayoutAndViewPager();
+            initBroadCast(); //注册广播
+            Log.i("uuid=======:", hwservice.get_uuid());
+            Toast.makeText(this, hwservice.get_uuid(), Toast.LENGTH_LONG).show();
+
+        } else {
+            Toast.makeText(this, "请设置UUID", Toast.LENGTH_LONG).show();
+            SetUUIDFragment.instance().show(getSupportFragmentManager(), "uuidfragment");
+        }
     }
 
     public void initView() {
         mDevices = new appDevicesManager(this);
         initActionBar(R.id.toolbar);
-
+        mContentView = (ViewPager) findViewById(R.id.fullscreen_content);
+        mControlsView = findViewById(R.id.dummy_button);
         LinearLayout system_set = (LinearLayout) findViewById(R.id.system_set);
         LinearLayout about_local = (LinearLayout) findViewById(R.id.about_local);
         LinearLayout intnet_set = (LinearLayout) findViewById(R.id.intnet_set);
         LinearLayout start_set = (LinearLayout) findViewById(R.id.start_set);
-
-        mControlsView.setOnTouchListener(mDelayHideTouchListener);
+        setFullScreen(true);
+        setFullScreenView(mContentView);
+        getWindow().getDecorView().setBackgroundResource(R.drawable.default_wallpaper);
         mContentView.setBackgroundResource(R.drawable.default_wallpaper);
         // mContentView.setPageTransformer(true, MyAnimation.Instance().new MyPageTransformer());//给ViewPager添加动画
+        mControlsView.setOnTouchListener(mDelayHideTouchListener);
         system_set.setOnClickListener(this);
         about_local.setOnClickListener(this);
         intnet_set.setOnClickListener(this);
         start_set.setOnClickListener(this);
+    }
+
+    public void initConfig(){
+        Log.d(TAG, hwservice.getSdkVersion());
+        String userInfo = hwservice.getUserInfo();
+        Log.d(TAG,userInfo);
+        hwservice.setUserInfo("AAAAAAAAAAAAAAAAAA");
+        //hwservice.setUserInfo(userInfo);
+        //String ret = hwservice.execShellCommand("ls -la /misc");
+        //hwservice.writeHex(hwservice.aexp_userinfo,"33343536373839");
+        //Log.d(TAG,runShellCommand(String.format("echo \"0x34\" > %s", hwService.aexp_flag0)));
+        //Log.d(TAG,runShellCommand(String.format("echo '12345'> %s", hwService.aexp_userinfo)));
+        Log.d(TAG,hwservice.getUserInfo());
     }
 
     public void initProgressBar() {
@@ -183,7 +223,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         fragments.add(mNetWorkSettingFragment);
         fragments.add(mStartSettingFragment);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
-        // viewPager.setOffscreenPageLimit(1);//预加载的页数
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
     }
@@ -250,7 +289,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     @Override
     protected void onResume() {
         super.onResume();
-        enableReaderMode();
+
         //if(verify_password == 0)
         //    CheckPassword();
         hwservice.ExitFullScreen();
