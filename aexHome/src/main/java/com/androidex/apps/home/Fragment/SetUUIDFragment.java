@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.androidex.aexlibs.hwService;
 import com.androidex.apps.home.FullscreenActivity;
 import com.androidex.apps.home.R;
 import com.androidex.logger.Log;
@@ -25,7 +26,6 @@ import java.io.UnsupportedEncodingException;
 
 public class SetUUIDFragment extends DialogFragment implements View.OnClickListener {
     private static final String TAG = "setuuidfragment";
-    private static final String UUID_PATH = "/sys/class/androidex_parameters/androidex/uuid";
     private static SetUUIDFragment setUUIDFragment;
     private View rootView;
     private FullscreenActivity activity;
@@ -81,12 +81,14 @@ public class SetUUIDFragment extends DialogFragment implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn_write:
                 /********uuid********/
-                String uuid = et_uuid.getText().toString().trim();
+                String uuid = et_uuid.getText().toString().trim().replace("-","");
+
                 try {
                     if (uuid.length() >= 32) {
                         // String uuid = Base16.encode(uuid.getBytes());
                         Log.e("输入的UUID:", uuid);
-                        activity.hwservice.writeHex(UUID_PATH, uuid);
+                        activity.hwservice.writeHex(hwService.aexp_uuid, uuid);
+                        activity.hwservice.writeHex(hwService.aexp_serial,uuid.substring(15));
                     } else {
                         Toast.makeText(getContext(), "请输入正确的UUID", Toast.LENGTH_LONG).show();
                     }
@@ -98,8 +100,8 @@ public class SetUUIDFragment extends DialogFragment implements View.OnClickListe
                     Toast.makeText(getContext(), "写入UUID失败：" + activity.hwservice.get_uuid(), Toast.LENGTH_LONG).show();
                     Log.e("写入UUID失败:", activity.hwservice.get_uuid());
                 } else {
-                    Toast.makeText(getContext(), "newuuid：" + activity.hwservice.get_uuid(), Toast.LENGTH_LONG).show();
-                    Log.d("======newuuid++", activity.hwservice.get_uuid());
+                    Toast.makeText(getContext(), "写入UUID成功：" + activity.hwservice.get_uuid(), Toast.LENGTH_LONG).show();
+                    Log.d("写入UUID成功:", activity.hwservice.get_uuid());
                 }
                 break;
 

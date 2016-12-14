@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidex.aexlibs.WebJavaBridge;
+import com.androidex.aexlibs.hwService;
 import com.androidex.apps.home.fragment.AboutLocalFragment;
 import com.androidex.apps.home.fragment.AfterBankcardFragment;
 import com.androidex.apps.home.fragment.CameraFragment;
@@ -39,6 +40,7 @@ import com.androidex.apps.home.fragment.SetUUIDFragment;
 import com.androidex.apps.home.fragment.StartSettingFragment;
 import com.androidex.apps.home.fragment.SystemSettingFragment;
 import com.androidex.apps.home.fragment.VedioFragment;
+import com.androidex.apps.home.utils.MacUtil;
 import com.androidex.apps.home.view.CircleTextProgressbar;
 import com.androidex.common.AndroidExActivityBase;
 import com.androidex.common.DummyContent;
@@ -72,6 +74,9 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     public static final String action_finish = "com.androidex.finish";
     public static final String action_cancle = "com.androidex.cancle";
     public static final String action_Viewpager_gone = "com.androidex.action.viewpager.gone";
+    public static String aexp_lan_mac = "/sys/class/androidex_parameters/androidex/lan_mac";
+    public static String aexp_bt_mac = "/sys/class/androidex_parameters/androidex/bt_mac";
+    public static String aexp_wlan_mac = "/sys/class/androidex_parameters/androidex/wlan_mac";
     private static Fragment mMainFragment = new MainFragment();
     private static Fragment mAboutFragment = new AboutFragment();
     private static aexLogFragment mLogFragment = new aexLogFragment();
@@ -138,7 +143,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         } catch (IOException e) {
             Log.e("AexService", "shell cmd wrong:" + e.toString());
         }
-        
+
         return ret;
     }
 
@@ -156,9 +161,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             enableReaderMode();//启动NFC
             initTablayoutAndViewPager();
             initBroadCast(); //注册广播
-            Log.i("uuid=======:", hwservice.get_uuid());
-            Toast.makeText(this, hwservice.get_uuid(), Toast.LENGTH_LONG).show();
-
         } else {
             Toast.makeText(this, "请设置UUID", Toast.LENGTH_LONG).show();
             SetUUIDFragment.instance().show(getSupportFragmentManager(), "uuidfragment");
@@ -186,17 +188,34 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         start_set.setOnClickListener(this);
     }
 
-    public void initConfig(){
+    public void initConfig() {
         Log.d(TAG, hwservice.getSdkVersion());
         String userInfo = hwservice.getUserInfo();
-        Log.d(TAG,userInfo);
+        Log.d(TAG, userInfo);
         hwservice.setUserInfo("AAAAAAAAAAAAAAAAAA");
         //hwservice.setUserInfo(userInfo);
         //String ret = hwservice.execShellCommand("ls -la /misc");
         //hwservice.writeHex(hwservice.aexp_userinfo,"33343536373839");
-        //Log.d(TAG,runShellCommand(String.format("echo \"0x34\" > %s", hwService.aexp_flag0)));
         //Log.d(TAG,runShellCommand(String.format("echo '12345'> %s", hwService.aexp_userinfo)));
-        Log.d(TAG,hwservice.getUserInfo());
+        Log.d(TAG,String.format("userInfo:",hwservice.getUserInfo()) );
+        /**
+         *针对22寸机配置
+         */
+        hwservice.setBd_Uart(null);
+//        Log.d(TAG, runShellCommand(String.format("echo \"0x34\" > %s", hwService.aexp_flag0)));
+//        Log.d(TAG, runShellCommand(String.format("echo \"0x0C\" > %s", hwService.aexp_flag1)));
+        hwservice.writeHex(hwService.aexp_flag0, "0x34");
+        hwservice.writeHex(hwService.aexp_flag1, "0x0C");
+        hwservice.writeHex(aexp_lan_mac, MacUtil.getNETMacAddress());
+        hwservice.writeHex(aexp_bt_mac, MacUtil.getBTMacAddress());
+        hwservice.writeHex(aexp_wlan_mac, MacUtil.getWIFIMacAddress(this));
+
+        Log.d(TAG,String.format("flag0:",hwservice.get_flag0()+""));
+        Log.d(TAG,String.format("flag1:",hwservice.getAndroidExParameter(hwService.aexp_flag1)));
+        Log.d(TAG,String.format("lan_mac:",hwservice.getAndroidExParameter(aexp_lan_mac)));
+        Log.d(TAG,String.format("bt_mac:",hwservice.getAndroidExParameter(aexp_bt_mac)));
+        Log.d(TAG,String.format("wlan_mac:",hwservice.getAndroidExParameter(aexp_wlan_mac)));
+         
     }
 
     public void initProgressBar() {
