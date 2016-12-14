@@ -74,6 +74,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     public static final String action_finish = "com.androidex.finish";
     public static final String action_cancle = "com.androidex.cancle";
     public static final String action_Viewpager_gone = "com.androidex.action.viewpager.gone";
+    public static final String action_start_text = "com.androidex.action.start.text";
     public static String aexp_lan_mac = "/sys/class/androidex_parameters/androidex/lan_mac";
     public static String aexp_bt_mac = "/sys/class/androidex_parameters/androidex/bt_mac";
     public static String aexp_wlan_mac = "/sys/class/androidex_parameters/androidex/wlan_mac";
@@ -197,7 +198,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         //String ret = hwservice.execShellCommand("ls -la /misc");
         //hwservice.writeHex(hwservice.aexp_userinfo,"33343536373839");
         //Log.d(TAG,runShellCommand(String.format("echo '12345'> %s", hwService.aexp_userinfo)));
-        Log.d(TAG,String.format("userInfo:",hwservice.getUserInfo()) );
+        Log.d(TAG, String.format("userInfo:", hwservice.getUserInfo()));
         /**
          *针对22寸机配置
          */
@@ -210,12 +211,12 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         hwservice.writeHex(aexp_bt_mac, MacUtil.getBTMacAddress());
         hwservice.writeHex(aexp_wlan_mac, MacUtil.getWIFIMacAddress(this));
 
-        Log.d(TAG,String.format("flag0:",hwservice.get_flag0()+""));
-        Log.d(TAG,String.format("flag1:",hwservice.getAndroidExParameter(hwService.aexp_flag1)));
-        Log.d(TAG,String.format("lan_mac:",hwservice.getAndroidExParameter(aexp_lan_mac)));
-        Log.d(TAG,String.format("bt_mac:",hwservice.getAndroidExParameter(aexp_bt_mac)));
-        Log.d(TAG,String.format("wlan_mac:",hwservice.getAndroidExParameter(aexp_wlan_mac)));
-         
+        Log.d(TAG, String.format("flag0:", hwservice.get_flag0() + ""));
+        Log.d(TAG, String.format("flag1:", hwservice.getAndroidExParameter(hwService.aexp_flag1)));
+        Log.d(TAG, String.format("lan_mac:", hwservice.getAndroidExParameter(aexp_lan_mac)));
+        Log.d(TAG, String.format("bt_mac:", hwservice.getAndroidExParameter(aexp_bt_mac)));
+        Log.d(TAG, String.format("wlan_mac:", hwservice.getAndroidExParameter(aexp_wlan_mac)));
+
     }
 
     public void initProgressBar() {
@@ -231,6 +232,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         intentFilter.addAction(action_back);
         intentFilter.addAction(action_cancle);
         intentFilter.addAction(action_Viewpager_gone);
+        intentFilter.addAction(action_start_text);//启动自动测试程序
         intentFilter.addAction(aexddAndroidNfcReader.START_ACTION);
         registerReceiver(nbr, intentFilter);
     }
@@ -431,16 +433,23 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 return true;
 
             case R.id.action_onekey_text:
-                printText();//打印机测试
-                readerText();//读卡器测试
-                casReaderText();//燃气读卡器测试
-                ztPasswordKeypadText();//密码键盘测试
-                CameraFragment.instance().show(getSupportFragmentManager(), "camerafragment");
-                showDialog(getVedioFragments(), true);//视频播放测试程序
+                startText();//启动自动测试
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    /**
+     * 启动自动测试
+     */
+    private void startText() {
+        printText();//打印机测试
+        readerText();//读卡器测试
+        casReaderText();//燃气读卡器测试
+        ztPasswordKeypadText();//密码键盘测试
+        CameraFragment.instance().show(getSupportFragmentManager(), "camerafragment");
+        showDialog(getVedioFragments(), true);//视频播放测试程序
     }
 
     /**
@@ -652,6 +661,9 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     break;
                 case action_Viewpager_gone:
                     viewPager.setVisibility(View.GONE);
+                    break;
+                case action_start_text:
+                    startText();//启动测试程序
                     break;
             }
         }

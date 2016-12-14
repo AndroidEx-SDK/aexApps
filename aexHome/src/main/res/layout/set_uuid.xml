@@ -119,22 +119,14 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/tv_remind"
+                android:textSize="16sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/marginPadding16"
                 android:layout_weight="1"
                 android:text="就绪"
                 android:textColor="@color/black"
-                />
-
-            <Button
-                android:id="@+id/btn_write"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/marginPadding16"
-                android:background="@drawable/bg_dark_gray_radius_5"
-                android:text="设置"
-                android:textSize="@dimen/text_size16"
                 />
 
             <Button

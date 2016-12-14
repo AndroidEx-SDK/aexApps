@@ -1,5 +1,6 @@
 package com.androidex.apps.home.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -10,6 +11,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidex.aexlibs.hwService;
@@ -36,6 +38,7 @@ public class SetUUIDFragment extends DialogFragment implements View.OnClickListe
      * 8 位 UCS 转换格式
      */
     public static final String UTF_8 = "UTF-8";
+    private TextView tv_remind;
 
     @Nullable
     @Override
@@ -68,50 +71,41 @@ public class SetUUIDFragment extends DialogFragment implements View.OnClickListe
 
     public void iniView() {
         et_uuid = (EditText) rootView.findViewById(R.id.et_uuid);
-        Button write = (Button) rootView.findViewById(R.id.btn_write);
         Button finish = (Button) rootView.findViewById(R.id.finish);
         ImageView clear = (ImageView) rootView.findViewById(R.id.iv_clear);
+        tv_remind = (TextView) rootView.findViewById(R.id.tv_remind);
         finish.setOnClickListener(this);
-        write.setOnClickListener(this);
         clear.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_write:
+            case R.id.finish:
+                tv_remind.setText("正在写入...");
                 /********uuid********/
-                String uuid = et_uuid.getText().toString().trim().replace("-","");
-
-                try {
-                    if (uuid.length() >= 32) {
-                        // String uuid = Base16.encode(uuid.getBytes());
-                        Log.e("输入的UUID:", uuid);
-                        activity.hwservice.writeHex(hwService.aexp_uuid, uuid);
-                        activity.hwservice.writeHex(hwService.aexp_serial,uuid.substring(15));
-                    } else {
-                        Toast.makeText(getContext(), "请输入正确的UUID", Toast.LENGTH_LONG).show();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                String uuid = et_uuid.getText().toString().trim().replace("-", "");
+                if (uuid.length() >= 32) {
+                    // String uuid = Base16.encode(uuid.getBytes());
+                    activity.hwservice.writeHex(hwService.aexp_uuid, uuid);
+                    activity.hwservice.writeHex(hwService.aexp_serial, uuid.substring(15));
+                } else {
+                    Toast.makeText(getContext(), "请输入正确的UUID", Toast.LENGTH_LONG).show();
                 }
 
                 if (activity.hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
                     Toast.makeText(getContext(), "写入UUID失败：" + activity.hwservice.get_uuid(), Toast.LENGTH_LONG).show();
                     Log.e("写入UUID失败:", activity.hwservice.get_uuid());
+                    tv_remind.setTextColor(Color.RED);
+                    tv_remind.setText("UUID写入失败");
                 } else {
-                    Toast.makeText(getContext(), "写入UUID成功：" + activity.hwservice.get_uuid(), Toast.LENGTH_LONG).show();
-                    Log.d("写入UUID成功:", activity.hwservice.get_uuid());
-                }
-                break;
-
-            case R.id.finish:
-                if (flag) {
+                    Log.d(TAG, String.format("uuid:", activity.hwservice.get_uuid()));
+                    Log.d(TAG, String.format("serial:", activity.hwservice.get_serial()));
+                    Toast.makeText(getContext(), "写入UUID成功", Toast.LENGTH_LONG).show();
+                    tv_remind.setTextColor(Color.BLACK);
+                    tv_remind.setText("UUID写入成功");
                     dissMissDialog();
                     //activity.hwservice.runReboot();
-                    android.util.Log.e("======重启了", "重启了");
-                } else {
-                    Toast.makeText(getContext(), "请先输入UUID", Toast.LENGTH_LONG).show();
                 }
                 break;
             case R.id.iv_clear:
