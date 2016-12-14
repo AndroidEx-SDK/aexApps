@@ -8,7 +8,6 @@ import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
 import android.nfc.tech.NfcF;
 import android.os.Build;
-import android.widget.Toast;
 
 import com.androidex.devices.tech.FelicaReader;
 import com.androidex.devices.tech.pboc.StandardPboc;
@@ -145,7 +144,9 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else Toast.makeText(mContext,"无效卡",Toast.LENGTH_SHORT).show();
+        }else {
+            Log.d(TAG,"卡内无信息");
+        }
 
 
         final NfcF nfcf = NfcF.get(tag);
