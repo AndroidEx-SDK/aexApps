@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -18,7 +19,7 @@ import com.androidex.plugins.kkfile;
 public class DoorLock extends Service{
     public static final String TAG = "DoorLock";
     private DoorLockServiceBinder mDoorLockServiceBinder;
-
+    private NotifityBroadCast mNotifityBroadCast;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -27,7 +28,21 @@ public class DoorLock extends Service{
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mDoorLockServiceBinder = new DoorLockServiceBinder();
+        mNotifityBroadCast = new NotifityBroadCast();
+        //注册广播
+        initBroadCast();
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    /**
+     * 注册广播
+     *
+     *
+     */
+    private void initBroadCast(){
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(MainActivity.DOOR_ACTION);
+        registerReceiver(mNotifityBroadCast,intentFilter);
     }
 
     @Nullable
