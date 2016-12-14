@@ -1,15 +1,23 @@
 package com.example.androidex;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
+
+import com.androidex.common.SoundPoolUtil;
+import com.androidex.plugins.kkfile;
 
 /**
  * Created by yangjun on 16/6/6.
  * 主要服务类,DoorLock主要提供开门,关门指令以及上报门开和关闭的事件.
  */
 public class DoorLock extends Service{
+    public static final String TAG = "DoorLock";
+    private DoorLockServiceBinder mDoorLockServiceBinder;
 
     @Override
     public void onCreate() {
@@ -18,6 +26,7 @@ public class DoorLock extends Service{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        mDoorLockServiceBinder = new DoorLockServiceBinder();
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -35,5 +44,53 @@ public class DoorLock extends Service{
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    public class DoorLockServiceBinder {
+        String rkeyDev = "/dev/rkey";
+        int ident = 0;
+
+        /**
+         * 开门指令
+         * @param index     门的序号,主门=0,副门=1
+         * @param delay     延迟关门的时间,0表示不启用延迟关门,大于0表示延迟时间,延迟时间为delay*150ms
+         * @return          大于0表示成功,实际上等于9表示真正的成功,因为返回值表示写入的数据,开门指令长度为9.
+         */
+        public int openDoor(int index, int delay){
+            kkfile rkey = new kkfile();
+
+            if(index < 0 || index > 0xFE) index = 0;
+            if(ident < 0 || ident > 0xFE) ident = 0;
+            if(delay < 0 || delay > 0xFE) delay = 0;
+            String cmd = String.format("FB%02X2503%02X01%02X00FE",ident,index,delay);
+            int r = rkey.native_file_writeHex(rkeyDev,cmd);
+            if(r > 0) {
+                SoundPoolUtil.getSoundPoolUtil().loadVoice(getBaseContext(),4681);
+            }
+            Log.d(TAG,"r="+r);
+            return r > 0?1:0;
+        }
+
+        public int closeDoor(int index){
+            kkfile rkey = new kkfile();
+
+            if(index < 0 || index > 0xFE) index = 0;
+            if(ident < 0 || ident > 0xFE) ident = 0;
+            String cmd = String.format("FB%02X2503%02X000000FE",ident,index);
+            int r = rkey.native_file_writeHex(rkeyDev,cmd);
+            return r > 0 ? 1:0;
+        }
+    }
+
+    public class NotifityBroadCast extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (MainActivity.DOOR_ACTION.equals(action)){//收到开门广播
+                if (mDoorLockServiceBinder!=null){//开门
+                    mDoorLockServiceBinder.openDoor(0xF0,0x40);
+                }
+            }
+        }
     }
 }

@@ -14,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Window;
 
-import com.androidex.common.SoundPoolUtil;
 import com.androidex.devices.aexddAndroidNfcReader;
 import com.androidex.devices.appDevicesManager;
 import com.google.android.gms.appindexing.Action;
@@ -27,6 +26,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
  */
 public class MainActivity extends AppCompatActivity implements NfcAdapter.ReaderCallback {
     private static final String TAG = "MainActivity";
+    public static final String DOOR_ACTION = "com.androidex.door";
     public static int READER_FLAGS =
             NfcAdapter.FLAG_READER_NFC_A | NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK;
     /**
@@ -120,7 +120,9 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
             String action = intent.getAction();
             if (aexddAndroidNfcReader.START_ACTION.equals(action)){
                 //发送开门的广播
-                SoundPoolUtil.getSoundPoolUtil().loadVoice(MainActivity.this,4681);
+                Intent in = new Intent();
+                in.setAction(DOOR_ACTION);
+                sendBroadcast(in);
             }
         }
     }
