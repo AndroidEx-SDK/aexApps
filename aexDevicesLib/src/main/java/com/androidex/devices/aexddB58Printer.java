@@ -274,6 +274,7 @@ public class aexddB58Printer extends aexddPrinter {
         //切纸
         cutPaper(1);       //全切纸
         //WriteDataHex("1B6D");       //半切纸
+        Log.i(TAG,"打印成功");
         return true;
     }
 

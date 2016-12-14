@@ -1,5 +1,6 @@
 package com.androidex.apps.home.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -106,6 +107,8 @@ public class SetUUIDFragment extends DialogFragment implements View.OnClickListe
                     tv_remind.setText("UUID写入成功");
                     dissMissDialog();
                     //activity.hwservice.runReboot();
+                    Intent intent = new Intent(FullscreenActivity.action_start_text);
+                    getContext().sendBroadcast(intent);
                 }
                 break;
             case R.id.iv_clear:

@@ -100,7 +100,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     public static String cardInfo;          //读取卡信息
     private static List<Fragment> fragments;
     private List<Fragment> list;
-
+    boolean isInitConfig = false;//控制是否进行初始化配置
     private final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -153,7 +153,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aexhome_main);
         hwservice.EnterFullScreen();
-        initConfig();
+        mControlsView = findViewById(R.id.dummy_button);
         if (!hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
             initView();
             mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -163,8 +163,14 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             initTablayoutAndViewPager();
             initBroadCast(); //注册广播
         } else {
-            Toast.makeText(this, "请设置UUID", Toast.LENGTH_LONG).show();
-            SetUUIDFragment.instance().show(getSupportFragmentManager(), "uuidfragment");
+            if (!isInitConfig) {
+                initConfig();
+                isInitConfig=true;
+            }
+            if (isInitConfig) {
+                Toast.makeText(this, "请设置UUID", Toast.LENGTH_LONG).show();
+                SetUUIDFragment.instance().show(getSupportFragmentManager(), "uuidfragment");
+            }
         }
     }
 
@@ -172,7 +178,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         mDevices = new appDevicesManager(this);
         initActionBar(R.id.toolbar);
         mContentView = (ViewPager) findViewById(R.id.fullscreen_content);
-        mControlsView = findViewById(R.id.dummy_button);
+
         LinearLayout system_set = (LinearLayout) findViewById(R.id.system_set);
         LinearLayout about_local = (LinearLayout) findViewById(R.id.about_local);
         LinearLayout intnet_set = (LinearLayout) findViewById(R.id.intnet_set);
@@ -189,25 +195,28 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         start_set.setOnClickListener(this);
     }
 
+//        Log.d(TAG, runShellCommand(String.format("echo \"0x34\" > %s", hwService.aexp_flag0)));
+//        Log.d(TAG, runShellCommand(String.format("echo \"0x0C\" > %s", hwService.aexp_flag1)));
+    //hwservice.setUserInfo(userInfo);
+    //String ret = hwservice.execShellCommand("ls -la /misc");
+    //hwservice.writeHex(hwservice.aexp_userinfo,"33343536373839");
+    //Log.d(TAG,runShellCommand(String.format("echo '12345'> %s", hwService.aexp_userinfo)));
+
     public void initConfig() {
         Log.d(TAG, hwservice.getSdkVersion());
         String userInfo = hwservice.getUserInfo();
         Log.d(TAG, userInfo);
         hwservice.setUserInfo("AAAAAAAAAAAAAAAAAA");
-        //hwservice.setUserInfo(userInfo);
-        //String ret = hwservice.execShellCommand("ls -la /misc");
-        //hwservice.writeHex(hwservice.aexp_userinfo,"33343536373839");
-        //Log.d(TAG,runShellCommand(String.format("echo '12345'> %s", hwService.aexp_userinfo)));
         Log.d(TAG, String.format("userInfo:", hwservice.getUserInfo()));
         /**
          *针对22寸机配置
          */
-        hwservice.setBd_Uart(null);
-//        Log.d(TAG, runShellCommand(String.format("echo \"0x34\" > %s", hwService.aexp_flag0)));
-//        Log.d(TAG, runShellCommand(String.format("echo \"0x0C\" > %s", hwService.aexp_flag1)));
-        hwservice.writeHex(hwService.aexp_flag0, "0x34");
-        hwservice.writeHex(hwService.aexp_flag1, "0x0C");
-        hwservice.writeHex(aexp_lan_mac, MacUtil.getNETMacAddress());
+        //hwservice.setBd_Uart("");
+        //hwservice.writeHex(hwservice.AEX_PARAMETERS_BDUART, "");
+        Log.d(TAG, runShellCommand(String.format("echo \"0x34\" > %s", hwService.aexp_flag0)));
+        Log.d(TAG, runShellCommand(String.format("echo \"0x0C\" > %s", hwService.aexp_flag1)));
+        Log.d(TAG, runShellCommand(String.format("echo \"\" > %s", hwservice.AEX_PARAMETERS_BDUART)));
+        //hwservice.writeHex(aexp_lan_mac, MacUtil.getNETMacAddress());
         hwservice.writeHex(aexp_bt_mac, MacUtil.getBTMacAddress());
         hwservice.writeHex(aexp_wlan_mac, MacUtil.getWIFIMacAddress(this));
 
@@ -486,11 +495,13 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
      */
     private void ztPasswordKeypadText() {
         if (mDevices.mZTPasswordKeypad.Open()) {
+            Log.i(TAG, "密码键盘打开");
             aexddZTC70 passworkkeypad = (aexddZTC70) mDevices.mZTPasswordKeypad;
             passworkkeypad.selfTest();
             //打开dialogfragment测试
             //PasswordPadFragment.instance(passworkkeypad).show(getSupportFragmentManager(),"passwordpadfragment");
             mDevices.mZTPasswordKeypad.Close();
+            Log.i(TAG, "密码键盘关闭");
         } else {
             String s = String.format("Open passkeypad reader fial:%s", mDevices.mPasswordKeypad.mParams.optString(appDeviceDriver.PORT_ADDRESS));
             Log.i(TAG, s);
@@ -518,9 +529,11 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
      */
     private void readerText() {
         if (mDevices.mBankCardReader.Open()) {
+            Log.i(TAG, "银行卡读卡器打开");
             aexddMT319Reader reader = (aexddMT319Reader) mDevices.mBankCardReader;
             reader.selfTest();
             mDevices.mBankCardReader.Close();
+            Log.i(TAG, "银行卡读卡器关闭");
         } else {
             String s = String.format("Open bank reader fial:%s", mDevices.mBankCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS));
             Log.i(TAG, s);
@@ -532,15 +545,15 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
      * 打印机测试程序
      */
     private void printText() {
-        Log.i(TAG, "打印测试程序...");
         if (mDevices.mPrinter.Open()) {
+            Log.i(TAG, "打印机打开");
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     aexddB58Printer printer = (aexddB58Printer) (mDevices.mPrinter);
                     printer.selfTest();
-                    //mDevices.mPrinter.selfTest();
-                    // String str = "安卓工控";
+//                    mDevices.mPrinter.selfTest();
+//                     String str = "安卓工控";
 //                            try {
 //                                mDevices.mPrinter.WriteData(str.getBytes("GBK"), str.getBytes().length);
 //                                aexddB58Printer printer = (aexddB58Printer) (mDevices.mPrinter);
