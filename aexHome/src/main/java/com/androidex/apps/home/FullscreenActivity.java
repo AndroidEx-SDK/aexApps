@@ -153,7 +153,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aexhome_main);
         hwservice.EnterFullScreen();
-        initConfig();
+       // initConfig();
         if (!hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
             initView();
             mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -205,8 +205,8 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         hwservice.setBd_Uart(null);
 //        Log.d(TAG, runShellCommand(String.format("echo \"0x34\" > %s", hwService.aexp_flag0)));
 //        Log.d(TAG, runShellCommand(String.format("echo \"0x0C\" > %s", hwService.aexp_flag1)));
-        hwservice.writeHex(hwService.aexp_flag0, "0x34");
-        hwservice.writeHex(hwService.aexp_flag1, "0x0C");
+       // hwservice.writeHex(hwService.aexp_flag0, "0x34");
+       // hwservice.writeHex(hwService.aexp_flag1, "0x0C");
         hwservice.writeHex(aexp_lan_mac, MacUtil.getNETMacAddress());
         hwservice.writeHex(aexp_bt_mac, MacUtil.getBTMacAddress());
         hwservice.writeHex(aexp_wlan_mac, MacUtil.getWIFIMacAddress(this));
@@ -566,6 +566,23 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         DummyContent.addItem(new DummyContent.DummyItem("log", "日志", "", LogFragment.class, "url=log", true, 0));
     }
 
+    /**
+     * wifi
+     */
+    public void wifiManger(){
+
+        Intent i = new Intent();
+        i.setAction(Intent.ACTION_VIEW);
+        if(android.os.Build.VERSION.SDK_INT >= 11){
+            i.setClassName("com.android.settings", "com.android.settings.Settings$WifiSettingsActivity");
+        }else{
+            i.setClassName("com.android.settings"
+                    , "com.android.settings.wifi.WifiSettings");
+        }
+        i.putExtra("back",true);
+        sendBroadcast(new Intent("com.android.action.display_navigationbar"));
+        startActivity(i);
+    }
 
     /**
      * 根据Fragment的字符串标识来启动显示。
