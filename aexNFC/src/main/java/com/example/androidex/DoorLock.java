@@ -20,7 +20,6 @@ public class DoorLock extends Service{
     public static final String TAG = "DoorLock";
     private DoorLockServiceBinder mDoorLockServiceBinder;
     private NotifityBroadCast mNotifityBroadCast;
-    private boolean flag = false;//false 门已经是开着的状态
     @Override
     public void onCreate() {
         super.onCreate();
@@ -81,7 +80,6 @@ public class DoorLock extends Service{
             String cmd = String.format("FB%02X2503%02X01%02X00FE",ident,index,delay);
             int r = rkey.native_file_writeHex(rkeyDev,cmd);
             if(r > 0) {
-                flag =  false;
                 SoundPoolUtil.getSoundPoolUtil().loadVoice(getBaseContext(),4681);
             }
             Log.d(TAG,"r="+r);
