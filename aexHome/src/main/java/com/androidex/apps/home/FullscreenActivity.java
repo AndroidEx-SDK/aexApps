@@ -580,24 +580,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     }
 
     /**
-     * wifi
-     */
-    public void wifiManger(){
-
-        Intent i = new Intent();
-        i.setAction(Intent.ACTION_VIEW);
-        if(android.os.Build.VERSION.SDK_INT >= 11){
-            i.setClassName("com.android.settings", "com.android.settings.Settings$WifiSettingsActivity");
-        }else{
-            i.setClassName("com.android.settings"
-                    , "com.android.settings.wifi.WifiSettings");
-        }
-        i.putExtra("back",true);
-        sendBroadcast(new Intent("com.android.action.display_navigationbar"));
-        startActivity(i);
-    }
-
-    /**
      * 根据Fragment的字符串标识来启动显示。
      *
      * @param id
