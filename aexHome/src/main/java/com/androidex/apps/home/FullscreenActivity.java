@@ -3,6 +3,7 @@ package com.androidex.apps.home;
 import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -14,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -462,8 +464,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         CameraFragment.instance().show(getSupportFragmentManager(), "camerafragment");
         //showDialog(getVedioFragments(), true);//视频播放测试程序
         netWorkText();//以太网测试
-        wifiManger();//wifi测试
-
+        NetWork.wifiManger(this);
     }
     public void netWorkText(){
         boolean isCon = NetWork.isConnect(this);
@@ -592,31 +593,27 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         DummyContent.addItem(new DummyContent.DummyItem("log", "日志", "", LogFragment.class, "url=log", true, 0));
     }
 
-    /**
-     * wifi
-     */
-    public void wifiManger(){
-
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        if(android.os.Build.VERSION.SDK_INT >= 11){
-            intent.setClassName("com.android.settings", "com.android.settings.Settings$WifiSettingsActivity");
-        }else{
-            intent.setClassName("com.android.settings"
-                    , "com.android.settings.wifi.WifiSettings");
-        }
-        intent.putExtra("back",true);
-        sendBroadcast(new Intent("com.android.action.display_navigationbar"));
-        startActivityForResult(intent,1001);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-
-
-
+            if(requestCode==1001){//系统wifi返回键
+                //弹出对话框
+                AlertDialog.Builder builder = new AlertDialog.Builder(FullscreenActivity.this);
+                builder.setCancelable(false);
+                builder.setMessage("wifi网络是否正常")
+                        .setPositiveButton("正常", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d("wifi网络","正常");
+                            }
+                        })
+                        .setNegativeButton("不正常", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d("wifi网络","不正常");
+                            }
+                        }).show();
+            }
     }
 
     /**

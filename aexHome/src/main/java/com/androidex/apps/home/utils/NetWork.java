@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.androidex.apps.home.FullscreenActivity;
+
 /**
  * Created by cts on 16/12/14.
  * 网络连接
@@ -26,7 +28,7 @@ public class NetWork {
         }
         i.putExtra("back",true);
         ctx.sendBroadcast(new Intent("com.android.action.display_navigationbar"));
-        ctx.startActivity(i);
+        ((FullscreenActivity)ctx).startActivityForResult(i,1001);
     }
 
     /**
