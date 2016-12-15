@@ -6,6 +6,7 @@
     <RelativeLayout
         android:layout_width="800dp"
         android:layout_height="800dp">
+
         <SurfaceView
             android:id="@+id/sv"
             android:layout_width="800dp"
@@ -21,12 +22,22 @@
             android:src="@mipmap/close1"/>
 
         <Button
-            android:id="@+id/btn_camera"
+            android:id="@+id/btn_NG"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/marginPadding20"
-            android:text="拍照"/>
+            android:text="NG"/>
+
+        <Button
+            android:id="@+id/btn_OK"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_toRightOf="@+id/btn_NG"
+            android:layout_marginBottom="@dimen/marginPadding20"
+            android:text="OK"/>
     </RelativeLayout>
 </RelativeLayout>

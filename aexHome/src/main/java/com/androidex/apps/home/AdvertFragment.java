@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidex.apps.home.utils.AssetsUtil;
@@ -77,6 +78,9 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
             }
         }
     };
+    private TextView tv_sdkVersion;
+    private FullscreenActivity activity;
+
     public AdvertFragment() {
     }
 
@@ -92,12 +96,14 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
         if (psetview == null) {
             psetview = inflater.inflate(R.layout.advert_main, null);
         }
+        activity = (FullscreenActivity) getActivity();
         progressbar = (CircleTextProgressbar) psetview.findViewById(R.id.progressbar);
+        tv_sdkVersion = (TextView) psetview.findViewById(R.id.tv_sdkversion);
         progressbar.setCountdownProgressListener(2, progressListener);
         progressbar.setTimeMillis(30 * 1000);
         progressbar.reStart();
         FullscreenActivity.registerMultClickListener(psetview, this);
-
+        tv_sdkVersion.setText(activity.hwservice.getSdkVersion());
         return psetview;
     }
 

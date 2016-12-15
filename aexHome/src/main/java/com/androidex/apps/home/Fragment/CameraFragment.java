@@ -1,6 +1,5 @@
 package com.androidex.apps.home.fragment;
 
-import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +15,7 @@ import android.widget.ImageView;
 
 import com.androidex.apps.home.FullscreenActivity;
 import com.androidex.apps.home.R;
+import com.androidex.logger.Log;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,10 +27,12 @@ import java.io.IOException;
  */
 
 public class CameraFragment extends DialogFragment implements SurfaceHolder.Callback, View.OnClickListener {
+    public static final String TAG="CameraFragment";
     private View rootView;
     private FullscreenActivity activity;
     public boolean isCancelable = false;
-    private Button btn_camera;
+    private Button btn_NG;
+    private Button btn_OK;
     private Camera mCamera;
     private SurfaceView sv;
     private SurfaceHolder sh;
@@ -57,9 +59,11 @@ public class CameraFragment extends DialogFragment implements SurfaceHolder.Call
         sh = sv.getHolder();
         sh.addCallback(this);
 
-        btn_camera = (Button) rootView.findViewById(R.id.btn_camera);
+        btn_NG = (Button) rootView.findViewById(R.id.btn_NG);
+        btn_OK = (Button) rootView.findViewById(R.id.btn_OK);
         iv_close = (ImageView) rootView.findViewById(R.id.iv_close);
-        btn_camera.setOnClickListener(this);
+        btn_NG.setOnClickListener(this);
+        btn_OK.setOnClickListener(this);
         iv_close.setOnClickListener(this);
 
     }
@@ -190,26 +194,34 @@ public class CameraFragment extends DialogFragment implements SurfaceHolder.Call
             case R.id.iv_close:
                 dissMissDialog();
                 break;
-            case R.id.btn_camera:
-                // 获取当前相机参数
-                Camera.Parameters parameters = mCamera.getParameters();
-                // 设置相片格式
-                parameters.setPictureFormat(ImageFormat.JPEG);
-                // 设置预览大小
-                parameters.setPreviewSize(800, 800);
-                // 设置对焦方式，这里设置自动对焦
-                parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-                mCamera.autoFocus(new Camera.AutoFocusCallback() {
-
-                    @Override
-                    public void onAutoFocus(boolean success, Camera camera) {
-                        // 判断是否对焦成功
-                        if (success) {
-                            // 拍照 第三个参数为拍照回调
-                            mCamera.takePicture(null, null, pc);
-                        }
-                    }
-                });
+            case R.id.btn_OK:
+//                // 获取当前相机参数
+//                Camera.Parameters parameters = mCamera.getParameters();
+//                // 设置相片格式
+//                parameters.setPictureFormat(ImageFormat.JPEG);
+//                // 设置预览大小
+//                parameters.setPreviewSize(800, 800);
+//                // 设置对焦方式，这里设置自动对焦
+//                parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+//                mCamera.autoFocus(new Camera.AutoFocusCallback() {
+//
+//                    @Override
+//                    public void onAutoFocus(boolean success, Camera camera) {
+//                        // 判断是否对焦成功
+//                        if (success) {
+//                            // 拍照 第三个参数为拍照回调
+//                            mCamera.takePicture(null, null, pc);
+//                        }
+//                    }
+//                });
+                dissMissDialog();
+                activity.showDialog(activity.getVedioFragments(),true);
+                Log.e(TAG,"相机测试不良");
+                break;
+            case R.id.btn_NG:
+                dissMissDialog();
+                activity.showDialog(activity.getVedioFragments(),true);
+                Log.e(TAG,"相机测试不良");
                 break;
         }
     }

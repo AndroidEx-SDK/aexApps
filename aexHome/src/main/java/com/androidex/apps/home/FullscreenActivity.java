@@ -41,6 +41,7 @@ import com.androidex.apps.home.fragment.StartSettingFragment;
 import com.androidex.apps.home.fragment.SystemSettingFragment;
 import com.androidex.apps.home.fragment.VedioFragment;
 import com.androidex.apps.home.utils.MacUtil;
+import com.androidex.apps.home.utils.NetWork;
 import com.androidex.apps.home.view.CircleTextProgressbar;
 import com.androidex.common.AndroidExActivityBase;
 import com.androidex.common.DummyContent;
@@ -299,7 +300,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
      *
      * @return
      */
-    private List<Fragment> getVedioFragments() {
+    public List<Fragment> getVedioFragments() {
         list = new ArrayList<>();
 
         Fragment fragment1 = new VedioFragment();
@@ -444,6 +445,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             case R.id.action_onekey_text:
                 startText();//启动自动测试
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -458,7 +460,18 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         casReaderText();//燃气读卡器测试
         ztPasswordKeypadText();//密码键盘测试
         CameraFragment.instance().show(getSupportFragmentManager(), "camerafragment");
-        showDialog(getVedioFragments(), true);//视频播放测试程序
+        //showDialog(getVedioFragments(), true);//视频播放测试程序
+        netWorkText();//以太网测试
+        wifiManger();//wifi测试
+
+    }
+    public void netWorkText(){
+        boolean isCon = NetWork.isConnect(this);
+        if (isCon){
+            Log.d(TAG+"FullscreenActivity","以太网测试通过");
+        }else {
+            Log.e(TAG+"FullscreenActivity","以太网测试失败");
+        }
     }
 
     /**
@@ -584,17 +597,26 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
      */
     public void wifiManger(){
 
-        Intent i = new Intent();
-        i.setAction(Intent.ACTION_VIEW);
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
         if(android.os.Build.VERSION.SDK_INT >= 11){
-            i.setClassName("com.android.settings", "com.android.settings.Settings$WifiSettingsActivity");
+            intent.setClassName("com.android.settings", "com.android.settings.Settings$WifiSettingsActivity");
         }else{
-            i.setClassName("com.android.settings"
+            intent.setClassName("com.android.settings"
                     , "com.android.settings.wifi.WifiSettings");
         }
-        i.putExtra("back",true);
+        intent.putExtra("back",true);
         sendBroadcast(new Intent("com.android.action.display_navigationbar"));
-        startActivity(i);
+        startActivityForResult(intent,1001);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+
+
     }
 
     /**

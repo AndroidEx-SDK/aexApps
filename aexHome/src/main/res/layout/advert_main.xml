@@ -25,4 +25,12 @@
         android:text="30s"
         app:in_circle_color="@color/state_color"/>
 
+    <TextView
+        android:id="@+id/tv_sdkversion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size14"
+        android:textColor="@color/white"
+        android:text="111111"/>
+
 </RelativeLayout>
