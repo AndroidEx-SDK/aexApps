@@ -643,12 +643,14 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Log.d("wifi网络","wifi网络正常");
+                                dialog.dismiss();
                             }
                         })
                         .setNegativeButton("NG", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Log.d("wifi网络","wifi网络不正常");
+                                dialog.dismiss();
                             }
                         }).show();
             }
