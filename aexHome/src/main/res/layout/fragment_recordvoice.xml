@@ -19,10 +19,11 @@
         android:textSize="@dimen/text_size30"/>
 
     <LinearLayout
+        android:id="@+id/ll_function"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_below="@+id/tv_title"
+        android:layout_marginTop="@dimen/marginPadding30"
         android:gravity="center">
 
         <ImageView
@@ -46,5 +47,29 @@
             android:padding="@dimen/marginPadding10"
             android:src="@mipmap/stop"/>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_function"
+        android:layout_marginTop="@dimen/marginPadding16"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btn_NG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NG"
+            android:textColor="@color/white"
+            />
+
+        <Button
+            android:id="@+id/btn_OK"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="下一步"
+            android:textColor="@color/white"
+            />
     </LinearLayout>
 </RelativeLayout>

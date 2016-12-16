@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="800dp"
-                android:layout_height="800dp">
+                android:layout_width="850dp"
+                android:layout_height="700dp">
 
     <RelativeLayout
-        android:layout_width="800dp"
-        android:layout_height="800dp">
+        android:layout_width="850dp"
+        android:layout_height="700dp">
 
         <com.androidex.apps.home.view.CustomVideoView
             android:id="@+id/cv"
@@ -20,6 +20,32 @@
             android:layout_marginRight="@dimen/marginPadding16"
             android:src="@mipmap/close1"
             android:visibility="gone"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btn_NG"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NG"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size16"
+                />
+
+            <Button
+                android:id="@+id/btn_OK"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OK"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size16"
+                />
+
+        </LinearLayout>
 
     </RelativeLayout>
 </RelativeLayout>

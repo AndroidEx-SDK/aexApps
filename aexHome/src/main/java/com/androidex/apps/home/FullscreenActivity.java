@@ -37,6 +37,7 @@ import com.androidex.apps.home.fragment.DialogFragmentManger;
 import com.androidex.apps.home.fragment.FrontBankcardFragment;
 import com.androidex.apps.home.fragment.NetWorkSettingFragment;
 import com.androidex.apps.home.fragment.OtherCardFragment;
+import com.androidex.apps.home.fragment.RecordVoiceFragment;
 import com.androidex.apps.home.fragment.SetPassWordFragment;
 import com.androidex.apps.home.fragment.SetUUIDFragment;
 import com.androidex.apps.home.fragment.StartSettingFragment;
@@ -78,6 +79,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     public static final String action_cancle = "com.androidex.cancle";
     public static final String action_Viewpager_gone = "com.androidex.action.viewpager.gone";
     public static final String action_start_text = "com.androidex.action.start.text";
+    public static final String action_start_wifi_text = "com.androidex.action.start.wifi.text";
     public static String aexp_lan_mac = "/sys/class/androidex_parameters/androidex/lan_mac";
     public static String aexp_bt_mac = "/sys/class/androidex_parameters/androidex/bt_mac";
     public static String aexp_wlan_mac = "/sys/class/androidex_parameters/androidex/wlan_mac";
@@ -219,7 +221,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         Log.d(TAG, runShellCommand(String.format("echo \"0x34\" > %s", hwService.aexp_flag0)));
         Log.d(TAG, runShellCommand(String.format("echo \"0x0C\" > %s", hwService.aexp_flag1)));
         Log.d(TAG, runShellCommand(String.format("echo \"\" > %s", hwservice.AEX_PARAMETERS_BDUART)));
-        //hwservice.writeHex(aexp_lan_mac, MacUtil.getNETMacAddress());
+        //hwservice.writeHex(aexp_lan_mac, MacUtil.getNETMacAddress());//此处调用会报错导致机器重启
         hwservice.writeHex(aexp_bt_mac, MacUtil.getBTMacAddress());
         hwservice.writeHex(aexp_wlan_mac, MacUtil.getWIFIMacAddress(this));
 
@@ -245,6 +247,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         intentFilter.addAction(action_cancle);
         intentFilter.addAction(action_Viewpager_gone);
         intentFilter.addAction(action_start_text);//启动自动测试程序
+        intentFilter.addAction(action_start_wifi_text);//启动wifi测试页面
         intentFilter.addAction(aexddAndroidNfcReader.START_ACTION);
         registerReceiver(nbr, intentFilter);
     }
@@ -448,6 +451,10 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 startText();//启动自动测试
                 return true;
 
+            case R.id.action_record_voice://录音机测试
+                RecordVoiceFragment.instance().show(getSupportFragmentManager(),"recordvoicefragment");
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -464,14 +471,38 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         CameraFragment.instance().show(getSupportFragmentManager(), "camerafragment");
         //showDialog(getVedioFragments(), true);//视频播放测试程序
         netWorkText();//以太网测试
-        NetWork.wifiManger(this);
+        //NetWork.wifiManger(this);
+        //RecordVoiceFragment.instance().show(getSupportFragmentManager(),"recordvoicefragment");
+
     }
     public void netWorkText(){
         boolean isCon = NetWork.isConnect(this);
         if (isCon){
-            Log.d(TAG+"FullscreenActivity","以太网测试通过");
+            Log.d(TAG+"FullscreenActivity","以太网测试成功");
+            RecordVoiceFragment.instance().show(getSupportFragmentManager(),"recordvoicefragment");
         }else {
-            Log.e(TAG+"FullscreenActivity","以太网测试失败");
+            //弹出对话框
+           AlertDialog.Builder builder;
+            builder = new AlertDialog.Builder(FullscreenActivity.this);
+            builder.setCancelable(false);
+            builder.setMessage("请确认是否插入网线")
+                    .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                           if (NetWork.isConnect(FullscreenActivity.this)){
+                               Log.d(TAG+"FullscreenActivity","以太网测试成功");
+                           }else {
+                               Log.e(TAG+"FullscreenActivity","以太网测试失败");
+                           }
+                            RecordVoiceFragment.instance().show(getSupportFragmentManager(),"recordvoicefragment");
+                        }
+                    })
+                    .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            netWorkText();
+                        }
+                    }).show();
         }
     }
 
@@ -604,13 +635,13 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                         .setPositiveButton("正常", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Log.d("wifi网络","正常");
+                                Log.d("wifi网络","wifi网络正常");
                             }
                         })
-                        .setNegativeButton("不正常", new DialogInterface.OnClickListener() {
+                        .setNegativeButton("NG", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Log.d("wifi网络","不正常");
+                                Log.d("wifi网络","wifi网络不正常");
                             }
                         }).show();
             }
@@ -713,6 +744,9 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     break;
                 case action_start_text:
                     startText();//启动测试程序
+                    break;
+                case action_start_wifi_text:
+                    NetWork.wifiManger(FullscreenActivity.this);
                     break;
             }
         }
