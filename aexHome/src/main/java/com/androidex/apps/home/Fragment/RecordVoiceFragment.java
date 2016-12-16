@@ -1,5 +1,6 @@
 package com.androidex.apps.home.fragment;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -25,7 +27,7 @@ import java.io.IOException;
  */
 
 public class RecordVoiceFragment extends DialogFragment implements View.OnClickListener {
-    private static final String TAG = "setpassword";
+    private static final String TAG = "RecordVoiceFragment";
     private View rootView;
     private static RecordVoiceFragment recordVoiceFragment;
     private FullscreenActivity activity;
@@ -38,7 +40,8 @@ public class RecordVoiceFragment extends DialogFragment implements View.OnClickL
     private String FileName = null;
 
     private boolean flag =true; //控制按钮是播放还是结束
-    
+    private Intent intent;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -59,17 +62,22 @@ public class RecordVoiceFragment extends DialogFragment implements View.OnClickL
         ImageView stop = (ImageView) rootView.findViewById(R.id.iv_stop);
         ImageView play = (ImageView) rootView.findViewById(R.id.iv_play);
         ImageView record = (ImageView) rootView.findViewById(R.id.iv_record);
+        Button btn_OK= (Button) rootView.findViewById(R.id.btn_OK);
+        Button btn_NG= (Button) rootView.findViewById(R.id.btn_NG);
         stop.setOnClickListener(this);
         play.setOnClickListener(this);
         record.setOnClickListener(this);
+        btn_OK.setOnClickListener(this);
+        btn_NG.setOnClickListener(this);
+
     }
 
     protected void showToast(String message) {
         if (!TextUtils.isEmpty(message)) {
             Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
         }
-
     }
+
     public static RecordVoiceFragment instance() {
         if (recordVoiceFragment == null) {
             recordVoiceFragment = new RecordVoiceFragment();
@@ -91,8 +99,26 @@ public class RecordVoiceFragment extends DialogFragment implements View.OnClickL
             case R.id.iv_record:
                 startRecord();
                 break;
+
+            case R.id.btn_NG:
+                intent = new Intent(FullscreenActivity.action_start_wifi_text);
+                getContext().sendBroadcast(intent);
+                com.androidex.logger.Log.e(TAG,"录音不良");
+                dissMiss();
+                break;
+            case R.id.btn_OK:
+                intent = new Intent(FullscreenActivity.action_start_wifi_text);
+                getContext().sendBroadcast(intent);
+                com.androidex.logger.Log.d(TAG,"录音正常");
+                dissMiss();
+                break;
         }
 
+    }
+    public void dissMiss(){
+        if (recordVoiceFragment.isVisible()){
+            recordVoiceFragment.dismiss();
+        }
     }
 
     /**

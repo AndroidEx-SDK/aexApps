@@ -31,15 +31,22 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="播放视频"/>
+
+    <item
+        android:id="@+id/action_record_voice"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="系统设置"/>
+
     <item
         android:id="@+id/action_onekey_text"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="一键测试"/>
+
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="系统设置"/>
-
 </menu>

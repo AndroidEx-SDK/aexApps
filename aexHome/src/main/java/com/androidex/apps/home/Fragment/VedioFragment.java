@@ -3,6 +3,7 @@ package com.androidex.apps.home.fragment;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.androidex.apps.home.FullscreenActivity;
@@ -19,9 +20,10 @@ public class VedioFragment extends LazyLoadFragment implements View.OnClickListe
     private ImageView iv_close;
     private CustomVideoView customVideoView;
 
-    public VedioFragment(){
+    public VedioFragment() {
 
     }
+
     @Override
     protected void lazyLoad() {
         iniView();
@@ -29,7 +31,7 @@ public class VedioFragment extends LazyLoadFragment implements View.OnClickListe
         activity = (FullscreenActivity) getActivity();
         /**获取参数，根据不同的参数播放不同的视频**/
         index = getArguments().getInt("index");
-        Log.d("vediofragment","开始播放视频="+index);
+        Log.d("vediofragment", "开始播放视频=" + index);
         Uri uri;
         if (index == 1) {
             uri = Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + R.raw.a002);
@@ -43,8 +45,12 @@ public class VedioFragment extends LazyLoadFragment implements View.OnClickListe
 
     public void iniView() {
         iv_close = findViewById(R.id.iv_close);
+        Button btn_OK = findViewById(R.id.btn_OK);
+        Button btn_NG = findViewById(R.id.btn_NG);
         customVideoView = findViewById(R.id.cv);
         iv_close.setOnClickListener(this);
+        btn_OK.setOnClickListener(this);
+        btn_NG.setOnClickListener(this);
     }
 
     public VedioFragment dissMissDialog() {
@@ -62,9 +68,17 @@ public class VedioFragment extends LazyLoadFragment implements View.OnClickListe
         switch (v.getId()) {
             case R.id.iv_close:
                 dissMissDialog();
+                DialogFragmentManger.instance().dissMissDialog();
+                break;
+            case R.id.btn_OK:
+                DialogFragmentManger.instance().dissMissDialog();
+                break;
+            case R.id.btn_NG:
+                DialogFragmentManger.instance().dissMissDialog();
                 break;
         }
     }
+
     @Override
     protected void stopLoad() {
         super.stopLoad();
