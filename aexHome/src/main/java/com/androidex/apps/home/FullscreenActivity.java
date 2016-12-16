@@ -644,6 +644,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == 1001) {//系统wifi返回键
             //弹出对话框
             AlertDialog.Builder builder = new AlertDialog.Builder(FullscreenActivity.this);
@@ -666,6 +667,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                         }
                     }).show();
         }
+
     }
 
     /**
