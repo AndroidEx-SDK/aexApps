@@ -104,6 +104,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     private static List<Fragment> fragments;
     private List<Fragment> list;
     boolean isInitConfig = false;//控制是否进行初始化配置
+    public String printLog; //需要打印的数据
     private final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -246,6 +247,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         intentFilter.addAction(action_Viewpager_gone);
         intentFilter.addAction(action_start_text);//启动自动测试程序
         intentFilter.addAction(aexddAndroidNfcReader.START_ACTION);
+        intentFilter.addAction(aexLogFragment.VALUE_ACTION);//打印的数据
         registerReceiver(nbr, intentFilter);
     }
 
@@ -415,6 +417,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        mContentView.setCurrentItem(2);
         switch (item.getItemId()) {
             case R.id.action_settings:
                 system_set();//系统设置
@@ -560,12 +563,16 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
      */
     private void printText() {
         if (mDevices.mPrinter.Open()) {
+            //发送广播
+            Intent intent = new Intent();
+            intent.setAction(aexLogFragment.PRINT_ACTION);
+            sendBroadcast(intent);
             Log.i(TAG, "打印机打开");
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     aexddB58Printer printer = (aexddB58Printer) (mDevices.mPrinter);
-                    printer.selfTest();
+                    printer.selfTest(printLog);
 //                    mDevices.mPrinter.selfTest();
 //                     String str = "安卓工控";
 //                            try {
@@ -712,7 +719,11 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     viewPager.setVisibility(View.GONE);
                     break;
                 case action_start_text:
+                    mContentView.setCurrentItem(2);
                     startText();//启动测试程序
+                    break;
+                case aexLogFragment.VALUE_ACTION://接收需要打印的数据的广播
+                    printLog = intent.getStringExtra("back_value");
                     break;
             }
         }

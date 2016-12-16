@@ -1,6 +1,9 @@
 package com.androidex.apps.home;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -10,6 +13,7 @@ import android.view.ViewGroup;
 import com.androidex.common.LogFragment;
 import com.androidex.common.OnMultClickListener;
 import com.androidex.logger.Log;
+import com.androidex.logger.LogView;
 import com.androidex.logger.LogWrapper;
 import com.androidex.logger.MessageOnlyLogFilter;
 
@@ -21,12 +25,18 @@ import static com.androidex.apps.home.AdvertFragment.ONCLICKTIMES;
 
 public class aexLogFragment extends LogFragment implements OnMultClickListener {
     public static final String TAG = "LOG";
+    public NotyBroadCast mNotyBroadcast;
 
     public aexLogFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //注册广播
+        mNotyBroadcast = new NotyBroadCast();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(PRINT_ACTION);
+        getActivity().registerReceiver(mNotyBroadcast,intentFilter);
         return super.onCreateView(inflater,container,savedInstanceState);
     }
 
@@ -64,4 +74,46 @@ public class aexLogFragment extends LogFragment implements OnMultClickListener {
         }
         return false;
     }
+
+    @Override
+    public void onDestroy() {
+        getActivity().unregisterReceiver(mNotyBroadcast);
+        super.onDestroy();
+    }
+
+    /**
+     * 得到logview对象
+     * @return
+     */
+    @Override
+    public LogView getLogView() {
+        return super.getLogView();
+    }
+    public String getPrintLog(){
+        String printLog = getLogView().getText().toString();
+        if (printLog!=null){
+            return printLog;
+        }else{
+            return null;
+        }
+    }
+    /**
+     * 广播接收器
+     * 打印的广播
+     */
+    public class NotyBroadCast extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(PRINT_ACTION)){//需要打印
+                //将需要打印的数据回传给fullscreenactivity
+                Intent intetnt = new Intent();
+                intetnt.setAction(VALUE_ACTION);
+                intetnt.putExtra("back_value",getPrintLog());
+                getActivity().sendBroadcast(intent);
+            }
+        }
+    }
+    public static final String PRINT_ACTION = "com.androidex.apps.home.paction";
+    public static final String VALUE_ACTION = "com.androidex.apps.home.vaction";
 }
