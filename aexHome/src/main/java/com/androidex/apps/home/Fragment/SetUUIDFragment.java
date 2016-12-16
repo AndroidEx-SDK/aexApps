@@ -105,10 +105,10 @@ public class SetUUIDFragment extends DialogFragment implements View.OnClickListe
                     Toast.makeText(getContext(), "写入UUID成功", Toast.LENGTH_LONG).show();
                     tv_remind.setTextColor(Color.BLACK);
                     tv_remind.setText("UUID写入成功");
-                    dissMissDialog();
                     //activity.hwservice.runReboot();
                     Intent intent = new Intent(FullscreenActivity.action_start_text);
                     getContext().sendBroadcast(intent);
+                    dissMissDialog();
                 }
                 break;
             case R.id.iv_clear:
