@@ -79,7 +79,7 @@ public class DialogFragmentManger extends BaseDialogFragment {
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogFragmentManger.dissMissDialog();
+                //dialogFragmentManger.dissMissDialog();
             }
         });
         return view;

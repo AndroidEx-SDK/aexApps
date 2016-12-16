@@ -192,7 +192,7 @@ public class CameraFragment extends DialogFragment implements SurfaceHolder.Call
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_close:
-                dissMissDialog();
+               // dissMissDialog();
                 break;
             case R.id.btn_OK:
 //                // 获取当前相机参数
@@ -214,14 +214,14 @@ public class CameraFragment extends DialogFragment implements SurfaceHolder.Call
 //                        }
 //                    }
 //                });
-                dissMissDialog();
                 activity.showDialog(activity.getVedioFragments(),true);
                 Log.e(TAG,"相机测试不良");
+                dissMissDialog();
                 break;
             case R.id.btn_NG:
-                dissMissDialog();
                 activity.showDialog(activity.getVedioFragments(),true);
                 Log.e(TAG,"相机测试不良");
+                dissMissDialog();
                 break;
         }
     }

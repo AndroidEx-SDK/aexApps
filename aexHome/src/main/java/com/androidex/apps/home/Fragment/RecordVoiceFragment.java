@@ -22,6 +22,8 @@ import com.androidex.apps.home.R;
 
 import java.io.IOException;
 
+import static com.androidex.apps.home.FullscreenActivity.action_start_wifi_text;
+
 /**
  * Created by liyp on 16/12/10.
  */
@@ -101,13 +103,13 @@ public class RecordVoiceFragment extends DialogFragment implements View.OnClickL
                 break;
 
             case R.id.btn_NG:
-                intent = new Intent(FullscreenActivity.action_start_wifi_text);
+                intent = new Intent(action_start_wifi_text);
                 getContext().sendBroadcast(intent);
                 com.androidex.logger.Log.e(TAG,"录音不良");
                 dissMiss();
                 break;
             case R.id.btn_OK:
-                intent = new Intent(FullscreenActivity.action_start_wifi_text);
+                intent = new Intent(action_start_wifi_text);
                 getContext().sendBroadcast(intent);
                 com.androidex.logger.Log.d(TAG,"录音正常");
                 dissMiss();

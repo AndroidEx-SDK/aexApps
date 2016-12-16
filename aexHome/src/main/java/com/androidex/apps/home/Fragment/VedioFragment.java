@@ -1,5 +1,6 @@
 package com.androidex.apps.home.fragment;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.ImageView;
 import com.androidex.apps.home.FullscreenActivity;
 import com.androidex.apps.home.R;
 import com.androidex.apps.home.view.CustomVideoView;
+
+import static com.androidex.apps.home.FullscreenActivity.action_start_network_text;
 
 /**
  * Created by liyp on 16/12/10.
@@ -71,12 +74,20 @@ public class VedioFragment extends LazyLoadFragment implements View.OnClickListe
                 DialogFragmentManger.instance().dissMissDialog();
                 break;
             case R.id.btn_OK:
-                DialogFragmentManger.instance().dissMissDialog();
+                com.androidex.logger.Log.d(TAG,"视频播放正常");
+                sendBrocast();
                 break;
             case R.id.btn_NG:
-                DialogFragmentManger.instance().dissMissDialog();
+                com.androidex.logger.Log.d(TAG,"视频播放失败");
+                sendBrocast();
                 break;
         }
+    }
+
+    private void sendBrocast() {
+        Intent intent = new Intent(action_start_network_text);
+        getContext().sendBroadcast(intent);
+        DialogFragmentManger.instance().dissMissDialog();
     }
 
     @Override
