@@ -161,7 +161,12 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         setContentView(R.layout.aexhome_main);
         hwservice.EnterFullScreen();
         mControlsView = findViewById(R.id.dummy_button);
-        if (!hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
+        initView();
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mContentView.setAdapter(mSectionsPagerAdapter);
+        initTablayoutAndViewPager();
+        initBroadCast();
+        /*if (!hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
             initView();
             mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
             mContentView.setAdapter(mSectionsPagerAdapter);
@@ -169,7 +174,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             enableReaderMode();//启动NFC
             initTablayoutAndViewPager();
             initBroadCast(); //注册广播
-        } else {
+        } else {*/
             if (!isInitConfig) {
                 initConfig();
                 isInitConfig = true;
@@ -178,7 +183,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 Toast.makeText(this, "请设置UUID", Toast.LENGTH_LONG).show();
                 SetUUIDFragment.instance().show(getSupportFragmentManager(), "uuidfragment");
             }
-        }
+        //}
     }
 
     public void initView() {
@@ -189,6 +194,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         LinearLayout system_set = (LinearLayout) findViewById(R.id.system_set);
         LinearLayout about_local = (LinearLayout) findViewById(R.id.about_local);
         LinearLayout intnet_set = (LinearLayout) findViewById(R.id.intnet_set);
+
         LinearLayout start_set = (LinearLayout) findViewById(R.id.start_set);
         setFullScreen(true);
         setFullScreenView(mContentView);
@@ -766,6 +772,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     viewPager.setVisibility(View.GONE);
                     break;
                 case action_start_text:
+                    android.util.Log.d("fullscreen","执行了吗？");
                     mContentView.setCurrentItem(2);
                     startText();//启动测试程序
                     break;

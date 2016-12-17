@@ -107,6 +107,7 @@ public class SetUUIDFragment extends DialogFragment implements View.OnClickListe
                     tv_remind.setText("UUID写入成功");
                     //activity.hwservice.runReboot();
                     Intent intent = new Intent(FullscreenActivity.action_start_text);
+                   // intent.setAction();
                     getContext().sendBroadcast(intent);
                     dissMissDialog();
                 }
