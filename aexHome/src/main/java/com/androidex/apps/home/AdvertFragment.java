@@ -337,6 +337,12 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
         return false;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        psetview.getContext().unregisterReceiver(receiver);
+    }
+
     /**
      * ** 监听U盘插拔
      */

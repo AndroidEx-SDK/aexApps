@@ -26,6 +26,7 @@ import static com.androidex.apps.home.AdvertFragment.ONCLICKTIMES;
 public class aexLogFragment extends LogFragment implements OnMultClickListener {
     public static final String TAG = "LOG";
     public NotyBroadCast mNotyBroadcast;
+    public CallBackValue mCallBackValue;
 
     public aexLogFragment() {
     }
@@ -107,13 +108,20 @@ public class aexLogFragment extends LogFragment implements OnMultClickListener {
             String action = intent.getAction();
             if (action.equals(PRINT_ACTION)){//需要打印
                 //将需要打印的数据回传给fullscreenactivity
-                Intent intetnt = new Intent();
-                intetnt.setAction(VALUE_ACTION);
-                intetnt.putExtra("back_value",getPrintLog());
-                getActivity().sendBroadcast(intent);
+                mCallBackValue.sendMessageValue(getPrintLog());
             }
         }
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallBackValue = (CallBackValue) getActivity();
+    }
+
+    //回调接口
+    public interface CallBackValue{
+         void sendMessageValue(String printLog);
+    }
     public static final String PRINT_ACTION = "com.androidex.apps.home.paction";
-    public static final String VALUE_ACTION = "com.androidex.apps.home.vaction";
 }

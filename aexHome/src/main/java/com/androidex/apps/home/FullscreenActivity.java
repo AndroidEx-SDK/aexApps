@@ -70,7 +70,7 @@ import java.util.List;
  * status bar and navigation/system bar) with user interaction.
  */
 @TargetApi(Build.VERSION_CODES.KITKAT)
-public class FullscreenActivity extends AndroidExActivityBase implements NfcAdapter.ReaderCallback, View.OnClickListener {
+public class FullscreenActivity extends AndroidExActivityBase implements NfcAdapter.ReaderCallback, View.OnClickListener ,aexLogFragment.CallBackValue{
     public static final String LOG = "Log";
     public static final int DLG_NETINFO = 1004;
     public static final String action_back = "com.androidex.back";
@@ -258,7 +258,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         intentFilter.addAction(action_start_wifi_text);//启动wifi测试页面
         intentFilter.addAction(action_start_network_text);//启动以太网测试页面
         intentFilter.addAction(aexddAndroidNfcReader.START_ACTION);
-        intentFilter.addAction(aexLogFragment.VALUE_ACTION);//打印的数据
         registerReceiver(nbr, intentFilter);
     }
 
@@ -611,30 +610,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             intent.setAction(aexLogFragment.PRINT_ACTION);
             sendBroadcast(intent);
             Log.i(TAG, "打印机打开");
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    aexddB58Printer printer = (aexddB58Printer) (mDevices.mPrinter);
-                    if (printLog != null) {
-                        printer.selfTest(printLog);
-                    } else {
-                        printer.selfTest();
-                    }
-//                    mDevices.mPrinter.selfTest();
-//                     String str = "安卓工控";
-//                            try {
-//                                mDevices.mPrinter.WriteData(str.getBytes("GBK"), str.getBytes().length);
-//                                aexddB58Printer printer = (aexddB58Printer) (mDevices.mPrinter);
-//                                printer.ln();
-//                            } catch (UnsupportedEncodingException e) {
-//                                e.printStackTrace();
-//                            }
-//                            mDevices.mPrinter.WriteDataHex("1D564200");
-                    mDevices.mPrinter.cutPaper(1);
-                    mDevices.mPrinter.Close();
-                    Log.i(TAG, "打印测试结束，关闭打印机设备。");
-                }
-            }).start();
 
         } else {
             String s = String.format("Open printer fial:%s", mDevices.mPrinter.mParams.optString(appDeviceDriver.PORT_ADDRESS));
@@ -719,6 +694,34 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
 
         }
     }
+    //aexLogFragment回调
+    @Override
+    public void sendMessageValue(final String printLog) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                aexddB58Printer printer = (aexddB58Printer) (mDevices.mPrinter);
+                if (printLog != null) {
+                    printer.selfTest(printLog);
+                } else {
+                    printer.selfTest();
+                }
+//                    mDevices.mPrinter.selfTest();
+//                     String str = "安卓工控";
+//                            try {
+//                                mDevices.mPrinter.WriteData(str.getBytes("GBK"), str.getBytes().length);
+//                                aexddB58Printer printer = (aexddB58Printer) (mDevices.mPrinter);
+//                                printer.ln();
+//                            } catch (UnsupportedEncodingException e) {
+//                                e.printStackTrace();
+//                            }
+//                            mDevices.mPrinter.WriteDataHex("1D564200");
+                mDevices.mPrinter.cutPaper(1);
+                mDevices.mPrinter.Close();
+                Log.i(TAG, "打印测试结束，关闭打印机设备。");
+            }
+        }).start();
+    }
 
     static class PagerAdapter extends FragmentPagerAdapter {
 
@@ -776,8 +779,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     mContentView.setCurrentItem(2);
                     startText();//启动测试程序
                     break;
-                case aexLogFragment.VALUE_ACTION://接收需要打印的数据的广播
-                    printLog = intent.getStringExtra("back_value");
+               
                 case action_start_wifi_text:
                     NetWork.wifiManger(FullscreenActivity.this);
                     break;
