@@ -45,7 +45,6 @@ import com.androidex.apps.home.fragment.SystemSettingFragment;
 import com.androidex.apps.home.fragment.VedioFragment;
 import com.androidex.apps.home.utils.MacUtil;
 import com.androidex.apps.home.utils.NetWork;
-import com.androidex.apps.home.utils.RebutSystem;
 import com.androidex.apps.home.view.CircleTextProgressbar;
 import com.androidex.common.AndroidExActivityBase;
 import com.androidex.common.DummyContent;
@@ -164,18 +163,13 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         initView();
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mContentView.setAdapter(mSectionsPagerAdapter);
+        initProgressBar();
+        enableReaderMode();//启动NFC
         initTablayoutAndViewPager();
         initBroadCast();
-        RebutSystem.reBut(this);
-        /*if (!hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
-            initView();
-            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-            mContentView.setAdapter(mSectionsPagerAdapter);
-            initProgressBar();
-            enableReaderMode();//启动NFC
-            initTablayoutAndViewPager();
-            initBroadCast(); //注册广播
-        } else {*/
+       // RebutSystem.reBut(this);//五分钟重启动，用于老化测试
+        if (hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
+
             if (!isInitConfig) {
                 initConfig();
                 isInitConfig = true;
@@ -184,7 +178,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 Toast.makeText(this, "请设置UUID", Toast.LENGTH_LONG).show();
                 SetUUIDFragment.instance().show(getSupportFragmentManager(), "uuidfragment");
             }
-        //}
+        }
     }
 
     public void initView() {
