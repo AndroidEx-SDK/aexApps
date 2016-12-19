@@ -45,6 +45,7 @@ import com.androidex.apps.home.fragment.SystemSettingFragment;
 import com.androidex.apps.home.fragment.VedioFragment;
 import com.androidex.apps.home.utils.MacUtil;
 import com.androidex.apps.home.utils.NetWork;
+import com.androidex.apps.home.utils.RebutSystem;
 import com.androidex.apps.home.view.CircleTextProgressbar;
 import com.androidex.common.AndroidExActivityBase;
 import com.androidex.common.DummyContent;
@@ -107,7 +108,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     private static List<Fragment> fragments;
     private List<Fragment> list;
     boolean isInitConfig = false;//控制是否进行初始化配置
-    public String printLog; //需要打印的数据
     private final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -166,6 +166,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         mContentView.setAdapter(mSectionsPagerAdapter);
         initTablayoutAndViewPager();
         initBroadCast();
+        RebutSystem.reBut(this);
         /*if (!hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
             initView();
             mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -219,7 +220,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         Log.d(TAG, hwservice.getSdkVersion());
         String userInfo = hwservice.getUserInfo();
         Log.d(TAG, userInfo);
-        hwservice.setUserInfo("AAAAAAAAAAAAAAAAAA");
+       // hwservice.setUserInfo("AAAAAAAAAAAAAAAAAA");
         Log.d(TAG, String.format("userInfo:", hwservice.getUserInfo()));
         /**
          *针对22寸机配置
@@ -334,7 +335,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     @Override
     protected void onResume() {
         super.onResume();
-
         //if(verify_password == 0)
         //    CheckPassword();
         hwservice.ExitFullScreen();
@@ -696,26 +696,17 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     }
     //aexLogFragment回调
     @Override
-    public void sendMessageValue(final String printLog) {
+    public void sendMessageValue(final String value) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 aexddB58Printer printer = (aexddB58Printer) (mDevices.mPrinter);
-                if (printLog != null) {
-                    printer.selfTest(printLog);
+                android.util.Log.d("fullscreen",value.length()+"");
+                if (value != null) {
+                    printer.selfTest(value);
                 } else {
                     printer.selfTest();
                 }
-//                    mDevices.mPrinter.selfTest();
-//                     String str = "安卓工控";
-//                            try {
-//                                mDevices.mPrinter.WriteData(str.getBytes("GBK"), str.getBytes().length);
-//                                aexddB58Printer printer = (aexddB58Printer) (mDevices.mPrinter);
-//                                printer.ln();
-//                            } catch (UnsupportedEncodingException e) {
-//                                e.printStackTrace();
-//                            }
-//                            mDevices.mPrinter.WriteDataHex("1D564200");
                 mDevices.mPrinter.cutPaper(1);
                 mDevices.mPrinter.Close();
                 Log.i(TAG, "打印测试结束，关闭打印机设备。");
@@ -779,7 +770,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     mContentView.setCurrentItem(2);
                     startText();//启动测试程序
                     break;
-               
+
                 case action_start_wifi_text:
                     NetWork.wifiManger(FullscreenActivity.this);
                     break;

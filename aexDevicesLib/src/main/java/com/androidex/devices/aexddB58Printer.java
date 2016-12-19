@@ -284,31 +284,17 @@ public class aexddB58Printer extends aexddPrinter {
      * @return
      */
     public boolean selfTest (String value){
-        String testEnStr = "AndroidEx SDK 5.0";
-        String testChStr = "Printer驱动测试，本机信息：\n\t固件版本号：\n\t设备序列号：\n\t设备安卓ID：\n";
-        String companyStr = "\n" +
-                "深圳市安卓工控设备有限公司\n" +
-                "深圳市龙岗区布吉龙景工业园E栋东二楼\n" +
-                "http://www.androidex.cn\n";
-
-        hwService hwservice = new hwService(mContext);
-        testChStr = String.format(testChStr, hwservice.getSdkVersion(), hwservice.get_uuid(), hwservice.get_serial());
-
         reset();       //初始化
-        //监测打印机状态，n = 1: 传送打印机状态 ，n = 2: 传送脱机状态 ，n = 3: 传送错误状态 ，n = 4: 传送卷纸传感器状态
-        Log.d(TAG, String.format("Printer status 0x%08X", checkStatus()));
-        ln();         //换行
         try {
             //打印：
             //设置对齐方式：0-左对齐,1-居中,2-右对齐
             setAlign(0);    //设置左对齐
             WriteDataHex("1D2108");     //设置字体大小为16
             //打印英文
-            WriteData(testEnStr.getBytes("GBK"), testEnStr.length());
             WriteDataHex("1C26");   //打印中文
-            WriteData(testChStr.getBytes("GBK"), testChStr.length());
-            WriteData(companyStr.getBytes("GBK"), companyStr.length());
-            WriteData(value.getBytes("GBK"),value.length());
+            byte[] sgbk = value.getBytes("GBK");
+            WriteData(sgbk, sgbk.length);
+
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
