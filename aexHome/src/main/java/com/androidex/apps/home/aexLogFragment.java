@@ -108,7 +108,11 @@ public class aexLogFragment extends LogFragment implements OnMultClickListener {
             String action = intent.getAction();
             if (action.equals(PRINT_ACTION)){//需要打印
                 //将需要打印的数据回传给fullscreenactivity
-                mCallBackValue.sendMessageValue(getPrintLog());
+                //一行行的传过去打印
+                String [] ss = getPrintLog().split("\n");
+                for (int i = 0;i<ss.length;i++){
+                    mCallBackValue.sendMessageValue(ss[i],ss.length-1,i);
+                }
             }
         }
     }
@@ -121,7 +125,7 @@ public class aexLogFragment extends LogFragment implements OnMultClickListener {
 
     //回调接口
     public interface CallBackValue{
-         void sendMessageValue(String printLog);
+         void sendMessageValue(String printLog,int totalLength,int length);
     }
     public static final String PRINT_ACTION = "com.androidex.apps.home.paction";
 }

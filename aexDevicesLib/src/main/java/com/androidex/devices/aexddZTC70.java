@@ -295,18 +295,23 @@ public class aexddZTC70 extends aexddPasswordKeypad {
         byte[] r = pkReadPacket(10000*delayUint);
         String s = hexString(r);
         android.util.Log.d("---",s);
-        ret = s.substring(10,30);//35 41 35 34 33 35 33 39 33 38
-        //对接收的字符串进行处理
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(s.charAt(0));
-        stringBuilder.append(s.charAt(1));
-        for (int i = 1;i<=(s.length()-2)/2;i++){
-            stringBuilder.append(s.charAt(2*i+1));
+        if(s!=null){
+            ret = s.substring(10,30);//35 41 35 34 33 35 33 39 33 38
+            //对接收的字符串进行处理
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(s.charAt(0));
+            stringBuilder.append(s.charAt(1));
+            for (int i = 1;i<=(s.length()-2)/2;i++){
+                stringBuilder.append(s.charAt(2*i+1));
+            }
+
+            String str = stringBuilder.substring(4,6);
+            Toast.makeText(mContext,getStatusStr(Integer.parseInt(str,16)),Toast.LENGTH_LONG).show();
+            Log.d("政通",getStatusStr(Integer.parseInt(str,16)));
+        }else{
+            Log.d("政通","未安装密码键盘");
         }
 
-        String str = stringBuilder.substring(4,6);
-        Toast.makeText(mContext,getStatusStr(Integer.parseInt(str,16)),Toast.LENGTH_LONG).show();
-        Log.d("政通",getStatusStr(Integer.parseInt(str,16)));
 
         return ret;
     }

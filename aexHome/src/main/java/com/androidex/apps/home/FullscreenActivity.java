@@ -167,8 +167,8 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         enableReaderMode();//启动NFC
         initTablayoutAndViewPager();
         initBroadCast();
-       // RebutSystem.reBut(this);//五分钟重启动，用于老化测试
-        //if (hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
+        //RebutSystem.reBut(this);//五分钟重启动，用于老化测试
+        if (hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
 
             if (!isInitConfig) {
                 initConfig();
@@ -178,7 +178,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 Toast.makeText(this, "请设置UUID", Toast.LENGTH_LONG).show();
                 SetUUIDFragment.instance().show(getSupportFragmentManager(), "uuidfragment");
             }
-        //}
+        }
     }
 
     public void initView() {
@@ -329,6 +329,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     @Override
     protected void onResume() {
         super.onResume();
+
         //if(verify_password == 0)
         //    CheckPassword();
         hwservice.ExitFullScreen();
@@ -690,20 +691,22 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     }
     //aexLogFragment回调
     @Override
-    public void sendMessageValue(final String value) {
+    public void sendMessageValue(final String value,final int totalLength,final int length) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 aexddB58Printer printer = (aexddB58Printer) (mDevices.mPrinter);
-                android.util.Log.d("fullscreen",value.length()+"");
+                android.util.Log.d("fullscreenactivity",value);
                 if (value != null) {
-                    printer.selfTest(value);
+                    printer.selfTest(value,totalLength,length);
                 } else {
                     printer.selfTest();
                 }
-                mDevices.mPrinter.cutPaper(1);
-                mDevices.mPrinter.Close();
-                Log.i(TAG, "打印测试结束，关闭打印机设备。");
+                if ((length==totalLength)){
+                    mDevices.mPrinter.cutPaper(1);
+                    mDevices.mPrinter.Close();
+                    Log.i(TAG, "打印测试结束，关闭打印机设备。");
+                }
             }
         }).start();
     }
@@ -760,7 +763,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     viewPager.setVisibility(View.GONE);
                     break;
                 case action_start_text:
-                    android.util.Log.d("fullscreen","执行了吗？");
                     mContentView.setCurrentItem(2);
                     startText();//启动测试程序
                     break;

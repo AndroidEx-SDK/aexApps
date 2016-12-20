@@ -283,8 +283,10 @@ public class aexddB58Printer extends aexddPrinter {
      * @param value
      * @return
      */
-    public boolean selfTest (String value){
+    public boolean selfTest (String value,int totalLength,int length){
         reset();       //初始化
+        android.util.Log.d("aexddB58Printer",value);
+        ln();
         try {
             //打印：
             //设置对齐方式：0-左对齐,1-居中,2-右对齐
@@ -295,10 +297,14 @@ public class aexddB58Printer extends aexddPrinter {
             byte[] sgbk = value.getBytes("GBK");
             WriteData(sgbk, sgbk.length);
 
+            ln();
+            if (length==totalLength){
+                cutPaper(1);
+            }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        cutPaper(1);
+
         return true;
     }
 
