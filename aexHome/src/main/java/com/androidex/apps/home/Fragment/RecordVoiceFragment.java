@@ -91,15 +91,15 @@ public class RecordVoiceFragment extends DialogFragment implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.iv_stop:
-                stopRecord();
+                stopRecord();//停止录音
                 break;
 
             case R.id.iv_play:
-                startPlayRecord();
+                startPlayRecord();//开始播放录音
                 break;
 
             case R.id.iv_record:
-                startRecord();
+                startRecord();//开始录音
                 break;
 
             case R.id.btn_NG:
@@ -127,17 +127,22 @@ public class RecordVoiceFragment extends DialogFragment implements View.OnClickL
      * 开始录音
      */
     public  void startRecord(){
-        mRecorder = new MediaRecorder();
-        mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mRecorder.setOutputFile(FileName);
-        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        try {
-            mRecorder.prepare();
-        } catch (IOException e) {
-            Log.e("RecordVoice","RecordVoice Fail");
+        if(mRecorder==null){//还没有开始过录音
+            mRecorder = new MediaRecorder();
+            mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+            mRecorder.setOutputFile(FileName);
+            mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            try {
+                mRecorder.prepare();
+            } catch (IOException e) {
+                Log.e("RecordVoice","RecordVoice Fail");
+            }
+            mRecorder.start();
+        }else{//已经开始录音，且未点击停止录音
+            Toast.makeText(activity,"正在录音",Toast.LENGTH_SHORT).show();
         }
-        mRecorder.start();
+
     }
 
     /**
@@ -149,7 +154,6 @@ public class RecordVoiceFragment extends DialogFragment implements View.OnClickL
             mRecorder.release();
             mRecorder = null;
         }
-
     }
 
     /**

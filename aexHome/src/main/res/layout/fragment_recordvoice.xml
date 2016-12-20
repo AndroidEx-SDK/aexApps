@@ -33,7 +33,13 @@
             android:padding="@dimen/marginPadding10"
             android:scaleType="fitXY"
             android:src="@mipmap/record"/>
-
+        <ImageView
+            android:id="@+id/iv_stop"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="@dimen/marginPadding10"
+            android:scaleType="fitXY"
+            android:src="@mipmap/stop"/>
         <ImageView
             android:id="@+id/iv_play"
             android:layout_width="60dp"
@@ -42,13 +48,7 @@
             android:scaleType="fitXY"
             android:src="@mipmap/play"/>
 
-        <ImageView
-            android:id="@+id/iv_stop"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:padding="@dimen/marginPadding10"
-            android:scaleType="fitXY"
-            android:src="@mipmap/stop"/>
+
 
     </LinearLayout>
 
