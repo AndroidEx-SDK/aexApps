@@ -1,6 +1,7 @@
 package com.androidex.apps.home.utils;
 
 import com.androidex.apps.home.FullscreenActivity;
+import com.androidex.logger.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,7 +16,7 @@ import java.util.TimerTask;
 
 public class RebutSystem {
 
-    public static long delyTime = 1000*60;//设置5分钟重启
+    public static long delyTime = 1000*60*5;//设置5分钟重启
     private static long times =0;
 
     public static void reBut(final FullscreenActivity context){
@@ -28,7 +29,7 @@ public class RebutSystem {
             }else{
                 times=0;
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         times++;

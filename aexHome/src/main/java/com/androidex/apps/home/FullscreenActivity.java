@@ -97,7 +97,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     private static Fragment mNetWorkSettingFragment = new NetWorkSettingFragment();
     private static Fragment mStartSettingFragment = new StartSettingFragment();
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ViewPager mContentView;         //整体大布局的Viewpager
+    public ViewPager mContentView;         //整体大布局的Viewpager
     private ViewPager viewPager;            //有关系统设置的Viewpager
     private View mControlsView;             //当前activity的布局
     private CircleTextProgressbar progressbar;
@@ -167,10 +167,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         initProgressBar();
         initTablayoutAndViewPager();
         initBroadCast();
-        RebutSystem.reBut(this);//五分钟重启动，用于老化测试
-        android.util.Log.d(TAG,"-----------");
-        Log.d(TAG,hwservice.getUserInfo());
-        android.util.Log.d(TAG,hwservice.getUserInfo());
+        RebutSystem.reBut(this);  //五分钟重启动，用于老化测试
         if (hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
 
             if (!isInitConfig) {
@@ -333,6 +330,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     protected void onResume() {
         super.onResume();
         enableReaderMode();//启动NFC
+
         //if(verify_password == 0)
         //    CheckPassword();
         hwservice.ExitFullScreen();

@@ -17,6 +17,8 @@ import com.androidex.logger.LogView;
 import com.androidex.logger.LogWrapper;
 import com.androidex.logger.MessageOnlyLogFilter;
 
+import org.json.JSONObject;
+
 import static com.androidex.apps.home.AdvertFragment.ONCLICKTIMES;
 
 /**
@@ -27,12 +29,14 @@ public class aexLogFragment extends LogFragment implements OnMultClickListener {
     public static final String TAG = "LOG";
     public NotyBroadCast mNotyBroadcast;
     public CallBackValue mCallBackValue;
-
+    public FullscreenActivity activity;
     public aexLogFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        android.util.Log.d("++++++","zhixingleema ");
+        activity = (FullscreenActivity) getActivity();
         //注册广播
         mNotyBroadcast = new NotyBroadCast();
         IntentFilter intentFilter = new IntentFilter();
@@ -62,6 +66,16 @@ public class aexLogFragment extends LogFragment implements OnMultClickListener {
         MessageOnlyLogFilter msgFilter = (MessageOnlyLogFilter)logWrapper.getNext();
         msgFilter.setNext(this.getLogView());
         Log.i(TAG,"就绪");
+        try {
+            JSONObject jsonObject = new JSONObject(activity.hwservice.getUserInfo());
+            String string = jsonObject.optString("times");
+            if(string==null){
+                string = "0";
+            }
+            Log.d("开机次数",string);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
