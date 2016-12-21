@@ -165,10 +165,10 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mContentView.setAdapter(mSectionsPagerAdapter);
         initProgressBar();
-        enableReaderMode();//启动NFC
         initTablayoutAndViewPager();
         initBroadCast();
         RebutSystem.reBut(this);//五分钟重启动，用于老化测试
+        android.util.Log.d(TAG,"-----------");
         Log.d(TAG,hwservice.getUserInfo());
         android.util.Log.d(TAG,hwservice.getUserInfo());
         if (hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
@@ -332,7 +332,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     @Override
     protected void onResume() {
         super.onResume();
-
+        enableReaderMode();//启动NFC
         //if(verify_password == 0)
         //    CheckPassword();
         hwservice.ExitFullScreen();

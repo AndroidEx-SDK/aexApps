@@ -15,10 +15,22 @@ import java.util.TimerTask;
 
 public class RebutSystem {
 
-    public static long delyTime = 1000*60*5;//设置5分钟重启
+    public static long delyTime = 1000*60;//设置5分钟重启
     private static long times =0;
 
     public static void reBut(final FullscreenActivity context){
+        //先得到userinfo里面的值
+        try {
+            JSONObject jsonObject = new JSONObject(context.hwservice.getUserInfo());
+            String string = jsonObject.optString("times");
+            if ((string!=null)){
+                times  = Long.parseLong(string);
+            }else{
+                times=0;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         times++;
         //用于记录重启次数
         context.hwservice.setUserInfo(stringToJson(times+""));
