@@ -45,6 +45,7 @@ import com.androidex.apps.home.fragment.SystemSettingFragment;
 import com.androidex.apps.home.fragment.VedioFragment;
 import com.androidex.apps.home.utils.MacUtil;
 import com.androidex.apps.home.utils.NetWork;
+import com.androidex.apps.home.utils.RebutSystem;
 import com.androidex.apps.home.view.CircleTextProgressbar;
 import com.androidex.common.AndroidExActivityBase;
 import com.androidex.common.DummyContent;
@@ -167,7 +168,9 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         enableReaderMode();//启动NFC
         initTablayoutAndViewPager();
         initBroadCast();
-        //RebutSystem.reBut(this);//五分钟重启动，用于老化测试
+        RebutSystem.reBut(this);//五分钟重启动，用于老化测试
+        Log.d(TAG,hwservice.getUserInfo());
+        android.util.Log.d(TAG,hwservice.getUserInfo());
         if (hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
 
             if (!isInitConfig) {
