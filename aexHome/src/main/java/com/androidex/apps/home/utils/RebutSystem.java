@@ -1,11 +1,11 @@
 package com.androidex.apps.home.utils;
 
 import com.androidex.apps.home.FullscreenActivity;
-import com.androidex.logger.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -18,6 +18,10 @@ public class RebutSystem {
 
     public static long delyTime = 1000*60*5;//设置5分钟重启
     private static long times =0;
+
+    public static long startTime;//开始老化测试的起始时间
+    public static long endTime;//测试结束的时间
+                                //测试时间应该为endtime-starttime
 
     public static void reBut(final FullscreenActivity context){
         //先得到userinfo里面的值
@@ -54,9 +58,26 @@ public class RebutSystem {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("times",value);
+            jsonObject.put("starttime",getDelyTime());//测试开始时间怎么存?
+            jsonObject.put("endTime",getDelyTime());
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return jsonObject.toString();
+    }
+    /**
+     * 获得当前时间的毫秒数
+     */
+    private static long getDelyTime(){
+        Date dt= new Date();
+        Long time= dt.getTime();
+        return time;
+    }
+    /**
+     * 判断起始时间的存入条件
+     */
+    private static boolean isFlag(){
+        return false;
     }
 }
