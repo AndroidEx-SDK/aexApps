@@ -21,8 +21,8 @@ public class RebutSystem {
     public static long delyTime = 1000*60*5;//设置5分钟重启
     private static long times =0;
 
-    public static long startTime;//开始老化测试的起始时间
-    public static long endTime;//测试结束的时间
+    public static String startTime = "startTime";//开始老化测试的起始时间
+    public static String endTime = "endTime";//测试结束的时间
                                 //测试时间应该为endtime-starttime
 
     public static void reBut(final FullscreenActivity context){
@@ -62,11 +62,11 @@ public class RebutSystem {
         try {
             jsonObject.put("times",value);
             if (isFlag(context)){//存入当前时间
-                jsonObject.put("starttime",getDelyTime());//测试开始时间怎么存?
+                jsonObject.put(startTime,getDelyTime());//测试开始时间怎么存?
             }else{//得到上次存入的时间
-                jsonObject.put("starttime",getStartTime(context));
+                jsonObject.put(startTime,getStartTime(context));
             }
-            jsonObject.put("endTime",getDelyTime());
+            jsonObject.put(endTime,getDelyTime());
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -87,12 +87,10 @@ public class RebutSystem {
     private static boolean isFlag(final FullscreenActivity context){
         try {
             JSONObject jsonObject = new JSONObject(context.hwservice.getUserInfo());
-            String string = jsonObject.optString("starttime");
+            String string = jsonObject.optString(startTime);
             if(!"".equals(string)){//里面有值，返回false，不存
-                Log.d("++++++++++++","string="+string);
                 return false;
             }else{//里面没值，存入
-                Log.d("------------","执行了吗");
                 return true;
             }
         } catch (JSONException e) {
@@ -105,7 +103,7 @@ public class RebutSystem {
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(context.hwservice.getUserInfo());
-            String string = jsonObject.optString("starttime");
+            String string = jsonObject.optString(startTime);
             return string;
         } catch (JSONException e) {
             e.printStackTrace();

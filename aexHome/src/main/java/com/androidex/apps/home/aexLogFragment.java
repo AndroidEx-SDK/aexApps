@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.androidex.apps.home.utils.RebutSystem;
 import com.androidex.common.LogFragment;
 import com.androidex.common.OnMultClickListener;
 import com.androidex.logger.Log;
@@ -69,13 +70,66 @@ public class aexLogFragment extends LogFragment implements OnMultClickListener {
         try {
             JSONObject jsonObject = new JSONObject(activity.hwservice.getUserInfo());
             String string = jsonObject.optString("times");
-            if(string==null){
+            String startTime = jsonObject.optString(RebutSystem.startTime);
+            String endTime = jsonObject.optString(RebutSystem.endTime);
+            if("".equals(string)){
                 string = "0";
             }
-            Log.d("开机次数",string);
+            Log.d("开机次数","开机次数:"+string);
+            if (!"".equals(startTime)&&!"".equals(endTime)){
+                Log.d("测试时长","测试时长:"+getTextHours(startTime,endTime));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     *
+     * @param startTime
+     * @param endTime
+     * @return
+     * 计算测试的时长（天/时/分/秒）
+     */
+    public String getTextHours(String startTime,String endTime){
+        long start = Long.parseLong(startTime);
+        long end = Long.parseLong(endTime);
+        long time = end - start;
+        String result = formatTime(time);
+        return result;
+    }
+    /*
+ * 毫秒转化时分秒毫秒
+ */
+    public  String formatTime(Long ms) {
+        Integer ss = 1000;
+        Integer mi = ss * 60;
+        Integer hh = mi * 60;
+        Integer dd = hh * 24;
+
+        Long day = ms / dd;
+        Long hour = (ms - day * dd) / hh;
+        Long minute = (ms - day * dd - hour * hh) / mi;
+        Long second = (ms - day * dd - hour * hh - minute * mi) / ss;
+        Long milliSecond = ms - day * dd - hour * hh - minute * mi - second * ss;
+
+        StringBuffer sb = new StringBuffer();
+        if(day > 0) {
+            sb.append(day+"天");
+        }
+        if(hour > 0) {
+            sb.append(hour+"小时");
+        }
+        if(minute > 0) {
+            sb.append(minute+"分");
+        }
+        if(second > 0) {
+            sb.append(second+"秒");
+        }
+        if(milliSecond > 0) {
+            sb.append(milliSecond+"毫秒");
+        }
+        return sb.toString();
     }
 
     @Override
