@@ -54,7 +54,6 @@
         </activity>
 
 
-
         <activity
             android:name=".activity.SystemMainActivity"
             android:exported="true"

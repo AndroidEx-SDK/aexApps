@@ -63,6 +63,8 @@ public class RebutSystem {
             jsonObject.put("times",value);
             if (isFlag(context)){//存入当前时间
                 jsonObject.put("starttime",getDelyTime());//测试开始时间怎么存?
+            }else{//得到上次存入的时间
+                jsonObject.put("starttime",getStartTime(context));
             }
             jsonObject.put("endTime",getDelyTime());
 
@@ -86,14 +88,28 @@ public class RebutSystem {
         try {
             JSONObject jsonObject = new JSONObject(context.hwservice.getUserInfo());
             String string = jsonObject.optString("starttime");
-            if(string!=null){//里面有值，返回false，不存
+            if(!"".equals(string)){//里面有值，返回false，不存
+                Log.d("++++++++++++","string="+string);
                 return false;
             }else{//里面没值，存入
+                Log.d("------------","执行了吗");
                 return true;
             }
         } catch (JSONException e) {
             e.printStackTrace();
             return false;
         }
+    }
+
+    private static String getStartTime(final FullscreenActivity context){
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(context.hwservice.getUserInfo());
+            String string = jsonObject.optString("starttime");
+            return string;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
