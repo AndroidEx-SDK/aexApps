@@ -1,5 +1,7 @@
 package com.androidex.apps.home.utils;
 
+import android.util.Log;
+
 import com.androidex.apps.home.FullscreenActivity;
 
 import org.json.JSONException;
@@ -38,7 +40,8 @@ public class RebutSystem {
         }
         times++;
         //用于记录重启次数
-        context.hwservice.setUserInfo(stringToJson(times+""));
+        context.hwservice.setUserInfo(stringToJson(times+"",context));
+        Log.d("+++++++",context.hwservice.getUserInfo());
         //开启定时器
         TimerTask task = new TimerTask() {
             @Override
@@ -54,11 +57,13 @@ public class RebutSystem {
     /**
     将字符串转换成json格式
      */
-    private static String stringToJson(String value){
+    private static String stringToJson(String value,final FullscreenActivity context){
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("times",value);
-            jsonObject.put("starttime",getDelyTime());//测试开始时间怎么存?
+            if (isFlag(context)){//存入当前时间
+                jsonObject.put("starttime",getDelyTime());//测试开始时间怎么存?
+            }
             jsonObject.put("endTime",getDelyTime());
 
         } catch (JSONException e) {
@@ -77,7 +82,18 @@ public class RebutSystem {
     /**
      * 判断起始时间的存入条件
      */
-    private static boolean isFlag(){
-        return false;
+    private static boolean isFlag(final FullscreenActivity context){
+        try {
+            JSONObject jsonObject = new JSONObject(context.hwservice.getUserInfo());
+            String string = jsonObject.optString("starttime");
+            if(string!=null){//里面有值，返回false，不存
+                return false;
+            }else{//里面没值，存入
+                return true;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
