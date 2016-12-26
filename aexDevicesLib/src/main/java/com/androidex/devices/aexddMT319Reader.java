@@ -296,7 +296,7 @@ public class aexddMT319Reader extends aexddPbocReader {
 						while(r[6+len1+len2] != 0x00)len2++;
 						track.put("tarck2",new String(r,6+len1,len2++));
 						int len3 = 0;
-						while(r[6+len1+len2+len3] != 0x00)len3++;
+						while(r[6+len1+len2+len3] != 0x03)len3++;
 						track.put("tarck3",new String(r,6+len1+len2,len3));
 					} catch (JSONException e) {
 						e.printStackTrace();
@@ -420,9 +420,9 @@ public class aexddMT319Reader extends aexddPbocReader {
 		pbocSendCmd(data,data.length);
 		byte[] r = pbocReadPacket(3000*delayUint);
 		if(r != null && r.length >= 8){
-			if(r[3] == 0x37 && r[4] == 0x42){
+			if(r[3] == 0x37 && r[4] == 0x43){
 				if(r[5] == 0x59) {
-					int len = (r[6]<<8) | r[7];
+					int len = ((r[6]<<8) | r[7])&0xFF00;
 					return Arrays.copyOfRange(r, 8, len + 8);
 				}
 			}
