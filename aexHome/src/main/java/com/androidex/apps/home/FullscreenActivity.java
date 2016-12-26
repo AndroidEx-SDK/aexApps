@@ -71,7 +71,7 @@ import java.util.List;
  * status bar and navigation/system bar) with user interaction.
  */
 @TargetApi(Build.VERSION_CODES.KITKAT)
-public class FullscreenActivity extends AndroidExActivityBase implements NfcAdapter.ReaderCallback, View.OnClickListener ,aexLogFragment.CallBackValue{
+public class FullscreenActivity extends AndroidExActivityBase implements NfcAdapter.ReaderCallback, View.OnClickListener, aexLogFragment.CallBackValue {
     public static final String LOG = "Log";
     public static final int DLG_NETINFO = 1004;
     public static final String action_back = "com.androidex.back";
@@ -214,7 +214,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         Log.d(TAG, hwservice.getSdkVersion());
         String userInfo = hwservice.getUserInfo();
         Log.d(TAG, userInfo);
-       // hwservice.setUserInfo("AAAAAAAAAAAAAAAAAA");
+        // hwservice.setUserInfo("AAAAAAAAAAAAAAAAAA");
         Log.d(TAG, String.format("userInfo:", hwservice.getUserInfo()));
         /**
          *针对22寸机配置
@@ -461,6 +461,9 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 RecordVoiceFragment.instance().show(getSupportFragmentManager(), "recordvoicefragment");
                 return true;
 
+            case R.id.action_stop_reboot://停止老化测试
+                RebutSystem.stopReBut();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -690,20 +693,21 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
 
         }
     }
+
     //aexLogFragment回调
     @Override
-    public void sendMessageValue(final String value,final int totalLength,final int length) {
+    public void sendMessageValue(final String value, final int totalLength, final int length) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 aexddB58Printer printer = (aexddB58Printer) (mDevices.mPrinter);
-                android.util.Log.d("fullscreenactivity",value);
+                android.util.Log.d("fullscreenactivity", value);
                 if (value != null) {
-                    printer.selfTest(value,totalLength,length);
+                    printer.selfTest(value, totalLength, length);
                 } else {
                     printer.selfTest();
                 }
-                if ((length==totalLength)){
+                if ((length == totalLength)) {
                     mDevices.mPrinter.cutPaper(1);
                     mDevices.mPrinter.Close();
                     Log.i(TAG, "打印测试结束，关闭打印机设备。");
