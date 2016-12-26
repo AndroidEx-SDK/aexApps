@@ -169,7 +169,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         initBroadCast();
         RebutSystem.reBut(this);  //五分钟重启动，用于老化测试
         if (hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
-
             if (!isInitConfig) {
                 initConfig();
                 isInitConfig = true;
@@ -462,7 +461,24 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 return true;
 
             case R.id.action_stop_reboot://停止老化测试
-                RebutSystem.stopReBut();
+                AlertDialog.Builder builder = new AlertDialog.Builder(FullscreenActivity.this);
+                builder.setCancelable(false);
+                builder.setMessage("wifi网络是否正常")
+                        .setPositiveButton("开始老化", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                RebutSystem.startRebut();
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton("停止老化", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                RebutSystem.stopReBut();
+                                dialog.dismiss();
+                            }
+                        }).show();
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -481,9 +497,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         //netWorkText();//以太网测试
         // NetWork.wifiManger(this);
         //RecordVoiceFragment.instance().show(getSupportFragmentManager(),"recordvoicefragment");
-
         //  printText();//打印机测试
-
     }
 
     public void netWorkText() {
@@ -524,10 +538,12 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
      */
     private void casReaderText() {
         if (mDevices.mCasCardReader.Open()) {
+            Log.i(TAG, "燃气卡读卡器打开");
             //lcc1ReaderText();//莱卡读卡器测试程序
             aexddMT319Reader reader = (aexddMT319Reader) mDevices.mCasCardReader;
             reader.selfTest();
             mDevices.mCasCardReader.Close();
+            Log.i(TAG, "燃气卡读卡器关闭");
         } else {
             String s = String.format("Open cas reader fial:%s", mDevices.mCasCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS));
             Log.i(TAG, s);

@@ -73,7 +73,6 @@ public class aexddMT319Reader extends aexddPbocReader {
 		try {
 			obj.put("success", false);
 			try {
-
 				if (action.equals("queryCard")) {
 					int index = 0;
 					String r;
@@ -146,6 +145,21 @@ public class aexddMT319Reader extends aexddPbocReader {
 	public boolean selfTest() {
 		Log.i(TAG,String.format("Version:%s",getVersion()));
 		Log.i(TAG,String.format("Status:%s",getCardStatusString(queryStatus())));
+		int i = cpuPOR();
+		if (i==0x59){
+			JSONObject trackInfo = getTrackInfo();
+			try {
+				String tarck2 = trackInfo.getString("tarck2");
+				String tarck3 = trackInfo.getString("tarck3");
+				Log.i(TAG,String.format("TrackInfo:%s",trackInfo.toString()));
+				Log.i(TAG,String.format("tarck2%s---tarck3:%s",tarck2,tarck3));
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			if (trackInfo!=null){
+
+			}
+		}
 		return true;
 	}
 
@@ -223,6 +237,12 @@ public class aexddMT319Reader extends aexddPbocReader {
 			case 0x3400:
 				s1 = "卡机内有非接触式M1卡";
 				break;
+			case 0x3500:
+				s1="AT88SC102卡";
+				break;
+			case 0x3600:
+				s1="SLE4442卡";
+				break;
 			case 0x3F00:
 				s1 = "卡机内有无法识别卡";
 				break;
@@ -278,7 +298,7 @@ public class aexddMT319Reader extends aexddPbocReader {
 							}else len2++;
 							int len3 = 1;
 							if(r[6+len1+len2] != 0xE3) {
-								while (r[6 + len1 + len2 + len3] != 0x00) len3++;
+								while (r[6 + len1 + len2 + len3] != 0x03) len3++;
 								track.put("tarck3", new String(r, 6 + len1 + len2, len3));
 							}
 						} catch (JSONException e) {
