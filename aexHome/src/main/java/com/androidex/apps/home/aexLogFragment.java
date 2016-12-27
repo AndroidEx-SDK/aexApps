@@ -71,12 +71,12 @@ public class aexLogFragment extends LogFragment implements OnMultClickListener {
             JSONObject jsonObject = new JSONObject(activity.hwservice.getUserInfo());
             String string = jsonObject.optString("times");
             String startTime = jsonObject.optString(RebutSystem.startTime);
-            String endTime = jsonObject.optString(RebutSystem.endTime);
+            long endTime = RebutSystem.getDelyTime();
             if("".equals(string)){
                 string = "0";
             }
             Log.d("开机次数","开机次数:"+string);
-            if (!"".equals(startTime)&&!"".equals(endTime)){
+            if (!"".equals(startTime)){
                 Log.d("测试时长","测试时长:"+getTextHours(startTime,endTime));
             }
         } catch (Exception e) {
@@ -87,13 +87,14 @@ public class aexLogFragment extends LogFragment implements OnMultClickListener {
     /**
      *
      * @param startTime
-     * @param endTime
+     * @param end
      * @return
      * 计算测试的时长（天/时/分/秒）
+     *
+     *
      */
-    public String getTextHours(String startTime,String endTime){
+    public String getTextHours(String startTime,long end){
         long start = Long.parseLong(startTime);
-        long end = Long.parseLong(endTime);
         long time = end - start;
         String result = formatTime(time);
         return result;
@@ -125,9 +126,6 @@ public class aexLogFragment extends LogFragment implements OnMultClickListener {
         }
         if(second > 0) {
             sb.append(second+"秒");
-        }
-        if(milliSecond > 0) {
-            sb.append(milliSecond+"毫秒");
         }
         return sb.toString();
     }

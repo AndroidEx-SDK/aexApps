@@ -70,13 +70,14 @@ public class RebutSystem {
 
         } catch (JSONException e) {
             e.printStackTrace();
+
         }
         return jsonObject.toString();
     }
     /**
      * 获得当前时间的毫秒数
      */
-    private static long getDelyTime(){
+    public static long getDelyTime(){
         Date dt= new Date();
         Long time= dt.getTime();
         return time;
