@@ -40,6 +40,7 @@ public class SetUUIDFragment extends DialogFragment implements View.OnClickListe
      */
     public static final String UTF_8 = "UTF-8";
     private TextView tv_remind;
+    private boolean isSimpleSetUUID=true;//为true表示进入测试
 
     @Nullable
     @Override
@@ -62,6 +63,11 @@ public class SetUUIDFragment extends DialogFragment implements View.OnClickListe
         return setUUIDFragment;
     }
 
+    //为true表示进入测试
+    public SetUUIDFragment isStartText(boolean flag) {
+        isSimpleSetUUID = flag;
+        return this;
+    }
 
     public SetUUIDFragment dissMissDialog() {
         if (setUUIDFragment.isVisible()) {
@@ -106,9 +112,11 @@ public class SetUUIDFragment extends DialogFragment implements View.OnClickListe
                     tv_remind.setTextColor(Color.BLACK);
                     tv_remind.setText("UUID写入成功");
                     //activity.hwservice.runReboot();
-                    Intent intent = new Intent(FullscreenActivity.action_start_text);
-                   // intent.setAction();
-                    getContext().sendBroadcast(intent);
+                    if (isSimpleSetUUID){
+                        Intent intent = new Intent(FullscreenActivity.action_start_text);
+                        // intent.setAction();
+                        getContext().sendBroadcast(intent);
+                    }
                     dissMissDialog();
                 }
                 break;

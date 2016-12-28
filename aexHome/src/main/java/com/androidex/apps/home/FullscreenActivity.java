@@ -426,8 +426,12 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         switch (item.getItemId()) {
             case R.id.action_settings:
                 system_set();//系统设置
-                return true;
+              return true;
 
+            case R.id.action_setuuid:
+                Toast.makeText(this, "请设置UUID", Toast.LENGTH_LONG).show();
+                SetUUIDFragment.instance().isStartText(false).show(getSupportFragmentManager(), "uuidfragment");
+                return true;
             case R.id.action_print:
                 printText();//打印机测试
                 return true;
