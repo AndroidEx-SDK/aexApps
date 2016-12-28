@@ -45,6 +45,12 @@
         android:title="一键测试"/>
 
     <item
+        android:id="@+id/action_stop_reboot"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="退出老化"/>
+
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"

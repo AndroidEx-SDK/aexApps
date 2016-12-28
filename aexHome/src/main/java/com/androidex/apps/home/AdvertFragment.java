@@ -20,10 +20,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidex.apps.home.utils.AssetsUtil;
+import com.androidex.apps.home.utils.RebutSystem;
 import com.androidex.apps.home.view.CircleTextProgressbar;
 import com.androidex.common.IniReader;
 import com.androidex.common.OnMultClickListener;
 import com.androidex.logger.Log;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,7 +51,11 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
 
     Bitmap bm = null;
     public ImageView iview;
-    public CircleTextProgressbar progressbar;
+    private CircleTextProgressbar progressbar;
+    private TextView tv_sdkVersion;
+    private TextView tv_start_num;
+    private TextView tv_maturing;
+    private FullscreenActivity activity;
     public String[] result = new String[256];
     public int advertnum = 0;
     public int nSeconds = 5;
@@ -78,8 +85,7 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
             }
         }
     };
-    private TextView tv_sdkVersion;
-    private FullscreenActivity activity;
+
 
     public AdvertFragment() {
     }
@@ -99,11 +105,14 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
         activity = (FullscreenActivity) getActivity();
         progressbar = (CircleTextProgressbar) psetview.findViewById(R.id.progressbar);
         tv_sdkVersion = (TextView) psetview.findViewById(R.id.tv_sdkversion);
+        tv_start_num = (TextView) psetview.findViewById(R.id.tv_start_num);
+        tv_maturing = (TextView) psetview.findViewById(R.id.tv_maturing);
         progressbar.setCountdownProgressListener(2, progressListener);
         progressbar.setTimeMillis(30 * 1000);
         progressbar.reStart();
         FullscreenActivity.registerMultClickListener(psetview, this);
         tv_sdkVersion.setText(activity.hwservice.getSdkVersion());
+        setText();
         return psetview;
     }
 
@@ -135,6 +144,24 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
         int height = outMetrics.heightPixels;
 
         return String.format("%dx%d", width, height);
+    }
+
+    public void setText() {
+        try {
+            JSONObject jsonObject = new JSONObject(activity.hwservice.getUserInfo());
+            String string = jsonObject.optString("times");
+            String startTime = jsonObject.optString(RebutSystem.startTime);
+            String endTime = jsonObject.optString(RebutSystem.endTime);
+            if ("".equals(string)) {
+                string = "0";
+            }
+            tv_start_num.setText(String.format("开机次数:s%",string));
+            if (!"".equals(startTime) && !"".equals(endTime)) {
+                tv_maturing.setText(String.format("测试时长:s%",RebutSystem.getTextHours(startTime, endTime)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -340,7 +367,7 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(psetview.getContext()!=null){
+        if (psetview.getContext() != null) {
             psetview.getContext().unregisterReceiver(receiver);
         }
     }

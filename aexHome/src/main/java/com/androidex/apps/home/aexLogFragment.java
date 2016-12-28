@@ -76,8 +76,8 @@ public class aexLogFragment extends LogFragment implements OnMultClickListener {
                 string = "0";
             }
             Log.d("开机次数","开机次数:"+string);
-            if (!"".equals(startTime)){
-                Log.d("测试时长","测试时长:"+getTextHours(startTime,endTime));
+            if (!"".equals(startTime)) {
+                Log.d("测试时长", "测试时长:" + getTextHours(startTime, endTime));
             }
         } catch (Exception e) {
             e.printStackTrace();
