@@ -243,6 +243,12 @@ public class aexddMT319Reader extends aexddPbocReader {
 			case 0x3600:
 				s1="SLE4442卡";
 				break;
+			case 0x3700:
+				s1="AT88SC153卡";
+				break;
+			case 0x3800:
+				s1="AT88SC1608卡";
+				break;
 			case 0x3F00:
 				s1 = "卡机内有无法识别卡";
 				break;
