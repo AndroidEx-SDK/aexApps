@@ -45,12 +45,6 @@ import com.androidex.LoyaltyCardReader;
 import com.androidex.SoundPoolUtil;
 import com.dialog.SpotsDialog;
 import com.entity.Banner;
-import com.google.gson.Gson;
-import com.iflytek.cloud.RecognizerResult;
-import com.iflytek.cloud.SpeechConstant;
-import com.iflytek.cloud.SpeechError;
-import com.iflytek.cloud.ui.RecognizerDialog;
-import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.tencent.device.TXBinderInfo;
 import com.tencent.device.TXDataPoint;
@@ -62,6 +56,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static com.kedaxunfei.Speech.initSpeech;
 
 
 public class MainActivity extends Activity implements LoyaltyCardReader.AccountCallback{
@@ -755,8 +751,6 @@ public class MainActivity extends Activity implements LoyaltyCardReader.AccountC
                             case R.id.action_settings11:
                                 initSpeech(MainActivity.this);
                                 break;
-
-
                         }
                         return true;
                     }
@@ -825,72 +819,10 @@ public class MainActivity extends Activity implements LoyaltyCardReader.AccountC
             }
         }
     }
-    /**
-     * 初始化语音识别
-     */
-    public void initSpeech(final Context context) {
-        //1.创建RecognizerDialog对象
-        RecognizerDialog mDialog = new RecognizerDialog(context, null);
-        //2.设置accent、language等参数
-        mDialog.setParameter(SpeechConstant.LANGUAGE, "zh_cn");
-        mDialog.setParameter(SpeechConstant.ACCENT, "mandarin");
-        //3.设置回调接口
-        mDialog.setListener(new RecognizerDialogListener() {
-            @Override
-            public void onResult(RecognizerResult recognizerResult, boolean isLast) {
-                if (!isLast) {
-                    //解析语音
-                    String result = parseVoice(recognizerResult.getResultString());
-                    if (result.contains("开门")&& !result.contains("不开门")){
-                        int status = 2;
-                        Intent ds_intent = new Intent();
-                        ds_intent.setAction(DoorLock.DoorLockOpenDoor);
-                        ds_intent.putExtra("index",0);
-                        ds_intent.putExtra("status",status);
-                        sendBroadcast(ds_intent);
-                    }
-                }
-            }
 
-            @Override
-            public void onError(SpeechError speechError) {
 
-            }
-        });
-        //4.显示dialog，接收语音输入
-        mDialog.show();
-    }
-    /**
-     * 解析语音json
-     */
-    public String parseVoice(String resultString) {
-        Gson gson = new Gson();
-        Voice voiceBean = gson.fromJson(resultString, Voice.class);
 
-        StringBuffer sb = new StringBuffer();
-        ArrayList<Voice.WSBean> ws = voiceBean.ws;
-        for (Voice.WSBean wsBean : ws) {
-            String word = wsBean.cw.get(0).w;
-            sb.append(word);
-        }
-        return sb.toString();
-    }
 
-    /**
-     * 语音对象封装
-     */
-    public class Voice {
-
-        public ArrayList<WSBean> ws;
-
-        public class WSBean {
-            public ArrayList<CWBean> cw;
-        }
-
-        public class CWBean {
-            public String w;
-        }
-    }
 
     @Override
     public void onAccountReceived(String account) {
