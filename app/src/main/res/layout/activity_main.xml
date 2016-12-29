@@ -1,0 +1,228 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg3"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0"
+        android:visibility="gone"
+        android:orientation="vertical" >
+
+        <TextView
+            style="@style/Text_TitleBar_Style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:maxWidth="300dip"
+            android:singleLine="true"
+            android:text="绑定者列表"
+            android:textColor="@color/Text_BLACK" />
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:scaleType="centerCrop"
+            android:src="@drawable/window_seperator" />
+
+        <GridView
+            android:id="@+id/gridView_binderlist"
+            android:layout_width="match_parent"
+            android:layout_height="354dp"
+            android:layout_weight="0.61"
+            android:numColumns="6" >
+        </GridView>
+
+        <Button
+            android:id="@+id/btn_eraseallbinders"
+            style="@style/Text_TitleBar_Style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="eraseAllBinders"
+            android:text="解除所有绑定者"
+            android:visibility="gone"
+            android:textColor="@color/Text_BLUE" />
+        
+        <Button
+            android:id="@+id/btn_upload_log"
+            style="@style/Text_TitleBar_Style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="uploadDeviceLog"
+            android:text="上传设备日志"
+            android:visibility="gone"
+            android:textColor="@color/Text_BLUE" />
+                
+    </LinearLayout>
+
+
+
+   <com.viewpager.AutoScrollViewPager
+       android:id="@+id/vp_main"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"/>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:orientation="horizontal"
+    android:layout_gravity="bottom|left"
+    android:layout_marginBottom="20dp"
+    >
+
+    <ImageView
+        android:id="@+id/iv_erweima"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="left|center|bottom"
+        android:layout_marginLeft="20dp"
+        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:id="@+id/tv_xiaoqu"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:gravity="left|center"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="10dp"
+            android:textSize="40sp"
+            android:textColor="@color/Text_WHITE"
+            />
+
+        <TextView
+            android:id="@+id/tv_companyname"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:gravity="left|center"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="10dp"
+            android:textSize="40sp"
+            android:textColor="@color/Text_BLUE"
+            android:text="深圳市安卓工控设备有限公司"
+            />
+
+    </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/tv_input"
+        style="@style/Text_TitleBar_Style"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:gravity="center|right"
+        android:numeric="integer"
+        android:maxLength="8"
+        android:background="#00000000"
+        android:focusable="false"
+        android:layout_gravity="bottom"
+        android:textSize="40sp"
+        android:textColor="@color/Text_WHITE"
+        android:layout_marginRight="40dp"
+        />
+
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="vertical"
+        >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:background="#88000000"
+        >
+        <ImageView
+            android:id="@+id/iv_setting"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="left|center"
+            android:clickable="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/ic_launcher"
+            />
+
+
+        <ImageView
+            android:id="@+id/tv_log"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/new_logo_qq"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            />
+
+        <ImageView
+            android:id="@+id/wifi_image"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_gravity="top"
+            />
+
+        <ImageView
+            android:id="@+id/user_bind"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_gravity="top"/>
+
+    </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/net_view_rl"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:background="@color/yellow_warning"
+            android:clickable="true"
+            android:visibility="gone" >
+
+            <ImageView
+                android:id="@+id/dd"
+                style="@style/wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dip"
+                android:src="@drawable/msp_edit_warning" />
+
+            <TextView
+                android:id="@+id/net_title_tv"
+                style="@style/wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dip"
+                android:background="@color/yellow_warning"
+                android:text="@string/net_unavailable"
+                android:textColor="@android:color/black"
+                android:layout_toRightOf="@id/dd"
+                android:textSize="14sp" />
+
+            <ImageView
+                style="@style/wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/arrow_right" />
+
+        </RelativeLayout>
+    </LinearLayout>
+    
+ </FrameLayout>

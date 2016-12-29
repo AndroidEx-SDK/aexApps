@@ -98,6 +98,8 @@ public class SetUUIDFragment extends DialogFragment implements View.OnClickListe
                     activity.hwservice.writeHex(hwService.aexp_serial, uuid.substring(15));
                 } else {
                     Toast.makeText(getContext(), "请输入正确的UUID", Toast.LENGTH_LONG).show();
+                    tv_remind.setText("请输入正确的UUID");
+                    return;
                 }
 
                 if (activity.hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
