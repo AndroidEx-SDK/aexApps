@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?><RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#88888888">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="70dp">
+        
+        <com.tencent.av.opengl.ui.GLRootView 
+            android:layout_weight="3"
+            android:id="@+id/peer_gl_root_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+
+<!--           <TextureView
+            android:layout_weight="3"
+            android:id="@+id/peer_textureView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:visibility="gone" />    -->      
+        
+          <RelativeLayout 
+            android:id="@+id/layout_peer_textureView"
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:visibility="gone" >
+	          <TextureView
+	            android:id="@+id/peer_textureView"
+	            android:layout_width="fill_parent"
+	            android:layout_height="fill_parent" /> 
+	          <ImageView
+	            android:id="@+id/imageView_peer_textureView"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:src="@drawable/qav_video_bg_s">
+	          </ImageView>    
+          </RelativeLayout>
+
+          
+          <android.opengl.GLSurfaceView
+            android:layout_weight="2"
+            android:id="@+id/camera_textureview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="40dp"/>
+        
+    </LinearLayout>
+    
+    <TextView
+        android:id="@+id/logInfo_surface"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true" />
+    
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="12dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/av_video_accept_surface"
+            android:layout_width="200dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/av_btn_red"
+            android:contentDescription="@string/accept_video"
+            android:onClick="onBtnAccept"
+            android:text="接受"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+<!--         <Button
+            android:id="@+id/av_video_switch_surface"
+            android:layout_width="200dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/av_btn_red"
+            android:contentDescription="@string/switch_camera"
+            android:onClick="onBtnSwitchVideo"
+            android:text="切换画面"
+            android:textSize="16sp"
+            android:visibility="gone" /> -->
+
+        <Button
+            android:id="@+id/av_video_close_surface"
+            android:layout_width="200dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/av_btn_red"
+            android:contentDescription="@string/close_video"
+            android:onClick="onBtnClose"
+            android:text="关闭"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/av_video_reject_surface"
+            android:layout_width="200dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/av_btn_red"
+            android:contentDescription="@string/reject_video"
+            android:onClick="onBtnReject"
+            android:text="拒绝"
+            android:textSize="16sp"
+            android:visibility="gone" />
+    </LinearLayout>
+    
+</RelativeLayout>

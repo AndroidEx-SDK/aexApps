@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">锁相门禁</string>
+    <string name="accept_video">接受</string>
+    <string name="action_settings">设置</string>
+    <string name="camera_image">摄像头图像</string>
+    <string name="close_video">关闭</string>
+    <string name="hello_world">喂,锁相门禁!</string>
+    <string name="reject_video">拒绝</string>
+    <string name="switch_camera">切换摄像头</string>
+    <string name="unbind">解除绑定</string>
+    <string name="q_unbind_all">您确定要解绑所有用户吗？</string>
+    <string name="cancel">取消</string>
+</resources>
