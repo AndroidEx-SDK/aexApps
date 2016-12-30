@@ -91,11 +91,10 @@ public class SetUUIDFragment extends DialogFragment implements View.OnClickListe
             case R.id.finish:
                 tv_remind.setText("正在写入...");
                 /********uuid********/
-                String uuid = et_uuid.getText().toString().trim().replace("-", "");
+                String uuid = et_uuid.getText().toString().trim();
                 if (uuid.length() >= 32) {
-                    // String uuid = Base16.encode(uuid.getBytes());
-                    activity.hwservice.writeHex(hwService.aexp_uuid, uuid);
-                    activity.hwservice.writeHex(hwService.aexp_serial, uuid.substring(15));
+                    //activity.hwservice.writeHex(hwService.aexp_uuid, uuid);
+                    activity.hwservice.setAndroidExParameter(hwService.aexp_uuid, uuid);
                 } else {
                     Toast.makeText(getContext(), "请输入正确的UUID", Toast.LENGTH_LONG).show();
                 }
