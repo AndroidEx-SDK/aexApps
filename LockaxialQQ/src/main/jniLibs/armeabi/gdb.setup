@@ -1,0 +1,3 @@
+set solib-search-path ./obj/local/armeabi
+source /data/rdm/Tools/toolchains/android-ndk-r10e/prebuilt/common/gdb/common.setup
+directory /data/rdm/Tools/toolchains/android-ndk-r10e/platforms/android-18/arch-arm/usr/include /sources/cxx-stl/stlport/stlport/ /sources/android/support/include jni/../../txdevicesdk/sdkimpl/include jni/../../txdevicesdk/sdkimpl/ipcamera jni/../../txdevicesdk/modules/MsgCenterEx /data/rdm/Tools/toolchains/android-ndk-r10e/sources/cxx-stl/stlport/stlport /data/rdm/Tools/toolchains/android-ndk-r10e/sources/cxx-stl//gabi++/include

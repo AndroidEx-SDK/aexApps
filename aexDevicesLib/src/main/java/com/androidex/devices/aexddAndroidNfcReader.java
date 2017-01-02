@@ -124,7 +124,61 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
             }
         }
         */
+
         final IsoDep isodep = IsoDep.get(tag);
+        final byte[] cmdCardInfo = {(byte) 0x00, (byte) 0xb0, (byte) 0x9f, (byte) 0x05, (byte) 0x79};
+        if (isodep != null) {
+            Iso7816.StdTag stdTag = new Iso7816.StdTag(isodep);
+            try {
+                byte[] tagTransceive = stdTag.transceive(cmdCardInfo);
+                String s = ByteArrayToHexString(tagTransceive);
+                Log.e("tagTransceive:xxxx", s);
+            } catch (IOException e) {
+                Log.e("stdTag:xxxx", "异常1");
+                e.printStackTrace();
+                Log.e("stdTag:xxxx", "异常2");
+            }
+        }
+
+        if (isodep != null) {
+            try {
+                Log.e("cmdCardInfo:xxxx", cmdCardInfo.toString());
+                if (!isodep.isConnected()) {
+                    isodep.connect();
+                    isodep.setTimeout(30000);
+                }
+                byte[] transceive = isodep.transceive(cmdCardInfo);
+                Log.e("transceive:xxxx", transceive.toString());
+                String s = ByteArrayToHexString(transceive);
+                Log.e("s:xxxx", s);
+            } catch (IOException e) {
+                Log.e("s:xxxx", "异常1");
+                e.printStackTrace();
+                Log.e("s:xxxx", "异常2");
+            }
+        }
+
+        byte[] bytes = HexStringToByteArray("00b09f0579");
+        if (isodep != null) {
+            //00b09f0580
+            Log.e("bytes:xxxx", bytes.toString());
+            try {
+                if (!isodep.isConnected()) {
+                    isodep.connect();
+                    isodep.setTimeout(30000);
+                }
+                byte[] transceive = isodep.transceive(bytes);
+                Log.e("transceive:xxxx", transceive.toString());
+                String s = ByteArrayToHexString(transceive);
+                Log.e("s:xxxx", s);
+            } catch (IOException e) {
+                Log.e("s:xxxx", "异常1");
+                e.printStackTrace();
+                Log.e("s:xxxx", "异常2");
+            }
+        }
+
+
         if (isodep != null) {
             try {
                 JSONObject r = StandardPboc.readCard(isodep);

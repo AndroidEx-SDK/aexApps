@@ -64,7 +64,7 @@ public class appDevicesConfig extends appLibsConfig {
             }
             if(mConfigCasReader.optString(appDeviceDriver.PORT_ADDRESS,"") == ""){
                 try {
-                    mConfigCasReader.put(appDeviceDriver.PORT_ADDRESS,PORT_ADDR_CASREADER_LCC);
+                    mConfigCasReader.put(appDeviceDriver.PORT_ADDRESS,PORT_ADDR_CASREADER);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -99,7 +99,7 @@ public class appDevicesConfig extends appLibsConfig {
             }
             mConfigCasReader = new JSONObject();
             try {
-                mConfigCasReader.put(appDeviceDriver.PORT_ADDRESS,PORT_ADDR_CASREADER_LCC);
+                mConfigCasReader.put(appDeviceDriver.PORT_ADDRESS,PORT_ADDR_CASREADER);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

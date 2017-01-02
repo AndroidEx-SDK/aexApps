@@ -42,7 +42,6 @@
             android:label="@string/app_name"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -50,14 +49,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
             </intent-filter>
-
         </activity>
 
-
-        <activity
-            android:name=".activity.SystemMainActivity"
-            android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <receiver android:name="com.androidex.apps.home.brocast.BootBroadcastReceiver">
 
@@ -73,11 +66,5 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name="com.androidex.apps.home.activity.TransactionActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden">
-
-        </activity>
     </application>
-
 </manifest>

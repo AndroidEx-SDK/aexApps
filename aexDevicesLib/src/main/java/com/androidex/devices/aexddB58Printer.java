@@ -227,7 +227,6 @@ public class aexddB58Printer extends aexddPrinter {
         //监测打印机状态，n = 1: 传送打印机状态 ，n = 2: 传送脱机状态 ，n = 3: 传送错误状态 ，n = 4: 传送卷纸传感器状态
         Log.d(TAG, String.format("Printer status 0x%08X", checkStatus()));
         ln();         //换行
-       //ln();         //换行
         try {
             //打印：
             //设置对齐方式：0-左对齐,1-居中,2-右对齐
@@ -285,8 +284,6 @@ public class aexddB58Printer extends aexddPrinter {
      */
     public boolean selfTest (String value,int totalLength,int length){
         reset();       //初始化
-        android.util.Log.d("aexddB58Printer",value);
-        ln();
         try {
             //打印：
             //设置对齐方式：0-左对齐,1-居中,2-右对齐
@@ -296,15 +293,16 @@ public class aexddB58Printer extends aexddPrinter {
             WriteDataHex("1C26");   //打印中文
             byte[] sgbk = value.getBytes("GBK");
             WriteData(sgbk, sgbk.length);
-
             ln();
             if (length==totalLength){
-                cutPaper(1);
+                ln();
+                ln();
+                //cutPaper(1);
+
             }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
         return true;
     }
 

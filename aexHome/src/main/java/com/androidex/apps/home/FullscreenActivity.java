@@ -131,12 +131,11 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         }
     };
 
-
     public String runShellCommand(String cmd) {
         String ret = "";
         byte[] retBytes = new byte[2048];
 
-        Log.d(TAG, String.format("runShellCommand(%s)", cmd));
+       // Log.d(TAG, String.format("runShellCommand(%s)", cmd));
         try {
             cmd += "\n";
             Process exeEcho1 = Runtime.getRuntime().exec("su");
@@ -151,7 +150,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         } catch (IOException e) {
             Log.e("AexService", "shell cmd wrong:" + e.toString());
         }
-
         return ret;
     }
 
@@ -167,7 +165,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         initProgressBar();
         initTablayoutAndViewPager();
         initBroadCast();
-        RebutSystem.reBut(this);  //五分钟重启动，用于老化测试
+        //RebutSystem.reBut(this);  //五分钟重启动，用于老化测试
         if (hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
             if (!isInitConfig) {
                 initConfig();
@@ -184,11 +182,9 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         mDevices = new appDevicesManager(this);
         initActionBar(R.id.toolbar);
         mContentView = (ViewPager) findViewById(R.id.fullscreen_content);
-
         LinearLayout system_set = (LinearLayout) findViewById(R.id.system_set);
         LinearLayout about_local = (LinearLayout) findViewById(R.id.about_local);
         LinearLayout intnet_set = (LinearLayout) findViewById(R.id.intnet_set);
-
         LinearLayout start_set = (LinearLayout) findViewById(R.id.start_set);
         setFullScreen(true);
         setFullScreenView(mContentView);
@@ -202,24 +198,11 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         start_set.setOnClickListener(this);
     }
 
-//        Log.d(TAG, runShellCommand(String.format("echo \"0x34\" > %s", hwService.aexp_flag0)));
-//        Log.d(TAG, runShellCommand(String.format("echo \"0x0C\" > %s", hwService.aexp_flag1)));
-    //hwservice.setUserInfo(userInfo);
-    //String ret = hwservice.execShellCommand("ls -la /misc");
-    //hwservice.writeHex(hwservice.aexp_userinfo,"33343536373839");
-    //Log.d(TAG,runShellCommand(String.format("echo '12345'> %s", hwService.aexp_userinfo)));
-
     public void initConfig() {
         Log.d(TAG, hwservice.getSdkVersion());
-        String userInfo = hwservice.getUserInfo();
-        Log.d(TAG, userInfo);
-        // hwservice.setUserInfo("AAAAAAAAAAAAAAAAAA");
-        Log.d(TAG, String.format("userInfo:", hwservice.getUserInfo()));
         /**
          *针对22寸机配置
          */
-        //hwservice.setBd_Uart("");
-        //hwservice.writeHex(hwservice.AEX_PARAMETERS_BDUART, "");
         Log.d(TAG, runShellCommand(String.format("echo \"0x34\" > %s", hwService.aexp_flag0)));
         Log.d(TAG, runShellCommand(String.format("echo \"0x0C\" > %s", hwService.aexp_flag1)));
         Log.d(TAG, runShellCommand(String.format("echo \"\" > %s", hwservice.AEX_PARAMETERS_BDUART)));
@@ -232,7 +215,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         Log.d(TAG, String.format("lan_mac:", hwservice.getAndroidExParameter(aexp_lan_mac)));
         Log.d(TAG, String.format("bt_mac:", hwservice.getAndroidExParameter(aexp_bt_mac)));
         Log.d(TAG, String.format("wlan_mac:", hwservice.getAndroidExParameter(aexp_wlan_mac)));
-
     }
 
     public void initProgressBar() {
@@ -300,28 +282,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         list.add(mFrontBankcardFragment);
         list.add(mAfterBankcardFragment);
         list.add(mOtherCardFragment);
-        return list;
-    }
-
-    /**
-     * 视频播放的Fragment(重用同一个Fragment)
-     *
-     * @return
-     */
-    public List<Fragment> getVedioFragments() {
-        list = new ArrayList<>();
-
-        Fragment fragment1 = new VedioFragment();
-        Bundle bundle1 = new Bundle();
-        bundle1.putInt("index", 1);
-        fragment1.setArguments(bundle1);
-        list.add(fragment1);
-
-        Fragment fragment2 = new VedioFragment();
-        Bundle bundle2 = new Bundle();
-        bundle2.putInt("index", 2);
-        fragment2.setArguments(bundle2);
-        list.add(fragment2);
         return list;
     }
 
@@ -437,11 +397,11 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 return true;
 
             case R.id.action_reader:
-                readerText();//读卡器测试
+                readerText(1);//读卡器测试
                 return true;
 
             case R.id.action_cas_reader:
-                casReaderText();//燃气读卡器测试
+                casReaderText(2);//燃气读卡器测试
                 return true;
 
             case R.id.action_password_key:
@@ -452,8 +412,8 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 CameraFragment.instance().show(getSupportFragmentManager(), "camerafragment");
                 return true;
 
-            case R.id.action_video:
-                showDialog(getVedioFragments(), true);//视频播放测试程序
+            case R.id.action_video://视频播放测试程序
+                VedioFragment.Instance().show(getSupportFragmentManager(),"vediofragment");
                 return true;
 
             case R.id.action_onekey_text:
@@ -493,12 +453,13 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
      * 启动自动测试
      */
     private void startText() {
-        readerText();//读卡器测试
-        casReaderText();//燃气读卡器测试
+        readerText(1);//银行卡读卡器测试
+        casReaderText(2);//燃气读卡器测试
         ztPasswordKeypadText();//密码键盘测试
         CameraFragment.instance().show(getSupportFragmentManager(), "camerafragment");//相机测试
         //showDialog(getVedioFragments(), true);//视频播放测试程序
         //netWorkText();//以太网测试
+        //NetWork.netWorkManger(this);
         // NetWork.wifiManger(this);
         //RecordVoiceFragment.instance().show(getSupportFragmentManager(),"recordvoicefragment");
         //  printText();//打印机测试
@@ -536,18 +497,30 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     }).show();
         }
     }
+    /**
+     * 读卡器测试程序
+     */
+    private void readerText(int i) {
+        if (mDevices.mBankCardReader.Open()) {
+            aexddMT319Reader mBankCardReader = (aexddMT319Reader) mDevices.mBankCardReader;
+            mBankCardReader.selfTest(i);
+            mBankCardReader.Close();
+        } else {
+            String s = String.format("Open bank reader fial:%s", mDevices.mBankCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS));
+            Log.i(TAG, s);
+            Toast.makeText(this, s, Toast.LENGTH_LONG).show();
+        }
+    }
 
     /**
      * 燃气读卡器测试
      */
-    private void casReaderText() {
+    private void casReaderText(int i) {
         if (mDevices.mCasCardReader.Open()) {
-            Log.i(TAG, "燃气卡读卡器打开");
             //lcc1ReaderText();//莱卡读卡器测试程序
-            aexddMT319Reader reader = (aexddMT319Reader) mDevices.mCasCardReader;
-            reader.selfTest();
-            mDevices.mCasCardReader.Close();
-            Log.i(TAG, "燃气卡读卡器关闭");
+            aexddMT319Reader mCasCardReader = (aexddMT319Reader) mDevices.mCasCardReader;
+            mCasCardReader.selfTest(i);
+            mCasCardReader.Close();
         } else {
             String s = String.format("Open cas reader fial:%s", mDevices.mCasCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS));
             Log.i(TAG, s);
@@ -573,13 +546,11 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
      */
     private void ztPasswordKeypadText() {
         if (mDevices.mZTPasswordKeypad.Open()) {
-            Log.i(TAG, "密码键盘打开");
             aexddZTC70 passworkkeypad = (aexddZTC70) mDevices.mZTPasswordKeypad;
             passworkkeypad.selfTest();
             //打开dialogfragment测试
             //PasswordPadFragment.instance(passworkkeypad).show(getSupportFragmentManager(),"passwordpadfragment");
             mDevices.mZTPasswordKeypad.Close();
-            Log.i(TAG, "密码键盘关闭");
         } else {
             String s = String.format("Open passkeypad reader fial:%s", mDevices.mPasswordKeypad.mParams.optString(appDeviceDriver.PORT_ADDRESS));
             Log.i(TAG, s);
@@ -602,22 +573,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         reader.selfTest();
     }
 
-    /**
-     * 读卡器测试程序
-     */
-    private void readerText() {
-        if (mDevices.mBankCardReader.Open()) {
-            Log.i(TAG, "银行卡读卡器打开");
-            aexddMT319Reader reader = (aexddMT319Reader) mDevices.mBankCardReader;
-            reader.selfTest();
-            mDevices.mBankCardReader.Close();
-            Log.i(TAG, "银行卡读卡器关闭");
-        } else {
-            String s = String.format("Open bank reader fial:%s", mDevices.mBankCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS));
-            Log.i(TAG, s);
-            Toast.makeText(this, s, Toast.LENGTH_LONG).show();
-        }
-    }
 
     /**
      * 打印机测试程序
@@ -628,8 +583,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             Intent intent = new Intent();
             intent.setAction(aexLogFragment.PRINT_ACTION);
             sendBroadcast(intent);
-            Log.i(TAG, "打印机打开");
-
         } else {
             String s = String.format("Open printer fial:%s", mDevices.mPrinter.mParams.optString(appDeviceDriver.PORT_ADDRESS));
             Log.i(TAG, s);
@@ -645,29 +598,32 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1001) {//系统wifi返回键
-            //弹出对话框
-            AlertDialog.Builder builder = new AlertDialog.Builder(FullscreenActivity.this);
-            builder.setCancelable(false);
-            builder.setMessage("wifi网络是否正常")
-                    .setPositiveButton("正常", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Log.d("wifi网络", "wifi网络正常");
-                            printText();
-                            dialog.dismiss();
-                        }
-                    })
-                    .setNegativeButton("NG", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Log.d("wifi网络", "wifi网络不正常");
-                            printText();
-                            dialog.dismiss();
-                        }
-                    }).show();
+        switch (requestCode){
+            case 1001://系统wifi返回键
+                AlertDialog.Builder builder = new AlertDialog.Builder(FullscreenActivity.this);
+                builder.setCancelable(false);
+                builder.setMessage("wifi网络是否正常")
+                        .setPositiveButton("正常", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d("wifi网络", "wifi网络正常");
+                                printText();
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton("NG", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d("wifi网络", "wifi网络不正常");
+                                printText();
+                                dialog.dismiss();
+                            }
+                        }).show();
+                break;
+            case 1002://以太网返回
+                netWorkText();
+                break;
         }
-
     }
 
     /**
@@ -796,7 +752,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     NetWork.wifiManger(FullscreenActivity.this);
                     break;
                 case action_start_network_text:
-                    netWorkText();
+                    NetWork.netWorkManger(FullscreenActivity.this);
                     break;
             }
         }
@@ -952,12 +908,13 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
      * 启用NFC读卡
      */
     public void enableReaderMode() {
-        Log.i(TAG, "启用读卡模式");
+        //Log.i(TAG, "启用NFC读卡模式");
         NfcAdapter nfc = NfcAdapter.getDefaultAdapter(this);
         if (nfc != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 if (this instanceof NfcAdapter.ReaderCallback) {
                     nfc.enableReaderMode(this, (aexddAndroidNfcReader) mDevices.mNfcReader, aexddAndroidNfcReader.READER_FLAGS, null);
+
                 }
             }
         }
@@ -967,7 +924,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
      * 禁用NFC读卡
      */
     public void disableReaderMode() {
-        Log.i(TAG, "禁用读卡模式");
+        //Log.i(TAG, "禁用读卡模式");
         NfcAdapter nfc = NfcAdapter.getDefaultAdapter(this);
         if (nfc != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -1000,7 +957,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 String hex = Integer.toHexString(b[i] & 0xFF);
                 if (hex.length() == 1) {
                     hex = '0' + hex;
-
                 }
                 string.append(hex.toUpperCase() + " ");
                 android.util.Log.d("111111", hex.toUpperCase() + " ");

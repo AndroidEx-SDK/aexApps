@@ -164,7 +164,6 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
         }
     }
 
-
     public void startPlayPic() {
         //创建广告播放存储配置和图片的根目录
         File ff = new File(advertPath);

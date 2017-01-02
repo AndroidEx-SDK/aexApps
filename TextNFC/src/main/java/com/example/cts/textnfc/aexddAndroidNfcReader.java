@@ -85,7 +85,7 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
         Log.d(TAG, "80应该返回数据的长度xxxx:"+len1);
 
 //        // 1.
-//        otherSend80(cmdCardInfo80, isodep);//另外一种发送命令的方式
+        otherSend80(cmdCardInfo80, isodep);//另外一种发送命令的方式
 
 //        //2.发送80字节
 //        send80(isodep, cmdCardInfo80);
@@ -95,7 +95,7 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
 //        send79(isodep, cmdCardInfo79);
 
         //4.发送String格式的命令
-        sendStringCmd(isodep,"00b09f0580");
+       // sendStringCmd(isodep,"00b09f0580");
 
         if (isodep != null) {
             try {

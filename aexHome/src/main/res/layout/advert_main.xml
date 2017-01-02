@@ -37,7 +37,6 @@
             android:id="@+id/tv_sdkversion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="111111"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size14"/>
 
@@ -45,7 +44,6 @@
             android:id="@+id/tv_start_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="111111"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size14"/>
 
@@ -53,7 +51,6 @@
             android:id="@+id/tv_maturing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="111111"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size14"/>
 

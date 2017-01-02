@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.widget.Toast;
 
 import com.androidex.apps.home.FullscreenActivity;
 
@@ -29,6 +30,25 @@ public class NetWork {
         i.putExtra("back",true);
         ctx.sendBroadcast(new Intent("com.android.action.display_navigationbar"));
         ((FullscreenActivity)ctx).startActivityForResult(i,1001);
+    }
+
+    public static void netWorkManger(Context ctx){
+        Toast.makeText(ctx,"请打开以太网开关",Toast.LENGTH_LONG).show();
+        Intent i = new Intent();
+        i.setAction(Intent.ACTION_VIEW);
+        if(android.os.Build.VERSION.SDK_INT >= 11){//$EtherNetSettingsActivity
+            i.setClassName("com.android.settings", "com.android.settings.Settings");
+        }else{
+            i.setClassName("com.android.settings"
+                    , "com.android.settings.wifi.WifiSettings");
+        }
+        i.putExtra("back",true);
+        ctx.sendBroadcast(new Intent("com.android.action.display_navigationbar"));
+        ((FullscreenActivity)ctx).startActivityForResult(i,1002);
+
+//        Intent intent=new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS);
+//        intent.putExtra("back",true);
+//        ((FullscreenActivity)ctx).startActivityForResult(intent,1002);
     }
 
     /**
