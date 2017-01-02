@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 
+import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -60,7 +61,7 @@ public class MacUtil {
         return strMacAddr;
     }
 
-    protected static InetAddress getLocalInetAddress() {
+    public static InetAddress getLocalInetAddress() {
         InetAddress ip = null;
         try {
             Enumeration<NetworkInterface> en_netInterface = NetworkInterface.getNetworkInterfaces();
@@ -82,5 +83,38 @@ public class MacUtil {
             e.printStackTrace();
         }
         return ip;
+    }
+
+    /**
+     * 获取ip地址
+     *
+     * @return
+     */
+    public static String getHostIP() {
+
+        String hostIp = null;
+        try {
+            Enumeration nis = NetworkInterface.getNetworkInterfaces();
+            InetAddress ia = null;
+            while (nis.hasMoreElements()) {
+                NetworkInterface ni = (NetworkInterface) nis.nextElement();
+                Enumeration<InetAddress> ias = ni.getInetAddresses();
+                while (ias.hasMoreElements()) {
+                    ia = ias.nextElement();
+                    if (ia instanceof Inet6Address) {
+                        continue;// skip ipv6
+                    }
+                    String ip = ia.getHostAddress();
+                    if (!"127.0.0.1".equals(ip)) {
+                        hostIp = ia.getHostAddress();
+                        break;
+                    }
+                }
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        return hostIp;
+
     }
 }

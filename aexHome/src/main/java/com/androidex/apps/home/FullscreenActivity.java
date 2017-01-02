@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Build;
@@ -442,7 +443,12 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                                 dialog.dismiss();
                             }
                         }).show();
+                return true;
+            case R.id.action_unintall:
+                Uri packageUri = Uri.parse("package:"+FullscreenActivity.this.getPackageName());
 
+                Intent intent = new Intent(Intent.ACTION_DELETE,packageUri);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

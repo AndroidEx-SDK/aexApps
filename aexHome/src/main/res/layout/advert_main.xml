@@ -34,6 +34,12 @@
         android:layout_alignParentRight="true">
 
         <TextView
+            android:id="@+id/tv_ip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size14"/>
+        <TextView
             android:id="@+id/tv_sdkversion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

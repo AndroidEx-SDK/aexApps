@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidex.apps.home.utils.AssetsUtil;
+import com.androidex.apps.home.utils.MacUtil;
 import com.androidex.apps.home.utils.RebutSystem;
 import com.androidex.apps.home.view.CircleTextProgressbar;
 import com.androidex.common.IniReader;
@@ -52,6 +53,7 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
     Bitmap bm = null;
     public ImageView iview;
     private CircleTextProgressbar progressbar;
+    private TextView tv_ip;
     private TextView tv_sdkVersion;
     private TextView tv_start_num;
     private TextView tv_maturing;
@@ -104,6 +106,7 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
         }
         activity = (FullscreenActivity) getActivity();
         progressbar = (CircleTextProgressbar) psetview.findViewById(R.id.progressbar);
+        tv_ip = (TextView) psetview.findViewById(R.id.tv_ip);
         tv_sdkVersion = (TextView) psetview.findViewById(R.id.tv_sdkversion);
         tv_start_num = (TextView) psetview.findViewById(R.id.tv_start_num);
         tv_maturing = (TextView) psetview.findViewById(R.id.tv_maturing);
@@ -111,8 +114,23 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
         progressbar.setTimeMillis(30 * 1000);
         progressbar.reStart();
         FullscreenActivity.registerMultClickListener(psetview, this);
+        tv_ip.setText(MacUtil.getHostIP());
         tv_sdkVersion.setText(activity.hwservice.getSdkVersion());
-        setText();
+        try {
+            JSONObject jsonObject = new JSONObject(activity.hwservice.getUserInfo());
+            String string = jsonObject.optString("times");
+            String startTime = jsonObject.optString(RebutSystem.startTime);
+            String endTime = jsonObject.optString(RebutSystem.endTime);
+            if ("".equals(string)) {
+                string = "1";
+            }
+            tv_start_num.setText(String.format("开机次数:s%",string));
+            if (!"".equals(startTime) && !"".equals(endTime)) {
+                tv_maturing.setText(String.format("测试时长:s%",RebutSystem.getTextHours(startTime, endTime)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return psetview;
     }
 
@@ -144,24 +162,6 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
         int height = outMetrics.heightPixels;
 
         return String.format("%dx%d", width, height);
-    }
-
-    public void setText() {
-        try {
-            JSONObject jsonObject = new JSONObject(activity.hwservice.getUserInfo());
-            String string = jsonObject.optString("times");
-            String startTime = jsonObject.optString(RebutSystem.startTime);
-            String endTime = jsonObject.optString(RebutSystem.endTime);
-            if ("".equals(string)) {
-                string = "0";
-            }
-            tv_start_num.setText(String.format("开机次数:s%",string));
-            if (!"".equals(startTime) && !"".equals(endTime)) {
-                tv_maturing.setText(String.format("测试时长:s%",RebutSystem.getTextHours(startTime, endTime)));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void startPlayPic() {
