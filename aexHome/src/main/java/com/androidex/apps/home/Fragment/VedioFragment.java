@@ -1,15 +1,14 @@
 package com.androidex.apps.home.fragment;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 
 import com.androidex.apps.home.R;
+import com.androidex.apps.home.utils.NetWork;
 import com.androidex.apps.home.view.CustomVideoView;
-
-import static com.androidex.apps.home.FullscreenActivity.action_start_network_text;
 
 /**
  * Created by liyp on 16/12/10.
@@ -35,6 +34,7 @@ public class VedioFragment extends LazyLoadFragment implements View.OnClickListe
     }
 
     public void iniView() {
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         iv_close = findViewById(R.id.iv_close);
         Button btn_OK = findViewById(R.id.btn_OK);
         Button btn_NG = findViewById(R.id.btn_NG);
@@ -63,15 +63,14 @@ public class VedioFragment extends LazyLoadFragment implements View.OnClickListe
                 //dissMissDialog();
                 break;
             case R.id.btn_OK:
-                com.androidex.logger.Log.d(TAG, "视频播放正常");
-                sendBrocast();
+                com.androidex.logger.Log.d(TAG, "视频播放OK");
+                NetWork.wifiManger(getActivity());
                 dissMissDialog();
                 break;
             case R.id.btn_NG:
                 com.androidex.logger.Log.d(TAG, "视频播放失败");
-                sendBrocast();
+                NetWork.wifiManger(getActivity());
                 dissMissDialog();
-
                 break;
         }
     }
@@ -80,11 +79,6 @@ public class VedioFragment extends LazyLoadFragment implements View.OnClickListe
             fragment.dismiss();
         }
         return this;
-    }
-    private void sendBrocast() {
-        Intent intent = new Intent(action_start_network_text);
-        getContext().sendBroadcast(intent);
-        DialogFragmentManger.instance().dissMissDialog();
     }
 
     @Override

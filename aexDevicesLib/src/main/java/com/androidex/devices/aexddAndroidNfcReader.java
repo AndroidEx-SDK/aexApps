@@ -132,11 +132,8 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
             try {
                 byte[] tagTransceive = stdTag.transceive(cmdCardInfo);
                 String s = ByteArrayToHexString(tagTransceive);
-                Log.e("tagTransceive:xxxx", s);
             } catch (IOException e) {
-                Log.e("stdTag:xxxx", "异常1");
                 e.printStackTrace();
-                Log.e("stdTag:xxxx", "异常2");
             }
         }
 
@@ -152,13 +149,11 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
                 String s = ByteArrayToHexString(transceive);
                 Log.e("s:xxxx", s);
             } catch (IOException e) {
-                Log.e("s:xxxx", "异常1");
                 e.printStackTrace();
-                Log.e("s:xxxx", "异常2");
             }
         }
 
-        byte[] bytes = HexStringToByteArray("00b09f0579");
+        byte[] bytes = HexStringToByteArray("00b09f0580");
         if (isodep != null) {
             //00b09f0580
             Log.e("bytes:xxxx", bytes.toString());
@@ -172,9 +167,7 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
                 String s = ByteArrayToHexString(transceive);
                 Log.e("s:xxxx", s);
             } catch (IOException e) {
-                Log.e("s:xxxx", "异常1");
                 e.printStackTrace();
-                Log.e("s:xxxx", "异常2");
             }
         }
 
@@ -263,5 +256,4 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
         }
         return data;
     }
-
 }

@@ -82,6 +82,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     public static final String action_Viewpager_gone = "com.androidex.action.viewpager.gone";
     public static final String action_start_text = "com.androidex.action.start.text";
     public static final String action_start_wifi_text = "com.androidex.action.start.wifi.text";
+    public static final String action_start_print_text = "com.androidex.action.start.print.text";
     public static final String action_start_network_text = "com.androidex.action.start.network.text";
     public static String aexp_lan_mac = "/sys/class/androidex_parameters/androidex/lan_mac";
     public static String aexp_bt_mac = "/sys/class/androidex_parameters/androidex/bt_mac";
@@ -234,6 +235,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         intentFilter.addAction(action_start_text);//启动自动测试程序
         intentFilter.addAction(action_start_wifi_text);//启动wifi测试页面
         intentFilter.addAction(action_start_network_text);//启动以太网测试页面
+        intentFilter.addAction(action_start_print_text);//启动打印机测试
         intentFilter.addAction(aexddAndroidNfcReader.START_ACTION);
         registerReceiver(nbr, intentFilter);
     }
@@ -459,16 +461,16 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
      * 启动自动测试
      */
     private void startText() {
-        readerText(1);//银行卡读卡器测试
+        readerText(1);//银行卡读卡器测试mac
         casReaderText(2);//燃气读卡器测试
         ztPasswordKeypadText();//密码键盘测试
         CameraFragment.instance().show(getSupportFragmentManager(), "camerafragment");//相机测试
         //showDialog(getVedioFragments(), true);//视频播放测试程序
+        // NetWork.wifiManger(this);
         //netWorkText();//以太网测试
         //NetWork.netWorkManger(this);
-        // NetWork.wifiManger(this);
-        //RecordVoiceFragment.instance().show(getSupportFragmentManager(),"recordvoicefragment");
-        //  printText();//打印机测试
+        //VedioFragment.Instance().show(getSupportFragmentManager(),"recordvoicefragment");
+        //printText();//打印机测试
     }
 
     public void netWorkText() {
@@ -481,7 +483,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             AlertDialog.Builder builder;
             builder = new AlertDialog.Builder(FullscreenActivity.this);
             builder.setCancelable(false);
-            builder.setMessage("请确认是否插入网线")
+            builder.setMessage("请确认关闭无线网并插入网线")
                     .setPositiveButton("是", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -579,7 +581,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         reader.selfTest();
     }
 
-
     /**
      * 打印机测试程序
      */
@@ -603,7 +604,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         switch (requestCode){
             case 1001://系统wifi返回键
                 AlertDialog.Builder builder = new AlertDialog.Builder(FullscreenActivity.this);
@@ -612,16 +612,16 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                         .setPositiveButton("正常", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Log.d("wifi网络", "wifi网络正常");
-                                printText();
+                                Log.d("wifi网络", "wifi网络OK");
+                                NetWork.netWorkManger(FullscreenActivity.this);
                                 dialog.dismiss();
                             }
                         })
                         .setNegativeButton("NG", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Log.d("wifi网络", "wifi网络不正常");
-                                printText();
+                                Log.d("wifi网络", "wifi网络失败");
+                                NetWork.netWorkManger(FullscreenActivity.this);
                                 dialog.dismiss();
                             }
                         }).show();
@@ -740,25 +740,33 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     dismissDialog();
                     delayedHide(AUTO_HIDE_DELAY_MILLIS);
                     break;
+
                 case aexddAndroidNfcReader.START_ACTION://接收读取卡的信息
                     cardInfo = intent.getStringExtra("cardinfo");
-                    android.util.Log.e("接收读取卡的信息====", cardInfo + "0000");
                     dismissDialog();
                     showDialog(getCarFragments(), false);
                     break;
+
                 case action_Viewpager_gone:
                     viewPager.setVisibility(View.GONE);
                     break;
-                case action_start_text:
+
+                case action_start_text://启动测试程序
                     mContentView.setCurrentItem(2);
-                    startText();//启动测试程序
+                    startText();
                     break;
 
-                case action_start_wifi_text:
+                case action_start_wifi_text://启动WIFI测试
                     NetWork.wifiManger(FullscreenActivity.this);
                     break;
-                case action_start_network_text:
+
+                case action_start_network_text://启动以太网测试
                     NetWork.netWorkManger(FullscreenActivity.this);
+                    break;
+
+                case action_start_print_text://启动打印机测试
+                    Toast.makeText(FullscreenActivity.this,"请在NFC处刷卡",Toast.LENGTH_LONG).show();
+                    printText();
                     break;
             }
         }

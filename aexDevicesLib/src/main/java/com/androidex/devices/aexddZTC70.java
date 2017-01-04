@@ -288,7 +288,7 @@ public class aexddZTC70 extends aexddPasswordKeypad {
      */
     @Override
     public String pkGetVersion() {
-        String ret = "";
+        String ret = null;
         //pkSendHexCmd("0233013330333103");
         WriteDataHex("0230313330333103");
         byte[] r = pkReadPacket(10000*delayUint);
@@ -346,7 +346,6 @@ public class aexddZTC70 extends aexddPasswordKeypad {
             }
             break;
         }
-
     }
 
     /**
@@ -364,7 +363,6 @@ public class aexddZTC70 extends aexddPasswordKeypad {
                 if (hex.length() == 1)
                 {
                     hex = '0' + hex;
-
                 }
                 string.append(hex.toUpperCase() );
             }

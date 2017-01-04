@@ -12,13 +12,11 @@ import com.androidex.apps.home.FullscreenActivity;
  * Created by cts on 16/12/14.
  * 网络连接
  */
-
 public class NetWork {
     /**
      * 测试wifi网络环境
      */
     public static void wifiManger(Context ctx){
-
         Intent i = new Intent();
         i.setAction(Intent.ACTION_VIEW);
         if(android.os.Build.VERSION.SDK_INT >= 11){
@@ -33,7 +31,7 @@ public class NetWork {
     }
 
     public static void netWorkManger(Context ctx){
-        Toast.makeText(ctx,"请打开以太网开关",Toast.LENGTH_LONG).show();
+        Toast.makeText(ctx,"请关闭WIFI并打开以太网开关",Toast.LENGTH_LONG).show();
         Intent i = new Intent();
         i.setAction(Intent.ACTION_VIEW);
         if(android.os.Build.VERSION.SDK_INT >= 11){//$EtherNetSettingsActivity
@@ -45,14 +43,10 @@ public class NetWork {
         i.putExtra("back",true);
         ctx.sendBroadcast(new Intent("com.android.action.display_navigationbar"));
         ((FullscreenActivity)ctx).startActivityForResult(i,1002);
-
-//        Intent intent=new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS);
-//        intent.putExtra("back",true);
-//        ((FullscreenActivity)ctx).startActivityForResult(intent,1002);
     }
 
     /**
-     * 判断是否有以太网的连接
+     * 判断是否有以太网的连接成功
      */
     public static boolean isConnect(Context context){
         if (context!=null) {
