@@ -3,7 +3,6 @@ package com.androidex.devices;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.widget.Toast;
 
 import com.androidex.apps.aexdeviceslib.R;
 import com.androidex.common.SoundPoolUtil;
@@ -72,7 +71,6 @@ public class aexddZTC70 extends aexddPasswordKeypad {
                 try {
                     JSONObject msgArgs = new JSONObject(_msg);
                     int key = Integer.parseInt(msgArgs.optString("key"), 16);
-
                     android.util.Log.e("按键：", key + "");
                     if (key >= 0 && key <= 9) {
                         SoundPoolUtil.getSoundPoolUtil().loadVoice(mContext, key);
@@ -127,7 +125,6 @@ public class aexddZTC70 extends aexddPasswordKeypad {
         try {
             obj.put("success", false);
             try {
-
                 if (action.equals("pkReset")) {
                     pkReset();
                 } else {
@@ -147,9 +144,12 @@ public class aexddZTC70 extends aexddPasswordKeypad {
 
     @Override
     public boolean selfTest() {
-        pkGetVersion();
-        Log.i(TAG, String.format("Version:%s", pkGetVersion()));
-        Toast.makeText(mContext,String.format("Version:%s", pkGetVersion()), Toast.LENGTH_LONG).show();
+        if (pkGetVersion()!=null){
+            Log.d(TAG, "密码键盘OK");
+        }else {
+            Log.d(TAG, "密码键盘失败");
+        }
+       // Toast.makeText(mContext,String.format("Version:%s", pkGetVersion()), Toast.LENGTH_LONG).show();
         //setQuery();
        // android.util.Log.e(TAG,String.format("Status:%s", getStatusStr(setQuery())));
         return true;
@@ -288,13 +288,11 @@ public class aexddZTC70 extends aexddPasswordKeypad {
      */
     @Override
     public String pkGetVersion() {
-        String ret = "";
-
+        String ret = null;
         //pkSendHexCmd("0233013330333103");
         WriteDataHex("0230313330333103");
         byte[] r = pkReadPacket(10000*delayUint);
         String s = hexString(r);
-        android.util.Log.d("---",s);
         if(s!=null){
             ret = s.substring(10,30);//35 41 35 34 33 35 33 39 33 38
             //对接收的字符串进行处理
@@ -306,13 +304,9 @@ public class aexddZTC70 extends aexddPasswordKeypad {
             }
 
             String str = stringBuilder.substring(4,6);
-            Toast.makeText(mContext,getStatusStr(Integer.parseInt(str,16)),Toast.LENGTH_LONG).show();
-            Log.d("政通",getStatusStr(Integer.parseInt(str,16)));
-        }else{
-            Log.d("政通","未安装密码键盘");
+            //Toast.makeText(mContext,getStatusStr(Integer.parseInt(str,16)),Toast.LENGTH_LONG).show();
+
         }
-
-
         return ret;
     }
 
@@ -352,7 +346,6 @@ public class aexddZTC70 extends aexddPasswordKeypad {
             }
             break;
         }
-
     }
 
     /**
@@ -370,7 +363,6 @@ public class aexddZTC70 extends aexddPasswordKeypad {
                 if (hex.length() == 1)
                 {
                     hex = '0' + hex;
-
                 }
                 string.append(hex.toUpperCase() );
             }

@@ -22,9 +22,10 @@ import com.androidex.apps.home.R;
 
 import java.io.IOException;
 
-import static com.androidex.apps.home.FullscreenActivity.action_start_wifi_text;
+import static com.androidex.apps.home.FullscreenActivity.action_start_print_text;
 
 /**
+ * 录音机
  * Created by liyp on 16/12/10.
  */
 
@@ -103,13 +104,13 @@ public class RecordVoiceFragment extends DialogFragment implements View.OnClickL
                 break;
 
             case R.id.btn_NG:
-                intent = new Intent(action_start_wifi_text);
+                intent = new Intent(action_start_print_text);
                 getContext().sendBroadcast(intent);
-                com.androidex.logger.Log.e(TAG,"录音不良");
+                com.androidex.logger.Log.e(TAG,"录音失败");
                 dissMiss();
                 break;
             case R.id.btn_OK:
-                intent = new Intent(action_start_wifi_text);
+                intent = new Intent(action_start_print_text);
                 getContext().sendBroadcast(intent);
                 com.androidex.logger.Log.d(TAG,"录音正常");
                 dissMiss();
@@ -119,6 +120,7 @@ public class RecordVoiceFragment extends DialogFragment implements View.OnClickL
     }
     public void dissMiss(){
         if (recordVoiceFragment.isVisible()){
+            stopPlayRecord();
             recordVoiceFragment.dismiss();
         }
     }
@@ -142,7 +144,6 @@ public class RecordVoiceFragment extends DialogFragment implements View.OnClickL
         }else{//已经开始录音，且未点击停止录音
             Toast.makeText(activity,"正在录音",Toast.LENGTH_SHORT).show();
         }
-
     }
 
     /**
@@ -178,6 +179,7 @@ public class RecordVoiceFragment extends DialogFragment implements View.OnClickL
     public void stopPlayRecord(){
         if (mPlayer!=null){
             mPlayer.release();
+            mPlayer.stop();
             mPlayer = null;
         }
 

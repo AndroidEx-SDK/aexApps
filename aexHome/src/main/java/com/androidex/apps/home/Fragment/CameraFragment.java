@@ -214,13 +214,13 @@ public class CameraFragment extends DialogFragment implements SurfaceHolder.Call
 //                        }
 //                    }
 //                });
-                activity.showDialog(activity.getVedioFragments(),true);
-                Log.e(TAG,"相机测试正常");
+                VedioFragment.Instance().show(activity.getSupportFragmentManager(),"vediofragment");
+                Log.d(TAG,"相机测试OK");
                 dissMissDialog();
                 break;
             case R.id.btn_NG:
-                activity.showDialog(activity.getVedioFragments(),true);
-                Log.e(TAG,"相机测试不良");
+                VedioFragment.Instance().show(activity.getSupportFragmentManager(),"vediofragment");
+                Log.d(TAG,"相机测试不良");
                 dissMissDialog();
                 break;
         }

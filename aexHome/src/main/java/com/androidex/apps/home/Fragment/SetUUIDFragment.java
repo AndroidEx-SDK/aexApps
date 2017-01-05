@@ -91,9 +91,10 @@ public class SetUUIDFragment extends DialogFragment implements View.OnClickListe
             case R.id.finish:
                 tv_remind.setText("正在写入...");
                 /********uuid********/
-                String uuid = et_uuid.getText().toString().trim().replace("-", "");
+                String uuid = et_uuid.getText().toString().trim();
                 if (uuid.length() >= 32) {
                     // String uuid = Base16.encode(uuid.getBytes());
+                    //activity.hwservice.writeHex(hwService.aexp_uuid, uuid);
                     activity.hwservice.setAndroidExParameter(hwService.aexp_uuid, uuid);
                 } else {
                     Toast.makeText(getContext(), "请输入正确的UUID", Toast.LENGTH_LONG).show();
@@ -107,15 +108,13 @@ public class SetUUIDFragment extends DialogFragment implements View.OnClickListe
                     tv_remind.setTextColor(Color.RED);
                     tv_remind.setText("UUID写入失败");
                 } else {
-                    Log.d(TAG, String.format("uuid:", activity.hwservice.get_uuid()));
-                    Log.d(TAG, String.format("serial:", activity.hwservice.get_serial()));
+                    Log.d(TAG, "写入UUID成功");
                     Toast.makeText(getContext(), "写入UUID成功", Toast.LENGTH_LONG).show();
                     tv_remind.setTextColor(Color.BLACK);
                     tv_remind.setText("UUID写入成功");
                     //activity.hwservice.runReboot();
                     if (isSimpleSetUUID){
                         Intent intent = new Intent(FullscreenActivity.action_start_text);
-                        // intent.setAction();
                         getContext().sendBroadcast(intent);
                     }
                     dissMissDialog();

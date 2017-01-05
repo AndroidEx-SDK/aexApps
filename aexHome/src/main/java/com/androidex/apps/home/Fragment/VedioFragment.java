@@ -1,27 +1,23 @@
 package com.androidex.apps.home.fragment;
 
-import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.androidex.apps.home.FullscreenActivity;
 import com.androidex.apps.home.R;
+import com.androidex.apps.home.utils.NetWork;
 import com.androidex.apps.home.view.CustomVideoView;
-
-import static com.androidex.apps.home.FullscreenActivity.action_start_network_text;
 
 /**
  * Created by liyp on 16/12/10.
  */
 
 public class VedioFragment extends LazyLoadFragment implements View.OnClickListener {
-    private FullscreenActivity activity;
-    private int index;
     private ImageView iv_close;
     private CustomVideoView customVideoView;
+    private static VedioFragment fragment;
 
     public VedioFragment() {
 
@@ -30,23 +26,15 @@ public class VedioFragment extends LazyLoadFragment implements View.OnClickListe
     @Override
     protected void lazyLoad() {
         iniView();
-
-        activity = (FullscreenActivity) getActivity();
         /**获取参数，根据不同的参数播放不同的视频**/
-        index = getArguments().getInt("index");
-        Log.d("vediofragment", "开始播放视频=" + index);
-        Uri uri;
-        if (index == 1) {
-            uri = Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + R.raw.a002);
-        } else {
-            uri = Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + R.raw.love);
-        }
+        Uri uri= Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + R.raw.a002);
         /**播放视频**/
         customVideoView.setVisibility(View.VISIBLE);
         customVideoView.playVideo(uri);
     }
 
     public void iniView() {
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         iv_close = findViewById(R.id.iv_close);
         Button btn_OK = findViewById(R.id.btn_OK);
         Button btn_NG = findViewById(R.id.btn_NG);
@@ -56,9 +44,11 @@ public class VedioFragment extends LazyLoadFragment implements View.OnClickListe
         btn_NG.setOnClickListener(this);
     }
 
-    public VedioFragment dissMissDialog() {
-        dismiss();
-        return this;
+    public static VedioFragment Instance(){
+        if (fragment==null){
+            fragment = new VedioFragment();
+        }
+        return fragment;
     }
 
     @Override
@@ -70,24 +60,25 @@ public class VedioFragment extends LazyLoadFragment implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_close:
-                dissMissDialog();
-                DialogFragmentManger.instance().dissMissDialog();
+                //dissMissDialog();
                 break;
             case R.id.btn_OK:
-                com.androidex.logger.Log.d(TAG,"视频播放正常");
-                sendBrocast();
+                com.androidex.logger.Log.d(TAG, "视频播放OK");
+                NetWork.wifiManger(getActivity());
+                dissMissDialog();
                 break;
             case R.id.btn_NG:
-                com.androidex.logger.Log.d(TAG,"视频播放失败");
-                sendBrocast();
+                com.androidex.logger.Log.d(TAG, "视频播放失败");
+                NetWork.wifiManger(getActivity());
+                dissMissDialog();
                 break;
         }
     }
-
-    private void sendBrocast() {
-        Intent intent = new Intent(action_start_network_text);
-        getContext().sendBroadcast(intent);
-        DialogFragmentManger.instance().dissMissDialog();
+    public VedioFragment dissMissDialog() {
+        if (fragment.isVisible()) {
+            fragment.dismiss();
+        }
+        return this;
     }
 
     @Override

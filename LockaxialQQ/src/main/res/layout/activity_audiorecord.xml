@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@mipmap/bg2"
+    android:layout_height="match_parent">
+
+    <CheckBox
+        android:id="@+id/cb_audiorecord"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/tv_recordname"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="60sp"
+        android:text="录音(1键)"
+        android:textColor="@color/Text_WHITE"
+        />
+
+    <TextView
+        android:id="@+id/btn_send_audio"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="60sp"
+        android:focusable="false"
+        android:text="发送(3键)"
+        android:textColor="@color/Text_WHITE"
+        />
+
+    <TextView
+        android:id="@+id/tv_back"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:focusable="false"
+        android:textSize="60sp"
+        android:gravity="center"
+        android:text="返回(删除)"
+        android:textColor="@color/Text_WHITE"
+        />
+
+</LinearLayout>

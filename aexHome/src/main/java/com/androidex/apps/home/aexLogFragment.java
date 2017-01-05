@@ -66,19 +66,23 @@ public class aexLogFragment extends LogFragment implements OnMultClickListener {
         LogWrapper logWrapper = (LogWrapper) Log.getLogNode();
         MessageOnlyLogFilter msgFilter = (MessageOnlyLogFilter)logWrapper.getNext();
         msgFilter.setNext(this.getLogView());
-        Log.i(TAG,"就绪");
+        Log.d(TAG,"就绪");
         try {
-            JSONObject jsonObject = new JSONObject(activity.hwservice.getUserInfo());
-            String string = jsonObject.optString("times");
-            String startTime = jsonObject.optString(RebutSystem.startTime);
-            long endTime = RebutSystem.getDelyTime();
-            if("".equals(string)){
-                string = "0";
+            if (activity.hwservice!=null){
+                JSONObject jsonObject = new JSONObject(activity.hwservice.getUserInfo());
+                String string = jsonObject.optString("times");
+                String startTime = jsonObject.optString(RebutSystem.startTime);
+                long endTime = RebutSystem.getDelyTime();
+                if("".equals(string)){
+                    string = "0";
+                }
+                Log.d(TAG,"UUID: "+activity.hwservice.get_uuid());
+                Log.d(TAG,"开机次数: "+string);
+                if (!"".equals(startTime)) {
+                    Log.d(TAG, "测试时长: " + getTextHours(startTime, endTime));
+                }
             }
-            Log.d("开机次数","开机次数:"+string);
-            if (!"".equals(startTime)) {
-                Log.d("测试时长", "测试时长:" + getTextHours(startTime, endTime));
-            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -90,8 +94,6 @@ public class aexLogFragment extends LogFragment implements OnMultClickListener {
      * @param end
      * @return
      * 计算测试的时长（天/时/分/秒）
-     *
-     *
      */
     public String getTextHours(String startTime,long end){
         long start = Long.parseLong(startTime);
@@ -164,6 +166,7 @@ public class aexLogFragment extends LogFragment implements OnMultClickListener {
             return null;
         }
     }
+
     /**
      * 广播接收器
      * 打印的广播
@@ -178,6 +181,7 @@ public class aexLogFragment extends LogFragment implements OnMultClickListener {
                 String [] ss = getPrintLog().split("\n");
                 for (int i = 0;i<ss.length;i++){
                     mCallBackValue.sendMessageValue(ss[i],ss.length-1,i);
+                    Log.d(TAG,i+":"+ss[i]);
                 }
             }
         }
