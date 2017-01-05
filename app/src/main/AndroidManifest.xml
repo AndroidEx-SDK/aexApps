@@ -160,7 +160,7 @@
                 <action android:name="com.android.action.doorsensor" />
             </intent-filter>
         </service>
-
+        <service android:name="com.kedaxunfei.SpeechService"></service>
         <service android:name="com.tencent.av.VideoService" android:process=":video" />
         
         <service android:name="com.tencent.devicedemo.VideoMonitorService"  android:process=":video" />

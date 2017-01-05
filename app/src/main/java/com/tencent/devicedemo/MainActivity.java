@@ -45,6 +45,7 @@ import com.androidex.LoyaltyCardReader;
 import com.androidex.SoundPoolUtil;
 import com.dialog.SpotsDialog;
 import com.entity.Banner;
+import com.kedaxunfei.SpeechService;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.tencent.device.TXBinderInfo;
 import com.tencent.device.TXDataPoint;
@@ -286,6 +287,9 @@ public class MainActivity extends Activity implements LoyaltyCardReader.AccountC
 		Intent startIntent = new Intent(this, TXDeviceService.class); 
 		startService(startIntent);
 
+        Intent i = new Intent(this, SpeechService.class);
+        startService(i);
+
         Intent dlIntent = new Intent(this, DoorLock.class);
         startService(dlIntent);
         Typeface typeFace = Typeface.createFromAsset(getAssets(), "fonts/GBK.TTF");
@@ -358,6 +362,7 @@ public class MainActivity extends Activity implements LoyaltyCardReader.AccountC
             AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
             Intent intent;
             PendingIntent pendingIntent;
+
 
             intent = new Intent(getApplicationContext(), AlarmReciver.class);
             pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -447,7 +452,7 @@ public class MainActivity extends Activity implements LoyaltyCardReader.AccountC
                         if(dialog.isShowing()){
                             long tinyid = binderList1.get(0).tinyid;
                             String nickname = binderList1.get(0).getNickName();
-                           Intent  binder = new Intent(MainActivity.this, BinderActivity.class);
+                            Intent  binder = new Intent(MainActivity.this, BinderActivity.class);
                             binder.putExtra("tinyid", tinyid);
                             binder.putExtra("nickname", nickname);
                             TXDeviceService.getInstance().sendNotifyMsg("提示", 1700003316, new long[]{tinyid});/*发送强提醒通知*/
@@ -755,13 +760,11 @@ public class MainActivity extends Activity implements LoyaltyCardReader.AccountC
                         return true;
                     }
                 });
-
                 popup.show();
             }
         });
                 //registering popup with OnMenuItemClickListener
 	}
-
     private Runnable runnable=new Runnable() {
         @Override
         public void run() {

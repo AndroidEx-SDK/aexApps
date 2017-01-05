@@ -2,6 +2,7 @@ package com.kedaxunfei;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.WindowManager;
 
 import com.androidex.DoorLock;
 import com.google.gson.Gson;
@@ -45,13 +46,13 @@ public class Speech {
                     }
                 }
             }
-
             @Override
             public void onError(SpeechError speechError) {
 
             }
         });
         //4.显示dialog，接收语音输入
+        mDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         mDialog.show();
     }
 

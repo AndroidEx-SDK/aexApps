@@ -94,8 +94,7 @@ public class SetUUIDFragment extends DialogFragment implements View.OnClickListe
                 String uuid = et_uuid.getText().toString().trim().replace("-", "");
                 if (uuid.length() >= 32) {
                     // String uuid = Base16.encode(uuid.getBytes());
-                    activity.hwservice.writeHex(hwService.aexp_uuid, uuid);
-                    activity.hwservice.writeHex(hwService.aexp_serial, uuid.substring(15));
+                    activity.hwservice.setAndroidExParameter(hwService.aexp_uuid, uuid);
                 } else {
                     Toast.makeText(getContext(), "请输入正确的UUID", Toast.LENGTH_LONG).show();
                     tv_remind.setText("请输入正确的UUID");
