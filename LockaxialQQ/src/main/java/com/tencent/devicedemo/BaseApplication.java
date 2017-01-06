@@ -11,8 +11,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
 
-import com.iflytek.cloud.SpeechConstant;
-import com.iflytek.cloud.SpeechUtility;
 import com.lidroid.xutils.HttpUtils;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -41,8 +39,6 @@ public class BaseApplication extends Application  implements Thread.UncaughtExce
         initHttp();
 
         initImageLoader();
-
-        SpeechUtility.createUtility(this, SpeechConstant.APPID +"=5863d80c");
 
         super.onCreate();
     }
