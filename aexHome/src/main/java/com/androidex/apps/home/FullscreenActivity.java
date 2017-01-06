@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Build;
@@ -463,11 +464,11 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 Log.d(TAG,"runShellCommand:sync:"+runShellCommand("sync"));
                 Log.d(TAG,"runShellCommand:ls:"+runShellCommand("ls /misc/boot_logo.bmp.gz"));
                 Log.d(TAG,"runShellCommand:ls:"+runShellCommand("ls /misc/boot_logo.bmp"));
-               // runShellCommand("reboot");
+                runShellCommand("reboot");
 
-//                Uri packageUri = Uri.parse("package:"+FullscreenActivity.this.getPackageName());
-//                Intent intent = new Intent(Intent.ACTION_DELETE,packageUri);
-//                startActivity(intent);
+                Uri packageUri = Uri.parse("package:"+FullscreenActivity.this.getPackageName());
+                Intent intent = new Intent(Intent.ACTION_DELETE,packageUri);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -484,10 +485,11 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         CameraFragment.instance().show(getSupportFragmentManager(), "camerafragment");//相机测试
         //showDialog(getVedioFragments(), true);//视频播放测试程序
         // NetWork.wifiManger(this);
-        //netWorkText();//以太网测试
+        //netWorkText();  //以太网测试
         //NetWork.netWorkManger(this);
         //VedioFragment.Instance().show(getSupportFragmentManager(),"recordvoicefragment");
         //printText();//打印机测试
+
     }
 
     public void netWorkText() {

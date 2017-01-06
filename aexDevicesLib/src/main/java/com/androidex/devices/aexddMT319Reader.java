@@ -170,14 +170,13 @@ public class aexddMT319Reader extends aexddPbocReader {
     }
 
     public boolean selfTest(int flag){
-
         if (flag==1){
             if (getVersion() != null) {
                 Log.d(TAG, "银行卡读卡器OK");
             } else {
                 Log.d(TAG, "银行卡读卡器失败");
             }
-        }else {
+        }else if (flag==2){
             if (getVersion() != null) {
                 Log.d(TAG, "燃气卡读卡器OK");
             } else {
