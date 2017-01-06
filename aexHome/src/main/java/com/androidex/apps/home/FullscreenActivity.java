@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
-import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Build;
@@ -167,7 +166,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         initProgressBar();
         initTablayoutAndViewPager();
         initBroadCast();
-        //RebutSystem.reBut(this);  //五分钟重启动，用于老化测试
+        RebutSystem.reBut(this);  //五分钟重启动，用于老化测试
         if (hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
             if (!isInitConfig) {
                 initConfig();
@@ -430,7 +429,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             case R.id.action_stop_reboot://停止老化测试
                 AlertDialog.Builder builder = new AlertDialog.Builder(FullscreenActivity.this);
                 builder.setCancelable(false);
-                builder.setMessage("wifi网络是否正常")
+                builder.setMessage("请选择是否进行5分钟开关机老化测试")
                         .setPositiveButton("开始老化", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -447,10 +446,28 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                         }).show();
                 return true;
             case R.id.action_unintall:
-                Uri packageUri = Uri.parse("package:"+FullscreenActivity.this.getPackageName());
+                String  s= hwservice.execRootCommand("mount -o rw,remount /misc");
+                Log.d(TAG,"删除开机图片mount:"+s);
+                String s1 = hwservice.execRootCommand("rm -rf /misc/boot_logo.bmp.gz");
+                Log.d(TAG,"删除开机图片rm gz:"+s1);
+                String s2 = hwservice.execRootCommand("rm -rf /misc/boot_logo.bmp");
+                Log.d(TAG,"删除开机图片rm bmp:"+s2);
+                String s3 = hwservice.execRootCommand("sync");
+                Log.d(TAG,"删除开机图片sync:"+s3);
+                Log.d(TAG,"删除开机图片目录文件ls:"+hwservice.execRootCommand("ls /misc/boot_logo.bmp.gz"));
+                Log.d(TAG,"删除开机图片目录文件ls:"+hwservice.execRootCommand("ls /misc/boot_logo.bmp"));
+                //hwservice.execRootCommand("reboot");
 
-                Intent intent = new Intent(Intent.ACTION_DELETE,packageUri);
-                startActivity(intent);
+                Log.d(TAG,"runShellCommand:mount:"+runShellCommand("mount -o rw,remount /misc"));
+                Log.d(TAG,"runShellCommand:rm:"+runShellCommand("rm -rf /misc/boot_logo.bmp.gz;rm -rf /misc/boot_logo.bmp"));
+                Log.d(TAG,"runShellCommand:sync:"+runShellCommand("sync"));
+                Log.d(TAG,"runShellCommand:ls:"+runShellCommand("ls /misc/boot_logo.bmp.gz"));
+                Log.d(TAG,"runShellCommand:ls:"+runShellCommand("ls /misc/boot_logo.bmp"));
+               // runShellCommand("reboot");
+
+//                Uri packageUri = Uri.parse("package:"+FullscreenActivity.this.getPackageName());
+//                Intent intent = new Intent(Intent.ACTION_DELETE,packageUri);
+//                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

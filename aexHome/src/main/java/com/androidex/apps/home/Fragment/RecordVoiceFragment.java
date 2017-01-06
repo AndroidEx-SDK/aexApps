@@ -42,7 +42,7 @@ public class RecordVoiceFragment extends DialogFragment implements View.OnClickL
     //语音文件保存路径
     private String FileName = null;
 
-    private boolean flag =true; //控制按钮是播放还是结束
+    private boolean flag = true; //控制按钮是播放还是结束
     private Intent intent;
 
     @Nullable
@@ -65,8 +65,8 @@ public class RecordVoiceFragment extends DialogFragment implements View.OnClickL
         ImageView stop = (ImageView) rootView.findViewById(R.id.iv_stop);
         ImageView play = (ImageView) rootView.findViewById(R.id.iv_play);
         ImageView record = (ImageView) rootView.findViewById(R.id.iv_record);
-        Button btn_OK= (Button) rootView.findViewById(R.id.btn_OK);
-        Button btn_NG= (Button) rootView.findViewById(R.id.btn_NG);
+        Button btn_OK = (Button) rootView.findViewById(R.id.btn_OK);
+        Button btn_NG = (Button) rootView.findViewById(R.id.btn_NG);
         stop.setOnClickListener(this);
         play.setOnClickListener(this);
         record.setOnClickListener(this);
@@ -90,7 +90,7 @@ public class RecordVoiceFragment extends DialogFragment implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_stop:
                 stopRecord();//停止录音
                 break;
@@ -106,20 +106,21 @@ public class RecordVoiceFragment extends DialogFragment implements View.OnClickL
             case R.id.btn_NG:
                 intent = new Intent(action_start_print_text);
                 getContext().sendBroadcast(intent);
-                com.androidex.logger.Log.e(TAG,"录音失败");
+                com.androidex.logger.Log.e(TAG, "录音失败");
                 dissMiss();
                 break;
             case R.id.btn_OK:
                 intent = new Intent(action_start_print_text);
                 getContext().sendBroadcast(intent);
-                com.androidex.logger.Log.d(TAG,"录音正常");
+                com.androidex.logger.Log.d(TAG, "录音正常");
                 dissMiss();
                 break;
         }
 
     }
-    public void dissMiss(){
-        if (recordVoiceFragment.isVisible()){
+
+    public void dissMiss() {
+        if (recordVoiceFragment.isVisible()) {
             stopPlayRecord();
             recordVoiceFragment.dismiss();
         }
@@ -128,8 +129,8 @@ public class RecordVoiceFragment extends DialogFragment implements View.OnClickL
     /**
      * 开始录音
      */
-    public  void startRecord(){
-        if(mRecorder==null){//还没有开始过录音
+    public void startRecord() {
+        if (mRecorder == null) {//还没有开始过录音
             mRecorder = new MediaRecorder();
             mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -138,19 +139,19 @@ public class RecordVoiceFragment extends DialogFragment implements View.OnClickL
             try {
                 mRecorder.prepare();
             } catch (IOException e) {
-                Log.e("RecordVoice","RecordVoice Fail");
+                Log.e("RecordVoice", "RecordVoice Fail");
             }
             mRecorder.start();
-        }else{//已经开始录音，且未点击停止录音
-            Toast.makeText(activity,"正在录音",Toast.LENGTH_SHORT).show();
+        } else {//已经开始录音，且未点击停止录音
+            Toast.makeText(activity, "正在录音", Toast.LENGTH_SHORT).show();
         }
     }
 
     /**
      * 停止录音
      */
-    public void stopRecord(){//录完音之后才能去执行
-        if(mRecorder!=null){
+    public void stopRecord() {//录完音之后才能去执行
+        if (mRecorder != null) {
             mRecorder.stop();
             mRecorder.release();
             mRecorder = null;
@@ -160,15 +161,15 @@ public class RecordVoiceFragment extends DialogFragment implements View.OnClickL
     /**
      * 开始播放录音
      */
-    public void startPlayRecord(){
+    public void startPlayRecord() {
         mPlayer = new MediaPlayer();
-        if(FileName!=null){
-            try{
+        if (FileName != null) {
+            try {
                 mPlayer.setDataSource(FileName);
                 mPlayer.prepare();
                 mPlayer.start();
-            }catch(IOException e){
-                Log.e("RecordVoice","RecordPlay Fail");
+            } catch (IOException e) {
+                Log.e("RecordVoice", "RecordPlay Fail");
             }
         }
     }
@@ -176,12 +177,11 @@ public class RecordVoiceFragment extends DialogFragment implements View.OnClickL
     /**
      * 停止播放录音
      */
-    public void stopPlayRecord(){
-        if (mPlayer!=null){
+    public void stopPlayRecord() {
+        if (mPlayer != null) {
             mPlayer.release();
-            mPlayer.stop();
+           // mPlayer.stop();
             mPlayer = null;
         }
-
     }
 }
