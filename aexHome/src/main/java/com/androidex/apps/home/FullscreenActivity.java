@@ -447,24 +447,24 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                         }).show();
                 return true;
             case R.id.action_unintall:
-                String  s= hwservice.execRootCommand("mount -o rw,remount /misc");
-                Log.d(TAG,"删除开机图片mount:"+s);
-                String s1 = hwservice.execRootCommand("rm -rf /misc/boot_logo.bmp.gz");
-                Log.d(TAG,"删除开机图片rm gz:"+s1);
-                String s2 = hwservice.execRootCommand("rm -rf /misc/boot_logo.bmp");
-                Log.d(TAG,"删除开机图片rm bmp:"+s2);
-                String s3 = hwservice.execRootCommand("sync");
-                Log.d(TAG,"删除开机图片sync:"+s3);
-                Log.d(TAG,"删除开机图片目录文件ls:"+hwservice.execRootCommand("ls /misc/boot_logo.bmp.gz"));
-                Log.d(TAG,"删除开机图片目录文件ls:"+hwservice.execRootCommand("ls /misc/boot_logo.bmp"));
-                //hwservice.execRootCommand("reboot");
+//                String  s= hwservice.execRootCommand("mount -o rw,remount /misc");
+//                Log.d(TAG,"删除开机图片mount:"+s);
+//                String s1 = hwservice.execRootCommand("rm -rf /misc/boot_logo.bmp.gz");
+//                Log.d(TAG,"删除开机图片rm gz:"+s1);
+//                String s2 = hwservice.execRootCommand("rm -rf /misc/boot_logo.bmp");
+//                Log.d(TAG,"删除开机图片rm bmp:"+s2);
+//                String s3 = hwservice.execRootCommand("sync");
+//                Log.d(TAG,"删除开机图片sync:"+s3);
+//                Log.d(TAG,"删除开机图片目录文件ls:"+hwservice.execRootCommand("ls /misc/boot_logo.bmp.gz"));
+//                Log.d(TAG,"删除开机图片目录文件ls:"+hwservice.execRootCommand("ls /misc/boot_logo.bmp"));
+//                //hwservice.execRootCommand("reboot");
 
-                Log.d(TAG,"runShellCommand:mount:"+runShellCommand("mount -o rw,remount /misc"));
-                Log.d(TAG,"runShellCommand:rm:"+runShellCommand("rm -rf /misc/boot_logo.bmp.gz;rm -rf /misc/boot_logo.bmp"));
-                Log.d(TAG,"runShellCommand:sync:"+runShellCommand("sync"));
-                Log.d(TAG,"runShellCommand:ls:"+runShellCommand("ls /misc/boot_logo.bmp.gz"));
-                Log.d(TAG,"runShellCommand:ls:"+runShellCommand("ls /misc/boot_logo.bmp"));
-                runShellCommand("reboot");
+//                Log.d(TAG,"runShellCommand:mount:"+runShellCommand("mount -o rw,remount /misc"));
+//                Log.d(TAG,"runShellCommand:rm:"+runShellCommand("rm -rf /misc/boot_logo.bmp.gz;rm -rf /misc/boot_logo.bmp"));
+//                Log.d(TAG,"runShellCommand:sync:"+runShellCommand("sync"));
+//                Log.d(TAG,"runShellCommand:ls:"+runShellCommand("ls /misc/boot_logo.bmp.gz"));
+//                Log.d(TAG,"runShellCommand:ls:"+runShellCommand("ls /misc/boot_logo.bmp"));
+//                runShellCommand("reboot");
 
                 Uri packageUri = Uri.parse("package:"+FullscreenActivity.this.getPackageName());
                 Intent intent = new Intent(Intent.ACTION_DELETE,packageUri);
@@ -529,6 +529,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
      */
     private void readerText(int i) {
         if (mDevices.mBankCardReader.Open()) {
+            
             aexddMT319Reader mBankCardReader = (aexddMT319Reader) mDevices.mBankCardReader;
             mBankCardReader.selfTest(i);
             mBankCardReader.Close();
