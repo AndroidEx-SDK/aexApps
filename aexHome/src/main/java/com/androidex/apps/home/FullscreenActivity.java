@@ -132,6 +132,29 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         }
     };
 
+    public static final synchronized String runRootCommand(String cmd) {
+        String ret = "";
+        byte[] retBytes = new byte[2048];
+
+        Log.d(TAG,String.format("runRootCommand(%s)",cmd));
+        try {
+            cmd += "\n";
+            Process exeEcho1 = Runtime.getRuntime().exec("su");
+            OutputStream ot = exeEcho1.getOutputStream();
+            ot.write(cmd.getBytes());
+            ot.flush();
+            ot.close();
+            InputStream in = exeEcho1.getInputStream();
+            int r = in.read(retBytes);
+            if(r > 0)
+                ret = new String(retBytes,0,r);
+        } catch (IOException e) {
+            Log.e("AexService", "shell cmd wrong:" + e.toString());
+        }
+
+        return ret;
+    }
+
     public String runShellCommand(String cmd) {
         String ret = "";
         byte[] retBytes = new byte[2048];
@@ -446,24 +469,18 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                         }).show();
                 return true;
             case R.id.action_unintall:
-                String  s= hwservice.execRootCommand("mount -o rw,remount /misc");
+                String  s= hwservice.execRootCommand("mount -o rw,remount /misc;rm -rf /misc/boot_logo.bmp.gz;rm -rf /misc/boot_logo.bmp;sync");
                 Log.d(TAG,"删除开机图片mount:"+s);
-                String s1 = hwservice.execRootCommand("rm -rf /misc/boot_logo.bmp.gz");
-                Log.d(TAG,"删除开机图片rm gz:"+s1);
-                String s2 = hwservice.execRootCommand("rm -rf /misc/boot_logo.bmp");
-                Log.d(TAG,"删除开机图片rm bmp:"+s2);
-                String s3 = hwservice.execRootCommand("sync");
-                Log.d(TAG,"删除开机图片sync:"+s3);
                 Log.d(TAG,"删除开机图片目录文件ls:"+hwservice.execRootCommand("ls /misc/boot_logo.bmp.gz"));
                 Log.d(TAG,"删除开机图片目录文件ls:"+hwservice.execRootCommand("ls /misc/boot_logo.bmp"));
                 //hwservice.execRootCommand("reboot");
 
-                Log.d(TAG,"runShellCommand:mount:"+runShellCommand("mount -o rw,remount /misc"));
+                /*Log.d(TAG,"runShellCommand:mount:"+runShellCommand("mount -o rw,remount /misc"));
                 Log.d(TAG,"runShellCommand:rm:"+runShellCommand("rm -rf /misc/boot_logo.bmp.gz;rm -rf /misc/boot_logo.bmp"));
                 Log.d(TAG,"runShellCommand:sync:"+runShellCommand("sync"));
                 Log.d(TAG,"runShellCommand:ls:"+runShellCommand("ls /misc/boot_logo.bmp.gz"));
                 Log.d(TAG,"runShellCommand:ls:"+runShellCommand("ls /misc/boot_logo.bmp"));
-               // runShellCommand("reboot");
+                */
 
 //                Uri packageUri = Uri.parse("package:"+FullscreenActivity.this.getPackageName());
 //                Intent intent = new Intent(Intent.ACTION_DELETE,packageUri);
