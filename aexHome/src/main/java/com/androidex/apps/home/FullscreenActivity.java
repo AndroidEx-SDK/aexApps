@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Build;
@@ -469,6 +470,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                         }).show();
                 return true;
             case R.id.action_unintall:
+<<<<<<< HEAD
                 String  s= hwservice.execRootCommand("mount -o rw,remount /misc;rm -rf /misc/boot_logo.bmp.gz;rm -rf /misc/boot_logo.bmp;sync");
                 Log.d(TAG,"删除开机图片mount:"+s);
                 Log.d(TAG,"删除开机图片目录文件ls:"+hwservice.execRootCommand("ls /misc/boot_logo.bmp.gz"));
@@ -485,6 +487,30 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
 //                Uri packageUri = Uri.parse("package:"+FullscreenActivity.this.getPackageName());
 //                Intent intent = new Intent(Intent.ACTION_DELETE,packageUri);
 //                startActivity(intent);
+=======
+//                String  s= hwservice.execRootCommand("mount -o rw,remount /misc");
+//                Log.d(TAG,"删除开机图片mount:"+s);
+//                String s1 = hwservice.execRootCommand("rm -rf /misc/boot_logo.bmp.gz");
+//                Log.d(TAG,"删除开机图片rm gz:"+s1);
+//                String s2 = hwservice.execRootCommand("rm -rf /misc/boot_logo.bmp");
+//                Log.d(TAG,"删除开机图片rm bmp:"+s2);
+//                String s3 = hwservice.execRootCommand("sync");
+//                Log.d(TAG,"删除开机图片sync:"+s3);
+//                Log.d(TAG,"删除开机图片目录文件ls:"+hwservice.execRootCommand("ls /misc/boot_logo.bmp.gz"));
+//                Log.d(TAG,"删除开机图片目录文件ls:"+hwservice.execRootCommand("ls /misc/boot_logo.bmp"));
+//                //hwservice.execRootCommand("reboot");
+
+//                Log.d(TAG,"runShellCommand:mount:"+runShellCommand("mount -o rw,remount /misc"));
+//                Log.d(TAG,"runShellCommand:rm:"+runShellCommand("rm -rf /misc/boot_logo.bmp.gz;rm -rf /misc/boot_logo.bmp"));
+//                Log.d(TAG,"runShellCommand:sync:"+runShellCommand("sync"));
+//                Log.d(TAG,"runShellCommand:ls:"+runShellCommand("ls /misc/boot_logo.bmp.gz"));
+//                Log.d(TAG,"runShellCommand:ls:"+runShellCommand("ls /misc/boot_logo.bmp"));
+//                runShellCommand("reboot");
+
+                Uri packageUri = Uri.parse("package:"+FullscreenActivity.this.getPackageName());
+                Intent intent = new Intent(Intent.ACTION_DELETE,packageUri);
+                startActivity(intent);
+>>>>>>> 8f96217cd405da218286168284e1300ad8eebc4a
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -501,10 +527,11 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         CameraFragment.instance().show(getSupportFragmentManager(), "camerafragment");//相机测试
         //showDialog(getVedioFragments(), true);//视频播放测试程序
         // NetWork.wifiManger(this);
-        //netWorkText();//以太网测试
+        //netWorkText();  //以太网测试
         //NetWork.netWorkManger(this);
         //VedioFragment.Instance().show(getSupportFragmentManager(),"recordvoicefragment");
         //printText();//打印机测试
+
     }
 
     public void netWorkText() {
@@ -544,6 +571,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
      */
     private void readerText(int i) {
         if (mDevices.mBankCardReader.Open()) {
+            
             aexddMT319Reader mBankCardReader = (aexddMT319Reader) mDevices.mBankCardReader;
             mBankCardReader.selfTest(i);
             mBankCardReader.Close();

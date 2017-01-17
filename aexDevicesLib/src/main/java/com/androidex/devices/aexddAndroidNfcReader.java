@@ -87,7 +87,6 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
         intent.setAction(START_ACTION);
         //intent.putExtra("cardinfo",r.toString());
         mContext.sendBroadcast(intent);
-
         // Android's Host-based Card Emulation (HCE) feature implements the ISO-DEP (ISO 14443-4)
         // protocol.
         //
@@ -126,52 +125,6 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
         */
 
         final IsoDep isodep = IsoDep.get(tag);
-        final byte[] cmdCardInfo = {(byte) 0x00, (byte) 0xb0, (byte) 0x9f, (byte) 0x05, (byte) 0x79};
-        if (isodep != null) {
-            Iso7816.StdTag stdTag = new Iso7816.StdTag(isodep);
-            try {
-                byte[] tagTransceive = stdTag.transceive(cmdCardInfo);
-                String s = ByteArrayToHexString(tagTransceive);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (isodep != null) {
-            try {
-                Log.e("cmdCardInfo:xxxx", cmdCardInfo.toString());
-                if (!isodep.isConnected()) {
-                    isodep.connect();
-                    isodep.setTimeout(30000);
-                }
-                byte[] transceive = isodep.transceive(cmdCardInfo);
-                Log.e("transceive:xxxx", transceive.toString());
-                String s = ByteArrayToHexString(transceive);
-                Log.e("s:xxxx", s);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        byte[] bytes = HexStringToByteArray("00b09f0580");
-        if (isodep != null) {
-            //00b09f0580
-            Log.e("bytes:xxxx", bytes.toString());
-            try {
-                if (!isodep.isConnected()) {
-                    isodep.connect();
-                    isodep.setTimeout(30000);
-                }
-                byte[] transceive = isodep.transceive(bytes);
-                Log.e("transceive:xxxx", transceive.toString());
-                String s = ByteArrayToHexString(transceive);
-                Log.e("s:xxxx", s);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-
         if (isodep != null) {
             try {
                 JSONObject r = StandardPboc.readCard(isodep);
