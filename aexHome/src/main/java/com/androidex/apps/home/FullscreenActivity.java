@@ -483,7 +483,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         casReaderText(2);//燃气读卡器测试
         ztPasswordKeypadText();//密码键盘测试
         CameraFragment.instance().show(getSupportFragmentManager(), "camerafragment");//相机测试
-        //showDialog(getVedioFragments(), true);//视频播放测试程序
+       // showDialog(getVedioFragments(), true);//视频播放测试程序
         // NetWork.wifiManger(this);
         //netWorkText();  //以太网测试
         //NetWork.netWorkManger(this);

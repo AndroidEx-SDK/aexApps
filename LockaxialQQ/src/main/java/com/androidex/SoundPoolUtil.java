@@ -13,7 +13,7 @@ import com.tencent.devicedemo.R;
  * @author Kevin
  *
  */
-public class SoundPoolUtil {
+public class  SoundPoolUtil {
 
 	private Context mContext;
 

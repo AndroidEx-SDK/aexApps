@@ -41,8 +41,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidex.DoorLock;
+import com.androidex.GetUserInfo;
 import com.androidex.LoyaltyCardReader;
 import com.androidex.SoundPoolUtil;
+import com.androidex.Zxing;
 import com.dialog.SpotsDialog;
 import com.entity.Banner;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -141,15 +143,22 @@ public class MainActivity extends Activity implements LoyaltyCardReader.AccountC
 
             }
         });*/
+        //生成一个可以绑定设备的二维码
+        Log.d("mainactivity",GetUserInfo.getSn());
+        Bitmap bitmap = Zxing.createQRImage("http://iot.qq.com/add?pid=1700003316&sn="+GetUserInfo.getSn(),200,200,null);
+        if (bitmap==null){
 
-        options = new DisplayImageOptions.Builder()
-                .showImageOnFail(R.mipmap.fail)
-                .showImageOnLoading(R.mipmap.loading)
-                .cacheOnDisk(true)
-                .bitmapConfig(Bitmap.Config.ARGB_8888)
-                .build();
+            options = new DisplayImageOptions.Builder()
+                    .showImageOnFail(R.mipmap.fail)
+                    .showImageOnLoading(R.mipmap.loading)
+                    .cacheOnDisk(true)
+                    .bitmapConfig(Bitmap.Config.ARGB_8888)
+                    .build();
 
-        BaseApplication.getApplication().getImageLoader().displayImage("http://www.tyjdtzjc.cn/resource/kindeditor/attached/image/20150831/20150831021658_90595.png", imageView,options);
+            BaseApplication.getApplication().getImageLoader().displayImage("http://www.tyjdtzjc.cn/resource/kindeditor/attached/image/20150831/20150831021658_90595.png", imageView,options);
+        }else{
+            imageView.setImageBitmap(bitmap);
+        }
          /**二维码图片 这我百度的图片,你把网址替换就可以了*/
 
         //图片控件初始化
@@ -674,8 +683,6 @@ public class MainActivity extends Activity implements LoyaltyCardReader.AccountC
             iv_bind.setImageDrawable(getResources().getDrawable(R.mipmap.bind_offline));
         }
 
-
-
         if(dialog!=null&&dialog.isShowing()){/*去掉呼叫中弹出框*/
             dialog.dismiss();
         }
@@ -711,7 +718,6 @@ public class MainActivity extends Activity implements LoyaltyCardReader.AccountC
                                 startActivity(new Intent(MainActivity.this, WifiConnActivity.class));
                                 break;
                             case R.id.action_settings2:
-
                                 break;
                             case R.id.action_settings3:
                                 TXDeviceService.getInstance().uploadSDKLog();
@@ -819,10 +825,6 @@ public class MainActivity extends Activity implements LoyaltyCardReader.AccountC
             }
         }
     }
-
-
-
-
 
     @Override
     public void onAccountReceived(String account) {

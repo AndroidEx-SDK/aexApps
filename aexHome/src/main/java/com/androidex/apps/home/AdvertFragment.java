@@ -283,7 +283,8 @@ public class AdvertFragment extends Fragment implements OnMultClickListener {
         delAllFile(advertPath);
         String fileName = ukeyPath + sdcardPath;
         copyFolder(fileName, advertPath);
-        String strTip = "复制U盘中文件成功 " + nPicCount;
+        String strTip = "复制U盘中文件成功 "
+                + nPicCount;
         showToast(strTip);
         showToast("请拔出U盘!");
         //读取配置

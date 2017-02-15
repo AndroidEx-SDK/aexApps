@@ -9,17 +9,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.system.StructPollfd;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.androidex.DoorLock;
 import com.androidex.plugins.kkaexparams;
 import com.tencent.av.VideoService;
 import com.tencent.device.barrage.BarrageContext;
 import com.tencent.device.barrage.BarrageMsg;
 import com.tencent.device.barrage.BarrageMsg.GroupMsg;
 import com.tencent.device.barrage.IBarrageListener;
-import com.wificonnect.WifiConnActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +29,8 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.androidex.GetUserInfo.get_authinfo;
 
 /**
  * @author dennyfeng 
@@ -84,7 +85,7 @@ public class TXDeviceService extends Service
     public static final String BinderListChange 	 = "BinderListChange";   //绑定列表变化
     
     public static final String OnEraseAllBinders  = "OnEraseAllBinders";  //解除所有用户绑定的回调通知
-    
+
     public static final String OnReceiveDataPoint = "OnReceiveDataPoint"; //收到DataPoint消息				
     
     public static final String OperationResult    = "OperationResult";    //操作结果
@@ -116,7 +117,7 @@ public class TXDeviceService extends Service
     
     private Handler mToastMessageHandler = null;
     
-    public static TXDeviceService getInstance() 
+    public static TXDeviceService getInstance()
     {
         return mServiceInstance;
     }
@@ -172,23 +173,7 @@ public class TXDeviceService extends Service
         return aexparams.get_serial();
     }
 
-    static public JSONObject get_authinfo()
-    {
-        kkaexparams aexparams = new kkaexparams();
-        JSONObject userinfo = new JSONObject();
-        try {
-            int flag0 = aexparams.get_flag0();
-            if(flag0 != 0 && flag0 != 0xFF) {
-                String ui = aexparams.get_userinfo();
-                if (ui != null)
-                    userinfo = new JSONObject(ui);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
-        return userinfo;
-    }
 
     public void initDevice()
     {
@@ -215,10 +200,10 @@ public class TXDeviceService extends Service
         }
         if(authinfo.optString("license","").isEmpty()) {
             try {
-                authinfo.put("license","3045022071CAD17F2FE0B7237EE04560C5476E8A692A12F9A0682E911739AAB97081ED7A022100B515F1F29A9241551E6BA61F411865293314C041DD341B1DCE3D6D7FD12AC20D");
+                authinfo.put("license","304602210083D57DF91BCD947C52E07EF23E515CEE832B11E489D3CE37E73D0B7CB2203B340221008E0F8E924C2407E476E3837A2FF25E5FDABFCAE079494B29204A1253D400AD15");
             } catch (JSONException e) {
                 e.printStackTrace();
-            }
+            }  
         }
         if(authinfo.optString("pubkey","").isEmpty()) {
             try {
@@ -238,7 +223,11 @@ public class TXDeviceService extends Service
         srvPubKey = authinfo.optString("pubkey");
         strLicense = authinfo.optString("license");
         int pid = authinfo.optInt("pid");
-        init("锁相门禁机", strLicense.getBytes(), strGUID, srvPubKey, pid, 1, NETWORK_TYPE_WIFI, SDK_RUN_MODE_DEFAULT,
+        Log.d(TAG,strGUID);
+        Log.d(TAG, srvPubKey);
+        Log.d(TAG,strLicense);
+        Log.d(TAG,pid+"");
+        init("锁向门禁机", strLicense.getBytes(), strGUID, srvPubKey, pid, 1, NETWORK_TYPE_WIFI, SDK_RUN_MODE_DEFAULT,
         		this.getCacheDir().getAbsolutePath(), 102400, this.getCacheDir().getAbsolutePath(), 1024000,this.getCacheDir().getAbsolutePath() + "/", 1024000);
         initOTA(5*60, this.getCacheDir().getAbsolutePath()+"/ota.apk");
     }
