@@ -71,7 +71,7 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
 
     @Override
     public void onTagDiscovered(Tag tag) {
-        final byte[] cmdCardInfo80 = {(byte) 0x00, (byte) 0xb0, (byte) 0x9f, (byte) 0x05, (byte) 0x00};
+        final byte[] cmdCardInfo80 = {(byte) 0x00, (byte) 0xb0, (byte) 0x9f, (byte) 0x05, (byte) 0x80};
         Log.i(TAG, "发现新卡");
         final IsoDep isodep = IsoDep.get(tag);
         //79返回数据

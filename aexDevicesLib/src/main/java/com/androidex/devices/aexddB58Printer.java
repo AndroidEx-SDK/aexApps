@@ -299,6 +299,7 @@ public class aexddB58Printer extends aexddPrinter {
                 ln();
                 //cutPaper(1);
 
+
             }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

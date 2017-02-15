@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
         if (nfc != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 if (this instanceof NfcAdapter.ReaderCallback) {
-                    nfc.enableReaderMode(this, androidNfcReader, aexddAndroidNfcReader.READER_FLAGS, null);
+                    nfc.enableReaderMode(this, this, aexddAndroidNfcReader.READER_FLAGS, null);
                 }
             }
         }
