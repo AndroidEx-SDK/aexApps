@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
 
     /**
      * 启用NFC读卡
+     * 传入的第二个参数为当前activity的时候在activity的回调方法会被调用
      */
     public void enableReaderMode() {
         Log.e(TAG, "启用读卡模式");
