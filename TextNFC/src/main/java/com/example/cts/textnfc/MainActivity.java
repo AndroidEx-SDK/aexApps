@@ -1,5 +1,6 @@
 package com.example.cts.textnfc;
 
+
 import android.app.LocalActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,17 +10,22 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.androidex.common.AndroidExActivityBase;
 
-public class MainActivity extends AppCompatActivity implements NfcAdapter.ReaderCallback {
+
+public class MainActivity extends AndroidExActivityBase implements NfcAdapter.ReaderCallback {
     private static final String TAG = "MainActivityxxxxxx";
     protected LocalActivityManager mLocalActivityManager;
     private aexddAndroidNfcReader androidNfcReader;
     public static final String ACTION_NFC_CARDINFO="com.example.cts.textnfc.cardinfo";
+    public static final String ACTION_NFC_TIMES="com.example.cts.textnfc.times";
     private TextView mNFC_cardinfo;
+    private TextView tv_cardinfo;
+    private TextView tv_failtimes;
+    private TextView tv_times;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +40,18 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
         Receive receive = new Receive();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_NFC_CARDINFO);
+        intentFilter.addAction(ACTION_NFC_TIMES);
         registerReceiver(receive, intentFilter);
     }
 
     public void initView(){
         mNFC_cardinfo = (TextView) findViewById(R.id.tv_hello);
+        tv_cardinfo = (TextView) findViewById(R.id.tv_cardinfo);
+        tv_failtimes = (TextView) findViewById(R.id.tv_failtimes);
+        tv_times = (TextView) findViewById(R.id.tv_times);
+
     }
+
     @Override
     protected void onDestroy() {
         disableReaderMode();
@@ -115,6 +127,12 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
             switch (intent.getAction()){
                 case ACTION_NFC_CARDINFO:
                     mNFC_cardinfo.setText(intent.getStringExtra("cardinfo"));
+                    tv_cardinfo.setText("读取成功次数："+intent.getIntExtra("times",0));
+                    tv_failtimes.setText("读取失败次数："+intent.getIntExtra("times_fail",0));
+                    break;
+                case ACTION_NFC_TIMES:
+                    tv_times.setText("刷卡次数："+intent.getIntExtra("times",0));
+
                     break;
             }
         }
