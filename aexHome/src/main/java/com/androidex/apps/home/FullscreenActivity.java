@@ -159,14 +159,15 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aexhome_main);
-        hwservice.EnterFullScreen();
-        mControlsView = findViewById(R.id.dummy_button);
+       hwservice.EnterFullScreen();
+        android.util.Log.d(TAG, "onCreate: "+hwservice.getSdkVersion());
+       mControlsView = findViewById(R.id.dummy_button);
         initView();
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mContentView.setAdapter(mSectionsPagerAdapter);
-        initProgressBar();
-        initTablayoutAndViewPager();
-        initBroadCast();
+       mContentView.setAdapter(mSectionsPagerAdapter);
+       initProgressBar();
+       initTablayoutAndViewPager();
+       initBroadCast();
         RebutSystem.reBut(this);  //五分钟重启动，用于老化测试
         if (hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
             if (!isInitConfig) {
@@ -357,7 +358,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
 
     @Override
     public void HideControlBar() {
-        mControlsView.setVisibility(View.GONE);
+       mControlsView.setVisibility(View.GONE);
         super.HideControlBar();
     }
 
@@ -985,7 +986,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 if (this instanceof NfcAdapter.ReaderCallback) {
                     nfc.enableReaderMode(this, (aexddAndroidNfcReader) mDevices.mNfcReader, aexddAndroidNfcReader.READER_FLAGS, null);
-
                 }
             }
         }

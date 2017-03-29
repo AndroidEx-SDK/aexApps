@@ -1,21 +1,17 @@
 package com.example.androidex;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
-import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Window;
+import android.widget.Toast;
 
-import com.androidex.devices.aexddAndroidNfcReader;
-import com.androidex.devices.appDevicesManager;
+import com.androidex.aexapplibs.appLibsService;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
@@ -24,7 +20,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 /**
  *
  */
-public class MainActivity extends AppCompatActivity implements NfcAdapter.ReaderCallback {
+public class MainActivity extends AppCompatActivity implements LoyaltyCardReader.AccountCallback {
     private static final String TAG = "MainActivity";
     public static final String DOOR_ACTION = "com.androidex.door";
     public static int READER_FLAGS =
@@ -34,12 +30,9 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
-    appDevicesManager mDevices ;
 
-    public Mbrocast mb;
     public Intent intent;
-    //public LoyaltyCardReader mLoyaltyCardReader;
-
+    public LoyaltyCardReader mLoyaltyCardReader;
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +42,8 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-        mDevices = new appDevicesManager(this);
-
-        regBroadCast();// 注册广播
+        mLoyaltyCardReader = new LoyaltyCardReader(this);
+        //regBroadCast();// 注册广播
         //开启服务
         intent = new Intent(this,DoorLock.class);
         startService(intent);
@@ -70,13 +62,13 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
     }
 
 
-    //注册广播
+  /*  //注册广播
     private void regBroadCast(){
         mb = new Mbrocast();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(aexddAndroidNfcReader.START_ACTION);
         registerReceiver(mb,intentFilter);
-    }
+    }*/
 
     private void enableReaderMode() {
         Log.i("", "启用读卡模式");
@@ -84,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
             Activity activity = this;
             NfcAdapter nfc = NfcAdapter.getDefaultAdapter(activity);
             if (nfc != null) {
-                nfc.enableReaderMode(activity, (aexddAndroidNfcReader)mDevices.mNfcReader, READER_FLAGS, null);
+                nfc.enableReaderMode(activity,mLoyaltyCardReader , READER_FLAGS, null);
             }
         }
     }
@@ -99,33 +91,18 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
         }
     }
 
-    @Override
-    public void onTagDiscovered(Tag tag) {
-
-    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(mb);
         stopService(intent);
     }
 
-    /**
-     * 广播
-     */
-    public class Mbrocast extends BroadcastReceiver{
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (aexddAndroidNfcReader.START_ACTION.equals(action)){
-                //发送开门的广播
-                Intent in = new Intent();
-                in.setAction(DOOR_ACTION);
-                sendBroadcast(in);
-            }
-        }
+    @Override
+    public void onAccountReceived(String account) {
+        Toast.makeText(this,"this ",Toast.LENGTH_LONG).show();
     }
+
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.

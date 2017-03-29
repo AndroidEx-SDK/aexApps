@@ -82,6 +82,7 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
     @Override
     public void onTagDiscovered(Tag tag) {
         Log.i(TAG, "发现新卡");
+        android.util.Log.d(TAG, "onTagDiscovered: "+tag.toString());
         //发送广播
         Intent intent = new Intent();
         intent.setAction(START_ACTION);

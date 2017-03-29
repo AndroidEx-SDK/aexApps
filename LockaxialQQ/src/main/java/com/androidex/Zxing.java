@@ -25,7 +25,7 @@ public class Zxing {
      * @param content   内容
      * @param widthPix  图片宽度
      * @param heightPix 图片高度
-     * @param logoBm    二维码中心的Logo图标（可以为null
+     * @param logoBm    二维码中心的Logo图标（可以为null）
      * @return 生成二维码及保存文件是否成功
      */
     public static Bitmap createQRImage(String content, int widthPix, int heightPix, Bitmap logoBm) {
@@ -64,7 +64,6 @@ public class Zxing {
             if (logoBm != null) {
                 bitmap = addLogo(bitmap, logoBm);
             }
-            //必须使用compress方法将bitmap保存到文件中再进行读取。直接返回的bitmap是没有任何压缩的，内存消耗巨大！
             return bitmap;
         } catch (Exception e) {
             e.printStackTrace();
