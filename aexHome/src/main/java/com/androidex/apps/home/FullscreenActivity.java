@@ -483,7 +483,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 return true;
 
             case R.id.action_startEthernet:
-                
+
 
                 return true;
 
