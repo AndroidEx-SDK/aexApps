@@ -447,6 +447,17 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                             }
                         }).show();
                 return true;
+            case R.id.action_exit_fullscreen:
+                sendBroadcast(new Intent("com.android.action.display_navigationbar"));
+                //hwservice.ExitFullScreen();
+                return true;
+
+            case R.id.action_start_otherapk:
+
+                hwservice.execRootCommand("pm -r install /sdcard/DCIM/bbb.apk");
+
+                return true;
+
             case R.id.action_unintall:
 //                String  s= hwservice.execRootCommand("mount -o rw,remount /misc");
 //                Log.d(TAG,"删除开机图片mount:"+s);
@@ -773,8 +784,25 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     break;
 
                 case action_start_text://启动测试程序
-                    mContentView.setCurrentItem(2);
-                    startText();
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(FullscreenActivity.this);
+                    builder.setCancelable(false);
+                    builder.setMessage("是否启动测试程序")
+                            .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Log.d(TAG, "启动测试程序");
+                                    dialog.dismiss();
+                                    mContentView.setCurrentItem(2);
+                                    startText();
+                                }
+                            })
+                            .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).show();
                     break;
 
                 case action_start_wifi_text://启动WIFI测试

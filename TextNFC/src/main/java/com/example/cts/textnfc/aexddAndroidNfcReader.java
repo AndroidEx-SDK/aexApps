@@ -19,6 +19,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by yangjun on 2016/11/6.
@@ -35,6 +37,12 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
     public static final String NFCF = "com.androidex.apps.home.transationactivity.nfcf";
     private static aexddAndroidNfcReader mAexddAndroidNfcReader;
     private Context mContext;
+    public int times_succeed = 0;//读卡有数据次数
+    public int times_fail = 0;//读有数据卡失败次数
+    public int times = 0;//刷卡数总计
+    public int times_write = 0;//写卡次数
+    private Intent intent;
+    private Timer timer;
 
     public static aexddAndroidNfcReader getInstance(Context ctx) {
         if (mAexddAndroidNfcReader == null) {
@@ -60,7 +68,7 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
             mAccountCallback = new WeakReference<AccountCallback>(listener);
         }
     }
-
+    
     // Weak reference to prevent retain loop. mAccountCallback is responsible for exiting
     // foreground mode before it becomes invalid (e.g. during onPause() or onStop()).
     private WeakReference<AccountCallback> mAccountCallback;
@@ -72,20 +80,48 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
     @Override
     public void onTagDiscovered(Tag tag) {
         final byte[] cmdCardInfo80 = {(byte) 0x00, (byte) 0xb0, (byte) 0x9f, (byte) 0x05, (byte) 0x80};
+        final byte[] cmdCardInfo = {(byte) 0x04, (byte) 0xd6, (byte) 0x81, (byte) 0x00, (byte) 0x31, (byte) 0x49};//0x04,0xd6,0x81,0x00,0x31
         Log.i(TAG, "发现新卡");
+
+        Intent intent1 = new Intent();
+        intent1.setAction(MainActivity.ACTION_NFC_TIMES);
+
+        intent1.putExtra("times", times);
+        times++;
+        mContext.sendBroadcast(intent1);
+
         final IsoDep isodep = IsoDep.get(tag);
         //79返回数据
-        String  str="4ABE19515A7972453095D57B685F1026A10689FE7321FF169A0CDE96D368F42E3181EFE3CEECE3E8B92B8E7B4F080050D0374CF52277BF8A155AAA4B839A9A452EB0F101435257E000BD5A2F1FF32018915E319417BA5595C4D87461BBCB1193B4F198052B95249CF02F790C074AB5C62A36216179A196A3B09000";
-        //80应该返回的数据
-        String str1="4ABE19515A7972453095D57B685F1026A10689FE7321FF169A0CDE96D368F42E3181EFE3CEECE3E8B92B8E7B4F080050D0374CF52277BF8A155AAA4B839A9A452EB0F101435257E000BD5A2F1FF32018915E319417BA5595C4D87461BBCB1193B4F198052B95249CF02F790C074AB5C62A36216179A196A3B00550E91BC9F6BA9000";
-        int len=str.length();
-        int len1=str1.length();
+//        String  str="4ABE19515A7972453095D57B685F1026A10689FE7321FF169A0CDE96D368F42E3181EFE3CEECE3E8B92B8E7B4F080050D0374CF52277BF8A155AAA4B839A9A452EB0F101435257E000BD5A2F1FF32018915E319417BA5595C4D87461BBCB1193B4F198052B95249CF02F790C074AB5C62A36216179A196A3B09000";
+//        //80应该返回的数据
+//        String str1="4ABE19515A7972453095D57B685F1026A10689FE7321FF169A0CDE96D368F42E3181EFE3CEECE3E8B92B8E7B4F080050D0374CF52277BF8A155AAA4B839A9A452EB0F101435257E000BD5A2F1FF32018915E319417BA5595C4D87461BBCB1193B4F198052B95249CF02F790C074AB5C62A36216179A196A3B00550E91BC9F6BA9000";
+//        int len=str.length();
+//        int len1=str1.length();
 
-        Log.d(TAG, "79返回数据的长度xxxx:"+len);
-        Log.d(TAG, "80应该返回数据的长度xxxx:"+len1);
+//        Log.d(TAG, "79返回数据的长度xxxx:"+len);
+//        Log.d(TAG, "80应该返回数据的长度xxxx:"+len1);
 
 //        // 1.
-        otherSend80(cmdCardInfo80, isodep);//另外一种发送命令的方式
+        // 初始化定时器
+        if (timer == null) {
+            timer = new Timer();
+            if (intent == null) {
+                intent = new Intent();
+                intent.setAction(MainActivity.ACTION_NFC_WRITEDATA_TIMES);
+            }
+            timer.schedule(new TimerTask() {
+
+                @Override
+                public void run() {
+                    otherSend(cmdCardInfo, isodep);//另外一种发送命令的方式
+                    times_write++;
+                    intent.putExtra("times", times_write);
+                    mContext.sendBroadcast(intent);
+                    Log.e("writetimesxxxxxx:", times_write + "");
+//                Toast.makeText(mContext,"writetimes"+times_write,Toast.LENGTH_LONG).show();
+                }
+            }, 1000, 1000);
+        }
 
 //        //2.发送80字节
 //        send80(isodep, cmdCardInfo80);
@@ -95,13 +131,15 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
 //        send79(isodep, cmdCardInfo79);
 
         //4.发送String格式的命令
-       // sendStringCmd(isodep,"00b09f0580");
+        // sendStringCmd(isodep,"00b09f0580");
 
         if (isodep != null) {
+            JSONObject r = null;
             try {
-                JSONObject r = StandardPboc.readCard(isodep);
+                r = StandardPboc.readCard(isodep);
                 try {
                     Log.d(TAG, r.toString(4));
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -111,6 +149,19 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                Intent intent = new Intent();
+                intent.setAction(MainActivity.ACTION_NFC_CARDINFO);
+                if (r != null) {
+                    intent.putExtra("cardinfo", r.toString());
+                    times_succeed++;
+                } else {
+                    intent.putExtra("cardinfo", "获取卡信息失败");
+                    times_fail++;
+                }
+                intent.putExtra("times", times_succeed);
+                intent.putExtra("times_fail", times_fail);
+                mContext.sendBroadcast(intent);
             }
         } else {
             Log.d(TAG, "卡内无信息");
@@ -118,8 +169,9 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
 
         final NfcF nfcf = NfcF.get(tag);
         if (nfcf != null) {
+            JSONObject r = null;
             try {
-                JSONObject r = FelicaReader.readCard(nfcf);
+                r = FelicaReader.readCard(nfcf);
                 Intent intent = new Intent();
                 intent.setAction(NFCF);
                 mContext.sendBroadcast(intent);
@@ -130,12 +182,25 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                Intent intent = new Intent();
+                intent.setAction(MainActivity.ACTION_NFC_CARDINFO);
+                if (r != null) {
+                    intent.putExtra("cardinfo", r.toString());
+                    times_succeed++;
+                } else {
+                    intent.putExtra("cardinfo", "获取卡信息失败");
+                    times_fail++;
+                }
+                intent.putExtra("times", times_succeed);
+                intent.putExtra("times_fail", times_fail);
+                mContext.sendBroadcast(intent);
             }
         }
     }
 
-    private void otherSend80(byte[] cmdCardInfo80, IsoDep isodep) {
-        String s=null;
+    private void otherSend(byte[] cmdCardInfo80, IsoDep isodep) {
+        String s = null;
         Iso7816.StdTag stdTag = new Iso7816.StdTag(isodep);
         try {
             byte[] tagTransceive = stdTag.transceive(cmdCardInfo80);
@@ -143,19 +208,19 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
             Log.e("s:xxxx", s);
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             Intent intent = new Intent();
-            intent.setAction(MainActivity.ACTION_NFC_CARDINFO);
-            if (s!=null){
-                intent.putExtra("cardinfo",s);
-            }else {
-                intent.putExtra("cardinfo","获取卡信息失败");
+            intent.setAction(MainActivity.ACTION_NFC_WRITEDATA);
+            if (s != null) {
+                intent.putExtra("writedata", s);
+            } else {
+                intent.putExtra("writedata", "获取卡信息失败");
             }
             mContext.sendBroadcast(intent);
         }
     }
 
-    private void sendStringCmd(IsoDep isodep,String cmd) {
+    private void sendStringCmd(IsoDep isodep, String cmd) {
         byte[] bytes = HexStringToByteArray(cmd);
         if (isodep != null) {
             Log.e("bytes:xxxx", ByteArrayToHexString(bytes));
@@ -167,7 +232,7 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
                 byte[] transceive = isodep.transceive(bytes);
                 String s = ByteArrayToHexString(transceive);
                 Log.e("s:xxxx", s);
-                if (isodep.isConnected()){
+                if (isodep.isConnected()) {
                     isodep.close();
                 }
             } catch (IOException e) {
@@ -177,31 +242,31 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
     }
 
     private void send79(IsoDep isodep, byte[] cmdCardInfo79) {
-        String s=null;
+        String s = null;
         if (isodep != null) {
             Iso7816.StdTag stdTag = new Iso7816.StdTag(isodep);
             try {
-                Log.e("cmdCardInfo79:","xxxx:"+ ByteArrayToHexString(cmdCardInfo79));
+                Log.e("cmdCardInfo79:", "xxxx:" + ByteArrayToHexString(cmdCardInfo79));
                 if (!isodep.isConnected()) {
                     isodep.connect();
                     isodep.setTimeout(5000);
                 }
                 byte[] tagTransceive = stdTag.transceive(cmdCardInfo79);
                 s = ByteArrayToHexString(tagTransceive);
-                Log.e("aexddAndroidNfcRead:","xxxx:" +s);
-                if (isodep.isConnected()){
+                Log.e("aexddAndroidNfcRead:", "xxxx:" + s);
+                if (isodep.isConnected()) {
                     isodep.close();
                 }
             } catch (IOException e) {
-                Log.e("aexddAndroidNfcRead:","xxxx:"+ "异常1"+e.toString());
+                Log.e("aexddAndroidNfcRead:", "xxxx:" + "异常1" + e.toString());
                 e.printStackTrace();
-            }finally {
+            } finally {
                 Intent intent = new Intent();
                 intent.setAction(MainActivity.ACTION_NFC_CARDINFO);
-                if (s!=null){
-                    intent.putExtra("cardinfo",s);
-                }else {
-                    intent.putExtra("cardinfo","获取卡信息失败");
+                if (s != null) {
+                    intent.putExtra("cardinfo", s);
+                } else {
+                    intent.putExtra("cardinfo", "获取卡信息失败");
                 }
                 mContext.sendBroadcast(intent);
             }
@@ -210,32 +275,32 @@ public class aexddAndroidNfcReader extends aexddNfcReader implements NfcAdapter.
     }
 
     private void send80(IsoDep isodep, byte[] cmdCardInfo80) {
-        String s=null;
+        String s = null;
         if (isodep != null) {
             try {
-                Log.e("cmdCardInfo80:","xxxx:"+ ByteArrayToHexString(cmdCardInfo80));
+                Log.e("cmdCardInfo80:", "xxxx:" + ByteArrayToHexString(cmdCardInfo80));
                 if (!isodep.isConnected()) {
                     isodep.connect();
                     isodep.setTimeout(5000);
                 }
                 byte[] transceive = isodep.transceive(cmdCardInfo80);
                 Log.e("transceive:xxxx", transceive.toString());
-                s= ByteArrayToHexString(transceive);
+                s = ByteArrayToHexString(transceive);
                 Log.e("s:xxxx", s);
 
-                if (isodep.isConnected()){
+                if (isodep.isConnected()) {
                     isodep.close();
                 }
             } catch (IOException e) {
-                Log.e("aexddAndroidNfcRead:", "xxxx80异常:"+e.toString());
+                Log.e("aexddAndroidNfcRead:", "xxxx80异常:" + e.toString());
                 e.printStackTrace();
-            }finally {
+            } finally {
                 Intent intent = new Intent();
                 intent.setAction(MainActivity.ACTION_NFC_CARDINFO);
-                if (s!=null){
-                    intent.putExtra("cardinfo",s);
-                }else {
-                    intent.putExtra("cardinfo","获取卡信息失败");
+                if (s != null) {
+                    intent.putExtra("cardinfo", s);
+                } else {
+                    intent.putExtra("cardinfo", "获取卡信息失败");
                 }
                 mContext.sendBroadcast(intent);
             }

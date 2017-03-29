@@ -55,6 +55,16 @@
         android:showAsAction="never"
         android:title="退出老化"/>
     <item
+        android:id="@+id/action_exit_fullscreen"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="退出全屏"/>
+    <item
+        android:id="@+id/action_start_otherapk"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="启动其他程序"/>
+    <item
         android:id="@+id/action_unintall"
         android:orderInCategory="100"
         android:showAsAction="never"
@@ -65,4 +75,5 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="系统设置"/>
+
 </menu>
