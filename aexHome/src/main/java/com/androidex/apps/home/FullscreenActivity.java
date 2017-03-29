@@ -481,6 +481,15 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 Intent intent = new Intent(Intent.ACTION_DELETE,packageUri);
                 startActivity(intent);
                 return true;
+
+            case R.id.action_startEthernet:
+                
+
+                return true;
+
+            case R.id.action_closeEthernet:
+
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

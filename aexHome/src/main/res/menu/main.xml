@@ -71,6 +71,18 @@
         android:title="一键卸载"/>
 
     <item
+        android:id="@+id/action_startEthernet"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="打开以太网"/>
+
+    <item
+        android:id="@+id/action_closeEthernet"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="关闭以太网"/>
+
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
