@@ -189,7 +189,9 @@ public class aexddZTC70 extends aexddPasswordKeypad {
                         case 3:
                             return "自检错误，串口电平错";
                         case 4:
-                            return "自检错误，CPU卡出错";
+                            return "自检错" +
+                                    "" +
+                                    "误，CPU卡出错";
                         case 5:
                             return "自检错误，电池可能损坏";
                         case 6:

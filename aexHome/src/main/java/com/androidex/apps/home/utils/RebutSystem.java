@@ -1,7 +1,5 @@
 package com.androidex.apps.home.utils;
 
-import android.util.Log;
-
 import com.androidex.apps.home.FullscreenActivity;
 
 import org.json.JSONException;
@@ -18,16 +16,18 @@ import java.util.TimerTask;
 
 public class RebutSystem {
 
-    public static long delyTime = 1000 * 60 * 10;//设置5分钟重启
+    public static long delyTime = 1000 * 60 * 5;//设置5分钟重启
     private static long times = 0;
 
     public static String startTime = "startTime";//开始老化测试的起始时间
     public static String endTime = "endTime";//测试结束的时间
     private static TimerTask task;
+
     //测试时间应该为endtime-starttime
 
     public static void reBut(final FullscreenActivity context) {
-        //先得到userinfo里面的值
+        //先得到userinfo里面的值、
+
         try {
             JSONObject jsonObject = new JSONObject(context.hwservice.getUserInfo());
             String string = jsonObject.optString("times");
@@ -42,9 +42,10 @@ public class RebutSystem {
         times++;
         //用于记录重启次数
         context.hwservice.setUserInfo(stringToJson(times + "", context));
-        Log.d("+++++++", context.hwservice.getUserInfo());
         //开启定时器
         task = new TimerTask() {
+
+
             @Override
             public void run() {
                 context.hwservice.runReboot();

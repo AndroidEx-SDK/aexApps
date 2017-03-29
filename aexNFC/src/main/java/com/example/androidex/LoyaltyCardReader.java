@@ -68,7 +68,7 @@ public class LoyaltyCardReader implements NfcAdapter.ReaderCallback {
 
         int status = 2;
         Intent ds_intent = new Intent();
-        ds_intent.setAction(DoorLock.DoorLockOpenDoor);
+        ds_intent.setAction(MainActivity.DOOR_ACTION);
         ds_intent.putExtra("index",0);
         ds_intent.putExtra("status",status);
         sendBroadcast(ds_intent);

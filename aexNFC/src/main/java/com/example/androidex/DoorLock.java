@@ -18,11 +18,23 @@ import com.androidex.plugins.kkfile;
  */
 public class DoorLock extends Service{
     public static final String TAG = "DoorLock";
+    public static final String DoorLockOpenDoor          = "DoorLockOpenDoor";
     private DoorLockServiceBinder mDoorLockServiceBinder;
     private NotifityBroadCast mNotifityBroadCast;
+    private static DoorLock mServiceInstance = null;
+    public static DoorLock getInstance()
+    {
+        return mServiceInstance;
+    }
     @Override
     public void onCreate() {
         super.onCreate();
+    }
+
+    @Override
+    public void onStart(Intent intent, int startId) {
+        super.onStart(intent, startId);
+        mServiceInstance = this;
     }
 
     @Override
