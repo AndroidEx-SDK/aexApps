@@ -18,7 +18,9 @@ import com.androidex.plugins.kkfile;
 import com.tencent.device.TXDataPoint;
 import com.tencent.device.TXDeviceService;
 
+import java.util.Arrays;
 import java.util.HashMap;
+
 
 /**
  * Created by yangjun on 16/6/6.
@@ -203,13 +205,14 @@ public class DoorLock extends Service implements OnBackCall{
                     mDoorLock.openDoor(0xF0, 0x40);
                     //mDoorLock.openDoor(1, 0x20);
                 } else {
-                    mDoorLock.closeDoor(index);
+                    int result = mDoorLock.closeDoor(index);
                 }
             } else if(intent.getAction().equals(actionRunReboot)){
                 runReboot();
             } else if(intent.getAction().equals(actionRunShutdown)){
                 runShutdown();
             } else if(intent.getAction().equals(TXDeviceService.OnReceiveDataPoint)){
+                Log.d(TAG, "onReceive: 执行了吗?");
                 Long from = intent.getExtras().getLong("from", 0);
                 Parcelable[] arrayDataPoint = intent.getExtras().getParcelableArray("datapoint");
                 for (int i = 0; i < arrayDataPoint.length; ++i) {
@@ -226,7 +229,10 @@ public class DoorLock extends Service implements OnBackCall{
                                 ds_intent.putExtra("status",status);
                                 sendBroadcast(ds_intent);
 
+
+
                                 dpa[0] = dp;
+                                Log.d(TAG, "onReceive: "+ Arrays.toString(dpa));
                                 TXDeviceService.reportDataPoint(dpa);
                             }
                             break;
