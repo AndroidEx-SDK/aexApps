@@ -137,7 +137,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         String ret = "";
         byte[] retBytes = new byte[2048];
 
-       // Log.d(TAG, String.format("runShellCommand(%s)", cmd));
+        // Log.d(TAG, String.format("runShellCommand(%s)", cmd));
         try {
             cmd += "\n";
             Process exeEcho1 = Runtime.getRuntime().exec("su");
@@ -159,15 +159,15 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aexhome_main);
-       hwservice.EnterFullScreen();
-        android.util.Log.d(TAG, "onCreate: "+hwservice.getSdkVersion());
-       mControlsView = findViewById(R.id.dummy_button);
+        hwservice.EnterFullScreen();
+        android.util.Log.d(TAG, "onCreate: " + hwservice.getSdkVersion());
+        mControlsView = findViewById(R.id.dummy_button);
         initView();
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-       mContentView.setAdapter(mSectionsPagerAdapter);
-       initProgressBar();
-       initTablayoutAndViewPager();
-       initBroadCast();
+        mContentView.setAdapter(mSectionsPagerAdapter);
+        initProgressBar();
+        initTablayoutAndViewPager();
+        initBroadCast();
         RebutSystem.reBut(this);  //五分钟重启动，用于老化测试
         if (hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
             if (!isInitConfig) {
@@ -358,7 +358,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
 
     @Override
     public void HideControlBar() {
-       mControlsView.setVisibility(View.GONE);
+        mControlsView.setVisibility(View.GONE);
         super.HideControlBar();
     }
 
@@ -390,7 +390,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         switch (item.getItemId()) {
             case R.id.action_settings:
                 system_set();//系统设置
-              return true;
+                return true;
 
             case R.id.action_setuuid:
                 Toast.makeText(this, "请设置UUID", Toast.LENGTH_LONG).show();
@@ -417,7 +417,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 return true;
 
             case R.id.action_video://视频播放测试程序
-                VedioFragment.Instance().show(getSupportFragmentManager(),"vediofragment");
+                VedioFragment.Instance().show(getSupportFragmentManager(), "vediofragment");
                 return true;
 
             case R.id.action_onekey_text:
@@ -478,8 +478,8 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
 //                Log.d(TAG,"runShellCommand:ls:"+runShellCommand("ls /misc/boot_logo.bmp"));
 //                runShellCommand("reboot");
 
-                Uri packageUri = Uri.parse("package:"+FullscreenActivity.this.getPackageName());
-                Intent intent = new Intent(Intent.ACTION_DELETE,packageUri);
+                Uri packageUri = Uri.parse("package:" + FullscreenActivity.this.getPackageName());
+                Intent intent = new Intent(Intent.ACTION_DELETE, packageUri);
                 startActivity(intent);
                 return true;
 
@@ -505,7 +505,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         casReaderText(2);//燃气读卡器测试
         ztPasswordKeypadText();//密码键盘测试
         CameraFragment.instance().show(getSupportFragmentManager(), "camerafragment");//相机测试
-       // showDialog(getVedioFragments(), true);//视频播放测试程序
+        // showDialog(getVedioFragments(), true);//视频播放测试程序
         // NetWork.wifiManger(this);
         //netWorkText();  //以太网测试
         //NetWork.netWorkManger(this);
@@ -546,12 +546,13 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     }).show();
         }
     }
+
     /**
      * 读卡器测试程序
      */
     private void readerText(int i) {
         if (mDevices.mBankCardReader.Open()) {
-            
+
             aexddMT319Reader mBankCardReader = (aexddMT319Reader) mDevices.mBankCardReader;
             mBankCardReader.selfTest(i);
             mBankCardReader.Close();
@@ -646,7 +647,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
+        switch (requestCode) {
             case 1001://系统wifi返回键
                 AlertDialog.Builder builder = new AlertDialog.Builder(FullscreenActivity.this);
                 builder.setCancelable(false);
@@ -824,7 +825,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     break;
 
                 case action_start_print_text://启动打印机测试
-                    Toast.makeText(FullscreenActivity.this,"请在NFC处刷卡",Toast.LENGTH_LONG).show();
+                    Toast.makeText(FullscreenActivity.this, "请在NFC处刷卡", Toast.LENGTH_LONG).show();
                     printText();
                     break;
             }
