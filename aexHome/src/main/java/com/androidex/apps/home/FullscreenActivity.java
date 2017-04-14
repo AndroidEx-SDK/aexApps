@@ -203,6 +203,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
 
     public void initConfig() {
         Log.d(TAG, hwservice.getSdkVersion());
+
         /**
          *针对22寸机配置
          */
