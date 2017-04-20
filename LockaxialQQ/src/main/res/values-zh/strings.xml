@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">锁相门禁</string>
     <string name="accept_video">接受</string>
     <string name="action_settings">设置</string>
@@ -11,4 +12,6 @@
     <string name="unbind">解除绑定</string>
     <string name="q_unbind_all">您确定要解绑所有用户吗？</string>
     <string name="cancel">取消</string>
+
+    <string name="net_unavailable">检查网络设置</string>
 </resources>
