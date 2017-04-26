@@ -14,7 +14,7 @@ import com.androidex.apps.home.view.CustomVideoView;
  * Created by liyp on 16/12/10.
  */
 
-public class VedioFragment extends LazyLoadFragment implements View.OnClickListener {
+public class VedioFragment extends  LazyLoadFragment implements View.OnClickListener {
     private ImageView iv_close;
     private CustomVideoView customVideoView;
     private static VedioFragment fragment;

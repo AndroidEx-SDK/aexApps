@@ -32,7 +32,7 @@ public class BaseApplication extends Application  implements Thread.UncaughtExce
     @Override
     public void onCreate()
     {
-        setStrictMode();
+       // setStrictMode();
 
         application = this;
 

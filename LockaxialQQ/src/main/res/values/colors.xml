@@ -29,5 +29,7 @@
     <color name="yellow_warning">#FFFF99</color>
     <color name="spots_dialog_color">@android:color/holo_blue_dark</color>
     <color name="spots_dialog_bg">#11ffffff</color>
+    <color name="num_red">#ffcb0f0a</color>
+    <color name="black95">#95000000</color>
 
 </resources>

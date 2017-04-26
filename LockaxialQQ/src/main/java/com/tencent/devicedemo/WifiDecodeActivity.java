@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
@@ -21,12 +22,11 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.androidex.SoundPoolUtil;
+import com.androidex.GetUserInfo;
+import com.androidex.Zxing;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -53,6 +53,7 @@ public class WifiDecodeActivity extends Activity{
 	private AudioRecord audioRecord;
 	
 	private int isRecording = 0;
+	private Bitmap bitmap;
 	
 	Handler mHandler = new Handler();
 
@@ -61,7 +62,7 @@ public class WifiDecodeActivity extends Activity{
 	private ViewPager viewPager;  //对应的viewPager
 
 	private List<View> viewList;//view数组
-	
+
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated constructor stub
 		super.onCreate(savedInstanceState);
@@ -82,14 +83,13 @@ public class WifiDecodeActivity extends Activity{
 		view1 = inflater.inflate(R.layout.erweima, null);
 		ImageView imewm=(ImageView)view1.findViewById(R.id.iv_ewm);
 		//扫码绑定
-		try {
-			String url="http://iot.qq.com/add?pid=1700003316&sn=ADD2792D122042f9&token=4456272CD5F0965724A2C4696DB44D15";
-			if(null!=url){
-				imewm.setBackgroundColor(Color.WHITE);
-				imewm.setImageBitmap(Create2DCode(url));
-			}
-		} catch (WriterException e) {
-			e.printStackTrace();
+		if (GetUserInfo.getSn()!=null){
+			bitmap = Zxing.createQRImage("http://iot.qq.com/add?pid=1700003316&sn=" + GetUserInfo.getSn(), 200, 200, null);
+			imewm.setBackgroundColor(Color.WHITE);
+			imewm.setImageBitmap(bitmap);
+		}else{
+			bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.error);
+			imewm.setImageBitmap(bitmap);
 		}
 		view2 = inflater.inflate(R.layout.erweima1, null);
 		view3 = inflater.inflate(R.layout.erweima2, null);

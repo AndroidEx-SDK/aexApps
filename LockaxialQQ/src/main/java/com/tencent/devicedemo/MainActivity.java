@@ -109,7 +109,6 @@ public class MainActivity extends Activity implements LoyaltyCardReader.AccountC
         setContentView(R.layout.activity_main);
 
         IntentFilter filter = new IntentFilter();
-        filter.addAction(TXDeviceService.BinderListChange);
         filter.addAction(TXDeviceService.OnEraseAllBinders);
         filter.addAction(TXDeviceService.wifisetting);
         filter.addAction(DoorLock.DoorLockStatusChange);

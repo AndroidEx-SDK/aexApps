@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center"
+    android:id="@+id/mainLayout">
+    <TextView
+        android:layout_width="fill_parent"
+        android:id="@+id/ed_status"
+        android:layout_height="wrap_content"
+        android:text="@string/app_init"
+        android:gravity="center_horizontal"
+        android:textSize="30dp" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:maxHeight="250dp"
+        android:maxWidth="250dp"
+        android:id="@+id/Photo"
+        android:onClick="onBtnCall"/>
+</LinearLayout>
