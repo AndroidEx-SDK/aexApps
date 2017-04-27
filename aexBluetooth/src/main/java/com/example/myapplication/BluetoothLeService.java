@@ -38,7 +38,6 @@ public class BluetoothLeService extends Service {
     private static final int STATE_CONNECTING = 1;
     private static final int STATE_CONNECTED = 2;
 
-
     public final static String ACTION_GATT_CONNECTED = "com.choicemmed.bledemo.ACTION_GATT_CONNECTED";
     public final static String ACTION_GATT_DISCONNECTED = "com.choicemmed.bledemo.ACTION_GATT_DISCONNECTED";
     public final static String ACTION_GATT_SERVICES_DISCOVERED = "com.choicemmed.bledemo.ACTION_GATT_SERVICES_DISCOVERED";
@@ -46,7 +45,6 @@ public class BluetoothLeService extends Service {
     public final static String EXTRA_DATA = "com.choicemmed.bledemo.EXTRA_DATA";
     public final static String ACTION_WRITE = "com.androidex.write";
     public static String CLIENT_CHARACTERISTIC_CONFIG = "00002a01-0000-1000-8000-00805f9b34fb";
-
 
     // Implements callback methods for GATT events that the app cares about. For
     // example,
