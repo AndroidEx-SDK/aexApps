@@ -8,7 +8,6 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,8 +16,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.media.AudioManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.nfc.NfcAdapter;
@@ -40,6 +37,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.BrocastCast.NotifyReceiver;
 import com.androidex.DoorLock;
 import com.androidex.GetUserInfo;
 import com.androidex.LoyaltyCardReader;
@@ -58,6 +56,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static com.androidex.NetWork.isNetworkAvailable;
 
 
 public class MainActivity extends Activity implements LoyaltyCardReader.AccountCallback {
@@ -118,8 +118,9 @@ public class MainActivity extends Activity implements LoyaltyCardReader.AccountC
         filter.addAction(TXDeviceService.BinderListChange);
         filter.addAction(TXDeviceService.OnEraseAllBinders);
         filter.addAction(DoorLock.DoorLockStatusChange);
-        mNotifyReceiver = new NotifyReceiver();
+        mNotifyReceiver = new NotifyReceiver(this,mAdapter,iv_bind,dialog);
         registerReceiver(mNotifyReceiver, filter);
+        listTemp1 = mNotifyReceiver.getListTemp1();
 
         viewPager = (AutoScrollViewPager) findViewById(R.id.vp_main);
         imageView = (ImageView) findViewById(R.id.iv_erweima);
@@ -840,75 +841,7 @@ public class MainActivity extends Activity implements LoyaltyCardReader.AccountC
 
     Parcelable[] listTemp1;
 
-    public class NotifyReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction() == TXDeviceService.BinderListChange) {
-                Parcelable[] listTemp = intent.getExtras().getParcelableArray("binderlist");
-                listTemp1 = listTemp;
-                List<TXBinderInfo> binderList = new ArrayList<TXBinderInfo>();
-                for (int i = 0; i < listTemp.length; ++i) {
-                    TXBinderInfo binder = (TXBinderInfo) (listTemp[i]);
-                    binderList.add(binder);
-                }
-                if (mAdapter != null) {
-                    mAdapter.freshBinderList(binderList);
-                }
 
-                if (binderList.size() > 0) {
-                    iv_bind.setImageDrawable(getResources().getDrawable(R.mipmap.binder_default_head));
-                    // startActivity(new Intent(MainActivity.this, WifiDecodeActivity.class));
-                } else {
-                    iv_bind.setImageDrawable(getResources().getDrawable(R.mipmap.bind_offline));
-                    startActivity(new Intent(MainActivity.this, WifiDecodeActivity.class));
-                }
-            } else if (intent.getAction() == TXDeviceService.OnEraseAllBinders) {
-                int resultCode = intent.getExtras().getInt(TXDeviceService.OperationResult);
-                if (0 != resultCode) {
-                    showAlert("解除绑定失败", "解除绑定失败，错误码:" + resultCode);
-                } else {
-                    showAlert("解除绑定成功", "解除绑定成功!!!");
-                    iv_bind.setImageDrawable(getResources().getDrawable(R.mipmap.bind_offline));
-                    startActivity(new Intent(MainActivity.this, WifiDecodeActivity.class));
-                }
-
-            } else if (intent.getAction() == DoorLock.DoorLockStatusChange) {
-                //门禁状态改变事件
-                //showAlert("门禁状态改变",intent.getStringExtra("doorsensor"));
-                String doorsendor = String.format("doorsensor=%s", intent.getStringExtra("doorsensor"));
-                Log.d("NotifyReceiver", doorsendor);
-                toast.setText(doorsendor);
-                toast.show();
-            } else if (intent.getAction() == TXDeviceService.wifisetting) {
-                if (!isNetworkAvailable(MainActivity.this))
-                    startActivity(new Intent(MainActivity.this, WifiConnActivity.class));
-            } else if (intent.getAction().equals(DoorLock.DoorLockOpenDoor)) {
-                if (dialog != null && dialog.isShowing()) {
-                    try {
-                        Thread.sleep(3000);/*休眠三秒*/
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    dialog.dismiss();
-                }
-            } else if (intent.getAction().equals(TXDeviceService.voicereceive)) {
-                String filepath = intent.getStringExtra("filepath");
-                if ("".equals(filepath)) return;
-                Intent intent1 = new Intent(MainActivity.this, AudioRecordActivity.class);
-                intent1.putExtra("filepath", filepath);
-                startActivity(intent1);
-
-            } else if (intent.getAction().equals(TXDeviceService.isconnected)) {
-                String ishave = intent.getStringExtra("ishave");
-                if (!"".equals(ishave) && ishave.equals("yes")) {
-                    iv_bind.setImageDrawable(getResources().getDrawable(R.mipmap.binder_default_head));
-                } else {
-                    iv_bind.setImageDrawable(getResources().getDrawable(R.mipmap.bind_offline));
-                }
-
-            }
-        }
-    }
 
     private void showAlert(String strTitle, String strMsg) {
         // TODO Auto-generated method stub
@@ -919,35 +852,5 @@ public class MainActivity extends Activity implements LoyaltyCardReader.AccountC
     }
 
 
-    /**
-     * 检查当前网络是否可用
-     *
-     * @param
-     * @return
-     */
-
-    public boolean isNetworkAvailable(Activity activity) {
-        Context context = activity.getApplicationContext();
-        // 获取手机所有连接管理对象（包括对wi-fi,net等连接的管理）
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        if (connectivityManager == null) {
-            return false;
-        } else {
-            // 获取NetworkInfo对象
-            NetworkInfo[] networkInfo = connectivityManager.getAllNetworkInfo();
-
-            if (networkInfo != null && networkInfo.length > 0) {
-                for (int i = 0; i < networkInfo.length; i++) {
-                    networkInfo[i].isAvailable();
-                    // 判断当前网络状态是否为连接状态
-                    if (networkInfo[i].getState() == NetworkInfo.State.CONNECTED) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
 
 }

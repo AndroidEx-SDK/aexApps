@@ -5,9 +5,9 @@ package com.phone.config;
  */
 public class DeviceConfig {
     /********residential*****/
-    public static final String SERVER_URL="http://www.lockaxial.com:3000";
+    public static final String SERVER_URL="http://www.lockaxial.com";
 	
-	public static final String UPDATE_SERVER_URL="http://www.lockaxial.com:3000";
+	public static final String UPDATE_SERVER_URL="http://www.lockaxial.com";
     public static final String UPDATE_RELEASE_FOLDER="/release/doorAccessMachine/v1/";
     public static final String UPDATE_RELEASE_PACKAGE="package.json";
     public static final int RELEASE_VERSION=18;

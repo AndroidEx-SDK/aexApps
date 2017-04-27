@@ -404,4 +404,10 @@ public class InitActivity extends Activity {
     }
     void setTextView(int id,String txt) { ((TextView)findViewById(id)).setText(txt); }
 
+
+    /**
+     * 广播接收器
+     */
+    
+
 }
