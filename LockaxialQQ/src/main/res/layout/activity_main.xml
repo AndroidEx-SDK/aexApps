@@ -6,6 +6,17 @@
     android:background="@mipmap/bg3"
     android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id/header_pane"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:background="#cc222222"
+        android:text=""
+        android:height="60dp"
+        android:visibility="invisible"/>
+
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
@@ -203,6 +214,7 @@
         android:background="#88000000"
         >
         <ImageView
+            android:visibility="gone"
             android:id="@+id/iv_setting"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -215,6 +227,7 @@
 
 
         <ImageView
+            android:visibility="gone"
             android:id="@+id/tv_log"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -245,6 +258,32 @@
             android:layout_marginTop="5dp"
             android:layout_marginRight="5dp"
             android:layout_gravity="top"/>
+
+        <TextView
+            android:id="@+id/tv_day"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="20dp"
+            android:gravity="center_vertical"
+            android:text=""
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="20dp"
+            android:gravity="center_vertical"
+            android:text=""
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="20dp"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical"
+            android:text=""
+            android:textStyle="bold"/>
 
     </LinearLayout>
 
