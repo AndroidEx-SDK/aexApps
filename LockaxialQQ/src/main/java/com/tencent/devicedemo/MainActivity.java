@@ -34,7 +34,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.BrocastCast.NotifyReceiver;
@@ -87,7 +86,6 @@ public class MainActivity extends Activity implements LoyaltyCardReader.AccountC
     private ImageView iv_setting;
     private RelativeLayout rl;
     private ImageView iv_bind;
-
 
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated constructor stub
@@ -299,14 +297,9 @@ public class MainActivity extends Activity implements LoyaltyCardReader.AccountC
         Intent dlIntent = new Intent(this, DoorLock.class);
         startService(dlIntent);
         Typeface typeFace = Typeface.createFromAsset(getAssets(), "fonts/GBK.TTF");
-        TextView com_tv = (TextView) findViewById(R.id.tv_companyname);/** 公司名*/
-        TextView com_xq = (TextView) findViewById(R.id.tv_xiaoqu);
         //TextView com_log=(TextView)findViewById(R.id.tv_log);
-        com_xq.setText("办公区门禁");
         tv_input = (EditText) findViewById(R.id.tv_input);
         tv_input.setTypeface(typeFace);
-        com_tv.setTypeface(typeFace);
-        com_xq.setTypeface(typeFace);
         // com_log.setTypeface(typeFace);
 
         mGridView = (GridView) findViewById(R.id.gridView_binderlist);

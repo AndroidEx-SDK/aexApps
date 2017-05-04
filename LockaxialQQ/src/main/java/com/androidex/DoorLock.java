@@ -161,7 +161,6 @@ public class DoorLock extends Service implements OnBackCall{
          */
         public int openDoor(int index, int delay){
             kkfile rkey = new kkfile();
-
             if(index < 0 || index > 0xFE) index = 0;
             if(ident < 0 || ident > 0xFE) ident = 0;
             if(delay < 0 || delay > 0xFE) delay = 0;

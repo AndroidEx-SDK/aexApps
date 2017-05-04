@@ -6,6 +6,98 @@
     android:background="@mipmap/bg3"
     android:orientation="vertical" >
 
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <!-- 底部 -->
+        <RelativeLayout
+            android:id="@+id/page_hidden"
+            android:layout_width="0.1dp"
+            android:layout_height="0.1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true">
+            <SurfaceView
+                android:id="@+id/autoCameraSurfaceview"
+                android:layout_width="0.1dp"
+                android:layout_height="0.1dp" >
+            </SurfaceView>
+        </RelativeLayout>
+        <ImageView
+            android:id="@+id/iv_erweima"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="left|center|bottom"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentBottom="true"
+            />
+
+        <RelativeLayout
+            android:id="@+id/page_bottom"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_toRightOf="@id/iv_erweima"
+            android:background="@color/black95"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <TextView
+                android:id="@+id/tv_community"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:textSize="30dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_vertical"
+                android:text=""
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/tv_lock"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:textSize="30dp"
+                android:layout_toRightOf="@+id/tv_community"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
+                android:textColor="@color/num_red"
+                android:text=""
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/tv_input_label"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:textSize="30dp"
+                android:layout_toRightOf="@+id/tv_lock"
+                android:layout_marginLeft="40dp"
+                android:gravity="center_vertical"
+                android:text="请输入房号"
+                android:textStyle="bold"
+                android:textColor="#ffffff"/>
+            <TextView
+                android:id="@+id/tv_input_text"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:textSize="30dp"
+                android:layout_toRightOf="@+id/tv_input_label"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
+                android:text=""
+                android:textStyle="bold"/>
+        </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/ll_video"
+            android:layout_width="288dp"
+            android:layout_height="352dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="100dp"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -72,47 +164,15 @@
     android:orientation="horizontal"
     android:layout_gravity="bottom|left"
     android:layout_marginBottom="20dp"
+    android:visibility="gone"
     >
 
-    <ImageView
-        android:id="@+id/iv_erweima"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="left|center|bottom"
-        android:layout_marginLeft="20dp"
-        />
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:orientation="vertical"
-        >
-        <TextView
-            android:id="@+id/tv_xiaoqu"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:gravity="left|center"
-            android:layout_gravity="bottom"
-            android:layout_marginLeft="10dp"
-            android:textSize="40sp"
-            android:textColor="@color/Text_WHITE"
-            />
 
-        <TextView
-            android:id="@+id/tv_companyname"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:gravity="left|center"
-            android:layout_gravity="bottom"
-            android:layout_marginLeft="10dp"
-            android:textSize="40sp"
-            android:textColor="@color/Text_BLUE"
-            android:text="深圳市安卓工控设备有限公司"
-            />
 
-    </LinearLayout>
 
 
     <EditText
+        android:visibility="gone"
         android:id="@+id/tv_input"
         style="@style/Text_TitleBar_Style"
         android:layout_width="0dp"

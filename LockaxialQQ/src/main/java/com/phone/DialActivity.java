@@ -286,6 +286,7 @@ public class DialActivity extends Activity implements TakePictureCallback{
         Camera camera=null;
         try{
             camera= Camera.open();
+
         }catch(Exception e){
         }
         Log.v("MainService", "打开相机");
