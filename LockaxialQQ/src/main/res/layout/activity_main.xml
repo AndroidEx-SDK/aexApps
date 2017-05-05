@@ -178,10 +178,6 @@
     android:visibility="gone"
     >
 
-
-
-
-
     <EditText
         android:visibility="gone"
         android:id="@+id/tv_input"
