@@ -5,6 +5,16 @@
     android:layout_height="match_parent"
     android:background="@mipmap/bg3"
     android:orientation="vertical" >
+    <SurfaceView
+        android:id="@+id/surface_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"/>
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:src="@drawable/background"
+        android:scaleType="fitXY"
+        android:id="@+id/image_view"/>
 
     <TextView
         android:id="@+id/header_pane"

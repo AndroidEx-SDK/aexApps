@@ -17,12 +17,12 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.view.KeyEvent;
 
-import com.phone.DialActivity;
 import com.phone.InitActivity;
 import com.phone.config.DeviceConfig;
 import com.phone.utils.Ajax;
 import com.phone.utils.HttpUtils;
 import com.phone.utils.WifiAdmin;
+import com.tencent.devicedemo.MainActivity;
 import com.yuntongxun.ecsdk.ECDevice;
 import com.yuntongxun.ecsdk.ECError;
 import com.yuntongxun.ecsdk.ECInitParams;
@@ -939,10 +939,10 @@ public class MainService extends Service {
                     }else{
                         inputBlockId=0;
                     }
-                    sendDialMessenger(DialActivity.MSG_CHECK_BLOCKNO,inputBlockId);
+                    sendDialMessenger(MainActivity.MSG_CHECK_BLOCKNO,inputBlockId);
                 }
             }catch(Exception e){
-                sendDialMessenger(DialActivity.MSG_CHECK_BLOCKNO,-1);
+                sendDialMessenger(MainActivity.MSG_CHECK_BLOCKNO,-1);
                 e.printStackTrace();
             }
         }catch(Exception e){
@@ -1075,7 +1075,7 @@ public class MainService extends Service {
                 code=-1;
             }
             Message message = Message.obtain();
-            message.what = DialActivity.MSG_PASSWORD_CHECK;
+            message.what = MainActivity.MSG_PASSWORD_CHECK;
             message.obj=code;
             try {
                 dialMessenger.send(message);
@@ -1259,7 +1259,7 @@ public class MainService extends Service {
     }
 
     protected void startDialActivity(boolean initStatus){
-        Intent intent = new Intent(getBaseContext(),DialActivity.class);
+        Intent intent = new Intent(getBaseContext(),MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("INIT_STATUS",initStatus);
         startActivity(intent);
@@ -1327,7 +1327,7 @@ public class MainService extends Service {
 
                 @Override
                 public void onError(Exception exception) {
-                    sendDialMessenger(DialActivity.ON_YUNTONGXUN_INIT_ERROR);
+                    sendDialMessenger(MainActivity.ON_YUNTONGXUN_INIT_ERROR);
                     // SDK 初始化失败,可能有如下原因造成
                     // 1、可能SDK已经处于初始化状态
                     // 2、SDK所声明必要的权限未在清单文件（AndroidManifest.xml）里配置、
@@ -1384,20 +1384,20 @@ public class MainService extends Service {
                 if(state == ECDevice.ECConnectState.CONNECT_FAILED ){
                     if(error.errorCode == SdkErrorCode.SDK_KICKED_OFF) {
                         //账号异地登陆
-                        sendDialMessenger(DialActivity.ON_YUNTONGXUN_LOGIN_FAIL);
+                        sendDialMessenger(MainActivity.ON_YUNTONGXUN_LOGIN_FAIL);
                         DeviceConfig.IS_CALL_DIRECT_AVAILABLE=false;
                     }
                     else
                     {
                         //连接状态失败
-                        sendDialMessenger(DialActivity.ON_YUNTONGXUN_LOGIN_FAIL);
+                        sendDialMessenger(MainActivity.ON_YUNTONGXUN_LOGIN_FAIL);
                         DeviceConfig.IS_CALL_DIRECT_AVAILABLE=false;
                     }
                     return;
                 }
                 else if(state == ECDevice.ECConnectState.CONNECT_SUCCESS) {
                     // 登陆成功
-                    sendDialMessenger(DialActivity.ON_YUNTONGXUN_LOGIN_SUCCESS);
+                    sendDialMessenger(MainActivity.ON_YUNTONGXUN_LOGIN_SUCCESS);
                 }
             }
         });
@@ -1500,13 +1500,13 @@ public class MainService extends Service {
                         case ECCALL_ALERTING:
                             // 呼叫到达对方客户端，对方正在振铃
                             if(callConnectState==CALL_DIRECT_CONNECTING){
-                                sendDialMessenger(DialActivity.MSG_CALLMEMBER_DIRECT_DIALING);
+                                sendDialMessenger(MainActivity.MSG_CALLMEMBER_DIRECT_DIALING);
                             }
                             break;
                         case ECCALL_ANSWERED:
                             // 对方接听本次呼叫
                             if(callConnectState==CALL_DIRECT_CONNECTING){
-                                sendDialMessenger(DialActivity.MSG_CALLMEMBER_DIRECT_SUCCESS);
+                                sendDialMessenger(MainActivity.MSG_CALLMEMBER_DIRECT_SUCCESS);
                             }
                             callConnectState=CALL_DIRECT_CONNECTED;
                             startCallDirectTimeoutChecking(lastCurrentCallId);
@@ -1514,14 +1514,14 @@ public class MainService extends Service {
                         case ECCALL_FAILED:
                             // 本次呼叫失败，根据失败原因播放提示音
                             if(callConnectState==CALL_DIRECT_CONNECTING){
-                                sendDialMessenger(DialActivity.MSG_CALLMEMBER_DIRECT_FAILED);
+                                sendDialMessenger(MainActivity.MSG_CALLMEMBER_DIRECT_FAILED);
                                 callMemberDirectly();
                             }
                             break;
                         case ECCALL_RELEASED:
                             // 通话释放[完成一次呼叫]
                             if(callConnectState==CALL_DIRECT_CONNECTED){
-                                sendDialMessenger(DialActivity.MSG_CALLMEMBER_DIRECT_COMPLETE);
+                                sendDialMessenger(MainActivity.MSG_CALLMEMBER_DIRECT_COMPLETE);
                             }
                             Log.v("MainService", "通话完成");
                             resetCallMode();
@@ -1652,7 +1652,7 @@ public class MainService extends Service {
         try {
             if(msg.obj==null){
                 Message message = Message.obtain();
-                message.what = DialActivity.MSG_CALLMEMBER_SERVER_ERROR;
+                message.what = MainActivity.MSG_CALLMEMBER_SERVER_ERROR;
                 try {
                     dialMessenger.send(message);
                 } catch (RemoteException e) {
@@ -1691,7 +1691,7 @@ public class MainService extends Service {
                 }
             }else{
                 Message message = Message.obtain();
-                message.what = DialActivity.MSG_CALLMEMBER_ERROR;
+                message.what = MainActivity.MSG_CALLMEMBER_ERROR;
                 try {
                     dialMessenger.send(message);
                 } catch (RemoteException e) {
@@ -1770,11 +1770,11 @@ public class MainService extends Service {
             startTimeoutChecking();
         }else{
             if(DeviceConfig.IS_CALL_DIRECT_AVAILABLE){ //如果支持直拨，立刻进入直拨电话模式
-                sendDialMessenger(DialActivity.MSG_CALLMEMBER_TIMEOUT_AND_TRY_DIRECT);
+                sendDialMessenger(MainActivity.MSG_CALLMEMBER_TIMEOUT_AND_TRY_DIRECT);
                 cancelOtherMembers(null);
                 startCallMemberDirectly();
             }else{ //告诉用户无人在线
-                sendDialMessenger(DialActivity.MSG_CALLMEMBER_NO_ONLINE);
+                sendDialMessenger(MainActivity.MSG_CALLMEMBER_NO_ONLINE);
             }
         }
     }
@@ -1906,7 +1906,7 @@ public class MainService extends Service {
     }
 
     protected void callMemberDirectlyFailed(){
-        sendDialMessenger(DialActivity.MSG_CALLMEMBER_DIRECT_TIMEOUT);
+        sendDialMessenger(MainActivity.MSG_CALLMEMBER_DIRECT_TIMEOUT);
         Log.v("MainService", "取消直接呼叫");
         resetCallMode();
     }
@@ -1932,12 +1932,12 @@ public class MainService extends Service {
                     if(!isInterrupted()){ //检查线程没有被停止
                         if(callConnectState==CALL_VIDEO_CONNECTING){ //如果现在是尝试连接状态
                             if(DeviceConfig.IS_CALL_DIRECT_AVAILABLE){ //如果支持直拨，立刻进入直拨电话模式
-                                sendDialMessenger(DialActivity.MSG_CALLMEMBER_TIMEOUT_AND_TRY_DIRECT); //通知界面目前已经超时，并尝试直拨电话
+                                sendDialMessenger(MainActivity.MSG_CALLMEMBER_TIMEOUT_AND_TRY_DIRECT); //通知界面目前已经超时，并尝试直拨电话
                                 startCallMemberDirectly();
                             }else{
                                 Log.v("MainService", "超时检查，取消当前呼叫");
                                 resetCallMode();
-                                sendDialMessenger(DialActivity.MSG_CALLMEMBER_TIMEOUT); //通知界面目前已经超时，并进入初始状态
+                                sendDialMessenger(MainActivity.MSG_CALLMEMBER_TIMEOUT); //通知界面目前已经超时，并进入初始状态
                             }
                         }
                     }
@@ -2022,7 +2022,7 @@ public class MainService extends Service {
         private void onConnectError(){
             if(dialMessenger!=null){
                 Message message = Message.obtain();
-                message.what = DialActivity.MSG_CONNECT_ERROR;
+                message.what = MainActivity.MSG_CONNECT_ERROR;
                 try {
                     dialMessenger.send(message);
                 } catch (RemoteException e) {
@@ -2088,7 +2088,7 @@ public class MainService extends Service {
             resetCallMode();
             stopTimeoutCheckThread();
             Message message = Message.obtain();
-            message.what = DialActivity.MSG_RTC_NEWCALL;
+            message.what = MainActivity.MSG_RTC_NEWCALL;
             try {
                 dialMessenger.send(message);
             } catch (RemoteException e) {
@@ -2127,7 +2127,7 @@ public class MainService extends Service {
     protected void rtcConnectSuccess(){
         if(dialMessenger!=null){
             Message message = Message.obtain();
-            message.what = DialActivity.MSG_CONNECT_SUCCESS;
+            message.what = MainActivity.MSG_CONNECT_SUCCESS;
             try {
                 dialMessenger.send(message);
             } catch (RemoteException e) {
@@ -2196,7 +2196,7 @@ public class MainService extends Service {
         @Override
         public void onVideo() {
             Message message = Message.obtain();
-            message.what = DialActivity.MSG_RTC_ONVIDEO;
+            message.what = MainActivity.MSG_RTC_ONVIDEO;
             try {
                 dialMessenger.send(message);
             } catch (RemoteException e) {
@@ -2212,7 +2212,7 @@ public class MainService extends Service {
     };
     private void callingDisconnect(){
         Message message = Message.obtain();
-        message.what = DialActivity.MSG_RTC_DISCONNECT;
+        message.what = MainActivity.MSG_RTC_DISCONNECT;
         try {
             dialMessenger.send(message);
         } catch (RemoteException e) {
@@ -2221,10 +2221,10 @@ public class MainService extends Service {
     }
     protected void onMessage(String from, String mime, String content){
         if(content.equals("refresh card info")){
-            sendDialMessenger(DialActivity.MSG_REFRESH_DATA,"card");
+            sendDialMessenger(MainActivity.MSG_REFRESH_DATA,"card");
             //retrieveChangedCardList();
         }else if(content.equals("refresh finger info")){
-            sendDialMessenger(DialActivity.MSG_REFRESH_DATA,"finger");
+            sendDialMessenger(MainActivity.MSG_REFRESH_DATA,"finger");
             //retrieveChangedFingerList();
         }else if(content.equals("refresh all info")){
 //            resetFlag=1;
@@ -2999,8 +2999,8 @@ public class MainService extends Service {
                     try {
                         String communityName=obj.getString("communityName");
                         String lockName=obj.getString("lockName");
-                        sendDialMessenger(DialActivity.MSG_REFRESH_COMMUNITYNAME,communityName);
-                        sendDialMessenger(DialActivity.MSG_REFRESH_LOCKNAME,lockName);
+                        sendDialMessenger(MainActivity.MSG_REFRESH_COMMUNITYNAME,communityName);
+                        sendDialMessenger(MainActivity.MSG_REFRESH_LOCKNAME,lockName);
                     }catch(Exception e){
                     }
                 }
@@ -3070,7 +3070,7 @@ public class MainService extends Service {
 
     protected void restartAdvertise(JSONArray rows){
         if(!isAdvertisementListSame(rows)){
-            sendDialMessenger(DialActivity.MSG_ADVERTISE_REFRESH,rows);
+            sendDialMessenger(MainActivity.MSG_ADVERTISE_REFRESH,rows);
         }
         currentAdvertisementList=rows;
     }

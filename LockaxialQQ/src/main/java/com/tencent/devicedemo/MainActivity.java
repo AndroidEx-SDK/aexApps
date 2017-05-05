@@ -72,7 +72,9 @@ import org.json.JSONArray;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
@@ -172,6 +174,9 @@ public class MainActivity extends Activity implements LoyaltyCardReader.AccountC
     Thread passwordTimeoutThread=null;
     SoundPool soundPool=null;
     int keyVoiceIndex=0;
+    SurfaceView videoView = null;
+    SurfaceView autoCameraSurfaceView=null;
+    Thread clockRefreshThread=null;
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated constructor stub
         super.onCreate(savedInstanceState);
@@ -196,6 +201,16 @@ public class MainActivity extends Activity implements LoyaltyCardReader.AccountC
         initHandler();
         initVoiceHandler();
         initVoiceVolume();
+        initAdvertiseHandler();
+        initAutoCamera();
+        if(DeviceConfig.DEVICE_TYPE.equals("C")){
+            setDialStatus("请输入楼栋编号");
+        }
+        startClockRefresh();
+        boolean initStatus=this.getIntent().getBooleanExtra("INIT_STATUS",true);
+        if(!initStatus){
+            onConnectionError();
+        }
         IntentFilter filter = new IntentFilter();
         filter.addAction(TXDeviceService.OnEraseAllBinders);
         filter.addAction(TXDeviceService.wifisetting);
@@ -471,9 +486,70 @@ public class MainActivity extends Activity implements LoyaltyCardReader.AccountC
         setTextView(R.id.tv_community, MainService.communityName);
         setTextView(R.id.tv_lock,MainService.lockName);
     }
+    private void startClockRefresh(){
+        clockRefreshThread=new Thread(){
+            public void run(){
+                try {
+                    setNewTime();
+                    while(true) {
+                        sleep(1000 * 60); //等待指定的一个等待时间
+                        if (!isInterrupted()) { //检查线程没有被停止
+                            setNewTime();
+                        }
+                    }
+                }catch(InterruptedException e){
+                }
+                clockRefreshThread=null;
+            }
+        };
+        clockRefreshThread.start();
+    }
+    private void setNewTime(){
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Date now=new Date();
+                SimpleDateFormat dateFormat=new SimpleDateFormat("E");
+                String dayStr=dateFormat.format(now);
+                dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+                String dateStr=dateFormat.format(now);
+                dateFormat=new SimpleDateFormat("HH:mm");
+                String timeStr=dateFormat.format(now);;
+
+                setTextView(R.id.tv_day,dayStr);
+                setTextView(R.id.tv_date,dateStr);
+                setTextView(R.id.tv_time,timeStr);
+            }
+        });
+    }
+    protected void initAutoCamera(){
+        autoCameraSurfaceView = (SurfaceView) findViewById(R.id.autoCameraSurfaceview);
+        autoCameraHolder = autoCameraSurfaceView.getHolder();
+        autoCameraHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+    }
+    protected void initAdvertiseHandler(){
+        advertiseHandler=new AdvertiseHandler();
+        videoView=(SurfaceView)findViewById(R.id.surface_view);
+
+        imageView=(ImageView)findViewById(R.id.image_view);
+        //advertiseHandler.init(videoView,imageView,videoPane,imagePane);
+        advertiseHandler.init(videoView,imageView);
+    }
     private void initVoiceHandler(){
         soundPool= new SoundPool(10, AudioManager.STREAM_SYSTEM, 5);//第一个参数为同时播放数据流的最大个数，第二数据流类型，第三为声音质量
         keyVoiceIndex=soundPool.load(this, R.raw.key, 1); //把你的声音素材放到res/raw里，第2个参数即为资源文件，第3个为音乐的优先级
+    }
+    protected void initVoiceVolume(){
+        AudioManager audioManager=(AudioManager)getSystemService(this.AUDIO_SERVICE);
+        initVoiceVolume(audioManager, AudioManager.STREAM_MUSIC,DeviceConfig.VOLUME_STREAM_MUSIC);
+        initVoiceVolume(audioManager, AudioManager.STREAM_RING,DeviceConfig.VOLUME_STREAM_RING);
+        initVoiceVolume(audioManager, AudioManager.STREAM_SYSTEM,DeviceConfig.VOLUME_STREAM_SYSTEM);
+        initVoiceVolume(audioManager, AudioManager.STREAM_VOICE_CALL,DeviceConfig.VOLUME_STREAM_VOICE_CALL);
+    }
+    protected void initVoiceVolume(AudioManager audioManager, int type, int value){
+        int thisValue=audioManager.getStreamMaxVolume(type);
+        thisValue=thisValue*value/10;
+        audioManager.setStreamVolume(type,thisValue, AudioManager.FLAG_PLAY_SOUND);
     }
     private void initHandler(){
         handler = new Handler(){
