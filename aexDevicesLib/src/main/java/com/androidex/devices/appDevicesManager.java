@@ -43,6 +43,10 @@ public class appDevicesManager extends appLibsDevices {
      */
     public aexddPasswordKeypad mPasswordKeypad = null;
     public aexddPasswordKeypad mZTPasswordKeypad = null;
+    /**
+     * 指纹仪接口类
+     */
+    public aexddBiovo mX3Biovo = null;
 
     public appDevicesManager(Context ctx) {
         super(ctx);
@@ -50,16 +54,17 @@ public class appDevicesManager extends appLibsDevices {
         mHwservice = new appDevicesService(ctx);
         mNfcReader = aexddAndroidNfcReader.getInstance(ctx);
 
-        mPrinter = new aexddB58Printer(ctx,mConfig.mConfigPrinter);
-        mBankCardReader = new aexddMT319Reader(ctx,mConfig.mConfigBankReader);
-        mCasCardReader = new aexddLCC1Reader(ctx,mConfig.mConfigCasReader);//莱卡
+        mPrinter = new aexddB58Printer(ctx, mConfig.mConfigPrinter);
+        mBankCardReader = new aexddMT319Reader(ctx, mConfig.mConfigBankReader);
+        mCasCardReader = new aexddLCC1Reader(ctx, mConfig.mConfigCasReader);//莱卡
         //mCasCardReader = new aexddMT319Reader(ctx,mConfig.mConfigCasReader);
         mPasswordKeypad = new aexddKMY350(ctx, mConfig.mConfigPasswordKeypad);
         mZTPasswordKeypad = new aexddZTC70(ctx, mConfig.mConfigPasswordKeypad);
+        mX3Biovo = new aexddX3Biovo(ctx, mConfig.mConfigBiovo);
+
     }
 
-    public void setContext(Context ctx)
-    {
+    public void setContext(Context ctx) {
         mConfig.setContext(ctx);
         mHwservice.setContext(ctx);
         mPrinter.setContext(ctx);
@@ -67,13 +72,13 @@ public class appDevicesManager extends appLibsDevices {
         mCasCardReader.setContext(ctx);
         mPasswordKeypad.setContext(ctx);
         mNfcReader.setContext(ctx);
+        mX3Biovo.setContext(ctx);
     }
 
-    public static final appDevicesManager getDevicesManager(Context ctx)
-    {
-        if(mDevicesManager == null){
+    public static final appDevicesManager getDevicesManager(Context ctx) {
+        if (mDevicesManager == null) {
             mDevicesManager = new appDevicesManager(ctx);
-        }else{
+        } else {
             mDevicesManager.setContext(ctx);
         }
         return mDevicesManager;
