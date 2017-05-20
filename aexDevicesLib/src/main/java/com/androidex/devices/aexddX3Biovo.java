@@ -13,15 +13,15 @@ import org.json.JSONObject;
  */
 
 public class aexddX3Biovo extends aexddBiovo {
+    public static final String TAG = "X3Biovo";
+
     static {
         try {
             System.loadLibrary("appDevicesLibs");
         } catch (UnsatisfiedLinkError e) {
-            Log.d("X3Biovo", "appDevicesLibs.so library not found!");
+            Log.d(TAG, "appDevicesLibs.so library not found!");
         }
     }
-
-    public static final String TAG = "X3Biovo";
 
     public aexddX3Biovo(Context ctx) {
         super(ctx);
@@ -58,6 +58,8 @@ public class aexddX3Biovo extends aexddBiovo {
                 //在线程中执行jni函数
                 //OnBackCall.ONBACKCALL_RECIVEDATA
 
+
+
             }
         };
         pthread = new Thread(run);
@@ -72,7 +74,7 @@ public class aexddX3Biovo extends aexddBiovo {
     public String getUserNum() {
 
         WriteDataHex("F5090000000009F5");
-        String data = ReciveDataHex(8, 3 * 1000);
+        String data = ReciveDataHex(20, 3 * 1000);
 
         Log.e(TAG,"===data:"+data);
         if (data != null) {
