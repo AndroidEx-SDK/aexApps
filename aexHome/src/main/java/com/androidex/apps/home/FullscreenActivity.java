@@ -56,6 +56,7 @@ import com.androidex.devices.aexddB58Printer;
 import com.androidex.devices.aexddLCC1Reader;
 import com.androidex.devices.aexddMT319Reader;
 import com.androidex.devices.aexddNfcReader;
+import com.androidex.devices.aexddX3Biovo;
 import com.androidex.devices.aexddZTC70;
 import com.androidex.devices.appDeviceDriver;
 import com.androidex.devices.appDevicesManager;
@@ -413,6 +414,11 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 ztPasswordKeypadText();//密码键盘测试
                 return true;
 
+            case R.id.action_x3biovo:
+                x3BiovoText();//指纹仪测试
+
+                return true;
+
             case R.id.action_camera://相机测试
                 CameraFragment.instance().show(getSupportFragmentManager(), "camerafragment");
                 return true;
@@ -605,6 +611,22 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             mDevices.mZTPasswordKeypad.Close();
         } else {
             String s = String.format("Open passkeypad reader fial:%s", mDevices.mPasswordKeypad.mParams.optString(appDeviceDriver.PORT_ADDRESS));
+            Log.i(TAG, s);
+            Toast.makeText(this, s, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * 指纹仪测试
+     */
+    private void x3BiovoText(){
+
+        if (mDevices.mX3Biovo.Open()){
+            aexddX3Biovo mX3Biovo = (aexddX3Biovo)mDevices.mX3Biovo;
+            mX3Biovo.selfTest();
+            mDevices.mX3Biovo.Close();
+        }else {
+            String s = String.format("Open passkeypad reader fial:%s", mDevices.mX3Biovo.mParams.optString(appDeviceDriver.PORT_ADDRESS));
             Log.i(TAG, s);
             Toast.makeText(this, s, Toast.LENGTH_LONG).show();
         }
