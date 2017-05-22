@@ -19,6 +19,7 @@ import android.view.KeyEvent;
 
 import com.phone.InitActivity;
 import com.phone.config.DeviceConfig;
+import com.phone.utils.AexUtil;
 import com.phone.utils.Ajax;
 import com.phone.utils.HttpUtils;
 import com.phone.utils.WifiAdmin;
@@ -176,7 +177,7 @@ public class MainService extends Service {
     //protected RfidUtil rfidUtil=null;
     //protected NfcPortUtil nfcPortUtil=null;
     //protected AssembleUtil assembleUtil=null;
-    //protected AexUtil aexUtil=null;
+    protected AexUtil aexUtil=null;
 
     //protected FingerUtil fingerUtil=null;
     //protected SqlUtil sqlUtil=null;
@@ -438,7 +439,7 @@ public class MainService extends Service {
         }
     }*/
 
-    /*protected void initAexUtil(){
+    protected void initAexUtil(){
         if(DeviceConfig.IS_AEX_AVAILABLE){
             aexUtil=new AexUtil(handler);
             try {
@@ -447,7 +448,7 @@ public class MainService extends Service {
             }
             sendInitMessenger(InitActivity.MSG_INIT_AEX);
         }
-    }*/
+    }
 
     /*protected void initSqlUtil(){
         sqlUtil=new SqlUtil(this);

@@ -3,7 +3,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/bg3"
+
     android:orientation="vertical" >
     <SurfaceView
         android:id="@+id/surface_view"
@@ -12,7 +12,7 @@
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:src="@drawable/background"
+        android:background="@mipmap/bg3"
         android:scaleType="fitXY"
         android:id="@+id/image_view"/>
 
@@ -105,7 +105,8 @@
                 android:layout_marginLeft="10dp"
                 android:gravity="center_vertical"
                 android:text=""
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:textColor="#ffffff"/>
         </RelativeLayout>
         <LinearLayout
             android:id="@+id/ll_video"

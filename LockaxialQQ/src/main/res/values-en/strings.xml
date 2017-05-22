@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">LockAxial</string>
+    <string name="app_name">锁相门禁</string>
     <string name="accept_video">Accept</string>
     <string name="action_settings">Setting</string>
     <string name="camera_image">Camera Image</string>

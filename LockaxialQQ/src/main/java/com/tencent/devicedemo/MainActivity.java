@@ -54,7 +54,6 @@ import com.androidex.GetUserInfo;
 import com.androidex.LoyaltyCardReader;
 import com.androidex.SoundPoolUtil;
 import com.androidex.Zxing;
-import com.dialog.SpotsDialog;
 import com.entity.Banner;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.phone.config.DeviceConfig;
@@ -63,7 +62,6 @@ import com.phone.utils.AdvertiseHandler;
 import com.phone.utils.HttpUtils;
 import com.phone.utils.UploadUtil;
 import com.tencent.device.TXBinderInfo;
-import com.tencent.device.TXDataPoint;
 import com.tencent.device.TXDeviceService;
 import com.viewpager.AutoScrollViewPager;
 import com.wificonnect.WifiConnActivity;
@@ -608,6 +606,7 @@ public class MainActivity extends Activity implements LoyaltyCardReader.AccountC
                     Utils.DisplayToast(MainActivity.this, "无效房卡");
                 }else if(msg.what==MainService.MSG_ASSEMBLE_KEY){
                     int keyCode=(Integer)msg.obj;
+                    Log.d("######", "handleMessage: ="+keyCode);
                     onKeyDown(keyCode);
                 }else if(msg.what==MSG_CHECK_BLOCKNO){
                     blockId=(Integer)msg.obj;
@@ -924,6 +923,8 @@ public class MainActivity extends Activity implements LoyaltyCardReader.AccountC
         }
         return code;
     }
+
+
 
     private void onKeyDown(int keyCode){
         if(currentStatus==CALL_MODE || currentStatus==PASSWORD_MODE){
@@ -1300,114 +1301,49 @@ public class MainActivity extends Activity implements LoyaltyCardReader.AccountC
         switch (keyCode) {
             case KeyEvent.KEYCODE_0:
                 SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 0);
-                doornum.append("0");
-                tv_input.setText(doornum.toString());
                 return true;
             case KeyEvent.KEYCODE_1:
                 SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 1);
-                doornum.append("1");
-                tv_input.setText(doornum.toString());
                 return true;
             case KeyEvent.KEYCODE_2:
                 SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 2);
-                doornum.append("2");
-                tv_input.setText(doornum.toString());
                 return true;
             case KeyEvent.KEYCODE_3:
                 SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 3);
-                doornum.append("3");
-                tv_input.setText(doornum.toString());
                 return true;
             case KeyEvent.KEYCODE_4:
                 SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 4);
-                doornum.append("4");
-                tv_input.setText(doornum.toString());
                 return true;
             case KeyEvent.KEYCODE_5:
                 SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 5);
-                doornum.append("5");
-                tv_input.setText(doornum.toString());
                 return true;
             case KeyEvent.KEYCODE_6:
                 SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 6);
-                doornum.append("6");
-                tv_input.setText(doornum.toString());
                 return true;
             case KeyEvent.KEYCODE_7:
                 SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 7);
-                doornum.append("7");
-                tv_input.setText(doornum.toString());
                 return true;
             case KeyEvent.KEYCODE_8:
                 SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 8);
-                doornum.append("8");
-                tv_input.setText(doornum.toString());
                 return true;
             case KeyEvent.KEYCODE_9:
                 SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 9);
-                doornum.append("9");
-                tv_input.setText(doornum.toString());
                 return true;
             case KeyEvent.KEYCODE_STAR:
                 SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 10);
                 return true;
             case KeyEvent.KEYCODE_ENTER:
             case KeyEvent.KEYCODE_POUND:
-                if (isNetworkAvailable(MainActivity.this)) {
-                    SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 11);
-                    if ("666".equals(tv_input.getText().toString())) {/**666为房门号 查找用户*/
-
-                        arrayBinder1 = TXDeviceService.getBinderList();
-                        binderList1 = null;
-                        if (arrayBinder1 != null) {
-                            binderList1 = new ArrayList<TXBinderInfo>();
-                            for (int i = 0; i < arrayBinder1.length; ++i) {
-                                binderList1.add(arrayBinder1[i]);
-                            }
-                        }
-                        if (binderList1 != null && binderList1.size() > 0) {
-                            dialog = new SpotsDialog(MainActivity.this, "呼叫中(按(删除)键取消呼叫)");
-                            dialog.show();
-                            if (dialog.isShowing()) {
-                                long tinyid = binderList1.get(0).tinyid;
-                                String nickname = binderList1.get(0).getNickName();
-                                Intent binder = new Intent(MainActivity.this, BinderActivity.class);
-                                binder.putExtra("tinyid", tinyid);
-                                binder.putExtra("nickname", nickname);
-                                TXDeviceService.getInstance().sendNotifyMsg("提示", 1700003316, new long[]{tinyid});/*发送强提醒通知*/
-                                TXDataPoint[] txDataPoints = new TXDataPoint[]{};
-                                TXDeviceService.ackDataPoint(tinyid, txDataPoints);
-                                handle.postDelayed(runnable, 1000);
-                            }
-
-                        } else {
-                            DissmissDialog builder = new DissmissDialog(MainActivity.this, R.style.selectorDialog, "没有绑定用户!");
-                            builder.show();
-                        }
-                        doornum = new StringBuilder("");
-                        tv_input.setText("");
-                    } else {
-                        DissmissDialog builder = new DissmissDialog(MainActivity.this, R.style.selectorDialog, "此用户没绑定!");
-                        builder.show();
-                        doornum = new StringBuilder("");
-                        tv_input.setText("");
-                    }
-                } else {
-                    DissmissDialog builder = new DissmissDialog(MainActivity.this, R.style.selectorDialog, "网络问题,请检查网络!");
-                    builder.show();
-                    doornum = new StringBuilder("");
-                    tv_input.setText("");
-                }
+                SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 11);
                 return true;
             case KeyEvent.KEYCODE_DEL:
-                if (!"".equals(doornum.toString())) {
-                    String num = doornum.toString().substring(0, doornum.length() - 1);
-                    doornum = new StringBuilder(num);
-                    tv_input.setText(num);
-                }
+
                 break;
         }
-
+        Message message = Message.obtain();
+        message.what = MainService.MSG_ASSEMBLE_KEY;
+        message.obj = keyCode;
+        handler.sendMessage(message);
         return super.onKeyUp(keyCode, event);
     }
 
