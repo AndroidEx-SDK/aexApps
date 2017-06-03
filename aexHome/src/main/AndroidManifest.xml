@@ -52,7 +52,6 @@
 
             </intent-filter>
         </activity>
-
         <receiver android:name="com.androidex.apps.home.brocast.BootBroadcastReceiver">
 
             <intent-filter>
