@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="1000dp"
+                android:layout_height="800dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
+
+    <RelativeLayout
+        android:layout_width="1000dp"
+        android:layout_height="800dp">
+
+        <com.androidex.aexkk30.view.CustomVideoView
+            android:id="@+id/cv"
+            android:layout_width="1000dp"
+            android:layout_height="800dp"
+            />
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:src="@mipmap/close"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btn_NG"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NG"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"/>
+
+            <Button
+                android:id="@+id/btn_OK"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OK"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

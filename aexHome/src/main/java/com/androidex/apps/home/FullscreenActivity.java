@@ -818,7 +818,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                     break;
 
                 case action_start_text://启动测试程序
-
                     AlertDialog.Builder builder = new AlertDialog.Builder(FullscreenActivity.this);
                     builder.setCancelable(false);
                     builder.setMessage("是否启动测试程序")

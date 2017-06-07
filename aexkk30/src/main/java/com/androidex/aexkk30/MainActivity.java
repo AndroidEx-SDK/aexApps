@@ -2,12 +2,11 @@ package com.androidex.aexkk30;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import com.androidex.common.AndroidExActivityBase;
-
-public class MainActivity extends AndroidExActivityBase implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,18 +18,16 @@ public class MainActivity extends AndroidExActivityBase implements View.OnClickL
     }
 
     private void initView() {
-        Button btn_text485 = (Button) findViewById(R.id.btn_text485);
-        btn_text485.setOnClickListener(this);
+        Button btn_oneKeyText = (Button) findViewById(R.id.btn_oneKeyText);
+        btn_oneKeyText.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.btn_text485:
-
-                Intent intent = new Intent(this, Text485Activity.class);
+            case R.id.btn_oneKeyText:
+                Intent intent = new Intent(this, OneKeyTextActivity.class);
                 startActivity(intent);
-
                 break;
         }
     }

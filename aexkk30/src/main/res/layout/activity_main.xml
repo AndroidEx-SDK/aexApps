@@ -11,8 +11,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.androidex.aexkk30.MainActivity">
 
+
     <Button android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_text485"
-            android:text="测试485"/>
+            android:id="@+id/btn_oneKeyText"
+            android:text="一键测试"/>
+
 </RelativeLayout>

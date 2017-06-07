@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:background="@drawable/bg_blue_radius_5"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/marginPadding15"
+                android:paddingLeft="@dimen/marginPadding30"
+                android:paddingRight="@dimen/marginPadding30"
+                android:paddingTop="@dimen/marginPadding15">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="录下你的留言"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size30"/>
+
+    <LinearLayout
+        android:id="@+id/ll_function"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_title"
+        android:layout_marginTop="@dimen/marginPadding30"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/iv_record"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="@dimen/marginPadding10"
+            android:scaleType="fitXY"
+            android:src="@mipmap/record"/>
+        <ImageView
+            android:id="@+id/iv_stop"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="@dimen/marginPadding10"
+            android:scaleType="fitXY"
+            android:src="@mipmap/stop"/>
+        <ImageView
+            android:id="@+id/iv_play"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="@dimen/marginPadding10"
+            android:scaleType="fitXY"
+            android:src="@mipmap/play"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_function"
+        android:layout_marginTop="@dimen/marginPadding16"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btn_NG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NG"
+            android:textColor="@color/white"
+            />
+
+        <Button
+            android:id="@+id/btn_OK"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="下一步"
+            android:textColor="@color/white"
+            />
+    </LinearLayout>
+</RelativeLayout>
