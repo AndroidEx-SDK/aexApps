@@ -27,7 +27,7 @@ import java.io.IOException;
  */
 
 public class CameraFragment extends DialogFragment implements SurfaceHolder.Callback, View.OnClickListener {
-    public static final String TAG="CameraFragment";
+    public static final String TAG = "CameraFragment";
     private View rootView;
     private FullscreenActivity activity;
     public boolean isCancelable = false;
@@ -43,9 +43,7 @@ public class CameraFragment extends DialogFragment implements SurfaceHolder.Call
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        if (rootView == null) {
-            rootView = inflater.inflate(R.layout.fragment_camera, container, false);
-        }
+        rootView = inflater.inflate(R.layout.fragment_camera, container, false);
         setCancelable(isCancelable);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         activity = (FullscreenActivity) getActivity();
@@ -108,6 +106,7 @@ public class CameraFragment extends DialogFragment implements SurfaceHolder.Call
             // activity暂停时我们释放相机内存
             clearCamera();
         }
+        rootView=null;
         return this;
     }
 
@@ -192,7 +191,7 @@ public class CameraFragment extends DialogFragment implements SurfaceHolder.Call
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_close:
-               // dissMissDialog();
+                // dissMissDialog();
                 break;
             case R.id.btn_OK:
 //                // 获取当前相机参数
@@ -214,13 +213,13 @@ public class CameraFragment extends DialogFragment implements SurfaceHolder.Call
 //                        }
 //                    }
 //                });
-                VedioFragment.Instance().show(activity.getSupportFragmentManager(),"vediofragment");
-                Log.d(TAG,"相机测试OK");
+                VedioFragment.Instance().show(activity.getSupportFragmentManager(), "vediofragment");
+                Log.d(TAG, "相机测试OK");
                 dissMissDialog();
                 break;
             case R.id.btn_NG:
-                VedioFragment.Instance().show(activity.getSupportFragmentManager(),"vediofragment");
-                Log.d(TAG,"相机测试不良");
+                VedioFragment.Instance().show(activity.getSupportFragmentManager(), "vediofragment");
+                Log.d(TAG, "相机测试不良");
                 dissMissDialog();
                 break;
         }
