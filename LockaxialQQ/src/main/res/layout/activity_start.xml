@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/start_view"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="登录成功，再进行入卡操作"
+        android:textColor="#000000"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:id="@+id/et_admin"
+        android:layout_width="640dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="156dp"
+        android:background="@android:drawable/edit_text"
+        android:hint="请输入登录账号"/>
+
+    <EditText
+        android:id="@+id/et_password"
+        android:layout_width="640dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/et_admin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@android:drawable/edit_text"
+        android:hint="请输入账号密码"/>
+
+
+</RelativeLayout>
