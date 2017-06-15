@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.androidex.face.FaceCardActivity">
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/face2"
+            android:layout_width="160dp"
+            android:layout_height="0dp"
+            android:layout_weight="10"
+            android:src="@mipmap/ic_contact_picture" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        >
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/ll"
+            android:layout_weight="2"
+            android:id="@+id/rll">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="10dp"
+                android:layout_centerInParent="true"
+                android:text="@string/notice"
+                android:background="#95000000"
+                android:textColor="#ffffff"
+                />
+
+            <com.kongqw.view.CameraFaceDetectionView
+                android:id="@+id/cameraFaceDetectionView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <Button
+                android:id="@+id/switch_camera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_margin="10dp"
+                android:background="@android:drawable/ic_menu_camera"
+                android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/bn_get_face"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:text="录入人脸"
+                />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="10dp"
+                android:onClick="setPermissions"
+                android:text="设置权限"
+                android:visibility="gone"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <include
+                layout="@layout/idcard_info">
+            </include>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+
+
+</RelativeLayout>

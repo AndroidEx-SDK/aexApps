@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">人脸识别</string>
+    <string name="about_msg">
+趋势科特二代证串口测试示例\n
+Synjone ID Card Reader Demo For Android Serial Port Development\n
+
+	</string>
+    <string name="error_configuration">Please configure your serial port first.</string>
+    <string name="error_security">You do not have read/write permission to the serial
+		port.</string>
+    <string name="error_unknown">The serial port can not be opened for an unknown
+		reason.</string>
+
+    <string name="sdtname">姓名:</string>
+    <string name="sdtsex">性别:</string>
+    <string name="sdtnation">民族:</string>
+    <string name="sdtbirthday">出生:</string>
+    <string name="sdtaddress">住址:</string>
+    <string name="sdtpidno">公民身份号码:</string>
+
+    <string name="sdtgrantdept">发证机关:</string>
+    <string name="sdtuserlife">有效期限:</string>
+    <string name="sdtreadcard">读卡</string>
+    <string name="sdtexit">退出</string>
+    <string name="sdtstatus">状态:</string>
+    <string name="notice">温馨提示:按1录入人脸，按2查看已录入的人脸，再按1返回</string>
+    <string name="notice_face">温馨提示:按1录入信息，按2查看已录入的人脸，再按1返回</string>
+</resources>
