@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="安卓工控"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text="正在连接"
+        android:textColor="@android:color/white"
+        android:textSize="10sp"/>
+
+    <TextView
+        android:id="@+id/tv_connect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:paddingRight="16dp"
+        android:text="连接"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        />
+
+    <Button
+        android:id="@+id/tv_disconnect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:paddingRight="25dp"
+        android:background="@null"
+        android:layout_marginRight="40dp"
+        android:text="断开连接"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"/>
+
+</RelativeLayout>

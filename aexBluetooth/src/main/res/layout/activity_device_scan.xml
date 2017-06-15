@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:myradio="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@mipmap/bg"
+>
+    <include
+        android:id="@+id/include"
+        layout="@layout/layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"></include>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_below="@+id/include"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="65dp"
+        android:background="@mipmap/bgwen">
+
+        <TextView
+            android:id="@+id/tv_temptitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:text="当前温度"
+            android:textColor="#666666"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tv_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_temptitle"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:text="28.1℃"
+            android:textColor="#666666"
+            android:textSize="16sp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_text"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignStart="@+id/relativeLayout"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_marginTop="45dp"
+        android:background="@mipmap/bgshi">
+
+        <TextView
+            android:id="@+id/tv_downtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:text="当前湿度"
+            android:textColor="#666666"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tv_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_downtitle"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:text="50%"
+            android:textColor="#666666"
+            android:textSize="16sp"/>
+
+    </RelativeLayout>
+
+    <RadioGroup
+        android:id="@+id/rg_down"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+    >
+
+        <com.androidex.ble.MyRadioButton
+            android:id="@+id/rl_history"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:button="@null"
+            android:clickable="true"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:text="记录"
+            android:textColor="@drawable/footbg_color"
+            myradio:rbDrawableTop="@mipmap/history"
+            myradio:rbDrawableTopSize="5dp"
+        >
+        </com.androidex.ble.MyRadioButton>
+        <com.androidex.ble.MyRadioButton
+            android:id="@+id/rl_open"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:button="@null"
+            android:clickable="true"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:text="开锁"
+            android:textColor="@drawable/footbg_color"
+            myradio:rbDrawableTop="@drawable/footbg_lock"
+            myradio:rbDrawableTopSize="5dp"
+        >
+
+        </com.androidex.ble.MyRadioButton>
+        <com.androidex.ble.MyRadioButton
+            android:id="@+id/rl_setting"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:button="@null"
+            android:clickable="true"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:text="设置"
+            android:textColor="@drawable/footbg_color"
+            myradio:rbDrawableTop="@mipmap/setting"
+            myradio:rbDrawableTopSize="5dp"
+        >
+
+        </com.androidex.ble.MyRadioButton>
+
+    </RadioGroup>
+
+
+</RelativeLayout>

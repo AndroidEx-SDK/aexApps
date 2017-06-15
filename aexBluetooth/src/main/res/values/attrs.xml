@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MyRadioButton">
+        <attr name="rbDrawableTopSize" format="dimension"/>
+        <attr name="rbDrawableTop" format="reference"/>
+    </declare-styleable>
+</resources>
