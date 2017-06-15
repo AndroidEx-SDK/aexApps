@@ -1,0 +1,205 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <ScrollView android:layout_width="match_parent"
+                android:layout_height="200dp">
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="200dp">
+            <TextView
+                android:id="@+id/tv_show"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="接收到的指令：\n"/>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/et_send"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="输入命令"
+            android:singleLine="true"
+            android:text="5aaab1"/>
+
+        <EditText
+            android:id="@+id/et_short_adress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="目标短地址默认0000"
+            android:singleLine="true"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/et_broadcast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="广播内容"
+            android:singleLine="true"
+        />
+        <EditText
+            android:id="@+id/et_Multicast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="目标组播号默认0001"
+            android:singleLine="true"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1">
+
+
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:layout_weight="7"
+                      android:orientation="vertical">
+
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content">
+                <Spinner
+                    android:id="@+id/SpinnerBaud_rate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:visibility="gone"/>
+
+                <Spinner
+                    android:id="@+id/SpinnerCOMA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"/>
+                <Spinner
+                    android:id="@+id/SpinnerBroadCast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+                <Spinner
+                    android:id="@+id/SpinnerChannel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="40dp">
+                <Spinner
+                    android:id="@+id/Spinnertransmitting_power"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+
+            </LinearLayout>
+            <ToggleButton
+                android:id="@+id/btn_openVCC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ToggleButton"
+                android:visibility="gone"/>
+
+            <LinearLayout android:layout_width="match_parent"
+                          android:gravity="center"
+                          android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/btn_setBroad1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="设置本地组播号"/>
+
+                <Button
+                    android:id="@+id/btn_setBroad2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="设置目标点播号"/>
+
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent"
+                          android:gravity="center"
+                          android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/btn_sendbroadcast1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="发送广播"/>
+
+                <Button
+                    android:id="@+id/btn_sendbroadcast2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="发送点播"/>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
+            android:gravity="right"
+            android:orientation="vertical">
+
+            <ToggleButton
+                android:id="@+id/toggleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ToggleButton"/>
+
+            <Button
+                android:id="@+id/btn_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="发送"/>
+
+            <Button
+                android:id="@+id/btn_root"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="重置"/>
+
+            <Button
+                android:id="@+id/btn_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="复位"/>
+            <Button
+                android:id="@+id/btn_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="清除网络状态"/>
+
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

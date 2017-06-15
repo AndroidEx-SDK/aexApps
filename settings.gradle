@@ -1,1 +1,1 @@
-include ':aexAdvert', ':aexHome', ':aexSmartBiz', ':aexDevicesLib', ':aexNFC', ':TextNFC', ':aexkk30', ':baseble', ':aexBluetooth', ':LockaxialQQ'
+include ':aexAdvert', ':aexHome', ':aexSmartBiz', ':aexDevicesLib', ':aexNFC', ':TextNFC', ':aexkk30', ':baseble', ':aexBluetooth', ':LockaxialQQ', ':aexZigbee'

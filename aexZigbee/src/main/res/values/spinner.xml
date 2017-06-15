@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string-array name="spinner_value1">
+        <item>协调器</item>
+        <item>路由器</item>
+        <item>终端</item>
+    </string-array>
+
+    <string-array name="spinner_devices">
+        <item>设备1</item>
+        <item>设备2</item>
+        <item>10.1平板</item>
+    </string-array>
+
+    <string-array name="spinner_channel">
+        <item>2405MHZ</item>
+        <item>2410MHZ</item>
+        <item>2415MHZ</item>
+        <item>2420MHZ</item>
+        <item>2425MHZ</item>
+        <item>2430MHZ</item>
+        <item>2435MHZ</item>
+        <item>2440MHZ</item>
+        <item>2445MHZ</item>
+        <item>2450MHZ</item>
+        <item>2455MHZ</item>
+        <item>2460MHZ</item>
+        <item>2465MHZ</item>
+        <item>2470MHZ</item>
+        <item>2475MHZ</item>
+        <item>2480MHZ</item>
+
+    </string-array>
+
+    <string-array name="spinner_setNet">
+
+        <item>设备上电允许加入,连上往后禁止加入</item>
+        <item>设备上电允许加入,连上网后一直允许加入</item>
+        <item>设备上电允许加入,连上网后所有路由设备禁止加入</item>
+        <item>设备上电允许加入,所有路由设备允许加入 10s</item>
+        <item>设备上电允许加入,所有路由设备允许加入 20s</item>
+
+        <item>设备上电不允许加入,连上往后禁止加入</item>
+        <item>设备上电不允许加入,连上网后一直允许加入</item>
+
+    </string-array>
+    <string-array name="spinner_baudrate">
+        <item>9600</item>
+        <item>19200</item>
+        <item>38400</item>
+        <item>57600</item>
+        <item>115200</item>
+
+    </string-array>
+
+    <string-array name="spinner_transmitting_power">
+        <item>-4 dbm(带 PA:14dbm)</item>
+        <item>-1.5 dbm(带 PA:17dbm)</item>
+        <item>1 dbm(带 PA:19dbm)</item>
+        <item>4.5 dbm(带 PA:21dbm)</item>
+        <item>115200</item>
+
+    </string-array>
+
+    <string-array name="spinner_BroadCast">
+        <item>广播</item>
+        <item>点播</item>
+        <item>组播</item>
+
+    </string-array>
+
+    <string-array name="spinner_config">
+        <item>节点类型</item>
+        <item>PAN_ID</item>
+        <item>Channel</item>
+        <item>波特率</item>
+        <item>发射功率</item>
+        <item>本地组播号</item>
+        <item>目标短地址</item>
+        <item>目标组播号</item>
+        <item>全透传发送方式</item>
+        <item>MAC地址</item>
+        <item>本地短地址</item>
+        <item>网络密匙</item>
+
+    </string-array>
+
+</resources>
