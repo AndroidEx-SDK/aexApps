@@ -806,7 +806,7 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                 }
                 if (blockNo.length() == DeviceConfig.BLOCK_NO_LENGTH) {
                     checkingStatus = 1;
-                    setDialValue("检查楼栋编号：" + blockNo);
+                    setDialValue( ""+blockNo);
                     Message message = Message.obtain();
                     message.what = MainService.MSG_CHECK_BLOCKNO;
                     message.obj = blockNo;

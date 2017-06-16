@@ -946,7 +946,7 @@ public class MainService extends Service {
                     }else{
                         inputBlockId=0;
                     }
-                    sendDialMessenger(MSG_CHECK_BLOCKNO,inputBlockId);
+                    sendDialMessenger(Constant.MSG_CHECK_BLOCKNO,inputBlockId);
                 }
             }catch(Exception e){
                 sendDialMessenger(MSG_CHECK_BLOCKNO,-1);
