@@ -797,6 +797,10 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
         imageView.setImageBitmap(bm);
     }
 
+    public void showToast(String str){
+        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+        Log.e("MainActivity","==="+str);
+    }
     private void callInput(int key) {
         if (DeviceConfig.DEVICE_TYPE.equals("C")) {
             if (blockId == 0) {
@@ -805,6 +809,12 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                     setDialValue(blockNo);
                 }
                 if (blockNo.length() == DeviceConfig.BLOCK_NO_LENGTH) {
+                    String start = blockNo.substring(0, 1);
+                    if (start.equals("0")){
+                        showToast("首个数字为0");
+                    }else {
+                        showToast("首个数字不为0");
+                    }
                     checkingStatus = 1;
                     setDialValue( ""+blockNo);
                     Message message = Message.obtain();
