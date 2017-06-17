@@ -122,6 +122,9 @@ import static com.util.Constant.MSG_CHECK_BLOCKNO;
 import static com.util.Constant.MSG_CONNECT_ERROR;
 import static com.util.Constant.MSG_CONNECT_SUCCESS;
 import static com.util.Constant.MSG_FINGER_CHECK;
+import static com.util.Constant.MSG_INPUT_CARDINFO_FAIL;
+import static com.util.Constant.MSG_INPUT_CARDINFO_REPETITION;
+import static com.util.Constant.MSG_INPUT_CARDINFO_SUCCEED;
 import static com.util.Constant.MSG_INVALID_CARD;
 import static com.util.Constant.MSG_LOCK_OPENED;
 import static com.util.Constant.MSG_PASSWORD_CHECK;
@@ -268,7 +271,7 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
         //TextView com_log=(TextView)findViewById(R.id.tv_log);
         tv_input = (EditText) findViewById(R.id.tv_input);
         tv_input.setTypeface(typeFace);// com_log.setTypeface(typeFace);
-        isFrom = getIntent().getStringExtra(StartActivity.FLAG);
+        isFrom = getIntent().getStringExtra(InputCardInfoActivity.FLAG);
         if ("from".equals(isFrom)) {//从登录界面跳转过来的
             rl_nfc.setVisibility(View.VISIBLE);
             tv_message.setText(nfcMessage);
@@ -638,12 +641,14 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                     onFreshCommunityName((String) msg.obj);
                 } else if (msg.what == MSG_REFRESH_LOCKNAME) {
                     onFreshLockName((String) msg.obj);
-                } else if (msg.what == 0x11) {//录入成功
+                } else if (msg.what == MSG_INPUT_CARDINFO_SUCCEED) {//录入成功
                     rl_nfc.setVisibility(View.GONE);
                     nfcFlag = false;
-                    Toast.makeText(MainActivity.this, "录入成功", Toast.LENGTH_LONG).show();
-                } else if (msg.what == 0x12) {//录入失败
-                    Toast.makeText(MainActivity.this, "录入失败", Toast.LENGTH_LONG).show();
+                    showToast("录入成功");
+                } else if (msg.what == MSG_INPUT_CARDINFO_REPETITION) {//重复录入
+                    showToast("重复录入");
+                }else if (msg.what == MSG_INPUT_CARDINFO_FAIL){
+                    showToast("录入失败");
                 }
             }
         };
@@ -821,7 +826,6 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                 }
             } else {
                 unitNoInput(key);
-
             }
         } else {
             unitNoInput(key);
@@ -1005,7 +1009,7 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
             String url = DeviceConfig.SERVER_URL + "/app/rfid/bind?cardNo=" + this.cardId;
             url = url + "&communityId=" + communityId;
             url = url + "&blockNo=" + bla;
-            url = url + "&unitNo=" + bla + uin;
+            url = url + "&unitNo=" + uin;
             Log.d(TAG, "login: url=" + url);
             try {
                 URL thisUrl = new URL(url);
@@ -1028,11 +1032,11 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                     Log.d(TAG, "login: code=" + resultCode);
                     Message message = Message.obtain();
                     if (resultCode == 0) {
-                        //录入成功
-                        message.what = 0x11;
-                    } else {
-                        //录入失败
-                        message.what = 0x12;
+                        message.what = MSG_INPUT_CARDINFO_SUCCEED;    //录入成功
+                    } else if (resultCode==2){
+                        message.what = MSG_INPUT_CARDINFO_REPETITION; //重复录入
+                    }else {
+                        message.what = MSG_INPUT_CARDINFO_FAIL; //录入失败
                     }
                     handler.sendMessage(message);
                 }
@@ -1090,7 +1094,7 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                     String str = tv_input_text.getText().toString();
                     if (str == null || str.equals("")) {
                         //跳转到登录界面
-                        Intent intent = new Intent(this, StartActivity.class);
+                        Intent intent = new Intent(this, InputCardInfoActivity.class);
                         startActivity(intent);
                     }
                 }
@@ -1157,7 +1161,7 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
             }
         } else if (keyCode == KeyEvent.KEYCODE_POUND || keyCode == DeviceConfig.DEVICE_KEYCODE_POUND) {//录入卡片
             if (TextUtils.isEmpty(cardId)) {
-                Toast.makeText(this, "未检测到卡片信息", Toast.LENGTH_LONG).show();
+                showToast("未检测到卡片信息");
             } else {
                 if (isFlag) {//切换edittext焦点到房屋编号输入框
                     if (!blockNo.equals("")) {
@@ -1168,7 +1172,7 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                     et_unitno.requestFocus();
                 } else {
                     if (TextUtils.isEmpty(black) || TextUtils.isEmpty(unit)) {
-                        Toast.makeText(MainActivity.this, "楼栋编号或者房屋编号不能为空", Toast.LENGTH_LONG).show();
+                        showToast("楼栋编号或者房屋编号不能为空");
                         return;
                     }
                     new Thread() {
@@ -2049,7 +2053,6 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
 
         @Override
         public void handleMessage(Message msg) {
-            Log.e("=====listTemp1", listTemp1 + "");
             switch (msg.what) {
                 // 如果收到正确的消息就获取WifiInfo，改变图片并显示信号强度
                 case 11:

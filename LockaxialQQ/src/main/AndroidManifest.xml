@@ -179,7 +179,7 @@
         </receiver>
 
         <activity
-            android:name=".StartActivity"
+            android:name=".InputCardInfoActivity"
             android:alwaysRetainTaskState="true"
             android:configChanges="keyboardHidden|orientation|locale|screenSize"
             android:screenOrientation="landscape">

@@ -135,7 +135,7 @@ public class MainService extends Service {
     public static final int MSG_START_DIAL_PICTURE = 21005;
     public static final int MSG_CHECK_PASSWORD_PICTURE = 21006;
     public static final int MSG_GUEST_PASSWORD_CHECK = 20007;
-    public static final int MSG_CARD_INCOME = 20008;
+    public static final int MSG_CARD_INCOME = 20008;//刷卡回调
     public static final int MSG_DISCONNECT_VIEDO = 20009;
     public static final int MSG_CANCEL_CALL = 20010;
     public static final int MSG_CANCEL_DIRECT = 20011;
@@ -178,8 +178,8 @@ public class MainService extends Service {
 
     public String mac = null;
     public String key = null;
-    public static int communityId = 0;
-    public int blockId = 0;
+    public static int communityId = 0;//社区ID
+    public int blockId = 0;//楼栋ID
     public int inputBlockId = 0;
     public int lockId = 0;
     public String unitNo = "";
@@ -935,6 +935,7 @@ public class MainService extends Service {
         try {
             String url = DeviceConfig.SERVER_URL + "/app/device/checkBlockNo?communityId=" + this.communityId;
             url = url + "&blockNo=" + blockNo.substring(0, 2);
+            Log.d(TAG, "onCheckBlockNo: url=" + url);
             try {
                 URL thisUrl = new URL(url);
                 HttpURLConnection conn = (HttpURLConnection) thisUrl.openConnection();
@@ -2542,13 +2543,11 @@ public class MainService extends Service {
                     } else {
                         // retrieveChangedFingerList();
                         // retrieveChangedCardList();
-                        //retrieveCardList();
                     }
                     sleep(DeviceConfig.AD_INIT_WAIT_TIME);
                     while (!isInterrupted()) {
                         getLastAdvertisementList();
                         sleep(DeviceConfig.AD_REFRESH_WAIT_TIME); //等待广告刷新的时间
-                        //retrieveCardList();
                         //retrieveChangedFingerList();
                         // retrieveChangedCardList();
                     }

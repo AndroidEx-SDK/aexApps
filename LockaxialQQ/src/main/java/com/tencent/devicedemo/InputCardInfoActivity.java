@@ -26,29 +26,31 @@ import java.net.URL;
 
 import static com.phone.service.MainService.httpServerToken;
 
-public class StartActivity extends Activity {
+public class InputCardInfoActivity extends Activity {
     public EditText et_admin;
     public EditText et_password;
     public String admin;
     public String password;
     public boolean flag = true;
     private String blockNo = "";
-    private static final String TAG = "StartActivity";
+    private static final String TAG = "InputCardInfoActivity";
     public static final String FLAG = "flag";
     public String FROM = "from";
+    public static int LOGIN_SUCCESS=0X01;
+    public static int LOGIN_FAIL=0X02;
 
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             int result = msg.what;
-            if (result == 0x01) {//登录成功
-                Intent intent = new Intent(StartActivity.this, MainActivity.class);
+            if (result == LOGIN_SUCCESS) {//登录成功
+                Intent intent = new Intent(InputCardInfoActivity.this, MainActivity.class);
                 intent.putExtra(FLAG, FROM);
                 startActivity(intent);
                 finish();
-            } else if (result == 0x02) {//登录失败
-                Toast.makeText(StartActivity.this, "登录失败", Toast.LENGTH_LONG).show();
+            } else if (result == LOGIN_FAIL) {//登录失败
+                Toast.makeText(InputCardInfoActivity.this, "登录失败", Toast.LENGTH_LONG).show();
             }
         }
     };
@@ -196,15 +198,14 @@ public class StartActivity extends Activity {
                     Log.d(TAG, "login: code=" + resultCode);
                     Message message = Message.obtain();
                     if (resultCode == 0) {//登录成功
-                        message.what = 0x01;
+                        message.what = LOGIN_SUCCESS;
                         handler.sendMessage(message);
                     } else {//登录失败
-                        message.what = 0x02;
+                        message.what = LOGIN_FAIL;
                         handler.sendMessage(message);
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
                 Log.d(TAG, "login: +++++++++");
             }
         } catch (Exception e) {
