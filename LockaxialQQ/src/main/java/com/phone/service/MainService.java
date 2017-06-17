@@ -270,7 +270,7 @@ public class MainService extends Service {
                     Log.i("MainService", "register init messenger");
                 } else if (msg.what == REGISTER_ACTIVITY_DIAL) {
                     startRongyun();
-                    initAdvertisement();
+                    initAdvertisement();//初始化广告
                     initConnectReport();
                     Log.i("MainService", "register Dial messenger");
                     dialMessenger = msg.replyTo;
@@ -902,6 +902,7 @@ public class MainService extends Service {
         if (!this.cardRecord.checkLastCard(card)) {
             if (checkCardAvailable(card)) {
                 openLock();
+                Log.e(TAG,"onCard====:"+card);
                 startCardAccessLog(card);
             } else {
                 sendDialMessenger(MSG_INVALID_CARD);//无效房卡
@@ -2261,7 +2262,7 @@ public class MainService extends Service {
         if (content.equals("refresh card info")) {
             sendDialMessenger(MSG_REFRESH_DATA, "card");
             //retrieveChangedCardList();
-            retrieveCardList();
+            retrieveCardList();//注册卡信息
         } else if (content.equals("refresh finger info")) {
             sendDialMessenger(MSG_REFRESH_DATA, "finger");
             //retrieveChangedFingerList();
@@ -2541,7 +2542,7 @@ public class MainService extends Service {
             public void run() {
                 try {
                     Log.d(TAG, "run: resetFlag=" + resetFlag);
-                    retrieveCardList();
+                    retrieveCardList();//注册卡信息
                     if (resetFlag > 0) {
                         initDeviceData();
                     } else {
@@ -2702,6 +2703,7 @@ public class MainService extends Service {
         data.put("lockIndex", index);
         String dataStr = data.toString();
         URL url = new URL(DeviceConfig.SERVER_URL + "/app/device/cardOpenLock");
+        Log.e(TAG,"onCardOpenLock,url:=="+url);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setDoOutput(true);
         connection.setDoInput(true);
