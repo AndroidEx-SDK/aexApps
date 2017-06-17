@@ -198,6 +198,7 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
     public boolean isFlag = true;
     private hwService hwservice;
     Parcelable[] listTemp1;
+    AlertDialog dialog;
 
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated constructor stub
@@ -647,7 +648,7 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                     showToast("录入成功");
                 } else if (msg.what == MSG_INPUT_CARDINFO_REPETITION) {//重复录入
                     showToast("重复录入");
-                }else if (msg.what == MSG_INPUT_CARDINFO_FAIL){
+                } else if (msg.what == MSG_INPUT_CARDINFO_FAIL) {
                     showToast("录入失败");
                 }
             }
@@ -1033,9 +1034,9 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                     Message message = Message.obtain();
                     if (resultCode == 0) {
                         message.what = MSG_INPUT_CARDINFO_SUCCEED;    //录入成功
-                    } else if (resultCode==2){
+                    } else if (resultCode == 2) {
                         message.what = MSG_INPUT_CARDINFO_REPETITION; //重复录入
-                    }else {
+                    } else {
                         message.what = MSG_INPUT_CARDINFO_FAIL; //录入失败
                     }
                     handler.sendMessage(message);
@@ -1337,7 +1338,7 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
         callNumber = "";
         blockNo = "";
         blockId = 0;
-        if (DeviceConfig.DEVICE_TYPE == "C") {
+        if (DeviceConfig.DEVICE_TYPE.equals("C")) {
             setDialStatus("请输入楼栋编号");
         } else {
             setDialStatus("请输入房屋编号");
@@ -1536,170 +1537,7 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
         return result;
     }
 
-    private StringBuilder doornum = new StringBuilder();
-    TXBinderInfo[] arrayBinder1;
-    List<TXBinderInfo> binderList1;
-    AlertDialog dialog;
 
-   /* @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_0:
-                SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 0);
-                return true;
-            case KeyEvent.KEYCODE_1:
-                SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 1);
-                return true;
-            case KeyEvent.KEYCODE_2:
-                SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 2);
-                return true;
-            case KeyEvent.KEYCODE_3:
-                SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 3);
-                return true;
-            case KeyEvent.KEYCODE_4:
-                SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 4);
-                return true;
-            case KeyEvent.KEYCODE_5:
-                SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 5);
-                return true;
-            case KeyEvent.KEYCODE_6:
-                SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 6);
-                return true;
-            case KeyEvent.KEYCODE_7:
-                SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 7);
-                return true;
-            case KeyEvent.KEYCODE_8:
-                SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 8);
-                return true;
-            case KeyEvent.KEYCODE_9:
-                SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 9);
-                return true;
-            case KeyEvent.KEYCODE_STAR:
-                SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 10);
-                return true;
-            case KeyEvent.KEYCODE_ENTER:
-            case KeyEvent.KEYCODE_POUND:
-                SoundPoolUtil.getSoundPoolUtil().loadVoice(this, 11);
-                return true;
-            case KeyEvent.KEYCODE_DEL:
-
-                break;
-        }
-        Message message = Message.obtain();
-        message.what = MainService.MSG_ASSEMBLE_KEY;
-        message.obj = keyCode;
-        handler.sendMessage(message);
-        return super.onKeyUp(keyCode, event);
-    }*/
-
-
-
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuItem m_wifi = menu.add("设置wifi");
-        MenuItem m_unbind = menu.add("解除绑定");
-        MenuItem m_upload_log = menu.add("上传日志");
-        MenuItem m_opendoor_log = menu.add("打开主门");
-        MenuItem m_opendoor1_log = menu.add("打开副门");
-        MenuItem m_setAlarm = menu.add("设置定时开机");
-        MenuItem m_runReboot = menu.add("重启");
-        MenuItem m_runShutdown = menu.add("关机");
-        MenuItem m_setPlugedShutdown = menu.add("设置拔电关机");
-
-        MenuItem m_exit_log = menu.add("退出");
-
-        m_wifi.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                startActivity(new Intent(MainActivity.this,WifiConnActivity.class));
-                return false;
-            }
-        });
-
-        m_unbind.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem item) {
-
-                return true;
-            }
-        });
-
-        m_upload_log.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem item) {
-                uploadDeviceLog(null);
-                return true;
-            }
-        });
-
-        m_opendoor_log.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem item) {
-                int status = 2;
-                Intent ds_intent = new Intent();
-                ds_intent.setAction(DoorLock.DoorLockOpenDoor);
-                ds_intent.putExtra("index",0);
-                ds_intent.putExtra("status",status);
-                sendBroadcast(ds_intent);
-                return true;
-            }
-        });
-
-        m_opendoor1_log.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem item) {
-                int status = 2;
-                Intent ds_intent = new Intent();
-                ds_intent.setAction(DoorLock.DoorLockOpenDoor);
-                ds_intent.putExtra("index",1);
-                ds_intent.putExtra("status",status);
-                sendBroadcast(ds_intent);
-                return true;
-            }
-        });
-        m_exit_log.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem item) {
-                setResult(RESULT_OK);
-                finish();
-                sendBroadcast(new Intent("com.android.action.display_navigationbar"));
-                return true;
-            }
-        });
-
-        m_setAlarm.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                long wakeupTime = SystemClock.elapsedRealtime() + 240000;       //唤醒时间,如果是关机唤醒时间不能低于3分钟,否则无法实现关机定时重启
-
-                DoorLock.getInstance().runSetAlarm(wakeupTime);
-                return true;
-            }
-        });
-
-        m_runReboot.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                DoorLock.getInstance().runReboot();
-                return true;
-            }
-        });
-
-        m_runShutdown.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                DoorLock.getInstance().runShutdown();
-                return true;
-            }
-        });
-
-        m_setPlugedShutdown.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                DoorLock.getInstance().setPlugedShutdown();
-                return true;
-            }
-        });
-
-        return true;
-    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -1750,8 +1588,6 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
 
     protected void onResume() {
         super.onResume();
-
-
         Intent intent = getIntent();
         String bindnum = intent.getStringExtra("bindnmu");
         if (!"".equals(bindnum) && "havenum".equals(bindnum)) {

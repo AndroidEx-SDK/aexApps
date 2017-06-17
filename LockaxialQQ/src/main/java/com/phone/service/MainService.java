@@ -796,7 +796,6 @@ public class MainService extends Service {
             message.obj = resultObj;
             handler.sendMessage(message);
         } catch (IOException e) {
-            //e.printStackTrace();
             Log.v("MainService", "response error=" + e.getMessage());
             Message message = Message.obtain();
             message.what = InitActivity.MSG_LOGIN_ERROR;
@@ -905,7 +904,7 @@ public class MainService extends Service {
                 openLock();
                 startCardAccessLog(card);
             } else {
-                sendDialMessenger(MSG_INVALID_CARD);
+                sendDialMessenger(MSG_INVALID_CARD);//无效房卡
             }
         }
     }
@@ -952,6 +951,7 @@ public class MainService extends Service {
                     int resultCode = resultObj.getInt("code");
                     if (resultCode == 0) {
                         inputBlockId = resultObj.getInt("blockId");
+                        Log.e(TAG, "onCheckBlockNo: inputBlockId=" + inputBlockId);
                     } else {
                         inputBlockId = 0;
                     }
@@ -1231,6 +1231,9 @@ public class MainService extends Service {
         }.start();
     }
 
+    /**
+     * 视频注册
+     */
     private void rtcRegister() {
         Log.v("MainService", "rtcRegister:" + key + "token:" + token);
         if (communityId > 0 && token != null) {
@@ -2439,8 +2442,8 @@ public class MainService extends Service {
     }
 
     protected void connectReport() {
-        String url = DeviceConfig.SERVER_URL + "/app/device/connectReport?communityId=" + this.communityId;
-        url = url + "&lockId=" + this.lockId;
+        String url = DeviceConfig.SERVER_URL + "/app/device/connectReport?communityId=" + this.communityId
+                + "&lockId=" + this.lockId;
         try {
             URL thisUrl = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) thisUrl.openConnection();
@@ -2467,9 +2470,9 @@ public class MainService extends Service {
     protected void initDeviceData() {
         if (resetFlag > 0) {
             sqlUtil.clearDeviceData();
-            String url = DeviceConfig.SERVER_URL + "/app/device/retrieveDeviceData?communityId=" + this.communityId;
-            url = url + "&blockId=" + this.blockId;
-            url = url + "&lockId=" + this.lockId;
+            String url = DeviceConfig.SERVER_URL + "/app/device/retrieveDeviceData?communityId=" + this.communityId+ "&blockId=" + this.blockId
+                    + "&lockId=" + this.lockId;
+            Log.e(TAG, "initDeviceData: url=" + url);
             try {
                 URL thisUrl = new URL(url);
                 HttpURLConnection conn = (HttpURLConnection) thisUrl.openConnection();
@@ -2510,6 +2513,7 @@ public class MainService extends Service {
         String url = DeviceConfig.SERVER_URL + "/app/device/completeInitDeviceData?communityId=" + this.communityId;
         url = url + "&blockId=" + this.blockId;
         url = url + "&lockId=" + this.lockId;
+        Log.e(TAG, "completeInitDeviceData: url=" + url);
         try {
             URL thisUrl = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) thisUrl.openConnection();
@@ -2561,9 +2565,8 @@ public class MainService extends Service {
 
     protected void retrieveCardList() {
         Log.d(TAG, "retrieveCardList: =============");
-        String url = DeviceConfig.SERVER_URL + "/app/device/retrieveCardList?communityId=" + this.communityId;
-        url = url + "&blockId=" + this.blockId;
-        url = url + "&lockId=" + this.lockId;
+        String url = DeviceConfig.SERVER_URL + "/app/device/retrieveCardList?communityId=" + this.communityId
+                + "&blockId=" + this.blockId+ "&lockId=" + this.lockId;
         Log.d(TAG, "retrieveCardList: url=" + url);
         try {
             URL thisUrl = new URL(url);
@@ -3208,6 +3211,7 @@ public class MainService extends Service {
         }
     }
 
+    //开启版本更新检测
     protected void startCheckThread() {
         Log.v("UpdateService", "start Check Thread");
         checkThread = new Thread() {
@@ -3224,6 +3228,7 @@ public class MainService extends Service {
         checkThread.start();
     }
 
+    //版本更新
     protected void checkNewVersion() {
         Log.v("UpdateService", "check New Version");
         String url = DeviceConfig.UPDATE_SERVER_URL + DeviceConfig.UPDATE_RELEASE_FOLDER + DeviceConfig.UPDATE_RELEASE_PACKAGE;
