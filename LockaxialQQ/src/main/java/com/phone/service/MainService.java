@@ -119,317 +119,319 @@ public class MainService extends Service {
     private static final String TAG = "MainService";
     public static final String ETH0_MAC_ADDR = "/sys/class/net/eth0/address";
     public static final int SZ_SECURITY_LEVEL = (3);
-    public static final int ADVERTISEMENT_WAITING=0;
-    public static final int ADVERTISEMENT_REFRESHING=1;
+    public static final int ADVERTISEMENT_WAITING = 0;
+    public static final int ADVERTISEMENT_REFRESHING = 1;
 
-    public static final int REGISTER_ACTIVITY_INIT=1;
-    public static final int REGISTER_ACTIVITY_DIAL=3;
+    public static final int REGISTER_ACTIVITY_INIT = 1;
+    public static final int REGISTER_ACTIVITY_DIAL = 3;
 
-    public static final int MSG_GETTOKEN=10001;
-    public static final int MSG_LOGIN=20001;
-    public static final int MSG_CALLMEMBER=20002;
-    public static final int MSG_CREATELOG=20003;
-    public static final int MSG_REGISTER=20004;
-    public static final int MSG_START_DIAL=20005;
-    public static final int MSG_CHECK_PASSWORD=20006;
-    public static final int MSG_START_DIAL_PICTURE=21005;
-    public static final int MSG_CHECK_PASSWORD_PICTURE=21006;
-    public static final int MSG_GUEST_PASSWORD_CHECK=20007;
-    public static final int MSG_CARD_INCOME=20008;
-    public static final int MSG_DISCONNECT_VIEDO=20009;
-    public static final int MSG_CANCEL_CALL=20010;
-    public static final int MSG_CANCEL_DIRECT=20011;
-    public static final int MSG_DISCONNECT_DIRECT=20012;
+    public static final int MSG_GETTOKEN = 10001;
+    public static final int MSG_LOGIN = 20001;
+    public static final int MSG_CALLMEMBER = 20002;
+    public static final int MSG_CREATELOG = 20003;
+    public static final int MSG_REGISTER = 20004;
+    public static final int MSG_START_DIAL = 20005;//开始呼叫
+    public static final int MSG_CHECK_PASSWORD = 20006;
+    public static final int MSG_START_DIAL_PICTURE = 21005;
+    public static final int MSG_CHECK_PASSWORD_PICTURE = 21006;
+    public static final int MSG_GUEST_PASSWORD_CHECK = 20007;
+    public static final int MSG_CARD_INCOME = 20008;
+    public static final int MSG_DISCONNECT_VIEDO = 20009;
+    public static final int MSG_CANCEL_CALL = 20010;
+    public static final int MSG_CANCEL_DIRECT = 20011;
+    public static final int MSG_DISCONNECT_DIRECT = 20012;
     //public static final int MSG_ADVERTISE_INIT=20013;
-    public static final int MSG_CHECK_NETWORK=20014;
-    public static final int MSG_START_INIT=20015;
-    public static final int MSG_CHECK_WIFI=20016;
-    public static final int MSG_WIFI_CONNECT=20017;
-    public static final int MSG_CHANGE_FINGER=20018;
-    public static final int MSG_CHANGE_CARD=20019;
-    public static final int MSG_FINGER_OPENLOCK=20020;
-    public static final int MSG_CARD_OPENLOCK=20021;
-    public static final int MSG_ASSEMBLE_KEY=99922;
-    public static final int MSG_CHECK_BLOCKNO=20022;
-    public static final int MSG_FINGER_DETECT=20023;
-    public static final int MSG_FINGER_DETECT_THREAD_COMPLETE=20024;
-    public static final int MSG_START_OFFLINE=20025;
+    public static final int MSG_CHECK_NETWORK = 20014;
+    public static final int MSG_START_INIT = 20015;
+    public static final int MSG_CHECK_WIFI = 20016;
+    public static final int MSG_WIFI_CONNECT = 20017;
+    public static final int MSG_CHANGE_FINGER = 20018;
+    public static final int MSG_CHANGE_CARD = 20019;
+    public static final int MSG_FINGER_OPENLOCK = 20020;
+    public static final int MSG_CARD_OPENLOCK = 20021;
+    public static final int MSG_ASSEMBLE_KEY = 99922;
+    public static final int MSG_CHECK_BLOCKNO = 20022;
+    public static final int MSG_FINGER_DETECT = 20023;
+    public static final int MSG_FINGER_DETECT_THREAD_COMPLETE = 20024;
+    public static final int MSG_START_OFFLINE = 20025;
 
-    public static final int MSG_FIND_NEW_VERSION=30001;
+    public static final int MSG_FIND_NEW_VERSION = 30001;
 
-    public static final int CALL_WAITING=20;
-    public static final int CALL_VIDEO_CONNECTING=21;
-    public static final int CALL_VIDEO_CONNECTED=22;
-    public static final int CALL_VIDEO_CONNECT_FAIL=23;
-    public static final int CALL_DIRECT_CONNECTING=24;
-    public static final int CALL_DIRECT_CONNECTED=25;
-    public static final int CALL_DIRECT_CONNECT_FAIL=26;
+    public static final int CALL_WAITING = 20;
+    public static final int CALL_VIDEO_CONNECTING = 21;
+    public static final int CALL_VIDEO_CONNECTED = 22;
+    public static final int CALL_VIDEO_CONNECT_FAIL = 23;
+    public static final int CALL_DIRECT_CONNECTING = 24;
+    public static final int CALL_DIRECT_CONNECTED = 25;
+    public static final int CALL_DIRECT_CONNECT_FAIL = 26;
 
     public static final String APP_ID = "71012";
-    public static final String APP_KEY ="71007b1c-6b75-4d6f-85aa-40c1f3b842ef";
-    public static final String LOGTAG= "Intercom";
+    public static final String APP_KEY = "71007b1c-6b75-4d6f-85aa-40c1f3b842ef";
+    public static final String LOGTAG = "Intercom";
 
-    public static String httpServerToken=null;
+    public static String httpServerToken = null;
 
     int callType = RtcConst.CallType_A_V;
 
-    public static String communityName="";
-    public static String lockName="";
+    public static String communityName = "";
+    public static String lockName = "";
 
-    public String mac=null;
-    public String key=null;
-    public static int communityId=0;
-    public int blockId=0;
-    public int inputBlockId=0;
-    public int lockId=0;
-    public String unitNo="";
-    public String tempKey="";
-    public String messageFrom=null;
-    public int callConnectState=CALL_WAITING;
-    public int resetFlag=0;
-    public String imageUrl=null;
-    public String imageUuid=null;
+    public String mac = null;
+    public String key = null;
+    public static int communityId = 0;
+    public int blockId = 0;
+    public int inputBlockId = 0;
+    public int lockId = 0;
+    public String unitNo = "";
+    public String tempKey = "";
+    public String messageFrom = null;
+    public int callConnectState = CALL_WAITING;
+    public int resetFlag = 0;
+    public String imageUrl = null;
+    public String imageUuid = null;
 
-    RtcClient rtcClient=null;
+    RtcClient rtcClient = null;
     Device device = null;
     public static Connection callConnection;
-    private String token=null;
-    boolean isReconnectingRtc=false;
+    private String token = null;
+    boolean isReconnectingRtc = false;
     boolean incomingFlag = false;
 
-    protected Messenger initMessenger=null;
-    protected Messenger dialMessenger=null;
-    protected Messenger serviceMessenger=null;
-    protected Handler handler=null;
+    protected Messenger initMessenger = null;
+    protected Messenger dialMessenger = null;
+    protected Messenger serviceMessenger = null;
+    protected Handler handler = null;
 
     //protected RfidUtil rfidUtil=null;
     //protected NfcPortUtil nfcPortUtil=null;
     //protected AssembleUtil assembleUtil=null;
-    protected AexUtil aexUtil=null;
+    protected AexUtil aexUtil = null;
     //protected FingerUtil fingerUtil=null;
-    protected SqlUtil sqlUtil=null;
+    protected SqlUtil sqlUtil = null;
     //protected AdLoad adLoad = null;
-    protected CardRecord cardRecord=new CardRecord();
-    private ArrayList allUserList=new ArrayList();
-    private ArrayList triedUserList=new ArrayList();
-    private ArrayList onlineUserList=new ArrayList();
-    private ArrayList offlineUserList=new ArrayList();
-    private ArrayList rejectUserList=new ArrayList();
+    protected CardRecord cardRecord = new CardRecord();
+    private ArrayList allUserList = new ArrayList();
+    private ArrayList triedUserList = new ArrayList();
+    private ArrayList onlineUserList = new ArrayList();
+    private ArrayList offlineUserList = new ArrayList();
+    private ArrayList rejectUserList = new ArrayList();
 
-    private boolean isRongyunInitialized=false;
-    Thread timeoutCheckThread=null;
-    private String lastCurrentCallId=null;
+    private boolean isRongyunInitialized = false;
+    Thread timeoutCheckThread = null;
+    private String lastCurrentCallId = null;
 
-    Thread advertisementThread=null;
-    Thread connectReportThread=null;
-    private JSONArray currentAdvertisementList=new JSONArray();
-    private Hashtable<String,String> currentAdvertisementFiles=new Hashtable<String,String>();
-    private int advertisementStatus=ADVERTISEMENT_WAITING;
+    Thread advertisementThread = null;
+    Thread connectReportThread = null;
+    private JSONArray currentAdvertisementList = new JSONArray();
+    private Hashtable<String, String> currentAdvertisementFiles = new Hashtable<String, String>();
+    private int advertisementStatus = ADVERTISEMENT_WAITING;
 
-    private WifiAdmin wifiAdmin=null;
-    private List<ScanResult> wifiList=null;
+    private WifiAdmin wifiAdmin = null;
+    private List<ScanResult> wifiList = null;
 
-    private Thread[] fingerDetectThreads=null;
-    private int fingerDetectStatus=0;
-    private int fingerDetectSteps=0;
-    private boolean fingerDetectResult=false;
+    private Thread[] fingerDetectThreads = null;
+    private int fingerDetectStatus = 0;
+    private int fingerDetectSteps = 0;
+    private boolean fingerDetectResult = false;
 
-    private int lastVersion=0;
-    private String lastVersionFile="";
-    private String lastVersionStatus="L"; //L: last version N: find new version D：downloading P: pending to install I: installing
-    private int downloadingFlag=0; //0：not downloading 1:downloading 2:stop download
+    private int lastVersion = 0;
+    private String lastVersionFile = "";
+    private String lastVersionStatus = "L"; //L: last version N: find new version D：downloading P: pending to install I: installing
+    private int downloadingFlag = 0; //0：not downloading 1:downloading 2:stop download
 
-    Thread checkThread=null;
-    Thread downloadThread=null;
-    Thread updateThread=null;
+    Thread checkThread = null;
+    Thread downloadThread = null;
+    Thread updateThread = null;
 
     public MainService() {
     }
 
     @Override
     public void onCreate() {
-        wifiAdmin=new WifiAdmin(this);
-        Log.v("MainService","------>create MainService<-------");
+        wifiAdmin = new WifiAdmin(this);
+        Log.v("MainService", "------>create MainService<-------");
         initHandler();
         initUpdateHandler();//开启版本检测更新，一个小时监测一次
     }
 
-    protected void initAdLoad(){
+    protected void initAdLoad() {
 //        if(DeviceConfig.IS_FINGER_AVAILABLE){
 //            adLoad=new AdLoad();
 //        }
     }
 
-    protected void initHandler(){
-        handler = new Handler(){
+    protected void initHandler() {
+        handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                if(msg.what == REGISTER_ACTIVITY_INIT){
+                if (msg.what == REGISTER_ACTIVITY_INIT) {
                     initMessenger = msg.replyTo;
                     init();
-                    Log.i("MainService","register init messenger");
-                }else if(msg.what == REGISTER_ACTIVITY_DIAL){
+                    Log.i("MainService", "register init messenger");
+                } else if (msg.what == REGISTER_ACTIVITY_DIAL) {
                     startRongyun();
                     initAdvertisement();
                     initConnectReport();
-                    Log.i("MainService","register Dial messenger");
+                    Log.i("MainService", "register Dial messenger");
                     dialMessenger = msg.replyTo;
-                }else if(msg.what==MSG_GETTOKEN){
+                } else if (msg.what == MSG_GETTOKEN) {
                     onResponseGetToken(msg);
-                }else if(msg.what==MSG_LOGIN){
+                } else if (msg.what == MSG_LOGIN) {
                     onLogin(msg);
-                }else if(msg.what==MSG_CALLMEMBER){
+                } else if (msg.what == MSG_CALLMEMBER) {
                     onCallMember(msg);
-                }else if(msg.what==MSG_CREATELOG){
+                } else if (msg.what == MSG_CREATELOG) {
                     onCreateLog(msg);
-                }else if(msg.what==MSG_REGISTER){
+                } else if (msg.what == MSG_REGISTER) {
                     startGetToken();
-                }else if(msg.what==MSG_START_DIAL){
-                    String[] parameters=(String[])msg.obj;
-                    unitNo=parameters[0];
-                    imageUrl=parameters[1];
-                    imageUuid=parameters[2];
+                } else if (msg.what == MSG_START_DIAL) {
+                    String[] parameters = (String[]) msg.obj;
+                    unitNo = parameters[0];
+                    imageUrl = parameters[1];
+                    imageUuid = parameters[2];
                     startCallMember();
-                }else if(msg.what==MSG_CHECK_PASSWORD){
-                    String[] parameters=(String[])msg.obj;
-                    tempKey=parameters[0];
-                    imageUrl=parameters[1];
-                    imageUuid=parameters[2];
+                } else if (msg.what == MSG_CHECK_PASSWORD) {
+                    String[] parameters = (String[]) msg.obj;
+                    tempKey = parameters[0];
+                    imageUrl = parameters[1];
+                    imageUuid = parameters[2];
                     startCheckGuestPassword();
-                }else if(msg.what==MSG_START_DIAL_PICTURE){
-                    String[] parameters=(String[])msg.obj;
-                    if(parameters[2].equals(imageUuid)){
-                        imageUrl=parameters[1];
+                } else if (msg.what == MSG_START_DIAL_PICTURE) {
+                    String[] parameters = (String[]) msg.obj;
+                    if (parameters[2].equals(imageUuid)) {
+                        imageUrl = parameters[1];
                         startCallMemberAppendImage();
                     }
-                }else if(msg.what==MSG_CHECK_PASSWORD_PICTURE){
-                    String[] parameters=(String[])msg.obj;
-                    tempKey=parameters[0];
-                    imageUrl=parameters[1];
-                    imageUuid=parameters[2];
+                } else if (msg.what == MSG_CHECK_PASSWORD_PICTURE) {
+                    String[] parameters = (String[]) msg.obj;
+                    tempKey = parameters[0];
+                    imageUrl = parameters[1];
+                    imageUuid = parameters[2];
                     startCheckGuestPasswordAppendImage();
-                }else if(msg.what==MSG_GUEST_PASSWORD_CHECK){
-                    onCheckGuestPassword(msg.obj==null?null:(JSONObject)msg.obj);
-                }else if(msg.what==MSG_CARD_INCOME){
-                    onCardIncome((String)msg.obj);
-                }else if(msg.what==MSG_DISCONNECT_VIEDO){
+                } else if (msg.what == MSG_GUEST_PASSWORD_CHECK) {
+                    onCheckGuestPassword(msg.obj == null ? null : (JSONObject) msg.obj);
+                } else if (msg.what == MSG_CARD_INCOME) {
+                    onCardIncome((String) msg.obj);
+                } else if (msg.what == MSG_DISCONNECT_VIEDO) {
                     disconnectCallingConnection();
-                }else if(msg.what==MSG_CANCEL_CALL){
+                } else if (msg.what == MSG_CANCEL_CALL) {
                     cancelCurrentCall();
-                }else if(msg.what==MSG_CANCEL_DIRECT){
+                } else if (msg.what == MSG_CANCEL_DIRECT) {
                     cancelDirectCall(msg);
-                }else if(msg.what==MSG_DISCONNECT_DIRECT){
+                } else if (msg.what == MSG_DISCONNECT_DIRECT) {
                     cancelDirectCall(msg);
-                }else if(msg.what==MSG_CHECK_NETWORK){
+                } else if (msg.what == MSG_CHECK_NETWORK) {
                     checkNetwork();
-                }else if(msg.what==MSG_START_INIT){
+                } else if (msg.what == MSG_START_INIT) {
                     initWhenConnected();
-                }else if(msg.what==MSG_START_OFFLINE){
+                } else if (msg.what == MSG_START_OFFLINE) {
                     initWhenOffline();
-                }else if(msg.what==MSG_CHECK_WIFI){
+                } else if (msg.what == MSG_CHECK_WIFI) {
                     initScanWifi();
-                }else if(msg.what==MSG_WIFI_CONNECT){
-                    String value=(String)msg.obj;
-                    String[] values=value.split(":");
-                    int index=new Integer(values[0]);
-                    String password="";
-                    if(values.length>=2){
-                        password=values[1];
+                } else if (msg.what == MSG_WIFI_CONNECT) {
+                    String value = (String) msg.obj;
+                    String[] values = value.split(":");
+                    int index = new Integer(values[0]);
+                    String password = "";
+                    if (values.length >= 2) {
+                        password = values[1];
                     }
-                    connectWifi(index,password);
-                }else if(msg.what==MSG_CHANGE_FINGER){
-                    JSONArray[] lists=(JSONArray[])msg.obj;
-                    JSONArray fingerListSuccess=lists[0];
-                    JSONArray fingerListFailed=lists[1];
+                    connectWifi(index, password);
+                } else if (msg.what == MSG_CHANGE_FINGER) {
+                    JSONArray[] lists = (JSONArray[]) msg.obj;
+                    JSONArray fingerListSuccess = lists[0];
+                    JSONArray fingerListFailed = lists[1];
                     //startChangeFingerComplete(fingerListSuccess, fingerListFailed);
-                }else if(msg.what==MSG_CHANGE_CARD){
-                    JSONArray[] lists=(JSONArray[])msg.obj;
-                    JSONArray cardListSuccess=lists[0];
-                    JSONArray cardListFailed=lists[1];
+                } else if (msg.what == MSG_CHANGE_CARD) {
+                    JSONArray[] lists = (JSONArray[]) msg.obj;
+                    JSONArray cardListSuccess = lists[0];
+                    JSONArray cardListFailed = lists[1];
                     startChangeCardComplete(cardListSuccess, cardListFailed);
-                }else if(msg.what==MSG_FINGER_OPENLOCK){
-                    int index=(Integer)msg.obj;
-                   // startFingerOpenLock(index);
-                }else if(msg.what==MSG_CARD_OPENLOCK){
-                    int index=(Integer)msg.obj;
+                } else if (msg.what == MSG_FINGER_OPENLOCK) {
+                    int index = (Integer) msg.obj;
+                    // startFingerOpenLock(index);
+                } else if (msg.what == MSG_CARD_OPENLOCK) {
+                    int index = (Integer) msg.obj;
                     startCardOpenLock(index);
-                }else if(msg.what==MSG_ASSEMBLE_KEY){
-                    byte keyCode=(Byte)msg.obj;
+                } else if (msg.what == MSG_ASSEMBLE_KEY) {
+                    byte keyCode = (Byte) msg.obj;
                     try {
                         onAssembleKey(keyCode);
-                    }catch(Exception e){
+                    } catch (Exception e) {
                     }
-                }else if(msg.what==MSG_CHECK_BLOCKNO){
-                    String blockNo=(String)msg.obj;
+                } else if (msg.what == MSG_CHECK_BLOCKNO) {
+                    String blockNo = (String) msg.obj;
                     startCheckBlockNo(blockNo);
-                }else if(msg.what==MSG_FINGER_DETECT){
-                    byte[] data=(byte[])msg.obj;
+
+                } else if (msg.what == MSG_FINGER_DETECT) {
+                    byte[] data = (byte[]) msg.obj;
                     //onFingerDetect(data);
-                }else if(msg.what==MSG_FINGER_DETECT_THREAD_COMPLETE){
+                } else if (msg.what == MSG_FINGER_DETECT_THREAD_COMPLETE) {
                     //FingerData fingerData=null;
-                    if(msg.obj!=null) {
+                    if (msg.obj != null) {
                         //fingerData = (FingerData) msg.obj;
                     }
                     //onFingerDetectThreadComplete(fingerData);
-                }else if(msg.what == MSG_FIND_NEW_VERSION){
-                    String version=(String)msg.obj;
+                } else if (msg.what == MSG_FIND_NEW_VERSION) {
+                    String version = (String) msg.obj;
                     onNewVersion(version);
-                    Log.i("UpdateService","checked new version "+version);
+                    Log.i("UpdateService", "checked new version " + version);
                 }
             }
         };
         serviceMessenger = new Messenger(handler);
     }
 
-    protected void initScanWifi(){
+    protected void initScanWifi() {
         wifiAdmin.openWifi();
         wifiAdmin.startScan();
-        wifiList=wifiAdmin.getWifiList();
-       // sendInitMessenger(InitActivity.MSG_WIFI_LIST,wifiList);
+        wifiList = wifiAdmin.getWifiList();
+        // sendInitMessenger(InitActivity.MSG_WIFI_LIST,wifiList);
     }
 
-    protected void connectWifi(int index,String password){
-        ScanResult scanResult=wifiList.get(index);
-        boolean result=wifiAdmin.connectWifi(scanResult.SSID,password);
-        if(result){
+    protected void connectWifi(int index, String password) {
+        ScanResult scanResult = wifiList.get(index);
+        boolean result = wifiAdmin.connectWifi(scanResult.SSID, password);
+        if (result) {
             //sendInitMessenger(InitActivity.MSG_WIFI_CONNECTED);
-        }else{
-           // sendInitMessenger(InitActivity.MSG_WIFI_CONNECT_FAIL);
+        } else {
+            // sendInitMessenger(InitActivity.MSG_WIFI_CONNECT_FAIL);
         }
     }
 
     //protected void
-    protected void initLock(){
+    protected void initLock() {
         //int result=MBaseActivity.openled();
     }
 
-    protected void startRongyun(){
-        if(!isRongyunInitialized){
-            isRongyunInitialized=true;
-            if(DeviceConfig.IS_CALL_DIRECT_AVAILABLE){
+    protected void startRongyun() {
+        if (!isRongyunInitialized) {
+            isRongyunInitialized = true;
+            if (DeviceConfig.IS_CALL_DIRECT_AVAILABLE) {
                 startYuntongxun();
             }
         }
     }
 
-    protected void cancelDirectCall(Message msg){
-        if(msg.what==MSG_CANCEL_DIRECT){
+    protected void cancelDirectCall(Message msg) {
+        if (msg.what == MSG_CANCEL_DIRECT) {
             releaseCallDirect();
-        }else if(msg.what==MSG_DISCONNECT_DIRECT){
+        } else if (msg.what == MSG_DISCONNECT_DIRECT) {
             releaseCallDirect();
         }
     }
 
-    protected void cancelCurrentCall(){
+    protected void cancelCurrentCall() {
         cancelOtherMembers(null);
         Log.v("MainService", "用户取消当前呼叫");
         resetCallMode();
         stopTimeoutCheckThread();
     }
-    protected void disconnectCallingConnection(){
-        if (callConnection !=null) {
+
+    protected void disconnectCallingConnection() {
+        if (callConnection != null) {
             callConnection.disconnect();
-            callConnection=null;
+            callConnection = null;
             callingDisconnect();
         }
     }
@@ -466,86 +468,87 @@ public class MainService extends Service {
         }
     }*/
 
-    protected void initAexUtil(){
-        if(DeviceConfig.IS_AEX_AVAILABLE){
-            aexUtil=new AexUtil(handler);
+    protected void initAexUtil() {
+        if (DeviceConfig.IS_AEX_AVAILABLE) {
+            aexUtil = new AexUtil(handler);
             try {
                 aexUtil.open();
-            }catch(Exception e){
+            } catch (Exception e) {
             }
             sendInitMessenger(InitActivity.MSG_INIT_AEX);
         }
     }
 
-    protected void initSqlUtil(){
-        sqlUtil=new SqlUtil(this);
+    protected void initSqlUtil() {
+        sqlUtil = new SqlUtil(this);
     }
 
-    protected void init(){
-        Log.i("MainService","init MainService");
+    protected void init() {
+        Log.i("MainService", "init MainService");
         //initRfidUtil();
-        Log.i("MainService","init RFID");
+        Log.i("MainService", "init RFID");
         //initNfcPortUtil();
-        Log.i("MainService","init NFC Port");
+        Log.i("MainService", "init NFC Port");
         //initAssembleUtil();
-        Log.i("MainService","init ASSEMBLE");
+        Log.i("MainService", "init ASSEMBLE");
         initAexUtil();
-        Log.i("MainService","init AEX");
+        Log.i("MainService", "init AEX");
         //initAdLoad();
         initSqlUtil();
-        Log.i("MainService","init SQL");
-        if(isNetworkConnectedWithTimeout()){
-            Log.i("MainService","Test Connected");
+        Log.i("MainService", "init SQL");
+        if (isNetworkConnectedWithTimeout()) {
+            Log.i("MainService", "Test Connected");
             initWhenConnected();
-        }else{
-            Log.i("MainService","Test NoNetwork");
+        } else {
+            Log.i("MainService", "Test NoNetwork");
             sendInitMessenger(InitActivity.MSG_NO_NETWORK);
         }
     }
 
-    protected void initWhenConnected(){
-        if(initMacAddress()){
-            Log.i("MainService","INIT MAC Address");
+    protected void initWhenConnected() {
+        if (initMacAddress()) {
+            Log.i("MainService", "INIT MAC Address");
             initRtcClient();
-            try{
+            try {
                 initClientInfo();
-            }catch(Exception e){
-                Log.v("MainService","onDeviceStateChanged,result="+e.getMessage());
+            } catch (Exception e) {
+                Log.v("MainService", "onDeviceStateChanged,result=" + e.getMessage());
             }
         }
     }
 
-    protected void initWhenOffline(){
-        Log.i("MainService","init when offline");
-        if(initMacAddress()){
-            Log.i("MainService","INIT MAC Address");
-            try{
+    protected void initWhenOffline() {
+        Log.i("MainService", "init when offline");
+        if (initMacAddress()) {
+            Log.i("MainService", "INIT MAC Address");
+            try {
                 loadInfoFromLocal();
                 startDialActivity(false);
                 rtcConnectTimeout();
-            }catch(Exception e){
-                Log.v("MainService","onDeviceStateChanged,result="+e.getMessage());
+            } catch (Exception e) {
+                Log.v("MainService", "onDeviceStateChanged,result=" + e.getMessage());
             }
         }
     }
 
-    public boolean isNetworkConnectedWithTimeout(){
-        boolean result=false;
-        for(int i=0;i<5;i++){
-            if(isNetworkConnected()){
-                result=true;
+    public boolean isNetworkConnectedWithTimeout() {
+        boolean result = false;
+        for (int i = 0; i < 5; i++) {
+            if (isNetworkConnected()) {
+                result = true;
                 break;
-            }else{
+            } else {
                 sendInitMessenger(InitActivity.MSG_INTERNET_CHECK_FAIL);
                 try {
                     Thread.currentThread().sleep(1000);
-                }catch(InterruptedException e){}
+                } catch (InterruptedException e) {
+                }
             }
         }
         return result;
     }
 
-    public boolean isNetworkConnected(){
+    public boolean isNetworkConnected() {
         String result = null;
         try {
             String ip = "www.baidu.com";// ping 的地址，可以换成任何一种可靠的外网
@@ -577,40 +580,40 @@ public class MainService extends Service {
         return false;
     }
 
-    protected void checkNetwork(){
-        if(isNetworkConnected()){
+    protected void checkNetwork() {
+        if (isNetworkConnected()) {
             sendInitMessenger(InitActivity.MSG_CONNECT_SUCCESS);
-        }else{
+        } else {
             sendInitMessenger(InitActivity.MSG_CONNECT_FAIL);
         }
     }
 
     private String parseByte(byte b) {
-        String s = "00" + Integer.toHexString(b)+":";
+        String s = "00" + Integer.toHexString(b) + ":";
         return s.substring(s.length() - 3);
     }
 
-    private void saveMacToLocal(String mac){
+    private void saveMacToLocal(String mac) {
         SharedPreferences sharedPref = this.getSharedPreferences("residential", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("wifi_mac_address", mac);
         editor.commit();
     }
 
-    private String getMacFromLocal(){
-        boolean isTokenAvailable=false;
+    private String getMacFromLocal() {
+        boolean isTokenAvailable = false;
         SharedPreferences sharedPref = this.getSharedPreferences("residential", Context.MODE_PRIVATE);
-        String mac=sharedPref.getString("wifi_mac_address",null);
+        String mac = sharedPref.getString("wifi_mac_address", null);
         return mac;
     }
 
-    protected String getWifiMac(){
-        String mac=getMacFromLocal();
-        if(mac==null){
-            WifiManager wifi = (WifiManager)getSystemService(Context.WIFI_SERVICE);
+    protected String getWifiMac() {
+        String mac = getMacFromLocal();
+        if (mac == null) {
+            WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
             WifiInfo info = wifi.getConnectionInfo();
             mac = info.getMacAddress();
-            if(mac!=null){
+            if (mac != null) {
                 saveMacToLocal(mac);
             }
         }
@@ -641,33 +644,34 @@ public class MainService extends Service {
             e.printStackTrace();
         }
 
-        if(mac != null){
-            for(int i=0 ;i<mac.length ;i++){
+        if (mac != null) {
+            for (int i = 0; i < mac.length; i++) {
                 sb.append(parseByte(mac[i]));
             }
-            return sb.substring(0, sb.length()-1);
-        }else{
+            return sb.substring(0, sb.length() - 1);
+        } else {
             return null;
         }
     }
 
-    protected String getMac(){
-        String mac=getWifiMac();
-        if(mac==null){
+    protected String getMac() {
+        String mac = getWifiMac();
+        if (mac == null) {
             return getEthMac();
-        }else{
+        } else {
             return mac;
         }
     }
 
-    protected String retrieveEthMac(){
-        String mac=null;
+    protected String retrieveEthMac() {
+        String mac = null;
         try {
             return readLine(ETH0_MAC_ADDR);
         } catch (IOException e) {
         }
         return mac;
     }
+
     private String readLine(String filename) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(filename), 256);
         try {
@@ -677,9 +681,9 @@ public class MainService extends Service {
         }
     }
 
-    protected boolean initMacAddress(){
-        String mac= getMac();
-        if(mac==null||mac.length()==0){
+    protected boolean initMacAddress() {
+        String mac = getMac();
+        if (mac == null || mac.length() == 0) {
             Message message = Message.obtain();
             message.what = InitActivity.MSG_NO_MAC_ADDRESS;
             try {
@@ -688,12 +692,12 @@ public class MainService extends Service {
                 e.printStackTrace();
             }
             return false;
-        }else{
-            this.mac=mac;
-            this.key=mac.replace(":", "");
+        } else {
+            this.mac = mac;
+            this.key = mac.replace(":", "");
             Message message = Message.obtain();
             message.what = InitActivity.MSG_GET_MAC_ADDRESS;
-            message.obj=mac;
+            message.obj = mac;
             try {
                 initMessenger.send(message);
             } catch (RemoteException e) {
@@ -708,35 +712,35 @@ public class MainService extends Service {
         rtcClient.initialize(this.getApplicationContext(), new ClientListener() {
             @Override   //初始化结果回调
             public void onInit(int result) {
-                Log.v("MainService","onInit,result="+result);//常见错误9003:网络异常或系统时间差的太多
-                if(result == 0) {
+                Log.v("MainService", "onInit,result=" + result);//常见错误9003:网络异常或系统时间差的太多
+                if (result == 0) {
                     rtcClient.setAudioCodec(RtcConst.ACodec_OPUS);
                     rtcClient.setVideoCodec(RtcConst.VCodec_VP8);
-                    if(DeviceConfig.VIDEO_STATUS==0){
+                    if (DeviceConfig.VIDEO_STATUS == 0) {
                         rtcClient.setVideoAttr(RtcConst.Video_SD);
-                    }else if(DeviceConfig.VIDEO_STATUS==1){
+                    } else if (DeviceConfig.VIDEO_STATUS == 1) {
                         rtcClient.setVideoAttr(RtcConst.Video_FL);
-                    }else if(DeviceConfig.VIDEO_STATUS==2){
+                    } else if (DeviceConfig.VIDEO_STATUS == 2) {
                         rtcClient.setVideoAttr(RtcConst.Video_HD);
-                    }else if(DeviceConfig.VIDEO_STATUS==3){
+                    } else if (DeviceConfig.VIDEO_STATUS == 3) {
                         rtcClient.setVideoAttr(RtcConst.Video_720P);
-                    }else if(DeviceConfig.VIDEO_STATUS==4){
+                    } else if (DeviceConfig.VIDEO_STATUS == 4) {
                         rtcClient.setVideoAttr(RtcConst.Video_1080P);
                     }
                     rtcClient.setVideoAdapt(DeviceConfig.VIDEO_ADAPT);
-                    if(isReconnectingRtc){
+                    if (isReconnectingRtc) {
                         startGetToken();
                     }
-                }else{
+                } else {
                     onInitRtcError();
                 }
             }
         });
     }
 
-    protected void onInitRtcError(){
-        new Thread(){
-            public void run(){
+    protected void onInitRtcError() {
+        new Thread() {
+            public void run() {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
@@ -747,21 +751,21 @@ public class MainService extends Service {
     }
 
     protected boolean getClientInfo() throws JSONException {
-        Log.v("MainService","start get client info");
-        JSONObject data=new JSONObject();
-        data.put("username",mac);
-        data.put("password",key);
-        boolean resultValue=false;
+        Log.v("MainService", "start get client info");
+        JSONObject data = new JSONObject();
+        data.put("username", mac);
+        data.put("password", key);
+        boolean resultValue = false;
         try {
-            Log.v("MainService","POST Login ajax");
-            URL url = new URL(DeviceConfig.SERVER_URL+"/app/auth/deviceLogin");
+            Log.v("MainService", "POST Login ajax");
+            URL url = new URL(DeviceConfig.SERVER_URL + "/app/auth/deviceLogin");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoOutput(true);
             connection.setDoInput(true);
             connection.setUseCaches(false);
             connection.setInstanceFollowRedirects(true);
             connection.setRequestMethod("POST");
-            if(httpServerToken!=null) {
+            if (httpServerToken != null) {
                 connection.setRequestProperty("Authorization", "Bearer " + httpServerToken);
             }
             connection.setRequestProperty("Accept", "application/json");
@@ -774,26 +778,26 @@ public class MainService extends Service {
             out.close();
             InputStream is = connection.getInputStream();
             String result = HttpUtils.readMyInputStream(is);
-            Log.v("MainService","response="+result);
-            JSONObject resultObj= Ajax.getJSONObject(result);
-            int code=resultObj.getInt("code");
+            Log.v("MainService", "response=" + result);
+            JSONObject resultObj = Ajax.getJSONObject(result);
+            int code = resultObj.getInt("code");
             if (code == 0) {
-                resultValue=true;
+                resultValue = true;
                 try {
                     httpServerToken = resultObj.getString("token");
-                }catch(Exception e){
-                    httpServerToken=null;
+                } catch (Exception e) {
+                    httpServerToken = null;
                 }
                 initDeviceConfig(resultObj);
             }
             Message message = handler.obtainMessage();
-            message.what =MSG_LOGIN;
-            resultObj.put("mac",this.mac);
+            message.what = MSG_LOGIN;
+            resultObj.put("mac", this.mac);
             message.obj = resultObj;
             handler.sendMessage(message);
-        }catch (IOException e) {
+        } catch (IOException e) {
             //e.printStackTrace();
-            Log.v("MainService","response error="+e.getMessage());
+            Log.v("MainService", "response error=" + e.getMessage());
             Message message = Message.obtain();
             message.what = InitActivity.MSG_LOGIN_ERROR;
             try {
@@ -805,133 +809,137 @@ public class MainService extends Service {
         return resultValue;
     }
 
-    protected void initDeviceConfig(JSONObject resultObj){
+    protected void initDeviceConfig(JSONObject resultObj) {
         try {
-            JSONObject deviceUser=resultObj.getJSONObject("user");
-            resetFlag=deviceUser.getInt("resetFlag");
+            JSONObject deviceUser = resultObj.getJSONObject("user");
+            resetFlag = deviceUser.getInt("resetFlag");
             JSONObject config = resultObj.getJSONObject("config");
-            if(config!=null){
-                DeviceConfig.PARALL_WAIT_TIME=1000*config.getInt("parallWaitTime");
-                DeviceConfig.SERIAL_WAIT_TIME=1000*config.getInt("serialWaitTime");
+            if (config != null) {
+                DeviceConfig.PARALL_WAIT_TIME = 1000 * config.getInt("parallWaitTime");
+                DeviceConfig.SERIAL_WAIT_TIME = 1000 * config.getInt("serialWaitTime");
 
-                DeviceConfig.AD_INIT_WAIT_TIME=1000*60*config.getInt("adInitWaitTime");
-                DeviceConfig.AD_REFRESH_WAIT_TIME=1000*60*config.getInt("adRefreshWaitTime");
-                DeviceConfig.CONNECT_REPORT_WAIT_TIME=1000*60*config.getInt("connectReportWaitTime");
-                DeviceConfig.MAX_DIRECT_CALL_TIME=1000*config.getInt("maxDirectCallTime");
-                DeviceConfig.PASSWORD_WAIT_TIME=1000*config.getInt("passwordWaitTime");
+                DeviceConfig.AD_INIT_WAIT_TIME = 1000 * 60 * config.getInt("adInitWaitTime");
+                DeviceConfig.AD_REFRESH_WAIT_TIME = 1000 * 60 * config.getInt("adRefreshWaitTime");
+                DeviceConfig.CONNECT_REPORT_WAIT_TIME = 1000 * 60 * config.getInt("connectReportWaitTime");
+                DeviceConfig.MAX_DIRECT_CALL_TIME = 1000 * config.getInt("maxDirectCallTime");
+                DeviceConfig.PASSWORD_WAIT_TIME = 1000 * config.getInt("passwordWaitTime");
 
-                DeviceConfig.UNIT_NO_LENGTH=config.getInt("unitNoLength");
-                DeviceConfig.BLOCK_NO_LENGTH=config.getInt("blockNoLength");
+                DeviceConfig.UNIT_NO_LENGTH = config.getInt("unitNoLength");
+                DeviceConfig.BLOCK_NO_LENGTH = config.getInt("blockNoLength");
 
-                DeviceConfig.VOLUME_STREAM_MUSIC=config.getInt("musicVolume");
-                DeviceConfig.VOLUME_STREAM_VOICE_CALL=config.getInt("voiceCallVolume");
-                DeviceConfig.VOLUME_STREAM_RING=config.getInt("ringVolume");
-                DeviceConfig.VOLUME_STREAM_SYSTEM=config.getInt("systemVolume");
+                DeviceConfig.VOLUME_STREAM_MUSIC = config.getInt("musicVolume");
+                DeviceConfig.VOLUME_STREAM_VOICE_CALL = config.getInt("voiceCallVolume");
+                DeviceConfig.VOLUME_STREAM_RING = config.getInt("ringVolume");
+                DeviceConfig.VOLUME_STREAM_SYSTEM = config.getInt("systemVolume");
 
                 try {
                     DeviceConfig.VIDEO_STATUS = config.getInt("videoStatus");
                     DeviceConfig.VIDEO_ADAPT = config.getInt("videoAdapt");
-                }catch(Exception e){
+                } catch (Exception e) {
                     DeviceConfig.VIDEO_STATUS = 0;
                     DeviceConfig.VIDEO_ADAPT = 1;
                 }
             }
-        }catch(JSONException e){
+        } catch (JSONException e) {
         }
     }
 
-    protected void initClientInfo(){
-        new Thread(){
-            public void run(){
-                boolean result=false;
+    protected void initClientInfo() {
+        new Thread() {
+            public void run() {
+                boolean result = false;
                 try {
                     do {
-                        result=getClientInfo();
-                        if(!result){
-                            sleep(1000*10);
+                        result = getClientInfo();
+                        if (!result) {
+                            sleep(1000 * 10);
                         }
-                    }while(!result);
-                }catch(Exception e){}
+                    } while (!result);
+                } catch (Exception e) {
+                }
             }
         }.start();
     }
 
-    private void onAssembleKey(byte keyCode)throws RemoteException {
+    private void onAssembleKey(byte keyCode) throws RemoteException {
         Message message = Message.obtain();
         message.what = MSG_ASSEMBLE_KEY;
-        if(keyCode==0){
-            message.obj= KeyEvent.KEYCODE_0;
-        }else if(keyCode==1){
-            message.obj= KeyEvent.KEYCODE_1;
-        }else if(keyCode==2){
-            message.obj= KeyEvent.KEYCODE_2;
-        }else if(keyCode==3){
-            message.obj= KeyEvent.KEYCODE_3;
-        }else if(keyCode==4){
-            message.obj= KeyEvent.KEYCODE_4;
-        }else if(keyCode==5){
-            message.obj= KeyEvent.KEYCODE_5;
-        }else if(keyCode==6){
-            message.obj= KeyEvent.KEYCODE_6;
-        }else if(keyCode==7){
-            message.obj= KeyEvent.KEYCODE_7;
-        }else if(keyCode==8){
-            message.obj= KeyEvent.KEYCODE_8;
-        }else if(keyCode==9){
-            message.obj= KeyEvent.KEYCODE_9;
-        }else if(keyCode==10){
-            message.obj= KeyEvent.KEYCODE_STAR;
-        }else if(keyCode==11){
-            message.obj= KeyEvent.KEYCODE_POUND;
+        if (keyCode == 0) {
+            message.obj = KeyEvent.KEYCODE_0;
+        } else if (keyCode == 1) {
+            message.obj = KeyEvent.KEYCODE_1;
+        } else if (keyCode == 2) {
+            message.obj = KeyEvent.KEYCODE_2;
+        } else if (keyCode == 3) {
+            message.obj = KeyEvent.KEYCODE_3;
+        } else if (keyCode == 4) {
+            message.obj = KeyEvent.KEYCODE_4;
+        } else if (keyCode == 5) {
+            message.obj = KeyEvent.KEYCODE_5;
+        } else if (keyCode == 6) {
+            message.obj = KeyEvent.KEYCODE_6;
+        } else if (keyCode == 7) {
+            message.obj = KeyEvent.KEYCODE_7;
+        } else if (keyCode == 8) {
+            message.obj = KeyEvent.KEYCODE_8;
+        } else if (keyCode == 9) {
+            message.obj = KeyEvent.KEYCODE_9;
+        } else if (keyCode == 10) {
+            message.obj = KeyEvent.KEYCODE_STAR;
+        } else if (keyCode == 11) {
+            message.obj = KeyEvent.KEYCODE_POUND;
         }
-        Log.v("MainService","key message="+message.obj);
-        if(dialMessenger!=null){
-            Log.v("MainService","send to Dial messenger"+message.obj);
+        Log.v("MainService", "key message=" + message.obj);
+        if (dialMessenger != null) {
+            Log.v("MainService", "send to Dial messenger" + message.obj);
             dialMessenger.send(message);
-        }else{
-            Log.v("MainService","send to Init messenger"+message.obj);
+        } else {
+            Log.v("MainService", "send to Init messenger" + message.obj);
             initMessenger.send(message);
         }
     }
 
-    private void onCardIncome(String card){
-        if(!this.cardRecord.checkLastCard(card)){
-            if(checkCardAvailable(card)){
+    private void onCardIncome(String card) {
+        if (!this.cardRecord.checkLastCard(card)) {
+            if (checkCardAvailable(card)) {
                 openLock();
                 startCardAccessLog(card);
-            }else{
+            } else {
                 sendDialMessenger(MSG_INVALID_CARD);
             }
         }
     }
 
-    private boolean checkCardAvailable(String cardNo){
+    private boolean checkCardAvailable(String cardNo) {
         return sqlUtil.checkCardAvailable(cardNo);
     }
 
-    private void startCardAccessLog(final String cardNo){
-        new Thread(){
-            public void run(){
+    private void startCardAccessLog(final String cardNo) {
+        new Thread() {
+            public void run() {
                 onCardAccessLog(cardNo);
             }
         }.start();
     }
-    private void startCheckBlockNo(final String blockNo){
-        new Thread(){
-            public void run(){
+
+    private void startCheckBlockNo(final String blockNo) {
+        new Thread() {
+            public void run() {
+
                 onCheckBlockNo(blockNo);
             }
         }.start();
     }
-    private void onCheckBlockNo(String blockNo){
-        try{
-            String url=DeviceConfig.SERVER_URL+"/app/device/checkBlockNo?communityId="+this.communityId;
-            url=url+"&blockNo="+blockNo;
-            try{
+
+    private void onCheckBlockNo(String blockNo) {
+        try {
+            String url = DeviceConfig.SERVER_URL + "/app/device/checkBlockNo?communityId=" + this.communityId;
+            url = url + "&blockNo=" + blockNo.substring(0, 2);
+            try {
                 URL thisUrl = new URL(url);
-                HttpURLConnection conn = (HttpURLConnection)thisUrl.openConnection();
+                HttpURLConnection conn = (HttpURLConnection) thisUrl.openConnection();
                 conn.setRequestMethod("GET");
-                if(httpServerToken!=null) {
+                if (httpServerToken != null) {
                     conn.setRequestProperty("Authorization", "Bearer " + httpServerToken);
                 }
                 conn.setConnectTimeout(5000);
@@ -939,73 +947,74 @@ public class MainService extends Service {
                 if (code == 200) {
                     InputStream is = conn.getInputStream();
                     String result = HttpUtils.readMyInputStream(is);
-                    JSONObject resultObj=Ajax.getJSONObject(result);
-                    int resultCode=resultObj.getInt("code");
-                    if(resultCode==0){
-                        inputBlockId=resultObj.getInt("blockId");
-                    }else{
-                        inputBlockId=0;
+                    JSONObject resultObj = Ajax.getJSONObject(result);
+                    int resultCode = resultObj.getInt("code");
+                    if (resultCode == 0) {
+                        inputBlockId = resultObj.getInt("blockId");
+                    } else {
+                        inputBlockId = 0;
                     }
-                    sendDialMessenger(Constant.MSG_CHECK_BLOCKNO,inputBlockId);
+                    sendDialMessenger(Constant.MSG_CHECK_BLOCKNO, inputBlockId);
                 }
-            }catch(Exception e){
-                sendDialMessenger(MSG_CHECK_BLOCKNO,-1);
+            } catch (Exception e) {
+                sendDialMessenger(Constant.MSG_CHECK_BLOCKNO, -1);
                 e.printStackTrace();
             }
-        }catch(Exception e){
-        }
-    }
-    private void onCardAccessLog(String cardNo){
-        try{
-            String url=DeviceConfig.SERVER_URL+"/app/device/createCardAccessLog?communityId="+this.communityId;
-            url=url+"&lockId="+this.lockId;
-            url=url+"&cardNo="+cardNo;
-            try{
-                URL thisUrl = new URL(url);
-                HttpURLConnection conn = (HttpURLConnection)thisUrl.openConnection();
-                conn.setRequestMethod("GET");
-                if(httpServerToken!=null) {
-                    conn.setRequestProperty("Authorization", "Bearer " + httpServerToken);
-                }
-                conn.setConnectTimeout(5000);
-                int code = conn.getResponseCode();
-                if (code == 200) {
-                    InputStream is = conn.getInputStream();
-                    String result = HttpUtils.readMyInputStream(is);
-                }
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-        }catch(Exception e){
+        } catch (Exception e) {
         }
     }
 
-    private void startCheckGuestPassword(){
-        new Thread(){
-            public void run(){
+    private void onCardAccessLog(String cardNo) {
+        try {
+            String url = DeviceConfig.SERVER_URL + "/app/device/createCardAccessLog?communityId=" + this.communityId;
+            url = url + "&lockId=" + this.lockId;
+            url = url + "&cardNo=" + cardNo;
+            try {
+                URL thisUrl = new URL(url);
+                HttpURLConnection conn = (HttpURLConnection) thisUrl.openConnection();
+                conn.setRequestMethod("GET");
+                if (httpServerToken != null) {
+                    conn.setRequestProperty("Authorization", "Bearer " + httpServerToken);
+                }
+                conn.setConnectTimeout(5000);
+                int code = conn.getResponseCode();
+                if (code == 200) {
+                    InputStream is = conn.getInputStream();
+                    String result = HttpUtils.readMyInputStream(is);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    private void startCheckGuestPassword() {
+        new Thread() {
+            public void run() {
                 checkGuestPassword();
             }
         }.start();
     }
 
-    private void checkGuestPassword(){
-        try{
-            String url=DeviceConfig.SERVER_URL+"/app/device/openDoorByTempKey?from=";
-            url=url+this.key;
-            url=url+"&communityId="+this.communityId;
-            url=url+"&lockId="+this.lockId;
-            url=url+"&tempKey="+this.tempKey;
-            if(imageUuid!=null) {
+    private void checkGuestPassword() {
+        try {
+            String url = DeviceConfig.SERVER_URL + "/app/device/openDoorByTempKey?from=";
+            url = url + this.key;
+            url = url + "&communityId=" + this.communityId;
+            url = url + "&lockId=" + this.lockId;
+            url = url + "&tempKey=" + this.tempKey;
+            if (imageUuid != null) {
                 url = url + "&imageUuid=" + URLEncoder.encode(this.imageUuid, "UTF-8");
             }
-            if(imageUrl!=null) {
+            if (imageUrl != null) {
                 url = url + "&imageUrl=" + URLEncoder.encode(this.imageUrl, "UTF-8");
             }
-            try{
+            try {
                 URL thisUrl = new URL(url);
-                HttpURLConnection conn = (HttpURLConnection)thisUrl.openConnection();
+                HttpURLConnection conn = (HttpURLConnection) thisUrl.openConnection();
                 conn.setRequestMethod("GET");
-                if(httpServerToken!=null) {
+                if (httpServerToken != null) {
                     conn.setRequestProperty("Authorization", "Bearer " + httpServerToken);
                 }
                 conn.setConnectTimeout(5000);
@@ -1015,97 +1024,97 @@ public class MainService extends Service {
                     String result = HttpUtils.readMyInputStream(is);
 
                     Message message = handler.obtainMessage();
-                    message.what =MSG_GUEST_PASSWORD_CHECK;
+                    message.what = MSG_GUEST_PASSWORD_CHECK;
                     message.obj = Ajax.getJSONObject(result);
                     handler.sendMessage(message);
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
                 Message message = handler.obtainMessage();
-                message.what =MSG_GUEST_PASSWORD_CHECK;
+                message.what = MSG_GUEST_PASSWORD_CHECK;
                 handler.sendMessage(message);
                 e.printStackTrace();
             }
-        }catch(Exception e){
+        } catch (Exception e) {
         }
     }
 
-    private void startCallMemberAppendImage(){
+    private void startCallMemberAppendImage() {
         sendCallAppendImage();
     }
 
-    private void startCheckGuestPasswordAppendImage(){
-        new Thread(){
-            public void run(){
+    private void startCheckGuestPasswordAppendImage() {
+        new Thread() {
+            public void run() {
                 checkGuestPasswordAppendImage();
             }
         }.start();
     }
 
-    private void checkGuestPasswordAppendImage(){
-        try{
-            String url=DeviceConfig.SERVER_URL+"/app/device/appendImage?";
-            if(imageUuid!=null) {
+    private void checkGuestPasswordAppendImage() {
+        try {
+            String url = DeviceConfig.SERVER_URL + "/app/device/appendImage?";
+            if (imageUuid != null) {
                 url = url + "imageUuid=" + URLEncoder.encode(this.imageUuid, "UTF-8");
-            }else{
+            } else {
                 return;
             }
-            if(imageUrl!=null) {
+            if (imageUrl != null) {
                 url = url + "&imageUrl=" + URLEncoder.encode(this.imageUrl, "UTF-8");
-            }else{
+            } else {
                 return;
             }
-            try{
+            try {
                 URL thisUrl = new URL(url);
-                HttpURLConnection conn = (HttpURLConnection)thisUrl.openConnection();
+                HttpURLConnection conn = (HttpURLConnection) thisUrl.openConnection();
                 conn.setRequestMethod("GET");
-                if(httpServerToken!=null) {
+                if (httpServerToken != null) {
                     conn.setRequestProperty("Authorization", "Bearer " + httpServerToken);
                 }
                 conn.setConnectTimeout(5000);
                 int code = conn.getResponseCode();
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-        }catch(Exception e){
+        } catch (Exception e) {
         }
     }
 
-    private void onCheckGuestPassword(JSONObject result){
-        try{
-            int code=0;
-            if(result!=null){
-                code=result.getInt("code");
-                if(code==0){
+    private void onCheckGuestPassword(JSONObject result) {
+        try {
+            int code = 0;
+            if (result != null) {
+                code = result.getInt("code");
+                if (code == 0) {
                     openLock();
                 }
-            }else{
-                code=-1;
+            } else {
+                code = -1;
             }
             Message message = Message.obtain();
             message.what = MSG_PASSWORD_CHECK;
-            message.obj=code;
+            message.obj = code;
             try {
                 dialMessenger.send(message);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-        }catch(JSONException e){
+        } catch (JSONException e) {
         }
     }
 
     private void onResponseGetToken(Message msg) {
-        HttpResult ret = (HttpResult)msg.obj;
-        Log.v("MainService", "handleMessage getCapabilityToken status:"+ret.getStatus());
-        JSONObject jsonrsp = (JSONObject)ret.getObject();
-        if(jsonrsp!=null && jsonrsp.isNull("code")==false) {
+        HttpResult ret = (HttpResult) msg.obj;
+        Log.v("MainService", "handleMessage getCapabilityToken status:" + ret.getStatus());
+        JSONObject jsonrsp = (JSONObject) ret.getObject();
+        if (jsonrsp != null && jsonrsp.isNull("code") == false) {
             try {
                 String code = jsonrsp.getString(RtcConst.kcode);
                 String reason = jsonrsp.getString(RtcConst.kreason);
-                Log.v("MainService","Response getCapabilityToken code:"+code+" reason:"+reason);
-                if(code.equals("0")) {
-                    token =jsonrsp.getString(RtcConst.kcapabilityToken);
-                    Log.v("MainService","handleMessage getCapabilityToken:"+ token);
-                    if(!isReconnectingRtc) {
+                Log.v("MainService", "Response getCapabilityToken code:" + code + " reason:" + reason);
+                if (code.equals("0")) {
+                    token = jsonrsp.getString(RtcConst.kcapabilityToken);
+                    Log.v("MainService", "handleMessage getCapabilityToken:" + token);
+                    if (!isReconnectingRtc) {
                         Message message = Message.obtain();
                         message.what = InitActivity.MSG_GET_TOKEN;
                         message.obj = token;
@@ -1116,23 +1125,22 @@ public class MainService extends Service {
                         }
                     }
                     rtcRegister();
-                }
-                else {
+                } else {
                     onGetTokenError();
-                    Log.v("MainService","获取token失败 [status:"+ret.getStatus()+"]"+ret.getErrorMsg());
+                    Log.v("MainService", "获取token失败 [status:" + ret.getStatus() + "]" + ret.getErrorMsg());
                 }
             } catch (JSONException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
                 onGetTokenError();
-                Log.v("MainService","获取token失败 [status:"+e.getMessage()+"]");
+                Log.v("MainService", "获取token失败 [status:" + e.getMessage() + "]");
             }
-        }else{
+        } else {
             onGetTokenError();
         }
     }
 
-    protected void onGetTokenError(){
+    protected void onGetTokenError() {
         Message message = Message.obtain();
         message.what = InitActivity.MSG_CANNOT_GET_TOKEN;
         try {
@@ -1141,8 +1149,8 @@ public class MainService extends Service {
             e.printStackTrace();
         }
         //
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
@@ -1152,61 +1160,62 @@ public class MainService extends Service {
         }.start();
     }
 
-    protected void loadInfoFromLocal(){
-        SharedPreferences sharedPreferences= getSharedPreferences("residential", Activity.MODE_PRIVATE);
-        communityId=sharedPreferences.getInt("communityId",0);
-        blockId=sharedPreferences.getInt("blockId",0);
-        lockId=sharedPreferences.getInt("lockId",0);
-        communityName=sharedPreferences.getString("communityName", "");
-        lockName=sharedPreferences.getString("lockName", "");
+    protected void loadInfoFromLocal() {
+        SharedPreferences sharedPreferences = getSharedPreferences("residential", Activity.MODE_PRIVATE);
+        communityId = sharedPreferences.getInt("communityId", 0);
+        blockId = sharedPreferences.getInt("blockId", 0);
+        lockId = sharedPreferences.getInt("lockId", 0);
+        communityName = sharedPreferences.getString("communityName", "");
+        lockName = sharedPreferences.getString("lockName", "");
     }
-    protected void saveInfoIntoLocal(int communityId, int blockId, int lockId, String communityName, String lockName){
-        SharedPreferences sharedPreferences= getSharedPreferences("residential", Activity.MODE_PRIVATE);
+
+    protected void saveInfoIntoLocal(int communityId, int blockId, int lockId, String communityName, String lockName) {
+        SharedPreferences sharedPreferences = getSharedPreferences("residential", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("communityId", communityId);
         editor.putInt("blockId", blockId);
-        editor.putInt("lockId",lockId);
-        editor.putString("communityName",communityName);
-        editor.putString("lockName",lockName);
+        editor.putInt("lockId", lockId);
+        editor.putString("communityName", communityName);
+        editor.putString("lockName", lockName);
         editor.commit();
     }
 
-    protected void onLogin(Message msg){
-        JSONObject result=(JSONObject) msg.obj;
+    protected void onLogin(Message msg) {
+        JSONObject result = (JSONObject) msg.obj;
         try {
-            int code=result.getInt("code");
-            JSONObject user=null;
-            if(code==0){
+            int code = result.getInt("code");
+            JSONObject user = null;
+            if (code == 0) {
                 user = result.getJSONObject("user");
-                this.blockId=(Integer)user.get("blockId");
-                this.communityId=(Integer)user.get("communityId");
-                this.lockId=(Integer)user.get("rid");
-                lockName=user.getString("lockName");
-                communityName=user.getString("communityName");
-                if(this.blockId==0){
-                    DeviceConfig.DEVICE_TYPE="C";
+                this.blockId = (Integer) user.get("blockId");
+                this.communityId = (Integer) user.get("communityId");
+                this.lockId = (Integer) user.get("rid");
+                lockName = user.getString("lockName");
+                communityName = user.getString("communityName");
+                if (this.blockId == 0) {
+                    DeviceConfig.DEVICE_TYPE = "C";
                 }
-                saveInfoIntoLocal(communityId,blockId,lockId,communityName,lockName);
+                saveInfoIntoLocal(communityId, blockId, lockId, communityName, lockName);
             }
-
             Message message = Message.obtain();
             message.what = InitActivity.MSG_LOGIN;
-            message.obj=result;
+            message.obj = result;
             try {
                 initMessenger.send(message);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-        }catch(JSONException e){}
+        } catch (JSONException e) {
+        }
     }
 
     /**
      * 终端直接从rtc平台获取token，应用产品需要通过自己的服务器来获取，rtc平台接口请参考开发文档<2.5>章节.
      */
-    private  void getTokenFromServer() {
+    private void getTokenFromServer() {
         RtcConst.UEAPPID_Current = RtcConst.UEAPPID_Self;//账号体系，包括私有、微博、QQ等，必须在获取token之前确定。
-        JSONObject jsonobj = HttpManager.getInstance().CreateTokenJson(0,key, RtcHttpClient.grantedCapabiltyID,"");
-        HttpResult  ret = HttpManager.getInstance().getCapabilityToken(jsonobj, APP_ID, APP_KEY);
+        JSONObject jsonobj = HttpManager.getInstance().CreateTokenJson(0, key, RtcHttpClient.grantedCapabiltyID, "");
+        HttpResult ret = HttpManager.getInstance().getCapabilityToken(jsonobj, APP_ID, APP_KEY);
         Message msg = new Message();
         msg.what = MSG_GETTOKEN;
         msg.obj = ret;
@@ -1214,26 +1223,26 @@ public class MainService extends Service {
     }
 
     private void startGetToken() {
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 getTokenFromServer();
             }
         }.start();
     }
 
     private void rtcRegister() {
-        Log.v("MainService","rtcRegister:"+key+"token:"+token);
-        if(communityId>0&&token!=null){
+        Log.v("MainService", "rtcRegister:" + key + "token:" + token);
+        if (communityId > 0 && token != null) {
             try {
                 JSONObject jargs = SdkSettings.defaultDeviceSetting();
-                jargs.put(RtcConst.kAccPwd,token);
+                jargs.put(RtcConst.kAccPwd, token);
                 //账号格式形如“账号体系-号码~应用id~终端类型”，以下主要设置账号内各部分内容，其中账号体系的值要在获取token之前确定，默认为私有账号
-                jargs.put(RtcConst.kAccAppID,APP_ID);//应用id
-                jargs.put(RtcConst.kAccUser,key); //号码
-                jargs.put(RtcConst.kAccType,RtcConst.UEType_Current);//终端类型
-                jargs.put(RtcConst.kAccRetry,5);//设置重连时间
+                jargs.put(RtcConst.kAccAppID, APP_ID);//应用id
+                jargs.put(RtcConst.kAccUser, key); //号码
+                jargs.put(RtcConst.kAccType, RtcConst.UEType_Current);//终端类型
+                jargs.put(RtcConst.kAccRetry, 5);//设置重连时间
                 device = rtcClient.createDevice(jargs.toString(), deviceListener); //注册
-                if(!isReconnectingRtc){
+                if (!isReconnectingRtc) {
                     Message message = Message.obtain();
                     message.what = InitActivity.MSG_RTC_REGISTER;
                     try {
@@ -1256,30 +1265,30 @@ public class MainService extends Service {
         }
     }
 
-    protected void onRegisterCompleted(){
-        if(isReconnectingRtc){
-            isReconnectingRtc=false;
+    protected void onRegisterCompleted() {
+        if (isReconnectingRtc) {
+            isReconnectingRtc = false;
             rtcConnectSuccess();
-        }else{
+        } else {
             startDialActivity(true);
         }
     }
 
-    protected void startDialActivity(boolean initStatus){
-        Intent intent = new Intent(getBaseContext(),MainActivity.class);
+    protected void startDialActivity(boolean initStatus) {
+        Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("INIT_STATUS",initStatus);
+        intent.putExtra("INIT_STATUS", initStatus);
         startActivity(intent);
     }
 
-    protected void sendMessenger(int code,Object object){
+    protected void sendMessenger(int code, Object object) {
         Message message = handler.obtainMessage();
-        message.what =code;
+        message.what = code;
         message.obj = object;
         handler.sendMessage(message);
     }
 
-    protected void sendDialMessenger(int code){
+    protected void sendDialMessenger(int code) {
         Message message = Message.obtain();
         message.what = code;
         try {
@@ -1289,10 +1298,10 @@ public class MainService extends Service {
         }
     }
 
-    protected void sendDialMessenger(int code,Object object){
+    protected void sendDialMessenger(int code, Object object) {
         Message message = Message.obtain();
         message.what = code;
-        message.obj=object;
+        message.obj = object;
         try {
             dialMessenger.send(message);
         } catch (RemoteException e) {
@@ -1300,7 +1309,7 @@ public class MainService extends Service {
         }
     }
 
-    protected void sendInitMessenger(int code){
+    protected void sendInitMessenger(int code) {
         Message message = Message.obtain();
         message.what = code;
         try {
@@ -1310,10 +1319,10 @@ public class MainService extends Service {
         }
     }
 
-    protected void sendInitMessenger(int code,Object object){
+    protected void sendInitMessenger(int code, Object object) {
         Message message = Message.obtain();
         message.what = code;
-        message.obj=object;
+        message.obj = object;
         try {
             initMessenger.send(message);
         } catch (RemoteException e) {
@@ -1321,10 +1330,10 @@ public class MainService extends Service {
         }
     }
 
-    protected void startYuntongxun(){
+    protected void startYuntongxun() {
         // 判断SDK是否已经初始化，如果已经初始化则可以直接调用登陆接口
         // 没有初始化则先进行初始化SDK，然后调用登录接口注册SDK
-        if(!ECDevice.isInitialized()) {
+        if (!ECDevice.isInitialized()) {
             ECDevice.initial(this.getApplicationContext(), new ECDevice.InitListener() {
                 @Override
                 public void onInitialized() {
@@ -1346,7 +1355,7 @@ public class MainService extends Service {
         }
     }
 
-    protected void initYuntongxunHandler(){
+    protected void initYuntongxunHandler() {
         // 构建注册所需要的参数信息
         //5.0.3的SDK初始参数的方法：ECInitParams params = new ECInitParams();
         //5.1.*以上版本如下：
@@ -1386,23 +1395,21 @@ public class MainService extends Service {
             public void onDisconnect(ECError error) {
                 // 兼容4.0，5.0可不必处理
             }
+
             @Override
             public void onConnectState(ECDevice.ECConnectState state, ECError error) {
-                if(state == ECDevice.ECConnectState.CONNECT_FAILED ){
-                    if(error.errorCode == SdkErrorCode.SDK_KICKED_OFF) {
+                if (state == ECDevice.ECConnectState.CONNECT_FAILED) {
+                    if (error.errorCode == SdkErrorCode.SDK_KICKED_OFF) {
                         //账号异地登陆
                         sendDialMessenger(ON_YUNTONGXUN_LOGIN_FAIL);
-                        DeviceConfig.IS_CALL_DIRECT_AVAILABLE=false;
-                    }
-                    else
-                    {
+                        DeviceConfig.IS_CALL_DIRECT_AVAILABLE = false;
+                    } else {
                         //连接状态失败
                         sendDialMessenger(ON_YUNTONGXUN_LOGIN_FAIL);
-                        DeviceConfig.IS_CALL_DIRECT_AVAILABLE=false;
+                        DeviceConfig.IS_CALL_DIRECT_AVAILABLE = false;
                     }
                     return;
-                }
-                else if(state == ECDevice.ECConnectState.CONNECT_SUCCESS) {
+                } else if (state == ECDevice.ECConnectState.CONNECT_SUCCESS) {
                     // 登陆成功
                     sendDialMessenger(ON_YUNTONGXUN_LOGIN_SUCCESS);
                 }
@@ -1467,7 +1474,7 @@ public class MainService extends Service {
         // 获得SDKVoIP呼叫接口
         // 注册VoIP呼叫事件回调监听
         ECVoIPCallManager callInterface = ECDevice.getECVoIPCallManager();
-        if(callInterface != null) {
+        if (callInterface != null) {
             callInterface.setOnVoIPCallListener(new ECVoIPCallManager.OnVoIPListener() {
                 @Override
                 public void onVideoRatioChanged(VideoRatio videoRatio) {
@@ -1486,7 +1493,7 @@ public class MainService extends Service {
 
                 @Override
                 public void onDtmfReceived(String s, char c) {
-                    if(c=='#'){
+                    if (c == '#') {
                         openLock();
                     }
                 }
@@ -1494,9 +1501,9 @@ public class MainService extends Service {
                 @Override
                 public void onCallEvents(ECVoIPCallManager.VoIPCall voipCall) {
                     // 处理呼叫事件回调
-                    if(voipCall == null) {
+                    if (voipCall == null) {
                         Log.e("SDKCoreHelper", "handle call event error , voipCall null");
-                        return ;
+                        return;
                     }
                     // 根据不同的事件通知类型来处理不同的业务
                     ECVoIPCallManager.ECCallState callState = voipCall.callState;
@@ -1506,28 +1513,28 @@ public class MainService extends Service {
                             break;
                         case ECCALL_ALERTING:
                             // 呼叫到达对方客户端，对方正在振铃
-                            if(callConnectState==CALL_DIRECT_CONNECTING){
+                            if (callConnectState == CALL_DIRECT_CONNECTING) {
                                 sendDialMessenger(MSG_CALLMEMBER_DIRECT_DIALING);
                             }
                             break;
                         case ECCALL_ANSWERED:
                             // 对方接听本次呼叫
-                            if(callConnectState==CALL_DIRECT_CONNECTING){
+                            if (callConnectState == CALL_DIRECT_CONNECTING) {
                                 sendDialMessenger(MSG_CALLMEMBER_DIRECT_SUCCESS);
                             }
-                            callConnectState=CALL_DIRECT_CONNECTED;
+                            callConnectState = CALL_DIRECT_CONNECTED;
                             startCallDirectTimeoutChecking(lastCurrentCallId);
                             break;
                         case ECCALL_FAILED:
                             // 本次呼叫失败，根据失败原因播放提示音
-                            if(callConnectState==CALL_DIRECT_CONNECTING){
+                            if (callConnectState == CALL_DIRECT_CONNECTING) {
                                 sendDialMessenger(MSG_CALLMEMBER_DIRECT_FAILED);
                                 callMemberDirectly();
                             }
                             break;
                         case ECCALL_RELEASED:
                             // 通话释放[完成一次呼叫]
-                            if(callConnectState==CALL_DIRECT_CONNECTED){
+                            if (callConnectState == CALL_DIRECT_CONNECTED) {
                                 sendDialMessenger(MSG_CALLMEMBER_DIRECT_COMPLETE);
                             }
                             Log.v("MainService", "通话完成");
@@ -1542,7 +1549,7 @@ public class MainService extends Service {
         }
 
         // 注册会议消息处理监听
-        if(ECDevice.getECMeetingManager() != null) {
+        if (ECDevice.getECMeetingManager() != null) {
             ECDevice.getECMeetingManager().setOnMeetingListener(new OnMeetingListener() {
                 @Override
                 public void onReceiveInterPhoneMeetingMsg(ECInterPhoneMeetingMsg msg) {
@@ -1558,106 +1565,108 @@ public class MainService extends Service {
                 public void onReceiveVideoMeetingMsg(ECVideoMeetingMsg msg) {
                     // 处理视频会议消息Push（暂未提供）
                 }
+
                 @Override
-                public void onVideoRatioChanged(VideoRatio videoRatio){
+                public void onVideoRatioChanged(VideoRatio videoRatio) {
 
                 }
             });
         }
 
-        if(params.validate()) {
+        if (params.validate()) {
             // 判断注册参数是否正确
             ECDevice.login(params);
         }
     }
 
-    public void startCallDirectTimeoutChecking(final String thisCallId){
-        new Thread(){
-            public void run(){
+    public void startCallDirectTimeoutChecking(final String thisCallId) {
+        new Thread() {
+            public void run() {
                 try {
                     sleep(DeviceConfig.MAX_DIRECT_CALL_TIME);
-                    if(thisCallId.equals(lastCurrentCallId)){
+                    if (thisCallId.equals(lastCurrentCallId)) {
                         releaseCallDirect();
                     }
-                }catch(Exception e){}
+                } catch (Exception e) {
+                }
             }
         }.start();
     }
 
-    protected synchronized void setLastCurrentCallId(String lastCurrentCallId){
-        this.lastCurrentCallId=lastCurrentCallId;
+    protected synchronized void setLastCurrentCallId(String lastCurrentCallId) {
+        this.lastCurrentCallId = lastCurrentCallId;
     }
 
     public void startCallDirect(String mobile) {
-        String callId=ECDevice.getECVoIPCallManager().makeCall(ECVoIPCallManager.CallType.DIRECT, mobile);
+        String callId = ECDevice.getECVoIPCallManager().makeCall(ECVoIPCallManager.CallType.DIRECT, mobile);
         System.out.println(callId);
         setLastCurrentCallId(callId);
     }
 
-    public void releaseCallDirect(){
-        if(lastCurrentCallId!=null){
+    public void releaseCallDirect() {
+        if (lastCurrentCallId != null) {
             ECDevice.getECVoIPCallManager().releaseCall(lastCurrentCallId);
             setLastCurrentCallId(null);
         }
     }
 
-    protected void startCallMember(){
-        final String callUuid=this.imageUuid;
-        new Thread(){
-            public void run(){
+    protected void startCallMember() {
+        final String callUuid = this.imageUuid;
+        new Thread() {
+            public void run() {
                 callMember(callUuid);
             }
         }.start();
     }
 
-    protected void callMember(String callUuid){
-        try{
-            String url= DeviceConfig.SERVER_URL+"/app/device/callAllMembers?from=";
-            url=url+this.key;
-            url=url+"&communityId="+this.communityId;
-            if(DeviceConfig.DEVICE_TYPE.equals("C")){
-                url=url+"&blockId="+this.inputBlockId;
-            }else{
-                url=url+"&blockId="+this.blockId;
+    protected void callMember(String callUuid) {
+        try {
+            String url = DeviceConfig.SERVER_URL + "/app/device/callAllMembers?from=";
+            url = url + this.key;
+            url = url + "&communityId=" + this.communityId;
+            if (DeviceConfig.DEVICE_TYPE.equals("C")) {
+                url = url + "&blockId=" + this.inputBlockId;
+            } else {
+                url = url + "&blockId=" + this.blockId;
             }
-            url=url+"&unitNo="+this.unitNo;
-            try{
+            url = url + "&unitNo=" + this.unitNo;
+            try {
                 URL thisUrl = new URL(url);
-                HttpURLConnection conn = (HttpURLConnection)thisUrl.openConnection();
+                HttpURLConnection conn = (HttpURLConnection) thisUrl.openConnection();
                 conn.setRequestMethod("GET");
-                if(httpServerToken!=null) {
+                if (httpServerToken != null) {
                     conn.setRequestProperty("Authorization", "Bearer " + httpServerToken);
                 }
                 conn.setConnectTimeout(5000);
                 int code = conn.getResponseCode();
-                if (code == 200&&isCurrentCallWorking(callUuid)) {
+                if (code == 200 && isCurrentCallWorking(callUuid)) {
                     InputStream is = conn.getInputStream();
                     String result = HttpUtils.readMyInputStream(is);
                     Message message = handler.obtainMessage();
                     message.what = MSG_CALLMEMBER;
-                    Object[] objects=new Object[2];
-                    objects[0]=callUuid;
-                    objects[1]=Ajax.getJSONObject(result);
+                    Object[] objects = new Object[2];
+                    objects[0] = callUuid;
+                    objects[1] = Ajax.getJSONObject(result);
                     message.obj = objects;
                     handler.sendMessage(message);
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
                 Message message = handler.obtainMessage();
                 message.what = MSG_CALLMEMBER;
                 handler.sendMessage(message);
                 e.printStackTrace();
             }
-        }catch(Exception e){
+        } catch (Exception e) {
         }
     }
 
-    private boolean isCurrentCallWorking(String uuid){
+    private boolean isCurrentCallWorking(String uuid) {
         return uuid.equals(this.imageUuid);
     }
 
-    protected synchronized void onCallMember(Message msg){
+    protected synchronized void onCallMember(Message msg) {
         try {
-            if(msg.obj==null){
+            if (msg.obj == null) {
                 Message message = Message.obtain();
                 message.what = MSG_CALLMEMBER_SERVER_ERROR;
                 try {
@@ -1667,36 +1676,36 @@ public class MainService extends Service {
                 }
                 return;
             }
-            Object[] objects=(Object[])msg.obj;
-            final String callUuid=(String)objects[0];
-            JSONObject result=(JSONObject)objects[1];
+            Object[] objects = (Object[]) msg.obj;
+            final String callUuid = (String) objects[0];
+            JSONObject result = (JSONObject) objects[1];
             JSONArray userList = (JSONArray) result.get("userList");
             JSONArray unitDeviceList = (JSONArray) result.get("unitDeviceList");
-            if((userList!=null&&userList.length()>0)||(unitDeviceList!=null&&unitDeviceList.length()>0)){
-                Log.v("MainService", "收到新的呼叫，清除呼叫数据，UUID="+callUuid);
+            if ((userList != null && userList.length() > 0) || (unitDeviceList != null && unitDeviceList.length() > 0)) {
+                Log.v("MainService", "收到新的呼叫，清除呼叫数据，UUID=" + callUuid);
                 allUserList.clear();
                 triedUserList.clear();
                 onlineUserList.clear();
                 offlineUserList.clear();
                 rejectUserList.clear();
-                callConnectState=CALL_VIDEO_CONNECTING;
-                if(unitDeviceList!=null){
-                    for(int i=0;i<unitDeviceList.length();i++){
+                callConnectState = CALL_VIDEO_CONNECTING;
+                if (unitDeviceList != null) {
+                    for (int i = 0; i < unitDeviceList.length(); i++) {
                         allUserList.add(unitDeviceList.get(i));
                     }
                 }
-                if(userList!=null){
-                    for(int i=0;i<userList.length();i++){
+                if (userList != null) {
+                    for (int i = 0; i < userList.length(); i++) {
                         allUserList.add(userList.get(i));
                     }
                 }
 
-                if(DeviceConfig.CALL_MEMBER_MODE==DeviceConfig.CALL_MEMBER_MODE_PARALL){
+                if (DeviceConfig.CALL_MEMBER_MODE == DeviceConfig.CALL_MEMBER_MODE_PARALL) {
                     sendCallMessageParall();
-                }else{
+                } else {
                     sendCallMessageSerial();
                 }
-            }else{
+            } else {
                 Message message = Message.obtain();
                 message.what = MSG_CALLMEMBER_ERROR;
                 try {
@@ -1705,135 +1714,136 @@ public class MainService extends Service {
                     e.printStackTrace();
                 }
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    protected void sendCallMessageParall(){
-        if(callConnectState==CALL_VIDEO_CONNECTING){
-            try{
+    protected void sendCallMessageParall() {
+        if (callConnectState == CALL_VIDEO_CONNECTING) {
+            try {
                 JSONObject data = new JSONObject();
-                data.put("command","call");
-                data.put("from",this.key);
-                data.put("imageUrl",this.imageUrl);
-                data.put("imageUuid",this.imageUuid);
-                data.put("communityName",this.communityName);
-                data.put("lockName",this.lockName);
-                if(allUserList.size()>0){
-                    JSONObject userObject=(JSONObject)allUserList.remove(0);
-                    String username=(String)userObject.get("username");
-                    if(username.length()==17){
-                        username=username.replaceAll(":","");
+                data.put("command", "call");
+                data.put("from", this.key);
+                data.put("imageUrl", this.imageUrl);
+                data.put("imageUuid", this.imageUuid);
+                data.put("communityName", this.communityName);
+                data.put("lockName", this.lockName);
+                if (allUserList.size() > 0) {
+                    JSONObject userObject = (JSONObject) allUserList.remove(0);
+                    String username = (String) userObject.get("username");
+                    if (username.length() == 17) {
+                        username = username.replaceAll(":", "");
                     }
-                    String userUrl= RtcRules.UserToRemoteUri_new(username,RtcConst.UEType_Any);
-                    int sendResult=device.sendIm(userUrl,"cmd/json",data.toString());
-                    Log.v("MainService", "sendIm(): "+sendResult);
+                    String userUrl = RtcRules.UserToRemoteUri_new(username, RtcConst.UEType_Any);
+                    int sendResult = device.sendIm(userUrl, "cmd/json", data.toString());
+                    Log.v("MainService", "sendIm(): " + sendResult);
                     triedUserList.add(userObject);
-                }else{
+                } else {
                     afterTryAllMembers();
                 }
-            }catch(JSONException e){
+            } catch (JSONException e) {
             }
         }
     }
 
-    protected void sendCallAppendImage(){
-        try{
+    protected void sendCallAppendImage() {
+        try {
             JSONObject data = new JSONObject();
-            data.put("command","appendImage");
-            data.put("from",this.key);
-            data.put("imageUrl",this.imageUrl);
-            data.put("imageUuid",this.imageUuid);
+            data.put("command", "appendImage");
+            data.put("from", this.key);
+            data.put("imageUrl", this.imageUrl);
+            data.put("imageUuid", this.imageUuid);
             Log.v("MainService", "开始发送访客图片");
-            if(triedUserList.size()>0){
-                Iterator iterator=triedUserList.iterator();
-                while(iterator.hasNext()){
-                    JSONObject userObject=(JSONObject)iterator.next();
-                    String username=(String)userObject.get("username");
-                    if(username.length()==17){
-                        username=username.replaceAll(":","");
+            if (triedUserList.size() > 0) {
+                Iterator iterator = triedUserList.iterator();
+                while (iterator.hasNext()) {
+                    JSONObject userObject = (JSONObject) iterator.next();
+                    String username = (String) userObject.get("username");
+                    if (username.length() == 17) {
+                        username = username.replaceAll(":", "");
                     }
-                    String userUrl= RtcRules.UserToRemoteUri_new(username,RtcConst.UEType_Any);
-                    int sendResult=device.sendIm(userUrl,"cmd/json",data.toString());
-                    Log.v("MainService", "发送访客图片-->"+username);
-                    Log.v("MainService", "sendIm(): "+sendResult);
+                    String userUrl = RtcRules.UserToRemoteUri_new(username, RtcConst.UEType_Any);
+                    int sendResult = device.sendIm(userUrl, "cmd/json", data.toString());
+                    Log.v("MainService", "发送访客图片-->" + username);
+                    Log.v("MainService", "sendIm(): " + sendResult);
                 }
             }
-        }catch(JSONException e){
+        } catch (JSONException e) {
         }
     }
 
     //全部人员尝试并行呼叫后，检查在线的用户，如果有在线用户则等待，否则立即启动直拨
-    protected void afterTryAllMembers(){
-        boolean needWait=false;
-        if(DeviceConfig.IS_PUSH_AVAILABLE){
-            needWait=triedUserList.size()>0;
+    protected void afterTryAllMembers() {
+        boolean needWait = false;
+        if (DeviceConfig.IS_PUSH_AVAILABLE) {
+            needWait = triedUserList.size() > 0;
             pushCallMessage();
-        }else{
-            needWait=onlineUserList.size()>0;
+        } else {
+            needWait = onlineUserList.size() > 0;
         }
-        if(needWait){ //检查在线人数,大于0则等待一段时间
+        if (needWait) { //检查在线人数,大于0则等待一段时间
             startTimeoutChecking();
-        }else{
-            if(DeviceConfig.IS_CALL_DIRECT_AVAILABLE){ //如果支持直拨，立刻进入直拨电话模式
+        } else {
+            if (DeviceConfig.IS_CALL_DIRECT_AVAILABLE) { //如果支持直拨，立刻进入直拨电话模式
                 sendDialMessenger(MSG_CALLMEMBER_TIMEOUT_AND_TRY_DIRECT);
                 cancelOtherMembers(null);
                 startCallMemberDirectly();
-            }else{ //告诉用户无人在线
+            } else { //告诉用户无人在线
                 sendDialMessenger(MSG_CALLMEMBER_NO_ONLINE);
             }
         }
     }
 
-    protected void pushCallMessage(){
-        String pushList=null;
-        for(int j=0;j<offlineUserList.size();j++){
-            JSONObject userObject=(JSONObject)offlineUserList.get(j);
-            String username=null;
+    protected void pushCallMessage() {
+        String pushList = null;
+        for (int j = 0; j < offlineUserList.size(); j++) {
+            JSONObject userObject = (JSONObject) offlineUserList.get(j);
+            String username = null;
             try {
                 username = (String) userObject.get("username");
-            }catch(JSONException e){}
-            if(username.length()!=17){
-                if(pushList==null){
-                    pushList=username;
-                }else{
-                    pushList=pushList+","+username;
+            } catch (JSONException e) {
+            }
+            if (username.length() != 17) {
+                if (pushList == null) {
+                    pushList = username;
+                } else {
+                    pushList = pushList + "," + username;
                 }
             }
         }
-        if(pushList!=null){
+        if (pushList != null) {
             startPushCallMessage(pushList);
         }
     }
 
-    protected void startPushCallMessage(final String pushList){
-        Thread thread=new Thread(){
+    protected void startPushCallMessage(final String pushList) {
+        Thread thread = new Thread() {
             public void run() {
                 try {
                     onPushCallMessage(pushList);
-                }catch(IOException e){
-                }catch(JSONException e){
+                } catch (IOException e) {
+                } catch (JSONException e) {
                 }
             }
         };
         thread.start();
     }
 
-    protected void onPushCallMessage(String pushList) throws JSONException,IOException {
-        JSONObject data=new JSONObject();
-        data.put("pushList",pushList);
-        data.put("from",key);
-        data.put("unitName",communityName+unitNo);
-        String dataStr=data.toString();
-        URL url = new URL(DeviceConfig.SERVER_URL+"/app/device/pushCallMessage");
+    protected void onPushCallMessage(String pushList) throws JSONException, IOException {
+        JSONObject data = new JSONObject();
+        data.put("pushList", pushList);
+        data.put("from", key);
+        data.put("unitName", communityName + unitNo);
+        String dataStr = data.toString();
+        URL url = new URL(DeviceConfig.SERVER_URL + "/app/device/pushCallMessage");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setDoOutput(true);
         connection.setDoInput(true);
         connection.setUseCaches(false);
         connection.setInstanceFollowRedirects(true);
         connection.setRequestMethod("POST");
-        if(httpServerToken!=null) {
+        if (httpServerToken != null) {
             connection.setRequestProperty("Authorization", "Bearer " + httpServerToken);
         }
         connection.setRequestProperty("Accept", "application/json");
@@ -1846,15 +1856,15 @@ public class MainService extends Service {
         out.close();
         InputStream is = connection.getInputStream();
         String result = HttpUtils.readMyInputStream(is);
-        JSONObject resultObj=Ajax.getJSONObject(result);
-        int code=resultObj.getInt("code");
-        if(code==0){
-        }else{
+        JSONObject resultObj = Ajax.getJSONObject(result);
+        int code = resultObj.getInt("code");
+        if (code == 0) {
+        } else {
         }
     }
 
-    protected void startCallMemberDirectly(){
-        callConnectState=CALL_DIRECT_CONNECTING;
+    protected void startCallMemberDirectly() {
+        callConnectState = CALL_DIRECT_CONNECTING;
         onlineUserList.clear();
         offlineUserList.clear();
         removeRejectedUser();
@@ -1862,16 +1872,17 @@ public class MainService extends Service {
         callMemberDirectly();
     }
 
-    protected void removeRejectedUser(){
-        for(int i=0;i<rejectUserList.size();i++){
-            String from=(String)rejectUserList.get(i);
-            for(int j=0;j<triedUserList.size();j++){
-                JSONObject userObject=(JSONObject)triedUserList.get(j);
-                String username=null;
+    protected void removeRejectedUser() {
+        for (int i = 0; i < rejectUserList.size(); i++) {
+            String from = (String) rejectUserList.get(i);
+            for (int j = 0; j < triedUserList.size(); j++) {
+                JSONObject userObject = (JSONObject) triedUserList.get(j);
+                String username = null;
                 try {
                     username = (String) userObject.get("username");
-                }catch(JSONException e){}
-                if(from.equals(username)){
+                } catch (JSONException e) {
+                }
+                if (from.equals(username)) {
                     triedUserList.remove(userObject);
                     break;
                 }
@@ -1879,50 +1890,52 @@ public class MainService extends Service {
         }
     }
 
-    protected void removeDeviceUser(){
-        ArrayList<JSONObject> removeList=new ArrayList<JSONObject>();
-        for(int j=0;j<triedUserList.size();j++){
-            JSONObject userObject=(JSONObject)triedUserList.get(j);
-            String username=null;
+    protected void removeDeviceUser() {
+        ArrayList<JSONObject> removeList = new ArrayList<JSONObject>();
+        for (int j = 0; j < triedUserList.size(); j++) {
+            JSONObject userObject = (JSONObject) triedUserList.get(j);
+            String username = null;
             try {
                 username = (String) userObject.get("username");
-            }catch(JSONException e){}
-            if(username.length()==17){
+            } catch (JSONException e) {
+            }
+            if (username.length() == 17) {
                 removeList.add(userObject);
             }
         }
-        for(int i=0;i<removeList.size();i++){
+        for (int i = 0; i < removeList.size(); i++) {
             triedUserList.remove(removeList.get(i));
         }
     }
 
-    protected void callMemberDirectly(){
-        if(callConnectState==CALL_DIRECT_CONNECTING){
-            if(triedUserList.size()>0){
-                JSONObject userObject=(JSONObject)triedUserList.remove(0);
-                String mobile=null;
-                try{
-                    mobile=(String)userObject.get("username");
-                }catch(JSONException e){
+    protected void callMemberDirectly() {
+        if (callConnectState == CALL_DIRECT_CONNECTING) {
+            if (triedUserList.size() > 0) {
+                JSONObject userObject = (JSONObject) triedUserList.remove(0);
+                String mobile = null;
+                try {
+                    mobile = (String) userObject.get("username");
+                } catch (JSONException e) {
                 }
                 startCallDirect(mobile);
-            }else{
+            } else {
                 callMemberDirectlyFailed();
             }
         }
     }
 
-    protected void callMemberDirectlyFailed(){
+    protected void callMemberDirectlyFailed() {
         sendDialMessenger(MSG_CALLMEMBER_DIRECT_TIMEOUT);
         Log.v("MainService", "取消直接呼叫");
         resetCallMode();
     }
+
     /**
      * 重置呼叫状态，将所有设置恢复至初始状态
      */
-    private void resetCallMode(){
+    private void resetCallMode() {
         Log.v("MainService", "清除呼叫数据");
-        callConnectState=CALL_WAITING;
+        callConnectState = CALL_WAITING;
         allUserList.clear();
         triedUserList.clear();
         onlineUserList.clear();
@@ -1930,41 +1943,41 @@ public class MainService extends Service {
         rejectUserList.clear();
     }
 
-    private void startTimeoutChecking(){
+    private void startTimeoutChecking() {
         stopTimeoutCheckThread();
-        timeoutCheckThread=new Thread(){
-            public void run(){
+        timeoutCheckThread = new Thread() {
+            public void run() {
                 try {
                     sleep(DeviceConfig.PARALL_WAIT_TIME); //等待指定的一个并行时间
-                    if(!isInterrupted()){ //检查线程没有被停止
-                        if(callConnectState==CALL_VIDEO_CONNECTING){ //如果现在是尝试连接状态
-                            if(DeviceConfig.IS_CALL_DIRECT_AVAILABLE){ //如果支持直拨，立刻进入直拨电话模式
+                    if (!isInterrupted()) { //检查线程没有被停止
+                        if (callConnectState == CALL_VIDEO_CONNECTING) { //如果现在是尝试连接状态
+                            if (DeviceConfig.IS_CALL_DIRECT_AVAILABLE) { //如果支持直拨，立刻进入直拨电话模式
                                 sendDialMessenger(MSG_CALLMEMBER_TIMEOUT_AND_TRY_DIRECT); //通知界面目前已经超时，并尝试直拨电话
                                 startCallMemberDirectly();
-                            }else{
+                            } else {
                                 Log.v("MainService", "超时检查，取消当前呼叫");
                                 resetCallMode();
                                 sendDialMessenger(MSG_CALLMEMBER_TIMEOUT); //通知界面目前已经超时，并进入初始状态
                             }
                         }
                     }
-                }catch(InterruptedException e){
+                } catch (InterruptedException e) {
                 }
-                timeoutCheckThread=null;
+                timeoutCheckThread = null;
             }
         };
         timeoutCheckThread.start();
     }
 
-    private void stopTimeoutCheckThread(){
-        if(timeoutCheckThread!=null){
+    private void stopTimeoutCheckThread() {
+        if (timeoutCheckThread != null) {
             Log.v("MainService", "停止定时任务");
             timeoutCheckThread.interrupt();
-            timeoutCheckThread=null;
+            timeoutCheckThread = null;
         }
     }
 
-    protected void sendCallMessageSerial(){
+    protected void sendCallMessageSerial() {
 //        if(callConnectState==CALL_VIDEO_CONNECTING){
 //            try{
 //                JSONObject data = new JSONObject();
@@ -1985,49 +1998,52 @@ public class MainService extends Service {
 //        }
     }
 
-    protected void onCreateLog(Message msg){
+    protected void onCreateLog(Message msg) {
     }
 
-    /** The m a listener. */
+    /**
+     * The m a listener.
+     */
     DeviceListener deviceListener = new DeviceListener() {
         @Override
         public void onDeviceStateChanged(int result) {
-            Log.v("MainService","onDeviceStateChanged,result="+result);
-            if(result == RtcConst.CallCode_Success) { //注销也存在此处
+            Log.v("MainService", "onDeviceStateChanged,result=" + result);
+            if (result == RtcConst.CallCode_Success) { //注销也存在此处
                 onConnectSuccess();
-            }else if(result == RtcConst.NoNetwork||result == RtcConst.CallCode_Network) {
+            } else if (result == RtcConst.NoNetwork || result == RtcConst.CallCode_Network) {
                 onNoNetWork();
-            }else if(result == RtcConst.CallCode_Timeout){
+            } else if (result == RtcConst.CallCode_Timeout) {
                 onConnectTimeout();
-            }else if(result == RtcConst.ChangeNetwork) {
+            } else if (result == RtcConst.ChangeNetwork) {
                 changeNetWork();
-            }else if(result == RtcConst.PoorNetwork) {
+            } else if (result == RtcConst.PoorNetwork) {
                 onPoorNetWork();
-            }else if(result == RtcConst.ReLoginNetwork) {
+            } else if (result == RtcConst.ReLoginNetwork) {
                 // 网络原因导致多次登陆不成功，由用户选择是否继续，如想继续尝试，可以重建device
-                Log.v("MainService","onDeviceStateChanged,ReLoginNetwork");
+                Log.v("MainService", "onDeviceStateChanged,ReLoginNetwork");
                 onConnectError();
-            }else if(result == RtcConst.DeviceEvt_KickedOff) {
+            } else if (result == RtcConst.DeviceEvt_KickedOff) {
                 // 被另外一个终端踢
                 // 下线，由用户选择是否继续，如果再次登录，需要重新获取token，重建device
-                Log.v("MainService","onDeviceStateChanged,DeviceEvt_KickedOff");
+                Log.v("MainService", "onDeviceStateChanged,DeviceEvt_KickedOff");
                 onConnectError();
-            }else if(result == RtcConst.DeviceEvt_MultiLogin) {
-                Log.v("MainService","onDeviceStateChanged,DeviceEvt_MultiLogin");
-            }else {
+            } else if (result == RtcConst.DeviceEvt_MultiLogin) {
+                Log.v("MainService", "onDeviceStateChanged,DeviceEvt_MultiLogin");
+            } else {
                 //  CommFunc.DisplayToast(MyApplication.this, "注册失败:"+result);
             }
         }
+
         private void onPoorNetWork() {
-            Log.v("MainService","onPoorNetWork");
+            Log.v("MainService", "onPoorNetWork");
         }
 
-        private void onConnectSuccess(){
+        private void onConnectSuccess() {
             rtcConnectSuccess();
         }
 
-        private void onConnectError(){
-            if(dialMessenger!=null){
+        private void onConnectError() {
+            if (dialMessenger != null) {
                 Message message = Message.obtain();
                 message.what = MSG_CONNECT_ERROR;
                 try {
@@ -2041,7 +2057,7 @@ public class MainService extends Service {
         private void onNoNetWork() {
             Log.v("MainService", "onNoNetWork");
             //断网销毁
-            if (callConnection !=null) {
+            if (callConnection != null) {
                 callConnection.disconnect();
                 callConnection = null;
                 callingDisconnect();
@@ -2049,49 +2065,51 @@ public class MainService extends Service {
             onConnectError();
         }
 
-        private void onConnectTimeout(){
+        private void onConnectTimeout() {
             onConnectError();
             rtcLogout();
             rtcConnectTimeout();
         }
 
-        private void rtcLogout(){
-            if(rtcClient!=null){
+        private void rtcLogout() {
+            if (rtcClient != null) {
                 rtcClient.release();
-                rtcClient=null;
+                rtcClient = null;
             }
-            if(device!=null){
+            if (device != null) {
                 device.release();
-                device=null;
+                device = null;
             }
         }
 
         private void changeNetWork() {
-            Log.v("MainService","changeNetWork");
+            Log.v("MainService", "changeNetWork");
             //自动重连接
         }
+
         @Override
         public void onNewCall(Connection call) {
-            JSONObject callInfo=null;
-            String acceptMember=null;
-            try{
-                callInfo=new JSONObject(call.info());
-                acceptMember=callInfo.getString("uri");
-            }catch(JSONException e){}
-            Log.v("MainService","onNewCall,call="+call.info());
-            if (callConnection !=null) {
+            JSONObject callInfo = null;
+            String acceptMember = null;
+            try {
+                callInfo = new JSONObject(call.info());
+                acceptMember = callInfo.getString("uri");
+            } catch (JSONException e) {
+            }
+            Log.v("MainService", "onNewCall,call=" + call.info());
+            if (callConnection != null) {
                 call.reject();
                 call = null;
-                Log.v("MainService","onNewCall,reject call");
+                Log.v("MainService", "onNewCall,reject call");
                 return;
             }
             incomingFlag = true;
             callConnection = call;
             call.setIncomingListener(connectionListener);
             call.accept(callType);
-            Log.v("MainService","接通"+acceptMember);
+            Log.v("MainService", "接通" + acceptMember);
             cancelOtherMembers(acceptMember);
-            Log.v("MainService", acceptMember+"用户接通，取消其他呼叫");
+            Log.v("MainService", acceptMember + "用户接通，取消其他呼叫");
             resetCallMode();
             stopTimeoutCheckThread();
             Message message = Message.obtain();
@@ -2102,37 +2120,40 @@ public class MainService extends Service {
                 e.printStackTrace();
             }
         }
+
         @Override
         public void onQueryStatus(int status, String paramers) {
             // TODO Auto-generated method stub
         }
+
         @Override
         public void onSendIm(int status) {
             // TODO Auto-generated method stub
-            if(callConnectState==CALL_VIDEO_CONNECTING){
+            if (callConnectState == CALL_VIDEO_CONNECTING) {
                 //检查当前的呼叫模式是并行还是串行
-                if(DeviceConfig.CALL_MEMBER_MODE==DeviceConfig.CALL_MEMBER_MODE_PARALL){
+                if (DeviceConfig.CALL_MEMBER_MODE == DeviceConfig.CALL_MEMBER_MODE_PARALL) {
                     //检查并行呼叫状态
                     checkSendCallMessageParall(status);
-                }else{
+                } else {
                     checkSendCallMessageSerial(status);
                 }
             }
         }
+
         @Override
         public void onReceiveIm(String from, String mime, String content) {
             // TODO Auto-generated method stub
-            onMessage(from,mime,content);
+            onMessage(from, mime, content);
         }
     };
 
-    private void rtcConnectTimeout(){
-        isReconnectingRtc=true;
+    private void rtcConnectTimeout() {
+        isReconnectingRtc = true;
         initRtcClient();
     }
 
-    protected void rtcConnectSuccess(){
-        if(dialMessenger!=null){
+    protected void rtcConnectSuccess() {
+        if (dialMessenger != null) {
             Message message = Message.obtain();
             message.what = Constant.MSG_CONNECT_SUCCESS;
             try {
@@ -2143,46 +2164,46 @@ public class MainService extends Service {
         }
     }
 
-    private void checkSendCallMessageParall(int status){
-        Object object=triedUserList.get(triedUserList.size()-1);
-        if(status==RtcConst.CallCode_Success){
+    private void checkSendCallMessageParall(int status) {
+        Object object = triedUserList.get(triedUserList.size() - 1);
+        if (status == RtcConst.CallCode_Success) {
             onlineUserList.add(object);
-        }else{
+        } else {
             offlineUserList.add(object);
         }
         sendCallMessageParall();
     }
 
-    private void checkSendCallMessageSerial(int status){
+    private void checkSendCallMessageSerial(int status) {
 
     }
 
-    private void cancelOtherMembers(String acceptMember){
-        try{
-            Log.v("MainService","进入取消--"+acceptMember);
+    private void cancelOtherMembers(String acceptMember) {
+        try {
+            Log.v("MainService", "进入取消--" + acceptMember);
             JSONObject command = new JSONObject();
-            command.put("command","cancelCall");
-            command.put("from",this.key);
-            if(triedUserList!=null&&triedUserList.size()>0){
-                for(int i=0;i<triedUserList.size();i++){
-                    JSONObject userObject=(JSONObject) triedUserList.get(i);
-                    String username=(String)userObject.get("username");
-                    Log.v("MainService","检查在线设备并且进行取消"+ username);
-                    if(username.length()==17){
-                        username=username.replaceAll(":","");
+            command.put("command", "cancelCall");
+            command.put("from", this.key);
+            if (triedUserList != null && triedUserList.size() > 0) {
+                for (int i = 0; i < triedUserList.size(); i++) {
+                    JSONObject userObject = (JSONObject) triedUserList.get(i);
+                    String username = (String) userObject.get("username");
+                    Log.v("MainService", "检查在线设备并且进行取消" + username);
+                    if (username.length() == 17) {
+                        username = username.replaceAll(":", "");
                     }
-                    if(!username.equals(acceptMember)){
-                        Log.v("MainService","--->取消"+ username);
-                        String userUrl= RtcRules.UserToRemoteUri_new(username,RtcConst.UEType_Any);
-                        int sendResult=device.sendIm(userUrl,"cmd/json",command.toString());
+                    if (!username.equals(acceptMember)) {
+                        Log.v("MainService", "--->取消" + username);
+                        String userUrl = RtcRules.UserToRemoteUri_new(username, RtcConst.UEType_Any);
+                        int sendResult = device.sendIm(userUrl, "cmd/json", command.toString());
                     }
                 }
-            }else{
-                Log.v("MainService","无其他在线设备"+acceptMember);
+            } else {
+                Log.v("MainService", "无其他在线设备" + acceptMember);
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            Log.v("MainService","取消失败--"+acceptMember);
+            Log.v("MainService", "取消失败--" + acceptMember);
         }
     }
 
@@ -2191,15 +2212,18 @@ public class MainService extends Service {
         public void onConnecting() {
 
         }
+
         @Override
         public void onConnected() {
         }
+
         @Override
         public void onDisconnected(int code) {
-            Log.v("MainService","onDisconnected timerDur"+ callConnection.getCallDuration());
+            Log.v("MainService", "onDisconnected timerDur" + callConnection.getCallDuration());
             callConnection = null;
             callingDisconnect();
         }
+
         @Override
         public void onVideo() {
             Message message = Message.obtain();
@@ -2210,6 +2234,7 @@ public class MainService extends Service {
                 e.printStackTrace();
             }
         }
+
         @Override
         public void onNetStatus(int msg, String info) {
             // TODO Auto-generated method stub
@@ -2217,7 +2242,8 @@ public class MainService extends Service {
             System.out.println(info);
         }
     };
-    private void callingDisconnect(){
+
+    private void callingDisconnect() {
         Message message = Message.obtain();
         message.what = MSG_RTC_DISCONNECT;
         try {
@@ -2226,38 +2252,39 @@ public class MainService extends Service {
             e.printStackTrace();
         }
     }
-    protected void onMessage(String from, String mime, String content){
-        if(content.equals("refresh card info")){
-            sendDialMessenger(MSG_REFRESH_DATA,"card");
+
+    protected void onMessage(String from, String mime, String content) {
+        if (content.equals("refresh card info")) {
+            sendDialMessenger(MSG_REFRESH_DATA, "card");
             //retrieveChangedCardList();
             retrieveCardList();
-        }else if(content.equals("refresh finger info")){
-            sendDialMessenger(MSG_REFRESH_DATA,"finger");
+        } else if (content.equals("refresh finger info")) {
+            sendDialMessenger(MSG_REFRESH_DATA, "finger");
             //retrieveChangedFingerList();
-        }else if(content.equals("refresh all info")){
+        } else if (content.equals("refresh all info")) {
 //            resetFlag=1;
 //            initDeviceData();
 //            retrieveChangedFingerList();
 //            retrieveChangedCardList();
-        }else if(content.startsWith("reject call")){
-            if(!rejectUserList.contains(from)){
+        } else if (content.startsWith("reject call")) {
+            if (!rejectUserList.contains(from)) {
                 rejectUserList.add(from);
             }
-        }else if(content.startsWith("open the door")){
-            String imageUrl=null;
-            int thisIndex=content.indexOf("-");
-            if(thisIndex>0){
-                imageUrl=content.substring(thisIndex+1);
-            }else{
-                imageUrl=null;
+        } else if (content.startsWith("open the door")) {
+            String imageUrl = null;
+            int thisIndex = content.indexOf("-");
+            if (thisIndex > 0) {
+                imageUrl = content.substring(thisIndex + 1);
+            } else {
+                imageUrl = null;
             }
-            startCreateAccessLog(from,imageUrl);
+            startCreateAccessLog(from, imageUrl);
             cancelOtherMembers(from);
             Log.v("MainService", "用户直接开门，取消其他呼叫");
             resetCallMode();
             stopTimeoutCheckThread();
             openLock();
-        }else if(content.startsWith("refuse call")){
+        } else if (content.startsWith("refuse call")) {
             if (!rejectUserList.contains(from)) {
                 rejectUserList.add(from);
             }
@@ -2290,46 +2317,49 @@ public class MainService extends Service {
         sendDialMessenger(DialActivity.MSG_LOCK_OPENED);
     }*/
 
-    private void openAexLock(){
-        int result=aexUtil.openLock();
-        if(result>0){
+    private void openAexLock() {
+        int result = aexUtil.openLock();
+        if (result > 0) {
             sendDialMessenger(MSG_LOCK_OPENED);
-            SoundPoolUtil.getSoundPoolUtil().loadVoice(getBaseContext(),011111);
+            SoundPoolUtil.getSoundPoolUtil().loadVoice(getBaseContext(), 011111);
         }
     }
 
-    protected void openLock(){
-        if(DeviceConfig.IS_RFID_AVAILABLE){
-           // openLedLock();
-        }else if(DeviceConfig.IS_ASSEMBLE_AVAILABLE){
+    protected void openLock() {
+        if (DeviceConfig.IS_RFID_AVAILABLE) {
+            // openLedLock();
+        } else if (DeviceConfig.IS_ASSEMBLE_AVAILABLE) {
             //openAssembleLock();
-        }else if(DeviceConfig.IS_AEX_AVAILABLE){
+        } else if (DeviceConfig.IS_AEX_AVAILABLE) {
             openAexLock();
         }
     }
-    protected void startCreateAccessLog(String from, final String imageUrl){
-        this.messageFrom=from;
-        new Thread(){
-            public void run(){
+
+    protected void startCreateAccessLog(String from, final String imageUrl) {
+        this.messageFrom = from;
+        new Thread() {
+            public void run() {
                 createAccessLog(imageUrl);
             }
         }.start();
     }
-    protected void createAccessLog(String imageUrl){
-        String url=DeviceConfig.SERVER_URL+"/app/device/createAccessLog?from=";
-        url=url+this.messageFrom;
-        url=url+"&communityId="+this.communityId;
-        url=url+"&lockId="+this.lockId;
-        if(imageUrl!=null){
+
+    protected void createAccessLog(String imageUrl) {
+        String url = DeviceConfig.SERVER_URL + "/app/device/createAccessLog?from=";
+        url = url + this.messageFrom;
+        url = url + "&communityId=" + this.communityId;
+        url = url + "&lockId=" + this.lockId;
+        if (imageUrl != null) {
             try {
                 url = url + "&imageUrl=" + URLEncoder.encode(imageUrl, "UTF-8");
-            }catch(Exception e){}
+            } catch (Exception e) {
+            }
         }
-        try{
+        try {
             URL thisUrl = new URL(url);
-            HttpURLConnection conn = (HttpURLConnection)thisUrl.openConnection();
+            HttpURLConnection conn = (HttpURLConnection) thisUrl.openConnection();
             conn.setRequestMethod("GET");
-            if(httpServerToken!=null) {
+            if (httpServerToken != null) {
                 conn.setRequestProperty("Authorization", "Bearer " + httpServerToken);
             }
             conn.setConnectTimeout(5000);
@@ -2342,10 +2372,11 @@ public class MainService extends Service {
                 message.obj = Ajax.getJSONObject(result);
                 handler.sendMessage(message);
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         return super.onStartCommand(intent, flags, startId);
@@ -2359,17 +2390,17 @@ public class MainService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.v("MainService","onDestroy()");
-        if (callConnection !=null) {
+        Log.v("MainService", "onDestroy()");
+        if (callConnection != null) {
             callConnection.disconnect();
             callConnection = null;
             callingDisconnect();
         }
-        if(device !=null) {
+        if (device != null) {
             device.release();
             device = null;
         }
-        if(rtcClient !=null) {
+        if (rtcClient != null) {
             rtcClient.release();
             rtcClient = null;
         }
@@ -2385,17 +2416,17 @@ public class MainService extends Service {
         if(assembleUtil!=null){
             assembleUtil.close();
         }*/
-        if(aexUtil!=null){
+        if (aexUtil != null) {
             aexUtil.close();
         }
     }
 
-    protected void initConnectReport(){
-        connectReportThread=new Thread(){
-            public void run(){
+    protected void initConnectReport() {
+        connectReportThread = new Thread() {
+            public void run() {
                 try {
                     connectReport();
-                    while(!isInterrupted()) {
+                    while (!isInterrupted()) {
                         sleep(DeviceConfig.CONNECT_REPORT_WAIT_TIME); //等待广告刷新的时间
                         connectReport();
                     }
@@ -2406,14 +2437,14 @@ public class MainService extends Service {
         connectReportThread.start();
     }
 
-    protected void connectReport(){
-        String url=DeviceConfig.SERVER_URL+"/app/device/connectReport?communityId="+this.communityId;
-        url=url+"&lockId="+this.lockId;
-        try{
+    protected void connectReport() {
+        String url = DeviceConfig.SERVER_URL + "/app/device/connectReport?communityId=" + this.communityId;
+        url = url + "&lockId=" + this.lockId;
+        try {
             URL thisUrl = new URL(url);
-            HttpURLConnection conn = (HttpURLConnection)thisUrl.openConnection();
+            HttpURLConnection conn = (HttpURLConnection) thisUrl.openConnection();
             conn.setRequestMethod("GET");
-            if(httpServerToken!=null) {
+            if (httpServerToken != null) {
                 conn.setRequestProperty("Authorization", "Bearer " + httpServerToken);
             }
             conn.setConnectTimeout(5000);
@@ -2422,27 +2453,27 @@ public class MainService extends Service {
                 InputStream is = conn.getInputStream();
                 String result = HttpUtils.readMyInputStream(is);
                 JSONObject resultObject = Ajax.getJSONObject(result);
-                int resultCode=resultObject.getInt("code");
-                if(resultCode==0){
-                }else{
+                int resultCode = resultObject.getInt("code");
+                if (resultCode == 0) {
+                } else {
                 }
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    protected void initDeviceData(){
-        if(resetFlag>0){
+    protected void initDeviceData() {
+        if (resetFlag > 0) {
             sqlUtil.clearDeviceData();
-            String url=DeviceConfig.SERVER_URL+"/app/device/retrieveDeviceData?communityId="+this.communityId;
-            url=url+"&blockId="+this.blockId;
-            url=url+"&lockId="+this.lockId;
-            try{
+            String url = DeviceConfig.SERVER_URL + "/app/device/retrieveDeviceData?communityId=" + this.communityId;
+            url = url + "&blockId=" + this.blockId;
+            url = url + "&lockId=" + this.lockId;
+            try {
                 URL thisUrl = new URL(url);
-                HttpURLConnection conn = (HttpURLConnection)thisUrl.openConnection();
+                HttpURLConnection conn = (HttpURLConnection) thisUrl.openConnection();
                 conn.setRequestMethod("GET");
-                if(httpServerToken!=null) {
+                if (httpServerToken != null) {
                     conn.setRequestProperty("Authorization", "Bearer " + httpServerToken);
                 }
                 conn.setConnectTimeout(5000);
@@ -2451,15 +2482,15 @@ public class MainService extends Service {
                     InputStream is = conn.getInputStream();
                     String result = HttpUtils.readMyInputStream(is);
                     JSONObject resultObject = Ajax.getJSONObject(result);
-                    int resultCode=resultObject.getInt("code");
-                    if(resultCode==0) {
+                    int resultCode = resultObject.getInt("code");
+                    if (resultCode == 0) {
                         JSONArray fingerList = resultObject.getJSONArray("fingerList");
                         //sqlUtil.changeFinger(fingerList);
                         if (DeviceConfig.IS_ASSEMBLE_AVAILABLE && !DeviceConfig.IS_FINGER_AVAILABLE) {
                             //assembleUtil.changeFinger(fingerList);
                         }
                         JSONArray cardList = resultObject.getJSONArray("cardList");
-                        Log.d(TAG, "initDeviceData: cardlist="+cardList.toString());
+                        Log.d(TAG, "initDeviceData: cardlist=" + cardList.toString());
                         sqlUtil.changeCard(cardList);
                         if (DeviceConfig.IS_ASSEMBLE_AVAILABLE) {
                             //assembleUtil.changeCard(cardList);
@@ -2467,22 +2498,22 @@ public class MainService extends Service {
                         completeInitDeviceData();
                     }
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        resetFlag=0;
+        resetFlag = 0;
     }
 
-    protected void completeInitDeviceData(){
-        String url=DeviceConfig.SERVER_URL+"/app/device/completeInitDeviceData?communityId="+this.communityId;
-        url=url+"&blockId="+this.blockId;
-        url=url+"&lockId="+this.lockId;
-        try{
+    protected void completeInitDeviceData() {
+        String url = DeviceConfig.SERVER_URL + "/app/device/completeInitDeviceData?communityId=" + this.communityId;
+        url = url + "&blockId=" + this.blockId;
+        url = url + "&lockId=" + this.lockId;
+        try {
             URL thisUrl = new URL(url);
-            HttpURLConnection conn = (HttpURLConnection)thisUrl.openConnection();
+            HttpURLConnection conn = (HttpURLConnection) thisUrl.openConnection();
             conn.setRequestMethod("GET");
-            if(httpServerToken!=null) {
+            if (httpServerToken != null) {
                 conn.setRequestProperty("Authorization", "Bearer " + httpServerToken);
             }
             conn.setConnectTimeout(5000);
@@ -2491,35 +2522,35 @@ public class MainService extends Service {
                 InputStream is = conn.getInputStream();
                 String result = HttpUtils.readMyInputStream(is);
                 JSONObject resultObject = Ajax.getJSONObject(result);
-                int resultCode=resultObject.getInt("code");
-                if(resultCode==0){
+                int resultCode = resultObject.getInt("code");
+                if (resultCode == 0) {
                 }
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    protected void initAdvertisement(){
-        advertisementThread=new Thread(){
-            public void run(){
+    protected void initAdvertisement() {
+        advertisementThread = new Thread() {
+            public void run() {
                 try {
-                    Log.d(TAG, "run: resetFlag="+resetFlag);
+                    Log.d(TAG, "run: resetFlag=" + resetFlag);
                     retrieveCardList();
-                    if(resetFlag>0){
+                    if (resetFlag > 0) {
                         initDeviceData();
-                    }else{
-                       // retrieveChangedFingerList();
-                       // retrieveChangedCardList();
+                    } else {
+                        // retrieveChangedFingerList();
+                        // retrieveChangedCardList();
                         //retrieveCardList();
                     }
                     sleep(DeviceConfig.AD_INIT_WAIT_TIME);
-                    while(!isInterrupted()) {
+                    while (!isInterrupted()) {
                         getLastAdvertisementList();
                         sleep(DeviceConfig.AD_REFRESH_WAIT_TIME); //等待广告刷新的时间
                         //retrieveCardList();
                         //retrieveChangedFingerList();
-                       // retrieveChangedCardList();
+                        // retrieveChangedCardList();
                     }
                 } catch (InterruptedException e) {
                 }
@@ -2529,41 +2560,41 @@ public class MainService extends Service {
     }
 
 
-    protected void retrieveCardList(){
+    protected void retrieveCardList() {
         Log.d(TAG, "retrieveCardList: =============");
-        String url=DeviceConfig.SERVER_URL+"/app/device/retrieveCardList?communityId="+this.communityId;
-        url=url+"&blockId="+this.blockId;
-        url=url+"&lockId="+this.lockId;
-        Log.d(TAG, "retrieveCardList: url="+url);
-        try{
+        String url = DeviceConfig.SERVER_URL + "/app/device/retrieveCardList?communityId=" + this.communityId;
+        url = url + "&blockId=" + this.blockId;
+        url = url + "&lockId=" + this.lockId;
+        Log.d(TAG, "retrieveCardList: url=" + url);
+        try {
             URL thisUrl = new URL(url);
-            HttpURLConnection conn = (HttpURLConnection)thisUrl.openConnection();
+            HttpURLConnection conn = (HttpURLConnection) thisUrl.openConnection();
             conn.setRequestMethod("GET");
             conn.setConnectTimeout(5000);
-            if(httpServerToken!=null) {
+            if (httpServerToken != null) {
                 conn.setRequestProperty("Authorization", "Bearer " + httpServerToken);
             }
-            Log.d(TAG, "retrieveCardList: token="+httpServerToken);
+            Log.d(TAG, "retrieveCardList: token=" + httpServerToken);
             int code = conn.getResponseCode();
-            Log.d(TAG, "retrieveCardList: code="+code);
+            Log.d(TAG, "retrieveCardList: code=" + code);
             if (code == 200) {
                 InputStream is = conn.getInputStream();
                 String result = HttpUtils.readMyInputStream(is);
-                Log.d(TAG, "retrieveCardList: result="+result);
+                Log.d(TAG, "retrieveCardList: result=" + result);
                 JSONObject resultObject = Ajax.getJSONObject(result);
-                int resultCode=resultObject.getInt("code");
-                if(resultCode==0){
+                int resultCode = resultObject.getInt("code");
+                if (resultCode == 0) {
                     sqlUtil.clearCard();
-                    JSONArray data=resultObject.getJSONArray("data");
-                    for(int i=0;i<data.length();i++){
-                        String cardNo=data.getJSONObject(i).getString("cardNo");
+                    JSONArray data = resultObject.getJSONArray("data");
+                    for (int i = 0; i < data.length(); i++) {
+                        String cardNo = data.getJSONObject(i).getString("cardNo");
                         //int unitId=data.getJSONObject(i).getInt("unitId");
-                        Log.d(TAG, "retrieveCardList: cardNo="+cardNo);
-                        sqlUtil.insertCard(cardNo,lockId);
+                        Log.d(TAG, "retrieveCardList: cardNo=" + cardNo);
+                        sqlUtil.insertCard(cardNo, lockId);
                     }
                 }
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -2606,76 +2637,76 @@ public class MainService extends Service {
         }
     }*/
 
-    protected void retrieveChangedCardList(){
+    protected void retrieveChangedCardList() {
         Log.d(TAG, "retrieveChangedCardList: +++++++++++");
-        String url=DeviceConfig.SERVER_URL+"/app/device/retrieveChangedCardList?communityId="+this.communityId;
-        url=url+"&blockId="+this.blockId;
-        url=url+"&lockId="+this.lockId;
-        try{
+        String url = DeviceConfig.SERVER_URL + "/app/device/retrieveChangedCardList?communityId=" + this.communityId;
+        url = url + "&blockId=" + this.blockId;
+        url = url + "&lockId=" + this.lockId;
+        try {
             URL thisUrl = new URL(url);
-            HttpURLConnection conn = (HttpURLConnection)thisUrl.openConnection();
+            HttpURLConnection conn = (HttpURLConnection) thisUrl.openConnection();
             conn.setRequestMethod("GET");
-            if(httpServerToken!=null) {
+            if (httpServerToken != null) {
                 conn.setRequestProperty("Authorization", "Bearer " + httpServerToken);
             }
             conn.setConnectTimeout(5000);
             int code = conn.getResponseCode();
-            Log.d(TAG, "retrieveChangedCardList: code = "+code);
+            Log.d(TAG, "retrieveChangedCardList: code = " + code);
             if (code == 200) {
                 InputStream is = conn.getInputStream();
                 String result = HttpUtils.readMyInputStream(is);
-                Log.d(TAG, "retrieveChangedCardList: result="+result);
+                Log.d(TAG, "retrieveChangedCardList: result=" + result);
                 JSONObject resultObject = Ajax.getJSONObject(result);
-                int resultCode=resultObject.getInt("code");
-                Log.d(TAG, "retrieveChangedCardList: resultcode="+resultCode);
-                if(resultCode==0){
-                    JSONArray data=resultObject.getJSONArray("data");
-                    Log.d(TAG, "retrieveChangedCardList: data="+data.toString());
+                int resultCode = resultObject.getInt("code");
+                Log.d(TAG, "retrieveChangedCardList: resultcode=" + resultCode);
+                if (resultCode == 0) {
+                    JSONArray data = resultObject.getJSONArray("data");
+                    Log.d(TAG, "retrieveChangedCardList: data=" + data.toString());
                     sqlUtil.changeCard(data);
-                    if(DeviceConfig.IS_ASSEMBLE_AVAILABLE) {
-                       // assembleUtil.changeCard(data);
-                    }else{
-                        JSONArray list=new JSONArray();
-                        for(int i=0;i<data.length();i++){
-                            JSONObject item=data.getJSONObject(i);
+                    if (DeviceConfig.IS_ASSEMBLE_AVAILABLE) {
+                        // assembleUtil.changeCard(data);
+                    } else {
+                        JSONArray list = new JSONArray();
+                        for (int i = 0; i < data.length(); i++) {
+                            JSONObject item = data.getJSONObject(i);
                             list.put(item.getInt("lockIndex"));
                         }
-                        startChangeCardComplete(list,new JSONArray());
+                        startChangeCardComplete(list, new JSONArray());
                     }
                 }
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    protected void startCardOpenLock(final int index){
-        Thread thread=new Thread(){
+    protected void startCardOpenLock(final int index) {
+        Thread thread = new Thread() {
             public void run() {
                 try {
                     onCardOpenLock(index);
-                }catch(IOException e){
-                }catch(JSONException e){
+                } catch (IOException e) {
+                } catch (JSONException e) {
                 }
             }
         };
         thread.start();
     }
 
-    protected void onCardOpenLock(int index) throws JSONException,IOException {
-        JSONObject data=new JSONObject();
-        data.put("lockId",lockId);
-        data.put("communityId",communityId);
-        data.put("lockIndex",index);
-        String dataStr=data.toString();
-        URL url = new URL(DeviceConfig.SERVER_URL+"/app/device/cardOpenLock");
+    protected void onCardOpenLock(int index) throws JSONException, IOException {
+        JSONObject data = new JSONObject();
+        data.put("lockId", lockId);
+        data.put("communityId", communityId);
+        data.put("lockIndex", index);
+        String dataStr = data.toString();
+        URL url = new URL(DeviceConfig.SERVER_URL + "/app/device/cardOpenLock");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setDoOutput(true);
         connection.setDoInput(true);
         connection.setUseCaches(false);
         connection.setInstanceFollowRedirects(true);
         connection.setRequestMethod("POST");
-        if(httpServerToken!=null) {
+        if (httpServerToken != null) {
             connection.setRequestProperty("Authorization", "Bearer " + httpServerToken);
         }
         connection.setRequestProperty("Accept", "application/json");
@@ -2688,10 +2719,10 @@ public class MainService extends Service {
         out.close();
         InputStream is = connection.getInputStream();
         String result = HttpUtils.readMyInputStream(is);
-        JSONObject resultObj=Ajax.getJSONObject(result);
-        int code=resultObj.getInt("code");
-        if(code==0){
-        }else{
+        JSONObject resultObj = Ajax.getJSONObject(result);
+        int code = resultObj.getInt("code");
+        if (code == 0) {
+        } else {
         }
     }
 
@@ -2704,29 +2735,29 @@ public class MainService extends Service {
         }
     }*/
 
-    private int getFingerDetectThreadNum(int fingerNum){
-        int threadNum=1;
-        if(fingerNum>40000){
-            threadNum=30;
-        }else if(fingerNum>10000){
-            threadNum=20;
-        }else if(fingerNum>5000){
-            threadNum=15;
-        }else if(fingerNum>1000){
-            threadNum=5;
+    private int getFingerDetectThreadNum(int fingerNum) {
+        int threadNum = 1;
+        if (fingerNum > 40000) {
+            threadNum = 30;
+        } else if (fingerNum > 10000) {
+            threadNum = 20;
+        } else if (fingerNum > 5000) {
+            threadNum = 15;
+        } else if (fingerNum > 1000) {
+            threadNum = 5;
         }
         return threadNum;
     }
 
-    public synchronized boolean isFingerChecking(){
-        return fingerDetectStatus==1;
+    public synchronized boolean isFingerChecking() {
+        return fingerDetectStatus == 1;
     }
 
-    public synchronized void setFingerCheckStatus(int value){
-        fingerDetectStatus=value;
+    public synchronized void setFingerCheckStatus(int value) {
+        fingerDetectStatus = value;
     }
 
-    private synchronized void increaseDetectSteps(){
+    private synchronized void increaseDetectSteps() {
         fingerDetectSteps++;
     }
 
@@ -2755,8 +2786,8 @@ public class MainService extends Service {
         }
     }
 */
-    protected synchronized void setFingerCheckResult(boolean result){
-        fingerDetectResult=result;
+    protected synchronized void setFingerCheckResult(boolean result) {
+        fingerDetectResult = result;
     }
 
     /*protected void startFingerDetect(int fingerNum,final byte[] data){
@@ -2902,13 +2933,13 @@ public class MainService extends Service {
         thread.start();
     }*/
 
-    protected void startChangeCardComplete(final JSONArray cardListSuccess, final JSONArray cardListFailed){
-        Thread thread=new Thread(){
+    protected void startChangeCardComplete(final JSONArray cardListSuccess, final JSONArray cardListFailed) {
+        Thread thread = new Thread() {
             public void run() {
                 try {
                     onChangeCardComplete(cardListSuccess, cardListFailed);
-                }catch(IOException e){
-                }catch(JSONException e){
+                } catch (IOException e) {
+                } catch (JSONException e) {
                 }
             }
         };
@@ -2949,21 +2980,21 @@ public class MainService extends Service {
         }
     }*/
 
-    protected void onChangeCardComplete(JSONArray cardListSuccess, JSONArray cardListFailed) throws JSONException,IOException {
-        JSONObject data=new JSONObject();
-        data.put("lockId",lockId);
-        data.put("communityId",communityId);
-        data.put("cardListSuccess",cardListSuccess);
-        data.put("cardListFailed",cardListFailed);
-        String dataStr=data.toString();
-        URL url = new URL(DeviceConfig.SERVER_URL+"/app/device/changeCardComplete");
+    protected void onChangeCardComplete(JSONArray cardListSuccess, JSONArray cardListFailed) throws JSONException, IOException {
+        JSONObject data = new JSONObject();
+        data.put("lockId", lockId);
+        data.put("communityId", communityId);
+        data.put("cardListSuccess", cardListSuccess);
+        data.put("cardListFailed", cardListFailed);
+        String dataStr = data.toString();
+        URL url = new URL(DeviceConfig.SERVER_URL + "/app/device/changeCardComplete");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setDoOutput(true);
         connection.setDoInput(true);
         connection.setUseCaches(false);
         connection.setInstanceFollowRedirects(true);
         connection.setRequestMethod("POST");
-        if(httpServerToken!=null) {
+        if (httpServerToken != null) {
             connection.setRequestProperty("Authorization", "Bearer " + httpServerToken);
         }
         connection.setRequestProperty("Accept", "application/json");
@@ -2976,169 +3007,173 @@ public class MainService extends Service {
         out.close();
         InputStream is = connection.getInputStream();
         String result = HttpUtils.readMyInputStream(is);
-        JSONObject resultObj=Ajax.getJSONObject(result);
-        int code=resultObj.getInt("code");
-        if(code==0){
-        }else{
+        JSONObject resultObj = Ajax.getJSONObject(result);
+        int code = resultObj.getInt("code");
+        if (code == 0) {
+        } else {
         }
     }
 
-    protected void getLastAdvertisementList(){
-        if(DeviceConfig.IS_AD_AVAILABLE){
-            if(advertisementStatus==ADVERTISEMENT_WAITING){
-                advertisementStatus=ADVERTISEMENT_REFRESHING;
+    protected void getLastAdvertisementList() {
+        if (DeviceConfig.IS_AD_AVAILABLE) {
+            if (advertisementStatus == ADVERTISEMENT_WAITING) {
+                advertisementStatus = ADVERTISEMENT_REFRESHING;
                 currentAdvertisementFiles.clear();
-                JSONArray rows=checkAdvertiseList();
-                if(rows!=null){
+                JSONArray rows = checkAdvertiseList();
+                if (rows != null) {
                     adjustAdvertiseFiles();
                     restartAdvertise(rows);
                     removeAdvertiseFiles();
                 }
-                advertisementStatus=ADVERTISEMENT_WAITING;
+                advertisementStatus = ADVERTISEMENT_WAITING;
             }
         }
     }
 
-    protected JSONArray checkAdvertiseList(){
+    protected JSONArray checkAdvertiseList() {
         Log.d(TAG, "checkAdvertiseList: 请求广告数据");
-        String url=DeviceConfig.SERVER_URL+"/app/advertisement/checkAdvertiseList?communityId="+this.communityId;
-        url=url+"&lockId="+this.lockId;
-        JSONArray rows=null;
-        Log.d(TAG, "checkAdvertiseList: url="+url);
-        try{
+        String url = DeviceConfig.SERVER_URL + "/app/advertisement/checkAdvertiseList?communityId=" + this.communityId;
+        url = url + "&lockId=" + this.lockId;
+        JSONArray rows = null;
+        Log.d(TAG, "checkAdvertiseList: url=" + url);
+        try {
             URL thisUrl = new URL(url);
-            HttpURLConnection conn = (HttpURLConnection)thisUrl.openConnection();
+            HttpURLConnection conn = (HttpURLConnection) thisUrl.openConnection();
             conn.setRequestMethod("GET");
-            if(httpServerToken!=null) {
+            if (httpServerToken != null) {
                 conn.setRequestProperty("Authorization", "Bearer " + httpServerToken);
             }
             conn.setConnectTimeout(5000);
             int code = conn.getResponseCode();
-            Log.d(TAG, "checkAdvertiseList: code="+code);
+            Log.d(TAG, "checkAdvertiseList: code=" + code);
             if (code == 200) {
                 InputStream is = conn.getInputStream();
                 String result = HttpUtils.readMyInputStream(is);
                 JSONObject obj = Ajax.getJSONObject(result);
-                int resultCode=obj.getInt("code");
-                Log.d(TAG, "checkAdvertiseList: resultcode="+resultCode);
-                if(resultCode==0){
+                int resultCode = obj.getInt("code");
+                Log.d(TAG, "checkAdvertiseList: resultcode=" + resultCode);
+                if (resultCode == 0) {
                     try {
                         rows = obj.getJSONArray("data");
-                        Log.d(TAG, "checkAdvertiseList: rows="+rows);
-                        if(rows!=null){
+                        Log.d(TAG, "checkAdvertiseList: rows=" + rows);
+                        if (rows != null) {
                             Log.d(TAG, "checkAdvertiseList: ++++++++");
                             downloadAdvertisement(rows);
                         }
-                    }catch(Exception e){
-                        rows=null;
+                    } catch (Exception e) {
+                        rows = null;
                     }
                     try {
-                        String communityName=obj.getString("communityName");
-                        String lockName=obj.getString("lockName");
-                        sendDialMessenger(MSG_REFRESH_COMMUNITYNAME,communityName);
-                        sendDialMessenger(MSG_REFRESH_LOCKNAME,lockName);
-                    }catch(Exception e){
+                        String communityName = obj.getString("communityName");
+                        String lockName = obj.getString("lockName");
+                        sendDialMessenger(MSG_REFRESH_COMMUNITYNAME, communityName);
+                        sendDialMessenger(MSG_REFRESH_LOCKNAME, lockName);
+                    } catch (Exception e) {
                     }
                 }
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return rows;
     }
 
-    protected void downloadAdvertisement(JSONArray rows)throws Exception {
-        for(int i=0;i<rows.length();i++){
+    protected void downloadAdvertisement(JSONArray rows) throws Exception {
+        for (int i = 0; i < rows.length(); i++) {
             try {
                 JSONObject row = rows.getJSONObject(i);
                 downloadAdvertisementItem(row);
-            }catch(JSONException e){}
+            } catch (JSONException e) {
+            }
         }
     }
 
-    protected void downloadAdvertisementItem(JSONObject row)throws Exception {
+    protected void downloadAdvertisementItem(JSONObject row) throws Exception {
         try {
-            JSONArray items=row.getJSONArray("items");
-            for(int i=0;i<items.length();i++){
-                JSONObject item=items.getJSONObject(i);
+            JSONArray items = row.getJSONArray("items");
+            for (int i = 0; i < items.length(); i++) {
+                JSONObject item = items.getJSONObject(i);
                 downloadAdvertisementItemFiles(item);
             }
-        }catch(JSONException e){}
+        } catch (JSONException e) {
+        }
     }
 
     protected void downloadAdvertisementItemFiles(JSONObject item) throws Exception {
         try {
-            String fileUrls=item.getString("fileUrls");
+            String fileUrls = item.getString("fileUrls");
             JSONObject urls = new JSONObject(fileUrls);
-            if(item.getString("adType").equals("V")){
-                String videoFile=urls.getString("video");
+            if (item.getString("adType").equals("V")) {
+                String videoFile = urls.getString("video");
                 downloadAdvertisementFile(videoFile);
-            }else if(item.getString("adType").equals("I")){
-                String voiceFile=urls.getString("voice");
+            } else if (item.getString("adType").equals("I")) {
+                String voiceFile = urls.getString("voice");
                 downloadAdvertisementFile(voiceFile);
-                JSONArray imageFilesObject=urls.getJSONArray("images");
-                for(int i=0;i<imageFilesObject.length();i++){
-                    JSONObject imageObject=imageFilesObject.getJSONObject(i);
-                    String imageFile=imageObject.getString("image");
+                JSONArray imageFilesObject = urls.getJSONArray("images");
+                for (int i = 0; i < imageFilesObject.length(); i++) {
+                    JSONObject imageObject = imageFilesObject.getJSONObject(i);
+                    String imageFile = imageObject.getString("image");
                     downloadAdvertisementFile(imageFile);
                 }
             }
 
-        }catch(JSONException e){}
+        } catch (JSONException e) {
+        }
     }
 
     protected void downloadAdvertisementFile(String file) throws Exception {
-        int lastIndex=file.lastIndexOf("/");
-        String fileName=file.substring(lastIndex+1);
-        String localFile=HttpUtils.getLocalFile(fileName);
-        if(localFile==null){
-            localFile=HttpUtils.downloadFile(file);
-            if(localFile!=null){
-                if(localFile.endsWith(".temp")){
-                    localFile=localFile.substring(0,localFile.length()-5);
+        int lastIndex = file.lastIndexOf("/");
+        String fileName = file.substring(lastIndex + 1);
+        String localFile = HttpUtils.getLocalFile(fileName);
+        if (localFile == null) {
+            localFile = HttpUtils.downloadFile(file);
+            if (localFile != null) {
+                if (localFile.endsWith(".temp")) {
+                    localFile = localFile.substring(0, localFile.length() - 5);
                 }
-                currentAdvertisementFiles.put(fileName,localFile);
+                currentAdvertisementFiles.put(fileName, localFile);
             }
-        }else{
-            currentAdvertisementFiles.put(fileName,localFile);
+        } else {
+            currentAdvertisementFiles.put(fileName, localFile);
         }
     }
 
-    protected void restartAdvertise(JSONArray rows){
-        if(!isAdvertisementListSame(rows)){
-            sendDialMessenger(MSG_ADVERTISE_REFRESH,rows);
+    protected void restartAdvertise(JSONArray rows) {
+        if (!isAdvertisementListSame(rows)) {
+            sendDialMessenger(MSG_ADVERTISE_REFRESH, rows);
         }
-        currentAdvertisementList=rows;
+        currentAdvertisementList = rows;
     }
-    protected boolean isAdvertisementListSame(JSONArray rows){
-        boolean result=true;
-        String thisValue=currentAdvertisementList.toString();
-        String thisRow=rows.toString();
+
+    protected boolean isAdvertisementListSame(JSONArray rows) {
+        boolean result = true;
+        String thisValue = currentAdvertisementList.toString();
+        String thisRow = rows.toString();
         return thisRow.equals(thisValue);
     }
 
-    protected void adjustAdvertiseFiles(){
-        String SDCard= Environment.getExternalStorageDirectory()+"";
-        String localFilePath=SDCard+"/"+ DeviceConfig.LOCAL_FILE_PATH+"/";//文件存储路径
-        Enumeration<String> keys=currentAdvertisementFiles.keys();
-        while(keys.hasMoreElements()){
-            String fileName=keys.nextElement();
-            String filePath=currentAdvertisementFiles.get(fileName);
-            File file=new File(filePath+".temp");
-            if(file.exists()){
+    protected void adjustAdvertiseFiles() {
+        String SDCard = Environment.getExternalStorageDirectory() + "";
+        String localFilePath = SDCard + "/" + DeviceConfig.LOCAL_FILE_PATH + "/";//文件存储路径
+        Enumeration<String> keys = currentAdvertisementFiles.keys();
+        while (keys.hasMoreElements()) {
+            String fileName = keys.nextElement();
+            String filePath = currentAdvertisementFiles.get(fileName);
+            File file = new File(filePath + ".temp");
+            if (file.exists()) {
                 file.renameTo(new File(filePath));
             }
         }
     }
 
-    protected void removeAdvertiseFiles(){
-        File[] files=HttpUtils.getAllLocalFiles();
-        for(int i=0;i<files.length;i++) {
-            File file=files[i];
-            String fileName=file.getAbsolutePath();
-            if(fileName.endsWith(".temp")){
+    protected void removeAdvertiseFiles() {
+        File[] files = HttpUtils.getAllLocalFiles();
+        for (int i = 0; i < files.length; i++) {
+            File file = files[i];
+            String fileName = file.getAbsolutePath();
+            if (fileName.endsWith(".temp")) {
                 file.delete();
-            }else if(!currentAdvertisementFiles.containsValue(fileName)){
+            } else if (!currentAdvertisementFiles.containsValue(fileName)) {
                 file.delete();
             }
         }
@@ -3149,34 +3184,37 @@ public class MainService extends Service {
         return isSameFinger(thisFinger,fingerTemplate);
     }
 */
-    /***********************Update Service********************/
+
+    /***********************
+     * Update Service
+     ********************/
     public void initUpdateHandler() {
-        Log.v("UpdateService","------>init Update Handler<-------");
+        Log.v("UpdateService", "------>init Update Handler<-------");
         loadVersionFromLocal();
         adjustVersionStatus();
         startCheckThread();
         startUpdateThread();
     }
 
-    protected void adjustVersionStatus(){
-        if(lastVersionStatus.equals("P")){
-            String SDCard= Environment.getExternalStorageDirectory()+"";
-            String fileName=SDCard+"/"+lastVersionFile;
-            File file=new File(fileName);
-            if(!file.exists()){
-                lastVersionFile="";
-                lastVersionStatus="L";
+    protected void adjustVersionStatus() {
+        if (lastVersionStatus.equals("P")) {
+            String SDCard = Environment.getExternalStorageDirectory() + "";
+            String fileName = SDCard + "/" + lastVersionFile;
+            File file = new File(fileName);
+            if (!file.exists()) {
+                lastVersionFile = "";
+                lastVersionStatus = "L";
                 saveVersionFromLocal();
             }
         }
     }
 
-    protected void startCheckThread(){
-        Log.v("UpdateService","start Check Thread");
-        checkThread=new Thread(){
-            public void run(){
-                try{
-                    while(!isInterrupted()) {
+    protected void startCheckThread() {
+        Log.v("UpdateService", "start Check Thread");
+        checkThread = new Thread() {
+            public void run() {
+                try {
+                    while (!isInterrupted()) {
                         checkNewVersion();
                         sleep(DeviceConfig.RELEASE_VERSION_WAIT_TIME); //等待新版本检查的时间
                     }
@@ -3187,14 +3225,14 @@ public class MainService extends Service {
         checkThread.start();
     }
 
-    protected void checkNewVersion(){
-        Log.v("UpdateService","check New Version");
-        String url= DeviceConfig.UPDATE_SERVER_URL+DeviceConfig.UPDATE_RELEASE_FOLDER+DeviceConfig.UPDATE_RELEASE_PACKAGE;
-        try{
+    protected void checkNewVersion() {
+        Log.v("UpdateService", "check New Version");
+        String url = DeviceConfig.UPDATE_SERVER_URL + DeviceConfig.UPDATE_RELEASE_FOLDER + DeviceConfig.UPDATE_RELEASE_PACKAGE;
+        try {
             URL thisUrl = new URL(url);
-            HttpURLConnection conn = (HttpURLConnection)thisUrl.openConnection();
+            HttpURLConnection conn = (HttpURLConnection) thisUrl.openConnection();
             conn.setRequestMethod("GET");
-            if(httpServerToken!=null) {
+            if (httpServerToken != null) {
                 conn.setRequestProperty("Authorization", "Bearer " + httpServerToken);
             }
             conn.setConnectTimeout(5000);
@@ -3202,80 +3240,80 @@ public class MainService extends Service {
             if (code == 200) {
                 InputStream is = conn.getInputStream();
                 String result = HttpUtils.readMyInputStream(is);
-                Log.v("UpdateService","result="+result);
-                JSONObject resultObj= Ajax.getJSONObject(result);
-                int lastVersion=resultObj.getInt("version");
-                if(lastVersion>DeviceConfig.RELEASE_VERSION){ //检查当前版本是否和服务器最新版本一致，如果不是最新版本则发出更新消息
-                    String packageName=resultObj.getString("name")+"."+DeviceConfig.DEVICE_MODE_FLAG+"."+lastVersion+".apk";
+                Log.v("UpdateService", "result=" + result);
+                JSONObject resultObj = Ajax.getJSONObject(result);
+                int lastVersion = resultObj.getInt("version");
+                if (lastVersion > DeviceConfig.RELEASE_VERSION) { //检查当前版本是否和服务器最新版本一致，如果不是最新版本则发出更新消息
+                    String packageName = resultObj.getString("name") + "." + DeviceConfig.DEVICE_MODE_FLAG + "." + lastVersion + ".apk";
                     Message message = handler.obtainMessage();
                     message.what = MSG_FIND_NEW_VERSION;
-                    message.obj =packageName;
+                    message.obj = packageName;
                     handler.sendMessage(message);
                 }
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    protected void onNewVersion(String newFile){
-        Log.v("UpdateService","on new version"+newFile);
+    protected void onNewVersion(String newFile) {
+        Log.v("UpdateService", "on new version" + newFile);
         try {
             String[] fileValues = newFile.split("\\.");
-            String versionName=fileValues[fileValues.length-2];
-            int version=new Integer(versionName);
-            Log.v("UpdateService","lastVersionStatus="+lastVersionStatus+",this.lastVersion="+lastVersion);
-            if(version==this.lastVersion){
-                if(lastVersionStatus.equals("L")){
-                    lastVersionStatus="N";
-                    lastVersion=version;
-                    lastVersionFile=newFile;
+            String versionName = fileValues[fileValues.length - 2];
+            int version = new Integer(versionName);
+            Log.v("UpdateService", "lastVersionStatus=" + lastVersionStatus + ",this.lastVersion=" + lastVersion);
+            if (version == this.lastVersion) {
+                if (lastVersionStatus.equals("L")) {
+                    lastVersionStatus = "N";
+                    lastVersion = version;
+                    lastVersionFile = newFile;
                     saveVersionFromLocal();
-                    Log.v("UpdateService","from L to N");
+                    Log.v("UpdateService", "from L to N");
                     startDownloadThread();
-                }else if(lastVersionStatus.equals("N")){
+                } else if (lastVersionStatus.equals("N")) {
                     startDownloadThread();
                 }
-            }else if(version>this.lastVersion){
-                if(lastVersionStatus.equals("D")){
+            } else if (version > this.lastVersion) {
+                if (lastVersionStatus.equals("D")) {
                     stopDownloadThread();
                 }
-                lastVersionStatus="N";
-                lastVersion=version;
-                lastVersionFile=newFile;
+                lastVersionStatus = "N";
+                lastVersion = version;
+                lastVersionFile = newFile;
                 saveVersionFromLocal();
                 startDownloadThread();
             }
-        }catch(Exception e){
+        } catch (Exception e) {
         }
     }
 
-    protected void startDownloadThread(){
-        final String url=DeviceConfig.UPDATE_SERVER_URL+DeviceConfig.UPDATE_RELEASE_FOLDER+lastVersionFile;
-        final String fileName=lastVersionFile;
-        Log.v("UpdateService","start download thread->"+url+"-->"+fileName);
-        if(lastVersionStatus.equals("N")){
-            lastVersionStatus="D";
-            Log.v("UpdateService","change version status to D");
-            downloadThread=new Thread(){
-                public void run(){
-                    try{
-                        while(!isInterrupted()) {
-                            if(getDownloadingFlag()==0){
+    protected void startDownloadThread() {
+        final String url = DeviceConfig.UPDATE_SERVER_URL + DeviceConfig.UPDATE_RELEASE_FOLDER + lastVersionFile;
+        final String fileName = lastVersionFile;
+        Log.v("UpdateService", "start download thread->" + url + "-->" + fileName);
+        if (lastVersionStatus.equals("N")) {
+            lastVersionStatus = "D";
+            Log.v("UpdateService", "change version status to D");
+            downloadThread = new Thread() {
+                public void run() {
+                    try {
+                        while (!isInterrupted()) {
+                            if (getDownloadingFlag() == 0) {
                                 break;
-                            }else{
+                            } else {
                                 sleep(1000); //等待上一次下载线程结束，并关闭文件
                             }
                         }
                     } catch (InterruptedException e) {
                     }
-                    if(getDownloadingFlag()==0){
-                        Log.v("UpdateService","download file begin");
-                        String lastFile=downloadFile(url,fileName);
-                        if(lastFile!=null){
-                            if(lastVersionStatus.equals("D")){
-                                Log.v("UpdateService","change status to P");
-                                lastVersionStatus="P";
+                    if (getDownloadingFlag() == 0) {
+                        Log.v("UpdateService", "download file begin");
+                        String lastFile = downloadFile(url, fileName);
+                        if (lastFile != null) {
+                            if (lastVersionStatus.equals("D")) {
+                                Log.v("UpdateService", "change status to P");
+                                lastVersionStatus = "P";
                                 saveVersionFromLocal();
                             }
                         }
@@ -3286,45 +3324,45 @@ public class MainService extends Service {
         }
     }
 
-    protected void stopDownloadThread(){
-        Log.v("UpdateService","stop download thread");
-        lastVersionStatus="N";
+    protected void stopDownloadThread() {
+        Log.v("UpdateService", "stop download thread");
+        lastVersionStatus = "N";
         saveVersionFromLocal();
         setDownloadingFlag(2);
-        if(downloadThread!=null){
+        if (downloadThread != null) {
             downloadThread.interrupt();
         }
     }
 
-    public String downloadFile(String url, String fileName){
-        OutputStream output=null;
-        String localFile=null;
-        String result=null;
+    public String downloadFile(String url, String fileName) {
+        OutputStream output = null;
+        String localFile = null;
+        String result = null;
         setDownloadingFlag(1);
         try {
-            URL urlObject=new URL(url);
-            HttpURLConnection conn=(HttpURLConnection)urlObject.openConnection();
-            String SDCard= Environment.getExternalStorageDirectory()+"";
-            localFile=SDCard+"/"+fileName;//文件存储路径
-            File file=new File(localFile);
-            InputStream input=conn.getInputStream();
-            if(!file.exists()){
+            URL urlObject = new URL(url);
+            HttpURLConnection conn = (HttpURLConnection) urlObject.openConnection();
+            String SDCard = Environment.getExternalStorageDirectory() + "";
+            localFile = SDCard + "/" + fileName;//文件存储路径
+            File file = new File(localFile);
+            InputStream input = conn.getInputStream();
+            if (!file.exists()) {
                 file.createNewFile();//新建文件
             }
-            output=new FileOutputStream(file);
+            output = new FileOutputStream(file);
             //读取大文件
             byte[] buffer = new byte[1024 * 8];
             BufferedInputStream in = new BufferedInputStream(input, 1024 * 8);
             BufferedOutputStream out = new BufferedOutputStream(output, 1024 * 8);
             int count = 0, n = 0;
             try {
-                while ((n = in.read(buffer, 0, 1024 * 8)) != -1&&getDownloadingFlag()==1) {
+                while ((n = in.read(buffer, 0, 1024 * 8)) != -1 && getDownloadingFlag() == 1) {
                     out.write(buffer, 0, n);
                     count += n;
                 }
                 out.flush();
-                if(getDownloadingFlag()==1){
-                    result=localFile;
+                if (getDownloadingFlag() == 1) {
+                    result = localFile;
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -3344,35 +3382,35 @@ public class MainService extends Service {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally{
+        } finally {
             try {
-                if(output!=null){
+                if (output != null) {
                     output.close();
                 }
             } catch (Exception e) {
             }
         }
         setDownloadingFlag(0);
-        Log.v("UpdateService","download file end="+result);
+        Log.v("UpdateService", "download file end=" + result);
         return result;
     }
 
-    protected void startUpdateThread(){
-        updateThread=new Thread(){
-            public void run(){
-                try{
-                    while(!isInterrupted()) {
+    protected void startUpdateThread() {
+        updateThread = new Thread() {
+            public void run() {
+                try {
+                    while (!isInterrupted()) {
                         Calendar c = Calendar.getInstance();
                         int hour = c.get(Calendar.HOUR_OF_DAY);
-                        if(DeviceConfig.APPLICATION_MODEL==0) {
+                        if (DeviceConfig.APPLICATION_MODEL == 0) {
                             if (lastVersionStatus.equals("P")) {
                                 lastVersionStatus = "I";
                                 updateApp();
                             } else {
                                 sleep(1000 * 60 * 3);
                             }
-                        }else{
-                            if(hour==DeviceConfig.RELEASE_VERSION_UPDATE_TIME){
+                        } else {
+                            if (hour == DeviceConfig.RELEASE_VERSION_UPDATE_TIME) {
                                 if (lastVersionStatus.equals("P")) {
                                     lastVersionStatus = "I";
                                     updateApp();
@@ -3389,79 +3427,79 @@ public class MainService extends Service {
         updateThread.start();
     }
 
-    protected void stopUpdateThread(){
-        if(updateThread!=null){
+    protected void stopUpdateThread() {
+        if (updateThread != null) {
             updateThread.interrupt();
-            updateThread=null;
+            updateThread = null;
         }
     }
 
-    protected void updateApp(){
-        String SDCard= Environment.getExternalStorageDirectory()+"";
-        String fileName=SDCard+"/"+lastVersionFile;
-        File file=new File(fileName);
-        Log.v("UpdateService","------>start Update App<------");
-        if(file.exists()){
-            Log.v("UpdateService","check update file OK");
+    protected void updateApp() {
+        String SDCard = Environment.getExternalStorageDirectory() + "";
+        String fileName = SDCard + "/" + lastVersionFile;
+        File file = new File(fileName);
+        Log.v("UpdateService", "------>start Update App<------");
+        if (file.exists()) {
+            Log.v("UpdateService", "check update file OK");
             startInstallApp(fileName);
         }
     }
 
-    protected void startInstallApp(String fileName){
+    protected void startInstallApp(String fileName) {
         Intent app = this.getPackageManager().getLaunchIntentForPackage(DeviceConfig.TARGET_PACKAGE_NAME);
-        if(app!=null){
-            app.putExtra("installFileName",fileName);
+        if (app != null) {
+            app.putExtra("installFileName", fileName);
             this.startActivity(app);
         }
     }
 
-    protected void loadVersionFromLocal(){
-        SharedPreferences sharedPreferences= getSharedPreferences("residential", Activity.MODE_PRIVATE);
-        lastVersion=sharedPreferences.getInt("lastVersion",0);
-        lastVersionFile=sharedPreferences.getString("lastVersionFile","");
-        lastVersionStatus=sharedPreferences.getString("lastVersionStatus","L");
+    protected void loadVersionFromLocal() {
+        SharedPreferences sharedPreferences = getSharedPreferences("residential", Activity.MODE_PRIVATE);
+        lastVersion = sharedPreferences.getInt("lastVersion", 0);
+        lastVersionFile = sharedPreferences.getString("lastVersionFile", "");
+        lastVersionStatus = sharedPreferences.getString("lastVersionStatus", "L");
     }
 
-    protected void saveVersionFromLocal(){
-        SharedPreferences sharedPreferences= getSharedPreferences("residential", Activity.MODE_PRIVATE);
+    protected void saveVersionFromLocal() {
+        SharedPreferences sharedPreferences = getSharedPreferences("residential", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("lastVersion", lastVersion);
-        editor.putString("lastVersionFile",lastVersionFile);
-        editor.putString("lastVersionStatus",lastVersionStatus);
+        editor.putString("lastVersionFile", lastVersionFile);
+        editor.putString("lastVersionStatus", lastVersionStatus);
         editor.commit();
     }
 
-    protected synchronized void setDownloadingFlag(int flag){
-        downloadingFlag=flag;
+    protected synchronized void setDownloadingFlag(int flag) {
+        downloadingFlag = flag;
     }
 
-    protected synchronized int getDownloadingFlag(){
+    protected synchronized int getDownloadingFlag() {
         return downloadingFlag;
     }
 }
 
-class CardRecord{
-    public String card=null;
-    public Date creDate=null;
+class CardRecord {
+    public String card = null;
+    public Date creDate = null;
 
-    public CardRecord(){
-        this.card="";
-        this.creDate=new Date();
+    public CardRecord() {
+        this.card = "";
+        this.creDate = new Date();
     }
 
-    public boolean checkLastCard(String card){
-        boolean result=false;
-        if(this.card.equals(card)){
-            long offset=new Date().getTime()-this.creDate.getTime();
-            if(offset>1000){
-                this.card=card;
-                this.creDate=new Date();
-            }else{
-                result=true;
+    public boolean checkLastCard(String card) {
+        boolean result = false;
+        if (this.card.equals(card)) {
+            long offset = new Date().getTime() - this.creDate.getTime();
+            if (offset > 1000) {
+                this.card = card;
+                this.creDate = new Date();
+            } else {
+                result = true;
             }
-        }else{
-            this.card=card;
-            this.creDate=new Date();
+        } else {
+            this.card = card;
+            this.creDate = new Date();
         }
         return result;
     }

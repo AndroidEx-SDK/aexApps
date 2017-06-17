@@ -181,7 +181,6 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
     private String callNumber = "";
     private String blockNo = "";
     private int blockId = 0;
-    private int checkingStatus = 0;
     SurfaceHolder autoCameraHolder = null;
     private String guestPassword = "";
     Thread passwordTimeoutThread = null;
@@ -350,7 +349,7 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                     mHandler.sendMessage(message);
                 }
 
-                switch (NetWork.getCurrentNetType(MainActivity.this)){
+                switch (NetWork.getCurrentNetType(MainActivity.this)) {
                     case NETWORK_TYPE_WIFI:
                         wifiInfo = wifiManager.getConnectionInfo();
                         //获得信号强度值
@@ -671,24 +670,24 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
         }
     }
 
+    /**
+     * 检查楼栋编号
+     */
     private void onCheckBlockNo() {
-        checkingStatus = 0;
         if (blockId == 0) {
             blockNo = "";
             callNumber = "";
             setDialValue(blockNo);
             Utils.DisplayToast(MainActivity.this, "楼栋编号不存在");
+            return;
         }
         if (blockId < 0) {
             blockNo = "";
-            callNumber = "";
             blockId = 0;
             setDialValue(blockNo);
             Utils.DisplayToast(MainActivity.this, "获取楼栋数据失败，请联系管理处");
         } else {
-            callNumber = "";
-            setDialValue(callNumber);
-            setDialStatus("输入房间号呼叫");
+            setDialValue(blockNo);
         }
     }
 
@@ -797,26 +796,20 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
         imageView.setImageBitmap(bm);
     }
 
-    public void showToast(String str){
+    public void showToast(String str) {
         Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
-        Log.e("MainActivity","==="+str);
+        Log.e("MainActivity", "===" + str);
     }
+
     private void callInput(int key) {
         if (DeviceConfig.DEVICE_TYPE.equals("C")) {
             if (blockId == 0) {
-                if (blockNo.length() < DeviceConfig.BLOCK_NO_LENGTH) {
+                if (blockNo.length() < DeviceConfig.BLOCK_LENGTH) {
                     blockNo = blockNo + key;
                     setDialValue(blockNo);
                 }
                 if (blockNo.length() == DeviceConfig.BLOCK_NO_LENGTH) {
-                    String start = blockNo.substring(0, 1);
-                    if (start.equals("0")){
-                        showToast("首个数字为0");
-                    }else {
-                        showToast("首个数字不为0");
-                    }
-                    checkingStatus = 1;
-                    setDialValue( ""+blockNo);
+                    setDialValue(blockNo);
                     Message message = Message.obtain();
                     message.what = MainService.MSG_CHECK_BLOCKNO;
                     message.obj = blockNo;
@@ -827,9 +820,8 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                     }
                 }
             } else {
-                if (checkingStatus == 0) {
-                    unitNoInput(key);
-                }
+                unitNoInput(key);
+
             }
         } else {
             unitNoInput(key);
@@ -837,23 +829,33 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
     }
 
     private void unitNoInput(int key) {
-        callNumber = callNumber + key;
-        setDialValue(callNumber);
-        if (callNumber.length() == DeviceConfig.UNIT_NO_LENGTH) {
-            startDialing();
+        if (DeviceConfig.DEVICE_TYPE.equals("C")) {
+            blockNo = blockNo + key;
+            setDialValue(blockNo);
+            if (blockNo.length() == DeviceConfig.BLOCK_LENGTH) {
+                callNumber = blockNo.substring(2);
+                startDialing(callNumber);
+            }
+        } else {
+            callNumber = callNumber + key;
+            setDialValue(callNumber);
+            if (callNumber.length() == DeviceConfig.UNIT_NO_LENGTH) {
+                startDialing(callNumber);
+            }
         }
     }
 
-    private void startDialing() {
+    //开始呼叫
+    private void startDialing(String num) {
         setCurrentStatus(CALLING_MODE);
-        String thisNumber = callNumber;
         callNumber = "";
         if (DeviceConfig.DEVICE_TYPE == "C") {
             blockId = 0;
             blockNo = "";
             setDialStatus("请输入楼栋编号");
         }
-        takePicture(thisNumber, true, MainActivity.this);
+        //开启拍照，并开始呼叫
+        takePicture(num, true, MainActivity.this);
     }
 
     private int convertKeyCode(int keyCode) {
@@ -1058,67 +1060,14 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
 
     public String cardId;
 
-    private void onKeyDown(int keyCode) {
-        if (nfcFlag) {//录入卡片信息
-            String black = et_blackno.getText().toString();
-            String unit = et_unitno.getText().toString();
-            if (keyCode == KeyEvent.KEYCODE_STAR || keyCode == DeviceConfig.DEVICE_KEYCODE_STAR) {//取消
-                if (!isFlag && (unit == null || unit.equals(""))) {//返回到房屋输入框
-                    et_blackno.setFocusable(true);
-                    et_blackno.setFocusableInTouchMode(true);
-                    et_blackno.requestFocus();
-                }
-                if (isFlag && !(black == null || black.equals(""))) {//删除输入的房屋数字
-                    blockNo = backKey(blockNo);
-                    setTextValue(R.id.et_blockno, blockNo);
-                }
-                if (!isFlag && !(unit == null || unit.equals(""))) {//删除输入的门数字
-                    blockNo = backKey(blockNo);
-                    setTextValue(R.id.et_unitno, blockNo);
-                }
-                if (isFlag && (black == null || black.equals(""))) {
-                    rl_nfc.setVisibility(View.GONE);
-                    nfcFlag = false;
-                }
-            } else if (keyCode == KeyEvent.KEYCODE_POUND || keyCode == DeviceConfig.DEVICE_KEYCODE_POUND) {//录入卡片
-                if (TextUtils.isEmpty(cardId)) {
-                    Toast.makeText(this, "未检测到卡片信息", Toast.LENGTH_LONG).show();
-                } else {
-                    if (isFlag) {//切换edittext焦点到房屋编号输入框
-                        if (!blockNo.equals("")) {
-                            blockNo = "";
-                        }
-                        et_unitno.setFocusable(true);
-                        et_unitno.setFocusableInTouchMode(true);
-                        et_unitno.requestFocus();
-                    } else {
-                        if (TextUtils.isEmpty(black) || TextUtils.isEmpty(unit)) {
-                            Toast.makeText(MainActivity.this, "楼栋编号或者房屋编号不能为空", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        new Thread() {
-                            @Override
-                            public void run() {
-                                super.run();
-                                receiveCard();
-                            }
-                        }.start();
-                    }
 
-                }
-            } else {
-                int key = convertKeyCode(keyCode);
-                if (key >= 0) {
-                    if (isFlag) {
-                        callInput(key, R.id.et_blockno);
-                    } else {
-                        callInput(key, R.id.et_unitno);
-                    }
-                }
-            }
+    private void onKeyDown(int keyCode) {
+
+        if (nfcFlag) {
+            inputCardInfo(keyCode);//录入卡片信息
         } else {
+            int key = convertKeyCode(keyCode);
             if (currentStatus == CALL_MODE || currentStatus == PASSWORD_MODE) {
-                int key = convertKeyCode(keyCode);
                 if (key >= 0) {
                     if (currentStatus == CALL_MODE) {
                         callInput(key);
@@ -1126,7 +1075,7 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                         passwordInput(key);
                     }
                 } else if (keyCode == KeyEvent.KEYCODE_POUND || keyCode == DeviceConfig.DEVICE_KEYCODE_POUND) {
-                    if (currentStatus == CALL_MODE) {
+                    if (currentStatus == CALL_MODE) {//呼叫模式下，按确认键
                         initPasswordStatus();
                     } else {
                         initDialStatus();
@@ -1137,7 +1086,6 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                     } else {
                         passwordInput();
                     }
-
                     TextView tv_input_text = (TextView) findViewById(R.id.tv_input_text);
                     String str = tv_input_text.getText().toString();
                     if (str == null || str.equals("")) {
@@ -1179,6 +1127,70 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
             }
         }
 
+    }
+
+    /**
+     * 录入卡片信息
+     *
+     * @param keyCode
+     */
+    private void inputCardInfo(int keyCode) {
+        String black = et_blackno.getText().toString();
+        String unit = et_unitno.getText().toString();
+        if (keyCode == KeyEvent.KEYCODE_STAR || keyCode == DeviceConfig.DEVICE_KEYCODE_STAR) {//取消
+            if (!isFlag && (unit == null || unit.equals(""))) {//返回到房屋输入框
+                et_blackno.setFocusable(true);
+                et_blackno.setFocusableInTouchMode(true);
+                et_blackno.requestFocus();
+            }
+            if (isFlag && !(black == null || black.equals(""))) {//删除输入的房屋数字
+                blockNo = backKey(blockNo);
+                setTextValue(R.id.et_blockno, blockNo);
+            }
+            if (!isFlag && !(unit == null || unit.equals(""))) {//删除输入的门数字
+                blockNo = backKey(blockNo);
+                setTextValue(R.id.et_unitno, blockNo);
+            }
+            if (isFlag && (black == null || black.equals(""))) {
+                rl_nfc.setVisibility(View.GONE);
+                nfcFlag = false;
+            }
+        } else if (keyCode == KeyEvent.KEYCODE_POUND || keyCode == DeviceConfig.DEVICE_KEYCODE_POUND) {//录入卡片
+            if (TextUtils.isEmpty(cardId)) {
+                Toast.makeText(this, "未检测到卡片信息", Toast.LENGTH_LONG).show();
+            } else {
+                if (isFlag) {//切换edittext焦点到房屋编号输入框
+                    if (!blockNo.equals("")) {
+                        blockNo = "";
+                    }
+                    et_unitno.setFocusable(true);
+                    et_unitno.setFocusableInTouchMode(true);
+                    et_unitno.requestFocus();
+                } else {
+                    if (TextUtils.isEmpty(black) || TextUtils.isEmpty(unit)) {
+                        Toast.makeText(MainActivity.this, "楼栋编号或者房屋编号不能为空", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            receiveCard();
+                        }
+                    }.start();
+                }
+
+            }
+        } else {
+            int key = convertKeyCode(keyCode);
+            if (key >= 0) {
+                if (isFlag) {
+                    callInput(key, R.id.et_blockno);
+                } else {
+                    callInput(key, R.id.et_unitno);
+                }
+            }
+        }
     }
 
     private void startDisconnectDirectCall() {
@@ -1394,6 +1406,7 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
         }
     };
 
+    //开始启动拍照
     protected void takePicture(final String thisValue, final boolean isCall, final TakePictureCallback callback) {
         if (currentStatus == CALLING_MODE || currentStatus == PASSWORD_CHECKING_MODE) {
             final String uuid = getUUID();
@@ -1966,7 +1979,6 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
     }
 
 
-
     private void showAlert(String strTitle, String strMsg) {
         // TODO Auto-generated method stub
         AlertDialog dialogError;
@@ -1975,11 +1987,12 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
         dialogError.show();
     }
 
+    //开始呼叫
     protected void startDialorPasswordDirectly(final String thisValue, final String fileUrl, final boolean isCall, String uuid) {
         if (currentStatus == CALLING_MODE || currentStatus == PASSWORD_CHECKING_MODE) {
             Message message = Message.obtain();
             if (isCall) {
-                setDialValue("呼叫" + thisValue + "，取消请按删除号键");
+                setDialValue("呼叫" + thisValue + "，取消请按删除键");
                 message.what = MainService.MSG_START_DIAL;
             } else {
                 setTempkeyValue("准备验证密码" + thisValue + "...");
@@ -2036,7 +2049,7 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
 
         @Override
         public void handleMessage(Message msg) {
-            Log.e("=====listTemp1",listTemp1+"");
+            Log.e("=====listTemp1", listTemp1 + "");
             switch (msg.what) {
                 // 如果收到正确的消息就获取WifiInfo，改变图片并显示信号强度
                 case 11:

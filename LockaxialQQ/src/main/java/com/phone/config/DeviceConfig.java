@@ -56,6 +56,7 @@ public class DeviceConfig {
 
     public static int UNIT_NO_LENGTH=4;
     public static int BLOCK_NO_LENGTH=2;
+    public static int BLOCK_LENGTH=6;
     public static String DEVICE_TYPE="B"; //C：社区大门门禁 B:楼栋单元门禁
 
     public static int VOLUME_STREAM_MUSIC=5;

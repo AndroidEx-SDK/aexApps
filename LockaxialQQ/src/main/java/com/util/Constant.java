@@ -34,7 +34,7 @@ public class Constant {
     public static final int MSG_ADVERTISE_REFRESH = 10013;
     public static final int MSG_ADVERTISE_IMAGE = 10014;
     public static final int MSG_INVALID_CARD = 10015;
-    public static final int MSG_CHECK_BLOCKNO = 10016;
+    public static final int MSG_CHECK_BLOCKNO = 10016;//检测楼栋编号
     public static final int MSG_FINGER_CHECK = 10017;
     public static final int MSG_REFRESH_DATA = 10018;
     public static final int MSG_REFRESH_COMMUNITYNAME = 10019;
