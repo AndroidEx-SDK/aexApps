@@ -660,7 +660,7 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                     showToast("重复录入");
                 } else if (msg.what == MSG_INPUT_CARDINFO_FAIL) {
                     showToast("录入失败");
-                }else if (msg.what == MSG_INPUT_CARDINFO) {
+                } else if (msg.what == MSG_INPUT_CARDINFO) {
                     String obj = (String) msg.obj;
                     tv_message.setText(obj);
                 }
@@ -847,16 +847,19 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
         }
     }
 
+    /**
+     * 自动呼叫
+     *
+     * @param key
+     */
     private void unitNoInput(int key) {
+        blockNo = blockNo + key;
+        setDialValue(blockNo);
         if (DeviceConfig.DEVICE_TYPE.equals("C")) {
-            blockNo = blockNo + key;
-            setDialValue(blockNo);
             if (blockNo.length() == DeviceConfig.BLOCK_LENGTH) {
                 startDialing(blockNo);
             }
         } else {
-            blockNo = blockNo + key;
-            setDialValue(blockNo);
             if (blockNo.length() == DeviceConfig.UNIT_NO_LENGTH) {
                 startDialing(blockNo);
             }
@@ -866,9 +869,10 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
     //开始呼叫
     private void startDialing(String num) {
         setCurrentStatus(CALLING_MODE);
+        blockNo = "";
+        setDialValue(blockNo);
         if (DeviceConfig.DEVICE_TYPE == "C") {
             blockId = 0;
-            blockNo = "";
             setDialStatus("请输入楼栋编号");
         }
         //开启拍照，并开始呼叫
@@ -1157,14 +1161,14 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                     rl_nfc.setVisibility(View.VISIBLE);
                     tv_message.setText(nfcMessage);
                     nfcFlag = true;
-                    cardId=null;
-                    isFlag=true;
+                    cardId = null;
+                    isFlag = true;
                     et_blackno.setFocusable(true);
                     et_blackno.setFocusableInTouchMode(true);
                     et_blackno.requestFocus();
                     break;
                 default:
-                    cardId=null;
+                    cardId = null;
                     showToast("取消登录");
                     break;
             }
@@ -1913,7 +1917,7 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                 message.what = MainService.MSG_START_DIAL;
                 if (DeviceConfig.DEVICE_TYPE.equals("C")) {
                     parameters[0] = thisValue.substring(2);
-                }else {
+                } else {
                     parameters[0] = thisValue;
                 }
             } else {
