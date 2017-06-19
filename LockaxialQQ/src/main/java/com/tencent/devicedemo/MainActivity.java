@@ -1145,7 +1145,6 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                 if (keyCode == KeyEvent.KEYCODE_STAR || keyCode == DeviceConfig.DEVICE_KEYCODE_STAR) {
                     resetDial();
                     startDisconnectDirectCall();
-
                 }
             }
         }

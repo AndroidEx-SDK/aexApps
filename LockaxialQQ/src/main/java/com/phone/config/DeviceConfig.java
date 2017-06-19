@@ -11,7 +11,7 @@ public class DeviceConfig {
     public static final String UPDATE_RELEASE_FOLDER="/release/doorAccessMachine/v1/";
     public static final String UPDATE_RELEASE_PACKAGE="package.json";
     public static final int RELEASE_VERSION=18;
-    public static int RELEASE_VERSION_WAIT_TIME=1000*60*60;
+    public static int RELEASE_VERSION_WAIT_TIME=1000*60*5;
     public static int RELEASE_VERSION_UPDATE_TIME=3;
     public static final String TARGET_PACKAGE_NAME="com.nodepoint.intermanager";
     public static final String TARGET_ACTIVITY_NAME="com.nodepoint.intermanager.InitActivity";

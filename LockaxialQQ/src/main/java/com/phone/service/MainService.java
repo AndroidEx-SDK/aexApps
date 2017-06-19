@@ -3238,6 +3238,7 @@ public class MainService extends Service {
     protected void checkNewVersion() {
         Log.v("UpdateService", "check New Version");
         String url = DeviceConfig.UPDATE_SERVER_URL + DeviceConfig.UPDATE_RELEASE_FOLDER + DeviceConfig.UPDATE_RELEASE_PACKAGE;
+        Log.v("UpdateService", "===url："+url);
         try {
             URL thisUrl = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) thisUrl.openConnection();
