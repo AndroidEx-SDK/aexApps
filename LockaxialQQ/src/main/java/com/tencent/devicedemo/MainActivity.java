@@ -188,7 +188,6 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
     SurfaceView remoteView = null;
     private HashMap<String, String> uuidMaps = new HashMap<String, String>();
     private String lastImageUuid = "";
-    private String callNumber = "";
     private String blockNo = "";
     private int blockId = 0;
     SurfaceHolder autoCameraHolder = null;
@@ -784,8 +783,8 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
 
     public void onCallDirectlyComplete() {
         setCurrentStatus(CALL_MODE);
-        callNumber = "";
-        setDialValue(callNumber);
+        blockNo = "";
+        setDialValue(blockNo);
         advertiseHandler.start();
     }
 
@@ -980,7 +979,7 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
     private void callInput() {
         if (DeviceConfig.DEVICE_TYPE.equals("C")) {
             if (blockId > 0) {
-                if (callNumber.equals("")) {
+                if (blockNo.equals("")) {
                     blockId = 0;
                     blockNo = backKey(blockNo);
                     setDialStatus("请输入楼栋编号");
@@ -1304,8 +1303,8 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
     }
 
     protected void resetDial() {
-        callNumber = "";
-        setDialValue(callNumber);
+        blockNo = "";
+        setDialValue(blockNo);
         setCurrentStatus(CALL_MODE);
     }
 
