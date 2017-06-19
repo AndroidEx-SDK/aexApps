@@ -20,6 +20,7 @@ import android.graphics.Typeface;
 import android.hardware.Camera;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.nfc.NfcAdapter;
@@ -41,6 +42,7 @@ import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -58,6 +60,10 @@ import com.androidex.Zxing;
 import com.androidex.aexlibs.hwService;
 import com.brocast.NotifyReceiver;
 import com.entity.Banner;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.phone.config.DeviceConfig;
@@ -122,6 +128,7 @@ import static com.util.Constant.MSG_CHECK_BLOCKNO;
 import static com.util.Constant.MSG_CONNECT_ERROR;
 import static com.util.Constant.MSG_CONNECT_SUCCESS;
 import static com.util.Constant.MSG_FINGER_CHECK;
+import static com.util.Constant.MSG_INPUT_CARDINFO;
 import static com.util.Constant.MSG_INPUT_CARDINFO_FAIL;
 import static com.util.Constant.MSG_INPUT_CARDINFO_REPETITION;
 import static com.util.Constant.MSG_INPUT_CARDINFO_SUCCEED;
@@ -144,15 +151,15 @@ import static com.util.Constant.PASSWORD_MODE;
 public class MainActivity extends Activity implements NfcReader.AccountCallback, NfcAdapter.ReaderCallback, TakePictureCallback, NotifyReceiver.CallBack, View.OnClickListener {
     private static final String TAG = "MainActivity";
 
+    public static final int INPUT_CARDINFO_RESULTCODE = 0X01;
+    public static final int INPUT_CARDINFO_REQUESTCODE = 0X02;
     private GridView mGridView;
     private BinderListAdapter mAdapter;
     private NotifyReceiver mNotifyReceiver;
     public boolean nfcFlag = false;
-    public String isFrom = "";
     public RelativeLayout rl_nfc;
     public TextView tv_message;
-    public String nfcMessage = "请将卡片放到感应区域，按确认键\n" +
-            "确定录入卡片，按删除键取消录入卡片";
+    public String nfcMessage = "请将卡片放到感应区域，按确认键\n确定录入卡片，按删除键取消录入卡片";
     // Recommend NfcAdapter flags for reading from other Android devices. Indicates that this
     // activity is interested in NFC-A devices (including other Android devices), and that the
     // system should not check for the presence of NDEF-formatted data (e.g. Android Beam).
@@ -199,13 +206,19 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
     private hwService hwservice;
     Parcelable[] listTemp1;
     AlertDialog dialog;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
+    private TextView tv_input_text;
 
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated constructor stub
         super.onCreate(savedInstanceState);
         //全屏设置，隐藏窗口所有装饰
-        getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);//清除FLAG
-        getWindow().setFlags(android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN, android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);//清除FLAG
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //标题是属于View的，所以窗口所有的修饰部分被隐藏后标题依然有效
         //requestWindowFeature(getWindow().FEATURE_NO_TITLE);
         sendBroadcast(new Intent("com.android.action.hide_navigationbar"));
@@ -249,6 +262,9 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
             pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 10000, pendingIntent);
         }
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     /**
@@ -262,6 +278,7 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
         tv_message = (TextView) findViewById(R.id.tv_message);
         viewPager = (AutoScrollViewPager) findViewById(R.id.vp_main);
         imageView = (ImageView) findViewById(R.id.iv_erweima);
+        tv_input_text = (TextView) findViewById(R.id.tv_input_text);
         //getBgBanners();//网络获得轮播背景图片数据
 
         mGridView = (GridView) findViewById(R.id.gridView_binderlist);
@@ -272,12 +289,6 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
         //TextView com_log=(TextView)findViewById(R.id.tv_log);
         tv_input = (EditText) findViewById(R.id.tv_input);
         tv_input.setTypeface(typeFace);// com_log.setTypeface(typeFace);
-        isFrom = getIntent().getStringExtra(InputCardInfoActivity.FLAG);
-        if ("from".equals(isFrom)) {//从登录界面跳转过来的
-            rl_nfc.setVisibility(View.VISIBLE);
-            tv_message.setText(nfcMessage);
-            nfcFlag = true;
-        }
         et_blackno.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -650,6 +661,9 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                     showToast("重复录入");
                 } else if (msg.what == MSG_INPUT_CARDINFO_FAIL) {
                     showToast("录入失败");
+                }else if (msg.what == MSG_INPUT_CARDINFO) {
+                    String obj = (String) msg.obj;
+                    tv_message.setText(obj);
                 }
             }
         };
@@ -682,7 +696,6 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
     private void onCheckBlockNo() {
         if (blockId == 0) {
             blockNo = "";
-            callNumber = "";
             setDialValue(blockNo);
             Utils.DisplayToast(MainActivity.this, "楼栋编号不存在");
             return;
@@ -813,12 +826,14 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                 if (blockNo.length() < DeviceConfig.BLOCK_LENGTH) {
                     blockNo = blockNo + key;
                     setDialValue(blockNo);
+                    Log.e("blockNo", "1===" + blockNo);
                 }
                 if (blockNo.length() == DeviceConfig.BLOCK_NO_LENGTH) {
                     setDialValue(blockNo);
                     Message message = Message.obtain();
                     message.what = MainService.MSG_CHECK_BLOCKNO;
                     message.obj = blockNo;
+                    Log.e("blockNo", "2===" + blockNo);
                     try {
                         serviceMessenger.send(message);
                     } catch (RemoteException e) {
@@ -838,14 +853,13 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
             blockNo = blockNo + key;
             setDialValue(blockNo);
             if (blockNo.length() == DeviceConfig.BLOCK_LENGTH) {
-                callNumber = blockNo.substring(2);
-                startDialing(callNumber);
+                startDialing(blockNo);
             }
         } else {
-            callNumber = callNumber + key;
-            setDialValue(callNumber);
-            if (callNumber.length() == DeviceConfig.UNIT_NO_LENGTH) {
-                startDialing(callNumber);
+            blockNo = blockNo + key;
+            setDialValue(blockNo);
+            if (blockNo.length() == DeviceConfig.UNIT_NO_LENGTH) {
+                startDialing(blockNo);
             }
         }
     }
@@ -853,7 +867,6 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
     //开始呼叫
     private void startDialing(String num) {
         setCurrentStatus(CALLING_MODE);
-        callNumber = "";
         if (DeviceConfig.DEVICE_TYPE == "C") {
             blockId = 0;
             blockNo = "";
@@ -973,16 +986,16 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                     setDialStatus("请输入楼栋编号");
                     setDialValue(blockNo);
                 } else {
-                    callNumber = backKey(callNumber);
-                    setDialValue(callNumber);
+                    blockNo = backKey(blockNo);
+                    setDialValue(blockNo);
                 }
             } else {
                 blockNo = backKey(blockNo);
                 setDialValue(blockNo);
             }
         } else {
-            callNumber = backKey(callNumber);
-            setDialValue(callNumber);
+            blockNo = backKey(blockNo);
+            setDialValue(blockNo);
         }
     }
 
@@ -1072,12 +1085,15 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
             inputCardInfo(keyCode);//录入卡片信息
         } else {
             int key = convertKeyCode(keyCode);
+            Log.e("key", "===" + key);
             if (currentStatus == CALL_MODE || currentStatus == PASSWORD_MODE) {
                 if (key >= 0) {
                     if (currentStatus == CALL_MODE) {
                         callInput(key);
+                        Log.e("callInput", "===" + key);
                     } else {
                         passwordInput(key);
+                        Log.e("passwordInput", "===" + key);
                     }
                 } else if (keyCode == KeyEvent.KEYCODE_POUND || keyCode == DeviceConfig.DEVICE_KEYCODE_POUND) {
                     if (currentStatus == CALL_MODE) {//呼叫模式下，按确认键
@@ -1091,12 +1107,11 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                     } else {
                         passwordInput();
                     }
-                    TextView tv_input_text = (TextView) findViewById(R.id.tv_input_text);
                     String str = tv_input_text.getText().toString();
                     if (str == null || str.equals("")) {
                         //跳转到登录界面
                         Intent intent = new Intent(this, InputCardInfoActivity.class);
-                        startActivity(intent);
+                        startActivityForResult(intent, INPUT_CARDINFO_REQUESTCODE);
                     }
                 }
             } else if (currentStatus == ERROR_MODE) {
@@ -1134,6 +1149,30 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == INPUT_CARDINFO_REQUESTCODE) {
+            switch (resultCode) {
+                case INPUT_CARDINFO_RESULTCODE://从录卡登录页面返回回来
+                    rl_nfc.setVisibility(View.VISIBLE);
+                    tv_message.setText(nfcMessage);
+                    nfcFlag = true;
+                    cardId=null;
+                    isFlag=true;
+                    et_blackno.setFocusable(true);
+                    et_blackno.setFocusableInTouchMode(true);
+                    et_blackno.requestFocus();
+                    break;
+                default:
+                    cardId=null;
+                    showToast("取消登录");
+                    break;
+            }
+        }
+
+    }
+
     /**
      * 录入卡片信息
      *
@@ -1159,6 +1198,7 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
             if (isFlag && (black == null || black.equals(""))) {
                 rl_nfc.setVisibility(View.GONE);
                 nfcFlag = false;
+                initDialStatus();
             }
         } else if (keyCode == KeyEvent.KEYCODE_POUND || keyCode == DeviceConfig.DEVICE_KEYCODE_POUND) {//录入卡片
             if (TextUtils.isEmpty(cardId)) {
@@ -1184,7 +1224,6 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                         }
                     }.start();
                 }
-
             }
         } else {
             int key = convertKeyCode(keyCode);
@@ -1330,12 +1369,12 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
         currentStatus = status;
     }
 
+    //初始化桌面显示呼叫模式
     private void initDialStatus() {
         //callLayout.setVisibility(View.VISIBLE);
         //guestLayout.setVisibility(View.INVISIBLE);
         videoLayout.setVisibility(View.INVISIBLE);
         setCurrentStatus(CALL_MODE);
-        callNumber = "";
         blockNo = "";
         blockId = 0;
         if (DeviceConfig.DEVICE_TYPE.equals("C")) {
@@ -1343,7 +1382,7 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
         } else {
             setDialStatus("请输入房屋编号");
         }
-        setDialValue(callNumber);
+        setDialValue(blockNo);
     }
 
     void setDialStatus(String value) {
@@ -1536,7 +1575,6 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
         String result = UUID.randomUUID().toString();
         return result;
     }
-
 
 
     @Override
@@ -1789,6 +1827,42 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
         listTemp1 = list;
     }
 
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Main Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
+    }
+
 
     class Receive extends BroadcastReceiver {
         @Override
@@ -1814,7 +1888,10 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                 e.printStackTrace();
             }
         } else {
-            tv_message.setText(cardId);
+            Message message = Message.obtain();
+            message.what = MSG_INPUT_CARDINFO;
+            message.obj = account;
+            handler.sendMessage(message);
         }
     }
 
@@ -1822,7 +1899,7 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
     private void showAlert(String strTitle, String strMsg) {
         // TODO Auto-generated method stub
         AlertDialog dialogError;
-        Builder builder = new AlertDialog.Builder(this).setTitle(strTitle).setMessage(strMsg).setPositiveButton("取消", null).setNegativeButton("确定", null);
+        Builder builder = new Builder(this).setTitle(strTitle).setMessage(strMsg).setPositiveButton("取消", null).setNegativeButton("确定", null);
         dialogError = builder.create();
         dialogError.show();
     }
@@ -1831,15 +1908,21 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
     protected void startDialorPasswordDirectly(final String thisValue, final String fileUrl, final boolean isCall, String uuid) {
         if (currentStatus == CALLING_MODE || currentStatus == PASSWORD_CHECKING_MODE) {
             Message message = Message.obtain();
+            String[] parameters = new String[3];
             if (isCall) {
                 setDialValue("呼叫" + thisValue + "，取消请按删除键");
                 message.what = MainService.MSG_START_DIAL;
+                if (DeviceConfig.DEVICE_TYPE.equals("C")) {
+                    parameters[0] = thisValue.substring(2);
+                }else {
+                    parameters[0] = thisValue;
+                }
             } else {
                 setTempkeyValue("准备验证密码" + thisValue + "...");
                 message.what = MainService.MSG_CHECK_PASSWORD;
+                parameters[0] = thisValue;
             }
-            String[] parameters = new String[3];
-            parameters[0] = thisValue;
+
             parameters[1] = fileUrl;
             parameters[2] = uuid;
             message.obj = parameters;

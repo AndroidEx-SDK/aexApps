@@ -34,24 +34,23 @@ public class InputCardInfoActivity extends Activity {
     public boolean flag = true;
     private String blockNo = "";
     private static final String TAG = "InputCardInfoActivity";
-    public static final String FLAG = "flag";
-    public String FROM = "from";
     public static int LOGIN_SUCCESS=0X01;
     public static int LOGIN_FAIL=0X02;
 
+    private Intent intent;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             int result = msg.what;
             if (result == LOGIN_SUCCESS) {//登录成功
-                Intent intent = new Intent(InputCardInfoActivity.this, MainActivity.class);
-                intent.putExtra(FLAG, FROM);
-                startActivity(intent);
+                setResult(MainActivity.INPUT_CARDINFO_RESULTCODE,intent);
                 finish();
             } else if (result == LOGIN_FAIL) {//登录失败
                 Toast.makeText(InputCardInfoActivity.this, "登录失败", Toast.LENGTH_LONG).show();
             }
+
+
         }
     };
 
@@ -60,6 +59,7 @@ public class InputCardInfoActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
+        intent = getIntent();
         et_admin = (EditText) findViewById(R.id.et_admin);
         et_password = (EditText) findViewById(R.id.et_password);
         et_admin.setOnFocusChangeListener(new View.OnFocusChangeListener() {

@@ -42,6 +42,7 @@ public class Constant {
     public static final int MSG_INPUT_CARDINFO_SUCCEED = 0x01;//录入卡信息成功
     public static final int MSG_INPUT_CARDINFO_FAIL = 0x02;//录入卡信息失败
     public static final int MSG_INPUT_CARDINFO_REPETITION = 0x03;//重复录入卡信息
+    public static final int MSG_INPUT_CARDINFO = 0x04;//重复录入卡信息
 
     public static final int CALL_MODE = 1;
     public static final int PASSWORD_MODE = 2;
