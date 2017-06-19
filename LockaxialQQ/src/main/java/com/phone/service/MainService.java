@@ -22,6 +22,7 @@ import com.phone.InitActivity;
 import com.phone.config.DeviceConfig;
 import com.phone.utils.AexUtil;
 import com.phone.utils.Ajax;
+import com.phone.utils.AssembleUtil;
 import com.phone.utils.HttpUtils;
 import com.phone.utils.SqlUtil;
 import com.phone.utils.WifiAdmin;
@@ -204,7 +205,7 @@ public class MainService extends Service {
 
     //protected RfidUtil rfidUtil=null;
     //protected NfcPortUtil nfcPortUtil=null;
-    //protected AssembleUtil assembleUtil=null;
+    protected AssembleUtil assembleUtil = null;
     protected AexUtil aexUtil = null;
     //protected FingerUtil fingerUtil=null;
     protected SqlUtil sqlUtil = null;
@@ -457,7 +458,7 @@ public class MainService extends Service {
         }
     }*/
 
-    /*protected void initAssembleUtil(){
+    protected void initAssembleUtil(){
         if(DeviceConfig.IS_ASSEMBLE_AVAILABLE){
             assembleUtil=new AssembleUtil(handler);
             try {
@@ -466,7 +467,7 @@ public class MainService extends Service {
             }
             sendInitMessenger(InitActivity.MSG_INIT_ASSEMBLE);
         }
-    }*/
+    }
 
     protected void initAexUtil() {
         if (DeviceConfig.IS_AEX_AVAILABLE) {
@@ -489,7 +490,7 @@ public class MainService extends Service {
         Log.i("MainService", "init RFID");
         //initNfcPortUtil();
         Log.i("MainService", "init NFC Port");
-        //initAssembleUtil();
+        initAssembleUtil();
         Log.i("MainService", "init ASSEMBLE");
         initAexUtil();
         Log.i("MainService", "init AEX");
@@ -902,7 +903,7 @@ public class MainService extends Service {
         if (!this.cardRecord.checkLastCard(card)) {
             if (checkCardAvailable(card)) {
                 openLock();
-                Log.e(TAG,"onCard====:"+card);
+                Log.e(TAG, "onCard====:" + card);
                 startCardAccessLog(card);
             } else {
                 sendDialMessenger(MSG_INVALID_CARD);//无效房卡
@@ -925,7 +926,6 @@ public class MainService extends Service {
     private void startCheckBlockNo(final String blockNo) {
         new Thread() {
             public void run() {
-
                 onCheckBlockNo(blockNo);
             }
         }.start();
@@ -2028,8 +2028,7 @@ public class MainService extends Service {
                 Log.v("MainService", "onDeviceStateChanged,ReLoginNetwork");
                 onConnectError();
             } else if (result == RtcConst.DeviceEvt_KickedOff) {
-                // 被另外一个终端踢
-                // 下线，由用户选择是否继续，如果再次登录，需要重新获取token，重建device
+                // 被另外一个终端踢下线，由用户选择是否继续，如果再次登录，需要重新获取token，重建device
                 Log.v("MainService", "onDeviceStateChanged,DeviceEvt_KickedOff");
                 onConnectError();
             } else if (result == RtcConst.DeviceEvt_MultiLogin) {
@@ -2261,8 +2260,8 @@ public class MainService extends Service {
     protected void onMessage(String from, String mime, String content) {
         if (content.equals("refresh card info")) {
             sendDialMessenger(MSG_REFRESH_DATA, "card");
-            //retrieveChangedCardList();
-            retrieveCardList();//注册卡信息
+            retrieveChangedCardList();
+            //retrieveCardList();//注册卡信息
         } else if (content.equals("refresh finger info")) {
             sendDialMessenger(MSG_REFRESH_DATA, "finger");
             //retrieveChangedFingerList();
@@ -2317,10 +2316,10 @@ public class MainService extends Service {
         //MBaseActivity.controlCamera(1,2);
     }*/
 
-    /*private void openAssembleLock(){
+    private void openAssembleLock(){
         assembleUtil.openLock();
-        sendDialMessenger(DialActivity.MSG_LOCK_OPENED);
-    }*/
+        sendDialMessenger(Constant.MSG_LOCK_OPENED);
+    }
 
     private void openAexLock() {
         int result = aexUtil.openLock();
@@ -2332,9 +2331,9 @@ public class MainService extends Service {
 
     protected void openLock() {
         if (DeviceConfig.IS_RFID_AVAILABLE) {
-            // openLedLock();
+            // openLedLock();//开继电器门锁,开普通门锁
         } else if (DeviceConfig.IS_ASSEMBLE_AVAILABLE) {
-            //openAssembleLock();
+            openAssembleLock();
         } else if (DeviceConfig.IS_AEX_AVAILABLE) {
             openAexLock();
         }
@@ -2409,18 +2408,19 @@ public class MainService extends Service {
             rtcClient.release();
             rtcClient = null;
         }
-      /*  if(sqlUtil!=null){
+       if(sqlUtil!=null){
             sqlUtil.close();
         }
+        /*
         if(rfidUtil!=null){
             rfidUtil.close();
         }
         if(nfcPortUtil!=null){
             nfcPortUtil.close();
-        }
-        if(assembleUtil!=null){
-            assembleUtil.close();
         }*/
+        if (assembleUtil != null) {
+            assembleUtil.close();
+        }
         if (aexUtil != null) {
             aexUtil.close();
         }
@@ -2471,7 +2471,7 @@ public class MainService extends Service {
     protected void initDeviceData() {
         if (resetFlag > 0) {
             sqlUtil.clearDeviceData();
-            String url = DeviceConfig.SERVER_URL + "/app/device/retrieveDeviceData?communityId=" + this.communityId+ "&blockId=" + this.blockId
+            String url = DeviceConfig.SERVER_URL + "/app/device/retrieveDeviceData?communityId=" + this.communityId + "&blockId=" + this.blockId
                     + "&lockId=" + this.lockId;
             Log.e(TAG, "initDeviceData: url=" + url);
             try {
@@ -2498,7 +2498,7 @@ public class MainService extends Service {
                         Log.d(TAG, "initDeviceData: cardlist=" + cardList.toString());
                         sqlUtil.changeCard(cardList);
                         if (DeviceConfig.IS_ASSEMBLE_AVAILABLE) {
-                            //assembleUtil.changeCard(cardList);
+                            assembleUtil.changeCard(cardList);
                         }
                         completeInitDeviceData();
                     }
@@ -2542,19 +2542,19 @@ public class MainService extends Service {
             public void run() {
                 try {
                     Log.d(TAG, "run: resetFlag=" + resetFlag);
-                    retrieveCardList();//注册卡信息
+                    //retrieveCardList();//注册卡信息
                     if (resetFlag > 0) {
                         initDeviceData();
                     } else {
                         // retrieveChangedFingerList();
-                        // retrieveChangedCardList();
+                        retrieveChangedCardList();
                     }
                     sleep(DeviceConfig.AD_INIT_WAIT_TIME);
                     while (!isInterrupted()) {
                         getLastAdvertisementList();
                         sleep(DeviceConfig.AD_REFRESH_WAIT_TIME); //等待广告刷新的时间
                         //retrieveChangedFingerList();
-                        // retrieveChangedCardList();
+                        retrieveChangedCardList();
                     }
                 } catch (InterruptedException e) {
                 }
@@ -2564,10 +2564,10 @@ public class MainService extends Service {
     }
 
 
-    protected void retrieveCardList() {
+    /*protected void retrieveCardList() {
         Log.d(TAG, "retrieveCardList: =============");
         String url = DeviceConfig.SERVER_URL + "/app/device/retrieveCardList?communityId=" + this.communityId
-                + "&blockId=" + this.blockId+ "&lockId=" + this.lockId;
+                + "&blockId=" + this.blockId + "&lockId=" + this.lockId;
         Log.d(TAG, "retrieveCardList: url=" + url);
         try {
             URL thisUrl = new URL(url);
@@ -2601,7 +2601,7 @@ public class MainService extends Service {
             e.printStackTrace();
         }
     }
-
+*/
     /*protected void retrieveChangedFingerList(){
         String url=DeviceConfig.SERVER_URL+"/app/device/retrieveChangedFingerList?communityId="+this.communityId;
         url=url+"&blockId="+this.blockId;
@@ -2640,11 +2640,15 @@ public class MainService extends Service {
         }
     }*/
 
+    /**
+     * 卡片更新接口
+     */
     protected void retrieveChangedCardList() {
         Log.d(TAG, "retrieveChangedCardList: +++++++++++");
         String url = DeviceConfig.SERVER_URL + "/app/device/retrieveChangedCardList?communityId=" + this.communityId;
         url = url + "&blockId=" + this.blockId;
         url = url + "&lockId=" + this.lockId;
+        Log.d(TAG, "retrieveChangedCardList: +++++"+url);
         try {
             URL thisUrl = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) thisUrl.openConnection();
@@ -2667,7 +2671,7 @@ public class MainService extends Service {
                     Log.d(TAG, "retrieveChangedCardList: data=" + data.toString());
                     sqlUtil.changeCard(data);
                     if (DeviceConfig.IS_ASSEMBLE_AVAILABLE) {
-                        // assembleUtil.changeCard(data);
+                         assembleUtil.changeCard(data);
                     } else {
                         JSONArray list = new JSONArray();
                         for (int i = 0; i < data.length(); i++) {
@@ -2703,7 +2707,7 @@ public class MainService extends Service {
         data.put("lockIndex", index);
         String dataStr = data.toString();
         URL url = new URL(DeviceConfig.SERVER_URL + "/app/device/cardOpenLock");
-        Log.e(TAG,"onCardOpenLock,url:=="+url);
+        Log.e(TAG, "onCardOpenLock,url:==" + url);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setDoOutput(true);
         connection.setDoInput(true);
