@@ -760,6 +760,7 @@ public class MainService extends Service {
         try {
             Log.v("MainService", "POST Login ajax");
             URL url = new URL(DeviceConfig.SERVER_URL + "/app/auth/deviceLogin");
+            Log.v("MainService", "getClientInfo："+url);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoOutput(true);
             connection.setDoInput(true);
@@ -786,8 +787,10 @@ public class MainService extends Service {
                 resultValue = true;
                 try {
                     httpServerToken = resultObj.getString("token");
+                    Log.v("MainService", "httpServerToken: "+httpServerToken);
                 } catch (Exception e) {
                     httpServerToken = null;
+                    Log.v("MainService", "httpServerToken:  null");
                 }
                 initDeviceConfig(resultObj);
             }
@@ -1835,6 +1838,12 @@ public class MainService extends Service {
         thread.start();
     }
 
+    /**
+     * 推送消息
+     * @param pushList
+     * @throws JSONException
+     * @throws IOException
+     */
     protected void onPushCallMessage(String pushList) throws JSONException, IOException {
         JSONObject data = new JSONObject();
         data.put("pushList", pushList);
@@ -3245,15 +3254,18 @@ public class MainService extends Service {
             conn.setRequestMethod("GET");
             if (httpServerToken != null) {
                 conn.setRequestProperty("Authorization", "Bearer " + httpServerToken);
-            }
+                Log.v("UpdateService", "httpServerToken=" + httpServerToken);
+            }else Log.v("UpdateService", "httpServerToken= null" );
             conn.setConnectTimeout(5000);
             int code = conn.getResponseCode();
+            Log.v("UpdateService", "code=" + code);
             if (code == 200) {
                 InputStream is = conn.getInputStream();
                 String result = HttpUtils.readMyInputStream(is);
                 Log.v("UpdateService", "result=" + result);
                 JSONObject resultObj = Ajax.getJSONObject(result);
                 int lastVersion = resultObj.getInt("version");
+                Log.v("UpdateService", "lastVersion=" + lastVersion+"nowVersion=="+DeviceConfig.RELEASE_VERSION);
                 if (lastVersion > DeviceConfig.RELEASE_VERSION) { //检查当前版本是否和服务器最新版本一致，如果不是最新版本则发出更新消息
                     String packageName = resultObj.getString("name") + "." + DeviceConfig.DEVICE_MODE_FLAG + "." + lastVersion + ".apk";
                     Message message = handler.obtainMessage();
@@ -3268,7 +3280,7 @@ public class MainService extends Service {
     }
 
     protected void onNewVersion(String newFile) {
-        Log.v("UpdateService", "on new version" + newFile);
+        Log.v("UpdateService", "on new version :" + newFile);
         try {
             String[] fileValues = newFile.split("\\.");
             String versionName = fileValues[fileValues.length - 2];
@@ -3299,6 +3311,9 @@ public class MainService extends Service {
         }
     }
 
+    /**
+     * 下载新版本apk
+     */
     protected void startDownloadThread() {
         final String url = DeviceConfig.UPDATE_SERVER_URL + DeviceConfig.UPDATE_RELEASE_FOLDER + lastVersionFile;
         final String fileName = lastVersionFile;
@@ -3321,6 +3336,7 @@ public class MainService extends Service {
                     if (getDownloadingFlag() == 0) {
                         Log.v("UpdateService", "download file begin");
                         String lastFile = downloadFile(url, fileName);
+                        Log.v("UpdateService", "download file begin==url:=="+url+"fileName: "+fileName);
                         if (lastFile != null) {
                             if (lastVersionStatus.equals("D")) {
                                 Log.v("UpdateService", "change status to P");
