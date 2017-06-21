@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.phone.InitActivity;
-
 public class BootBroadcastReceiver extends BroadcastReceiver {
 	private static final String TAG = "BootBroadcastReceiver";
 	static final String ACTION = "android.intent.action.BOOT_COMPLETED";

@@ -23,8 +23,8 @@ import java.util.List;
  * 是否进入引导页的广播接收器
  */
 
-public class NotifyReceiver extends BroadcastReceiver{
-    private static final String TAG = "NotifyReceiver";
+public class NotifyReceiverQQ extends BroadcastReceiver{
+    private static final String TAG = "NotifyReceiverQQ";
     Parcelable[] listTemp1;
     public Context ctx;
     public BinderListAdapter mAdapter;
@@ -32,7 +32,7 @@ public class NotifyReceiver extends BroadcastReceiver{
     public AlertDialog dialog;
     public CallBack mCallBack;
 
-    public NotifyReceiver(Context ctx, BinderListAdapter mAdapter, ImageView iv_bind, AlertDialog dialog) {
+    public NotifyReceiverQQ(Context ctx, BinderListAdapter mAdapter, ImageView iv_bind, AlertDialog dialog) {
         this.ctx = ctx;
         this.mAdapter = mAdapter;
         this.iv_bind = iv_bind;
@@ -101,7 +101,7 @@ public class NotifyReceiver extends BroadcastReceiver{
             //门禁状态改变事件
             //showAlert("门禁状态改变",intent.getStringExtra("doorsensor"));
             String doorsendor = String.format("doorsensor=%s", intent.getStringExtra("doorsensor"));
-            Log.d("NotifyReceiver", doorsendor);
+            Log.d("NotifyReceiverQQ", doorsendor);
 
         } else if (intent.getAction() == TXDeviceService.wifisetting) {
            // if (!NetWork.isNetworkAvailable(ctx))

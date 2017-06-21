@@ -460,9 +460,9 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 return true;
 
             case R.id.action_start_otherapk:
-
-                hwservice.execRootCommand("pm -r install /sdcard/DCIM/bbb.apk");
-
+                android.util.Log.e(TAG, "BroadcastReceive：UpdateService");
+                hwservice.execRootCommand("pm -r install /sdcard/DCIM/ComAssistant.apk\n");
+                android.util.Log.e(TAG, "BroadcastReceive：UpdateService");
                 return true;
 
             case R.id.action_unintall:
@@ -619,13 +619,13 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     /**
      * 指纹仪测试
      */
-    private void x3BiovoText(){
+    private void x3BiovoText() {
 
-        if (mDevices.mX3Biovo.Open()){
-            aexddX3Biovo mX3Biovo = (aexddX3Biovo)mDevices.mX3Biovo;
+        if (mDevices.mX3Biovo.Open()) {
+            aexddX3Biovo mX3Biovo = (aexddX3Biovo) mDevices.mX3Biovo;
             mX3Biovo.selfTest();
             mDevices.mX3Biovo.Close();
-        }else {
+        } else {
             String s = String.format("Open passkeypad reader fial:%s", mDevices.mX3Biovo.mParams.optString(appDeviceDriver.PORT_ADDRESS));
             Log.i(TAG, s);
             Toast.makeText(this, s, Toast.LENGTH_LONG).show();

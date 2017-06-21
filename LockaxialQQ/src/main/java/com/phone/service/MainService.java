@@ -18,7 +18,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 import com.androidex.SoundPoolUtil;
-import com.phone.InitActivity;
+import com.androidex.aexlibs.hwService;
 import com.phone.config.DeviceConfig;
 import com.phone.utils.AexUtil;
 import com.phone.utils.Ajax;
@@ -26,6 +26,7 @@ import com.phone.utils.AssembleUtil;
 import com.phone.utils.HttpUtils;
 import com.phone.utils.SqlUtil;
 import com.phone.utils.WifiAdmin;
+import com.tencent.devicedemo.InitActivity;
 import com.tencent.devicedemo.MainActivity;
 import com.util.Constant;
 import com.yuntongxun.ecsdk.ECDevice;
@@ -100,6 +101,7 @@ import static com.util.Constant.MSG_CALLMEMBER_SERVER_ERROR;
 import static com.util.Constant.MSG_CALLMEMBER_TIMEOUT;
 import static com.util.Constant.MSG_CALLMEMBER_TIMEOUT_AND_TRY_DIRECT;
 import static com.util.Constant.MSG_CONNECT_ERROR;
+import static com.util.Constant.MSG_INSTALL_SUCCEED;
 import static com.util.Constant.MSG_INVALID_CARD;
 import static com.util.Constant.MSG_LOCK_OPENED;
 import static com.util.Constant.MSG_PASSWORD_CHECK;
@@ -243,12 +245,14 @@ public class MainService extends Service {
     Thread checkThread = null;
     Thread downloadThread = null;
     Thread updateThread = null;
+    private hwService hwservice;
 
     public MainService() {
     }
 
     @Override
     public void onCreate() {
+        hwservice = new hwService(MainService.this);
         wifiAdmin = new WifiAdmin(this);
         Log.v("MainService", "------>create MainService<-------");
         initHandler();
@@ -275,6 +279,7 @@ public class MainService extends Service {
                     initConnectReport();
                     Log.i("MainService", "register Dial messenger");
                     dialMessenger = msg.replyTo;
+                    startUpdateThread();
                 } else if (msg.what == MSG_GETTOKEN) {
                     onResponseGetToken(msg);
                 } else if (msg.what == MSG_LOGIN) {
@@ -3210,7 +3215,7 @@ public class MainService extends Service {
         loadVersionFromLocal();
         adjustVersionStatus();
         startCheckThread();
-        startUpdateThread();
+//        startUpdateThread();
     }
 
     protected void adjustVersionStatus() {
@@ -3336,12 +3341,14 @@ public class MainService extends Service {
                     if (getDownloadingFlag() == 0) {
                         Log.v("UpdateService", "download file begin");
                         String lastFile = downloadFile(url, fileName);
-                        Log.v("UpdateService", "download file begin==url:=="+url+"fileName: "+fileName);
+                        Log.v("UpdateService", "download file begin==url:=="+url+"  fileName: "+fileName);
                         if (lastFile != null) {
                             if (lastVersionStatus.equals("D")) {
                                 Log.v("UpdateService", "change status to P");
                                 lastVersionStatus = "P";
                                 saveVersionFromLocal();
+                            }else {
+                                Log.v("UpdateService", " status is P");
                             }
                         }
                     }
@@ -3371,11 +3378,12 @@ public class MainService extends Service {
             HttpURLConnection conn = (HttpURLConnection) urlObject.openConnection();
             String SDCard = Environment.getExternalStorageDirectory() + "";
             localFile = SDCard + "/" + fileName;//文件存储路径
+            Log.v("downloadFile", "File path: "+localFile);
             File file = new File(localFile);
             InputStream input = conn.getInputStream();
             if (!file.exists()) {
                 file.createNewFile();//新建文件
-            }
+            }else Log.v("downloadFile", "File is exists ");
             output = new FileOutputStream(file);
             //读取大文件
             byte[] buffer = new byte[1024 * 8];
@@ -3390,7 +3398,9 @@ public class MainService extends Service {
                 out.flush();
                 if (getDownloadingFlag() == 1) {
                     result = localFile;
+                    Log.v("downloadFile", "result:  "+result+"  getDownloadingFlag="+1);
                 }
+                Log.v("downloadFile", "result:  "+result+"  getDownloadingFlag="+getDownloadingFlag());
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
@@ -3468,16 +3478,34 @@ public class MainService extends Service {
         Log.v("UpdateService", "------>start Update App<------");
         if (file.exists()) {
             Log.v("UpdateService", "check update file OK");
-            startInstallApp(fileName);
+
+            Log.i(TAG, "UpdateService:" + fileName);
+            //sendMessenger(MSG_INSTALL_SUCCEED,fileName);//发送安装指令
+            sendDialMessenger(MSG_INSTALL_SUCCEED,fileName);
         }
     }
 
     protected void startInstallApp(String fileName) {
-        Intent app = this.getPackageManager().getLaunchIntentForPackage(DeviceConfig.TARGET_PACKAGE_NAME);
-        if (app != null) {
-            app.putExtra("installFileName", fileName);
-            this.startActivity(app);
-        }
+//        Intent app = this.getPackageManager().getLaunchIntentForPackage(DeviceConfig.TARGET_PACKAGE_NAME);
+//        if (app != null) {
+//            Log.v("UpdateService", "fileName: "+fileName);
+//            app.putExtra("installFileName", fileName);
+//            this.startActivity(app);
+//        }
+//        Log.v("UpdateService", "app: "+app);
+
+
+//        InstallUtil.installAPK(this, fileName, getPackageName() + ".fileProvider", new InstallUtil.InstallCallBack() {
+//            @Override
+//            public void onSuccess() {
+//                Log.v("UpdateService", "install succeed: ");
+//            }
+//
+//            @Override
+//            public void onFail(Exception e) {
+//                Log.v("UpdateService", "install fail");
+//            }
+//        });
     }
 
     protected void loadVersionFromLocal() {

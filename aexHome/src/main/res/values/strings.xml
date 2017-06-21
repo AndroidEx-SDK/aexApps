@@ -463,4 +463,8 @@ kk30外围设备? - 读卡器，键盘一体机特点:
     \n\t\t您的应用程序可以使用读GUID作为设备的唯一标识，也可以取用Android ID。</string>
     <string name="ready1">就绪</string>
 
+    <string name="str_ok">确认</string>
+    <string name="str_query_quit">确定退出程序吗？</string>
+    <string name="str_quit">退出</string>
+    <string name="str_cancel">取消</string>
 </resources>

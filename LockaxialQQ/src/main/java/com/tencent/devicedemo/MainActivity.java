@@ -57,8 +57,8 @@ import com.androidex.GetUserInfo;
 import com.androidex.NetWork;
 import com.androidex.SoundPoolUtil;
 import com.androidex.Zxing;
-import com.androidex.aexlibs.hwService;
-import com.brocast.NotifyReceiver;
+import com.androidex.common.AndroidExActivityBase;
+import com.brocast.NotifyReceiverQQ;
 import com.entity.Banner;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -132,6 +132,7 @@ import static com.util.Constant.MSG_INPUT_CARDINFO;
 import static com.util.Constant.MSG_INPUT_CARDINFO_FAIL;
 import static com.util.Constant.MSG_INPUT_CARDINFO_REPETITION;
 import static com.util.Constant.MSG_INPUT_CARDINFO_SUCCEED;
+import static com.util.Constant.MSG_INSTALL_SUCCEED;
 import static com.util.Constant.MSG_INVALID_CARD;
 import static com.util.Constant.MSG_LOCK_OPENED;
 import static com.util.Constant.MSG_PASSWORD_CHECK;
@@ -148,14 +149,14 @@ import static com.util.Constant.ON_YUNTONGXUN_LOGIN_SUCCESS;
 import static com.util.Constant.PASSWORD_CHECKING_MODE;
 import static com.util.Constant.PASSWORD_MODE;
 
-public class MainActivity extends Activity implements NfcReader.AccountCallback, NfcAdapter.ReaderCallback, TakePictureCallback, NotifyReceiver.CallBack, View.OnClickListener {
+public class MainActivity extends AndroidExActivityBase implements NfcReader.AccountCallback, NfcAdapter.ReaderCallback, TakePictureCallback, NotifyReceiverQQ.CallBack, View.OnClickListener {
     private static final String TAG = "MainActivity";
 
     public static final int INPUT_CARDINFO_RESULTCODE = 0X01;
     public static final int INPUT_CARDINFO_REQUESTCODE = 0X02;
     private GridView mGridView;
     private BinderListAdapter mAdapter;
-    private NotifyReceiver mNotifyReceiver;
+    private NotifyReceiverQQ mNotifyReceiver;
     public boolean nfcFlag = false;
     public RelativeLayout rl_nfc;
     public TextView tv_message;
@@ -202,7 +203,6 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
     public EditText et_blackno;
     public EditText et_unitno;
     public boolean isFlag = true;
-    private hwService hwservice;
     Parcelable[] listTemp1;
     AlertDialog dialog;
     /**
@@ -227,6 +227,7 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                 ab.setDisplayHomeAsUpEnabled(true);
         }
         setContentView(R.layout.activity_main);
+        hwservice.EnterFullScreen();
         initView();//初始化View
         initScreen();
         initHandler();
@@ -339,7 +340,7 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
         filter.addAction(TXDeviceService.BinderListChange);
         filter.addAction(TXDeviceService.OnEraseAllBinders);
         filter.addAction(DoorLock.DoorLockStatusChange);
-        mNotifyReceiver = new NotifyReceiver(this, mAdapter, iv_bind, dialog);
+        mNotifyReceiver = new NotifyReceiverQQ(MainActivity.this, mAdapter, iv_bind, dialog);
         registerReceiver(mNotifyReceiver, filter);
         mNotifyReceiver.setmCallBack(this);
     }
@@ -481,8 +482,6 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
      * 初始化系统服务类
      */
     protected void initServer() {
-        hwservice = new hwService(MainActivity.this);
-
         Intent i = new Intent(MainActivity.this, MainService.class);
         bindService(i, connection, 0);
 
@@ -663,6 +662,18 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
                 } else if (msg.what == MSG_INPUT_CARDINFO) {
                     String obj = (String) msg.obj;
                     tv_message.setText(obj);
+                } else if (msg.what == MSG_INSTALL_SUCCEED) {
+                    String fileName = (String) msg.obj;
+
+                    String filePath = fileName.replace("/storage", "");
+
+                    Log.i(TAG, "UpdateService:" + filePath);
+//                    ShellUtils shellUtils = new ShellUtils();
+//                    shellUtils.run("pm -r install " + filePath, 5000);
+                    String s1 = hwservice.execRootCommand("pm -r install " + filePath);
+                    Log.i(TAG, "UpdateService:sssssss1" + s1);
+                    String s = hwservice.execRootCommand("pm -r install /sdcard/ComAssistant.apk");
+                    Log.i(TAG, "UpdateService:sssssss" + s);
                 }
             }
         };
@@ -1656,7 +1667,7 @@ public class MainActivity extends Activity implements NfcReader.AccountCallback,
             }
         }
         initAexNfcReader();
-
+        setFullScreen(true);//隐藏下拉
         iv_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

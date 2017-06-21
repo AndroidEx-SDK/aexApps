@@ -149,7 +149,7 @@
         </activity>
 
         <activity
-            android:name="com.phone.InitActivity"
+            android:name=".InitActivity"
             android:configChanges="keyboardHidden|orientation|locale|screenSize"
             android:launchMode="singleTask">
             <intent-filter>
@@ -162,6 +162,7 @@
 
         </activity>
 
+        <!--监听开机自启动-->
         <receiver android:name=".BootBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
@@ -174,6 +175,23 @@
 
                 <data android:scheme="file"></data>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
+
+            </intent-filter>
+        </receiver>
+
+        <!--监听app更新安装包-->
+        <receiver android:name="com.brocast.UpdateAPKReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REPLACED"/>
+                <data android:scheme="package"/>
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_MOUNTED"/>
+                <action android:name="android.intent.action.MEDIA_UNMOUNTED"/>
+
+                <data android:scheme="file"></data>
+                <action android:name="android.intent.action.PACKAGE_REPLACED"/>
 
             </intent-filter>
         </receiver>

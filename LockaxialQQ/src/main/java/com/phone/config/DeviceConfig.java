@@ -12,8 +12,8 @@ public class DeviceConfig {
     public static final int RELEASE_VERSION=1;
     public static int RELEASE_VERSION_WAIT_TIME=1000*60*1;
     public static int RELEASE_VERSION_UPDATE_TIME=3;
-    public static final String TARGET_PACKAGE_NAME="com.nodepoint.intermanager";
-    public static final String TARGET_ACTIVITY_NAME="com.nodepoint.intermanager.InitActivity";
+    public static final String TARGET_PACKAGE_NAME="com.tencent.devicedemo";
+    public static final String TARGET_ACTIVITY_NAME="com.tencent.devicedemo.InitActivity";
 	
     public static final int APPLICATION_MODEL=0; //0:debug  1:product
 	public static final int CALL_MEMBER_MODE_SERIAL=0;

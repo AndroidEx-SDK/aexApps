@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#10000000"
-    android:orientation="vertical" >
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#10000000"
+              android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/postContentEditorWrapper"
@@ -12,17 +12,17 @@
         android:layout_gravity="center_horizontal"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:visibility="gone" >
+        android:visibility="gone">
     </LinearLayout>
-    
-    <TextView 
+
+    <TextView
         android:id="@+id/textview_device_guid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24dp"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
-        />
+        android:layout_marginTop="10dp"
+        android:textSize="24dp"
+    />
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -30,14 +30,14 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:fillViewport="false"
-        android:scrollbars="none" >
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="691dp"
             android:layout_gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="20dip" >
+            android:padding="20dip">
 
             <RelativeLayout
                 android:id="@+id/section1"
@@ -46,7 +46,7 @@
                 android:layout_marginBottom="10dip"
                 android:layout_marginTop="10dip"
                 android:background="@drawable/content_bg"
-                android:paddingBottom="10dp" >
+                android:paddingBottom="10dp">
 
                 <TextView
                     android:id="@+id/l_status"
@@ -54,41 +54,40 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/content_bg_header"
                     android:text="@string/meteredset_dev"
-                    android:textSize="30dp" />
+                    android:textSize="30dp"/>
 
-                
-              <TextView
+
+                <TextView
                     android:id="@+id/textView2_2"
                     android:layout_width="150dip"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/dev_card"
                     android:layout_alignLeft="@+id/textView2_1"
                     android:text="@string/meteredset_dev_cardreader"
-                    android:textSize="20dp" />
-                               
-               <Spinner
+                    android:textSize="20dp"/>
+
+                <Spinner
                     android:id="@+id/card"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_alignRight="@+id/print"
                     android:layout_below="@+id/l_status"
                     android:layout_margin="4dp"
                     android:layout_toRightOf="@+id/textView2_1"
-                    android:background="@drawable/wp_spinner_bg"
-                    android:layout_alignRight="@+id/print"/>
-                                
+                    android:background="@drawable/wp_spinner_bg"/>
+
                 <Spinner
                     android:id="@+id/dev_card"
                     android:layout_width="250dip"
                     android:layout_height="match_parent"
+                    android:layout_alignRight="@+id/dev_print"
                     android:layout_below="@+id/l_status"
                     android:layout_margin="4dp"
                     android:layout_toRightOf="@+id/card"
-                    android:background="@drawable/wp_spinner_bg"
-                    android:layout_alignRight="@+id/dev_print" />
+                    android:background="@drawable/wp_spinner_bg"/>
 
-               
-               
-            <TextView
+
+                <TextView
                     android:id="@+id/textView2_1"
                     android:layout_width="150dip"
                     android:layout_height="wrap_content"
@@ -97,29 +96,29 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="10dp"
                     android:text="@string/meteredset_dev_print"
-                    android:textSize="20dp" />
-               
-              <Spinner
+                    android:textSize="20dp"/>
+
+                <Spinner
                     android:id="@+id/print"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_alignRight="@+id/keyboard"
                     android:layout_below="@+id/dev_card"
                     android:layout_margin="4dp"
                     android:layout_toRightOf="@+id/textView2_2"
-                    android:background="@drawable/wp_spinner_bg"
-                    android:layout_alignRight="@+id/keyboard"/>
-                                                    
+                    android:background="@drawable/wp_spinner_bg"/>
+
                 <Spinner
                     android:id="@+id/dev_print"
                     android:layout_width="250dip"
                     android:layout_height="wrap_content"
+                    android:layout_alignRight="@+id/dev_keyboard"
                     android:layout_below="@+id/dev_card"
                     android:layout_margin="4dp"
                     android:layout_toRightOf="@+id/print"
-                    android:background="@drawable/wp_spinner_bg"
-                    android:layout_alignRight="@+id/dev_keyboard" />
-                
-             <TextView
+                    android:background="@drawable/wp_spinner_bg"/>
+
+                <TextView
                     android:id="@+id/textView2_3"
                     android:layout_width="150dip"
                     android:layout_height="wrap_content"
@@ -127,18 +126,18 @@
                     android:layout_alignBottom="@+id/dev_keyboard"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="10dp"
-                    android:text="@string/meteredset_dev_keyboard" />
-             
-             <Spinner
+                    android:text="@string/meteredset_dev_keyboard"/>
+
+                <Spinner
                     android:id="@+id/dev_keyboard"
                     android:layout_width="250dip"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/dev_print"
                     android:layout_margin="4dp"
                     android:layout_toRightOf="@+id/keyboard"
-                    android:background="@drawable/wp_spinner_bg" />
-                             
-              <Spinner
+                    android:background="@drawable/wp_spinner_bg"/>
+
+                <Spinner
                     android:id="@+id/keyboard"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -146,9 +145,9 @@
                     android:layout_margin="4dp"
                     android:layout_toRightOf="@+id/textView2_3"
                     android:background="@drawable/wp_spinner_bg"/>
-              
-              
-           <TextView
+
+
+                <TextView
                     android:id="@+id/textView2_4"
                     android:layout_width="150dip"
                     android:layout_height="wrap_content"
@@ -157,280 +156,277 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="10dp"
                     android:text="@string/meteredset_dev_idcard"
-                    android:textSize="20dp" />
-           
-           
-            <Spinner
+                    android:textSize="20dp"/>
+
+
+                <Spinner
                     android:id="@+id/idcard"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_alignRight="@+id/keyboard"
                     android:layout_below="@+id/dev_keyboard"
                     android:layout_margin="4dp"
                     android:layout_toRightOf="@+id/textView2_3"
-                    android:background="@drawable/wp_spinner_bg"
-                    android:layout_alignRight="@+id/keyboard"/>
-                         
-             
-             <Spinner
+                    android:background="@drawable/wp_spinner_bg"/>
+
+
+                <Spinner
                     android:id="@+id/dev_idcard"
                     android:layout_width="250dip"
                     android:layout_height="wrap_content"
+                    android:layout_alignRight="@+id/dev_keyboard"
                     android:layout_below="@+id/dev_keyboard"
                     android:layout_margin="4dp"
                     android:layout_toRightOf="@+id/idcard"
-                    android:background="@drawable/wp_spinner_bg"
-                    android:layout_alignRight="@+id/dev_keyboard"/>
-              
-                
+                    android:background="@drawable/wp_spinner_bg"/>
+
+
             </RelativeLayout>
 
-<!--             <RelativeLayout
-                android:id="@+id/section2"
+            <!--             <RelativeLayout
+                            android:id="@+id/section2"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dip"
+                            android:layout_marginTop="10dip"
+                            android:background="@drawable/content_bg"
+                            android:paddingBottom="10dp" >
+
+                            <TextView
+                                android:id="@+id/l_tags_categories"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/content_bg_header"
+                                android:text="@string/meteredset_server"
+                                android:textSize="30dp" />
+
+                            <TextView
+                                android:id="@+id/textView3_1"
+                                android:layout_width="150dip"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/metered_serveraddr1"
+                                android:layout_alignParentLeft="true"
+                                android:layout_marginLeft="10dp"
+                                android:text="@string/meteredset_server_defaultip"
+                                android:textSize="20dp" />
+
+                            <EditText
+                                android:id="@+id/metered_serveraddr1"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/l_tags_categories"
+                                android:layout_margin="4dp"
+                                android:layout_toRightOf="@+id/textView3_1"
+                                android:background="@android:drawable/editbox_background"
+                                android:inputType="text"
+                                android:minHeight="40dip" />
+                        </RelativeLayout> -->
+
+            <RelativeLayout
+                android:id="@+id/section3"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dip"
                 android:layout_marginTop="10dip"
                 android:background="@drawable/content_bg"
-                android:paddingBottom="10dp" >
+                android:paddingBottom="10dp">
+
 
                 <TextView
-                    android:id="@+id/l_tags_categories"
+                    android:id="@+id/titile_system_set"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/content_bg_header"
-                    android:text="@string/meteredset_server"
-                    android:textSize="30dp" />
+                    android:text="@string/system_set"
+                    android:textSize="30dp"/>
 
                 <TextView
-                    android:id="@+id/textView3_1"
+                    android:id="@+id/textView_font"
                     android:layout_width="150dip"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/metered_serveraddr1"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="@string/meteredset_server_defaultip"
-                    android:textSize="20dp" />
+                    android:layout_alignBottom="@+id/font"
+                    android:layout_alignLeft="@+id/textView_statusbar"
+                    android:layout_below="@+id/titile_system_set"
+                    android:text="@string/font"
+                    android:textSize="20dp"/>
 
-                <EditText
-                    android:id="@+id/metered_serveraddr1"
+                <Spinner
+                    android:id="@+id/font"
+                    android:layout_width="250dip"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/titile_system_set"
+                    android:layout_toRightOf="@+id/textView_font"
+                    android:background="@drawable/wp_spinner_bg"/>
+
+                <TextView
+                    android:id="@+id/textView_statusbar"
+                    android:layout_width="150dip"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/statusbar"
+                    android:layout_alignLeft="@+id/textView_screenconfig"
+                    android:layout_below="@+id/textView_font"
+                    android:text="@string/statusbar"
+                    android:textSize="20dp"/>
+
+
+                <Spinner
+                    android:id="@+id/statusbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignRight="@+id/font"
+                    android:layout_below="@+id/textView_font"
+                    android:layout_toRightOf="@+id/textView_statusbar"
+                    android:background="@drawable/wp_spinner_bg"/>
+
+                <TextView
+                    android:id="@+id/textView_screenconfig"
+                    android:layout_width="150dip"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/screenconfig"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/screenconfig"
+                    android:textSize="20dp"/>
+
+                <Spinner
+                    android:id="@+id/screenconfig"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignRight="@+id/statusbar"
+                    android:layout_below="@+id/textView_statusbar"
+                    android:layout_toRightOf="@+id/textView_screenconfig"
+                    android:background="@drawable/wp_spinner_bg"/>
+
+
+                <TextView
+                    android:id="@+id/textView_autoboot"
+                    android:layout_width="150dip"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/boot_hour"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/autoboot"
+                    android:textSize="20dp"/>
+
+                <Spinner
+                    android:id="@+id/boot_hour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignRight="@+id/screenconfig"
+                    android:layout_below="@+id/textView_screenconfig"
+                    android:layout_toRightOf="@+id/textView_autoboot"
+                    android:background="@drawable/wp_spinner_bg"/>
+
+                <Spinner
+                    android:id="@+id/boot_minute"
+                    android:layout_width="250dip"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/textView_screenconfig"
+                    android:layout_toRightOf="@+id/boot_hour"
+                    android:background="@drawable/wp_spinner_bg"/>
+
+
+                <TextView
+                    android:id="@+id/textView_shutdown"
+                    android:layout_width="150dip"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/shutdown_hour"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/autoshutdown"
+                    android:textSize="20dp"/>
+
+                <Spinner
+                    android:id="@+id/shutdown_hour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignRight="@+id/boot_hour"
+                    android:layout_below="@+id/textView_autoboot"
+                    android:layout_toRightOf="@+id/textView_shutdown"
+                    android:background="@drawable/wp_spinner_bg"/>
+
+                <Spinner
+                    android:id="@+id/shutdown_minute"
+                    android:layout_width="250dip"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/textView_autoboot"
+                    android:layout_toRightOf="@+id/shutdown_hour"
+                    android:background="@drawable/wp_spinner_bg"/>
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/section4"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dip"
+                android:layout_marginTop="10dip"
+                android:background="@drawable/content_bg"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:id="@+id/titile_boot_set"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/l_tags_categories"
-                    android:layout_margin="4dp"
-                    android:layout_toRightOf="@+id/textView3_1"
-                    android:background="@android:drawable/editbox_background"
-                    android:inputType="text"
-                    android:minHeight="40dip" />
-            </RelativeLayout> -->
-            
-           <RelativeLayout
-               android:id="@+id/section3"
-               android:layout_width="fill_parent"
-               android:layout_height="wrap_content"
-               android:layout_marginBottom="10dip"
-               android:layout_marginTop="10dip"
-               android:background="@drawable/content_bg"
-               android:paddingBottom="10dp" >
-             
+                    android:background="@drawable/content_bg_header"
+                    android:text="@string/bootset"
+                    android:textSize="30dp"/>
 
-               <TextView
-                   android:id="@+id/titile_system_set"
-                   android:layout_width="fill_parent"
-                   android:layout_height="wrap_content"
-                   android:background="@drawable/content_bg_header"
-                   android:text="@string/system_set"
-                   android:textSize="30dp" />
 
-               <TextView
-                   android:id="@+id/textView_font"
-                   android:layout_width="150dip"
-                   android:layout_height="wrap_content"
-                   android:layout_alignBottom="@+id/font"
-                   android:layout_alignLeft="@+id/textView_statusbar"
-                   android:layout_below="@+id/titile_system_set"
-                   android:text="@string/font"
-                   android:textSize="20dp" />
+                <TextView
+                    android:id="@+id/textView_defaultstart"
+                    android:layout_width="150dip"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/titile_boot_set"
+                    android:layout_below="@+id/titile_boot_set"
+                    android:text="@string/defaultstart"
+                    android:textSize="20dp"/>
 
-               <Spinner
-                   android:id="@+id/font"
-                   android:layout_width="250dip"
-                   android:layout_height="match_parent"
-                   android:layout_below="@+id/titile_system_set"
-                   android:layout_toRightOf="@+id/textView_font"
-                   android:background="@drawable/wp_spinner_bg" />
+                <Spinner
+                    android:id="@+id/defaultstart"
+                    android:layout_width="250dip"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/titile_boot_set"
+                    android:layout_toRightOf="@+id/textView_defaultstart"
+                    android:background="@drawable/wp_spinner_bg"/>
 
-               <TextView
-                   android:id="@+id/textView_statusbar"
-                   android:layout_width="150dip"
-                   android:layout_height="wrap_content"
-                   android:layout_alignBottom="@+id/statusbar"
-                   android:layout_alignLeft="@+id/textView_screenconfig"
-                   android:layout_below="@+id/textView_font"
-                   android:text="@string/statusbar"
-                   android:textSize="20dp" />
-               
-
-               <Spinner
-                   android:id="@+id/statusbar"
-                   android:layout_width="wrap_content"
-                   android:layout_height="match_parent"
-                   android:layout_alignRight="@+id/font"
-                   android:layout_below="@+id/textView_font"
-                   android:layout_toRightOf="@+id/textView_statusbar"
-                   android:background="@drawable/wp_spinner_bg" />
-
-               <TextView
-                   android:id="@+id/textView_screenconfig"
-                   android:layout_width="150dip"
-                   android:layout_height="wrap_content"
-                   android:layout_alignBottom="@+id/screenconfig"
-                   android:layout_alignParentLeft="true"
-                   android:text="@string/screenconfig"
-                   android:textSize="20dp" />           
-                              
-               <Spinner
-                   android:id="@+id/screenconfig"
-                   android:layout_width="wrap_content"
-                   android:layout_height="match_parent"
-                   android:layout_below="@+id/textView_statusbar"
-                   android:layout_toRightOf="@+id/textView_screenconfig"
-                   android:layout_alignRight="@+id/statusbar"
-                   android:background="@drawable/wp_spinner_bg" />
-               
-               
-               <TextView
-                   android:id="@+id/textView_autoboot"
-                   android:layout_width="150dip"
-                   android:layout_height="wrap_content"
-                   android:layout_alignBottom="@+id/boot_hour"
-                   android:layout_alignParentLeft="true"
-                   android:text="@string/autoboot"
-                   android:textSize="20dp" />
-                              
-               <Spinner
-                   android:id="@+id/boot_hour"
-                   android:layout_width="wrap_content"
-                   android:layout_height="match_parent"
-                   android:layout_below="@+id/textView_screenconfig"
-                   android:layout_toRightOf="@+id/textView_autoboot"
-                   android:layout_alignRight="@+id/screenconfig"
-                   android:background="@drawable/wp_spinner_bg" />
-               
-               <Spinner
-                   android:id="@+id/boot_minute"
-                   android:layout_width="250dip"
-                   android:layout_height="match_parent"
-                   android:layout_below="@+id/textView_screenconfig"
-                   android:layout_toRightOf="@+id/boot_hour"
-                   android:background="@drawable/wp_spinner_bg" />
-               
-               
-              <TextView
-                   android:id="@+id/textView_shutdown"
-                   android:layout_width="150dip"
-                   android:layout_height="wrap_content"
-                   android:layout_alignBottom="@+id/shutdown_hour"
-                   android:layout_alignParentLeft="true"
-                   android:text="@string/autoshutdown"
-                   android:textSize="20dp" />
-                              
-               <Spinner
-                   android:id="@+id/shutdown_hour"
-                   android:layout_width="wrap_content"
-                   android:layout_height="match_parent"
-                   android:layout_below="@+id/textView_autoboot"
-                   android:layout_toRightOf="@+id/textView_shutdown"
-                   android:layout_alignRight="@+id/boot_hour"
-                   android:background="@drawable/wp_spinner_bg" />
-               
-               <Spinner
-                   android:id="@+id/shutdown_minute"
-                   android:layout_width="250dip"
-                   android:layout_height="match_parent"
-                   android:layout_below="@+id/textView_autoboot"
-                   android:layout_toRightOf="@+id/shutdown_hour"
-                   android:background="@drawable/wp_spinner_bg" />
-               
-               
-           
-
-           </RelativeLayout>
-           
-           
-           <RelativeLayout
-               android:id="@+id/section4"
-               android:layout_width="fill_parent"
-               android:layout_height="wrap_content"
-               android:layout_marginBottom="10dip"
-               android:layout_marginTop="10dip"
-               android:background="@drawable/content_bg"
-               android:paddingBottom="10dp" >
-
-               <TextView
-                   android:id="@+id/titile_boot_set"
-                   android:layout_width="fill_parent"
-                   android:layout_height="wrap_content"
-                   android:layout_below="@+id/titile_boot_set"
-                   android:background="@drawable/content_bg_header"
-                   android:text="@string/bootset"
-                   android:textSize="30dp" />
-               
-               
-             <TextView
-                   android:id="@+id/textView_defaultstart"
-                   android:layout_width="150dip"
-                   android:layout_height="wrap_content"
-                   android:layout_alignLeft="@+id/titile_boot_set"
-                   android:layout_below="@+id/titile_boot_set"
-                   android:text="@string/defaultstart"
-                   android:textSize="20dp" />
-
-               <Spinner
-                   android:id="@+id/defaultstart"
-                   android:layout_width="250dip"
-                   android:layout_height="match_parent"
-                   android:layout_below="@+id/titile_boot_set"
-                   android:layout_toRightOf="@+id/textView_defaultstart"
-                   android:background="@drawable/wp_spinner_bg" />
-               
             </RelativeLayout>
-            
-            <RelativeLayout
-               android:id="@+id/section5"
-               android:layout_width="fill_parent"
-               android:layout_height="wrap_content"
-               android:layout_marginBottom="10dip"
-               android:layout_marginTop="10dip"
-               android:background="@drawable/content_bg"
-               android:paddingBottom="10dp" >
 
-               <TextView
-                   android:id="@+id/titile_gps_set"
-                   android:layout_width="fill_parent"
-                   android:layout_height="wrap_content"
-                   android:background="@drawable/content_bg_header"
-                   android:text="@string/titile_gps_set"
-                   android:textSize="30dp" />
-               
-               
-             <TextView
-                   android:id="@+id/textView_rs232set"
-                   android:layout_width="150dip"
-                   android:layout_height="wrap_content"
-                   android:layout_alignLeft="@+id/titile_gps_set"
-                   android:layout_below="@+id/titile_gps_set"
-                   android:text="@string/gps_rs232_set"
-                   android:textSize="20dp" />
-             
-             <Spinner
-                   android:id="@+id/spinner_gpsset"
-                   android:layout_width="250dip"
-                   android:layout_height="match_parent"
-                   android:layout_below="@+id/titile_gps_set"
-                   android:layout_toRightOf="@+id/textView_rs232set"
-                   android:background="@drawable/wp_spinner_bg" />
-               
-            </RelativeLayout> 
+            <RelativeLayout
+                android:id="@+id/section5"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dip"
+                android:layout_marginTop="10dip"
+                android:background="@drawable/content_bg"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:id="@+id/titile_gps_set"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/content_bg_header"
+                    android:text="@string/titile_gps_set"
+                    android:textSize="30dp"/>
+
+
+                <TextView
+                    android:id="@+id/textView_rs232set"
+                    android:layout_width="150dip"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/titile_gps_set"
+                    android:layout_below="@+id/titile_gps_set"
+                    android:text="@string/gps_rs232_set"
+                    android:textSize="20dp"/>
+
+                <Spinner
+                    android:id="@+id/spinner_gpsset"
+                    android:layout_width="250dip"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/titile_gps_set"
+                    android:layout_toRightOf="@+id/textView_rs232set"
+                    android:background="@drawable/wp_spinner_bg"/>
+
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/section6"
@@ -438,7 +434,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dip"
                 android:layout_marginTop="10dip"
-                android:paddingBottom="10dp" >
+                android:paddingBottom="10dp">
 
                 <Button
                     android:id="@+id/metered_save"
@@ -447,7 +443,7 @@
                     android:layout_centerInParent="true"
                     android:background="@android:drawable/btn_default"
                     android:text="@string/meteredset_save"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"/>
 
                 <Button
                     android:id="@+id/metered_reload"
@@ -457,7 +453,7 @@
                     android:layout_toRightOf="@+id/metered_save"
                     android:background="@android:drawable/btn_default"
                     android:text="@string/meteredset_reload"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"/>
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

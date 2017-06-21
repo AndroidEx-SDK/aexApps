@@ -1,4 +1,4 @@
-package com.phone;
+package com.tencent.devicedemo;
 
 import android.app.Activity;
 import android.app.Service;
@@ -32,7 +32,6 @@ import com.androidex.aexlibs.hwService;
 import com.phone.config.DeviceConfig;
 import com.phone.service.MainService;
 import com.tencent.device.TXDeviceService;
-import com.tencent.devicedemo.R;
 import com.util.Intenet;
 
 import org.json.JSONObject;
