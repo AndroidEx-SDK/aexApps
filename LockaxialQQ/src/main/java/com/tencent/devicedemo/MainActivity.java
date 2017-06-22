@@ -78,6 +78,7 @@ import com.tencent.device.TXDeviceService;
 import com.tencent.devicedemo.interfac.NetworkCallBack;
 import com.tencent.devicedemo.interfac.TakePictureCallback;
 import com.util.Intenet;
+import com.util.ShellUtils;
 import com.viewpager.AutoScrollViewPager;
 
 import org.json.JSONArray;
@@ -668,12 +669,10 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
                     String filePath = fileName.replace("/storage", "");
 
                     Log.i(TAG, "UpdateService:" + filePath);
-//                    ShellUtils shellUtils = new ShellUtils();
-//                    shellUtils.run("pm -r install " + filePath, 5000);
-                    String s1 = hwservice.execRootCommand("pm -r install " + filePath);
-                    Log.i(TAG, "UpdateService:sssssss1" + s1);
-                    String s = hwservice.execRootCommand("pm -r install /sdcard/ComAssistant.apk");
-                    Log.i(TAG, "UpdateService:sssssss" + s);
+                    ShellUtils shellUtils = new ShellUtils();
+                    shellUtils.run("pm -r install " + filePath, 5000);
+                    //hwservice.execRootCommand("pm -r install /sdcard/LockaxialQQ.a.2.apk");
+                    Log.i(TAG, "UpdateService:" + filePath);
                 }
             }
         };

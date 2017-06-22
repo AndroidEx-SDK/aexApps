@@ -2,6 +2,7 @@ package com.androidex.apps.home;
 
 import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -461,7 +462,16 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
 
             case R.id.action_start_otherapk:
                 android.util.Log.e(TAG, "BroadcastReceive：UpdateService");
-                hwservice.execRootCommand("pm -r install /sdcard/DCIM/ComAssistant.apk\n");
+                hwservice.execRootCommand("pm -r install /sdcard/DCIM/TextAirkiss-sign.apk");
+                hwservice.execRootCommand("pm -r install /sdcard/DCIM/ComAssistant.apk");
+                android.util.Log.e(TAG, "BroadcastReceive：UpdateService");
+
+                //启动锁相门禁
+                Intent intent1 = new Intent();
+                intent1.setComponent(new ComponentName("com.tencent.devicedemo",
+                        "com.tencent.devicedemo.InitActivity"));
+                startActivity(intent1);
+
                 android.util.Log.e(TAG, "BroadcastReceive：UpdateService");
                 return true;
 
