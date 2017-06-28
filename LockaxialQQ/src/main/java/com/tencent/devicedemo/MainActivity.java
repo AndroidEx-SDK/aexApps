@@ -1618,7 +1618,6 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
             public void onClick(DialogInterface dialog, int which) {
                 // TODO Auto-generated method stub
                 dialog.dismiss();
-
             }
         }).setNegativeButton(R.string.unbind, new DialogInterface.OnClickListener() {
 
@@ -1679,7 +1678,6 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.action_settings1:
-                                // startActivity(new Intent(MainActivity.this, WifiConnActivity.class));
                                 Intenet.system_set(MainActivity.this);
                                 break;
 
@@ -1768,14 +1766,11 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
     };
 
     private int dialogtime = 0;
-
     private Handler handle = new Handler();
 
     protected void onPause() {
         super.onPause();
-
         //unbindService(mConn);
-
     }
 
     protected void onDestroy() {
@@ -1859,9 +1854,6 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
     @Override
     public void onStart() {
         super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
         client.connect();
         AppIndex.AppIndexApi.start(client, getIndexApiAction());
     }
@@ -1869,13 +1861,9 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
     @Override
     public void onStop() {
         super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
     }
-
 
     class Receive extends BroadcastReceiver {
         @Override
