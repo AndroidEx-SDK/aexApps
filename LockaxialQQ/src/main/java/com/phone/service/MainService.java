@@ -1012,7 +1012,7 @@ public class MainService extends Service {
             String url = DeviceConfig.SERVER_URL + "/app/device/openDoorByTempKey?from=";
             url = url + this.key;
             url = url + "&communityId=" + this.communityId;
-            url = url + "&lockId=" + this.lockId;
+            url = url + "&blockId=" + this.blockId;
             url = url + "&tempKey=" + this.tempKey;
             if (imageUuid != null) {
                 url = url + "&imageUuid=" + URLEncoder.encode(this.imageUuid, "UTF-8");

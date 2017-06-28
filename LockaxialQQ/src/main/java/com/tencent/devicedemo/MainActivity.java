@@ -727,6 +727,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
 
     public void onRtcVideoOn() {
         initVideoViews();
+        //有坑
         MainService.callConnection.buildVideo(remoteView);
         //callLayout.setVisibility(View.INVISIBLE);
         //guestLayout.setVisibility(View.INVISIBLE);

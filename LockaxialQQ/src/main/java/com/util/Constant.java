@@ -11,7 +11,7 @@ public class Constant {
 
     public static final int MSG_RTC_ONVIDEO = 10001;
     public static final int MSG_RTC_DISCONNECT = 10002;
-    public static final int MSG_PASSWORD_CHECK = 10003;
+    public static final int MSG_PASSWORD_CHECK = 10003;//验证密码
     public static final int MSG_LOCK_OPENED = 10004;
     public static final int MSG_CALLMEMBER_ERROR = 10005;
     public static final int MSG_CALLMEMBER_TIMEOUT = 11005;
