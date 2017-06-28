@@ -1,8 +1,8 @@
-package com.phone.utils;
+package com.androidex.utils;
 
 import android.os.Environment;
 
-import com.phone.config.DeviceConfig;
+import com.androidex.config.DeviceConfig;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

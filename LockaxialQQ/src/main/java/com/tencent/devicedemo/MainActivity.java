@@ -66,13 +66,13 @@ import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.phone.config.DeviceConfig;
+import com.androidex.config.DeviceConfig;
 import com.androidex.service.MainService;
-import com.phone.utils.AdvertiseHandler;
-import com.phone.utils.Ajax;
-import com.phone.utils.HttpUtils;
-import com.phone.utils.NfcReader;
-import com.phone.utils.UploadUtil;
+import com.androidex.utils.AdvertiseHandler;
+import com.androidex.utils.Ajax;
+import com.androidex.utils.HttpUtils;
+import com.androidex.utils.NfcReader;
+import com.androidex.utils.UploadUtil;
 import com.tencent.device.TXBinderInfo;
 import com.tencent.device.TXDeviceService;
 import com.tencent.devicedemo.interfac.NetworkCallBack;
@@ -235,7 +235,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
         initServer();//初始化服务类
         initVoiceHandler();
         initVoiceVolume();
-        initAdvertiseHandler();
+
         initAutoCamera();
         if (DeviceConfig.DEVICE_TYPE.equals("C")) {
             setDialStatus("请输入楼栋编号");
@@ -563,6 +563,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
         advertiseHandler.init(videoView, imageView);
     }
 
+
     private void initVoiceHandler() {
         soundPool = new SoundPool(10, AudioManager.STREAM_SYSTEM, 5);//第一个参数为同时播放数据流的最大个数，第二数据流类型，第三为声音质量
         keyVoiceIndex = soundPool.load(this, R.raw.key, 1); //把你的声音素材放到res/raw里，第2个参数即为资源文件，第3个为音乐的优先级
@@ -665,9 +666,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
                     tv_message.setText(obj);
                 } else if (msg.what == MSG_INSTALL_SUCCEED) {
                     String fileName = (String) msg.obj;
-
                     String filePath = fileName.replace("/storage", "");
-
                     Log.i(TAG, "UpdateService:" + filePath);
                     ShellUtils shellUtils = new ShellUtils();
                     shellUtils.run("pm -r install " + filePath, 5000);
@@ -766,7 +765,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
         if (currentStatus != PASSWORD_MODE && currentStatus != PASSWORD_CHECKING_MODE) {
             setCurrentStatus(CALL_MODE);
         }
-        Utils.DisplayToast(MainActivity.this, "门锁已经打开");
+        Utils.DisplayToast(MainActivity.this, "门开了");
     }
 
     protected void onCallMemberError(int reason) {
@@ -1645,7 +1644,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
         } else if (!"".equals(bindnum) && "nullnum".equals(bindnum)) {
             iv_bind.setImageDrawable(getResources().getDrawable(R.mipmap.bind_offline));
         }
-
+        initAdvertiseHandler();//初始化广告
         if (dialog != null && dialog.isShowing()) {/*去掉呼叫中弹出框*/
             dialog.dismiss();
         }

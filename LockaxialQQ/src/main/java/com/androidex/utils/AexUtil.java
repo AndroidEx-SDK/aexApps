@@ -1,4 +1,4 @@
-package com.phone.utils;
+package com.androidex.utils;
 
 /**
  * Created by simon on 2017/3/14
@@ -8,7 +8,7 @@ package com.phone.utils;
 import android.os.Handler;
 
 import com.androidex.plugins.kkfile;
-import com.phone.config.DeviceConfig;
+import com.androidex.config.DeviceConfig;
 
 public class AexUtil {
     private String port= DeviceConfig.AEX_PORT;

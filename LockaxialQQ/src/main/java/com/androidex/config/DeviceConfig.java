@@ -1,4 +1,4 @@
-package com.phone.config;
+package com.androidex.config;
 
 /**
  * Created by simon on 2016/7/23.

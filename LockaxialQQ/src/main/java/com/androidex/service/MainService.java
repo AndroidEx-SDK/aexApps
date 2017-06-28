@@ -19,13 +19,13 @@ import android.view.KeyEvent;
 
 import com.androidex.SoundPoolUtil;
 import com.androidex.aexlibs.hwService;
-import com.phone.config.DeviceConfig;
-import com.phone.utils.AexUtil;
-import com.phone.utils.Ajax;
-import com.phone.utils.AssembleUtil;
-import com.phone.utils.HttpUtils;
-import com.phone.utils.SqlUtil;
-import com.phone.utils.WifiAdmin;
+import com.androidex.config.DeviceConfig;
+import com.androidex.utils.AexUtil;
+import com.androidex.utils.Ajax;
+import com.androidex.utils.AssembleUtil;
+import com.androidex.utils.HttpUtils;
+import com.androidex.utils.SqlUtil;
+import com.androidex.utils.WifiAdmin;
 import com.tencent.devicedemo.InitActivity;
 import com.tencent.devicedemo.MainActivity;
 import com.util.Constant;
@@ -3476,12 +3476,14 @@ public class MainService extends Service {
         String fileName = SDCard + "/" + lastVersionFile;
         File file = new File(fileName);
         Log.v("UpdateService", "------>start Update App<------");
-        if (file.exists()) {
-            Log.v("UpdateService", "check update file OK");
-            startInstallApp(fileName);
-            Log.i(TAG, "UpdateService:" + fileName);
-            //sendMessenger(MSG_INSTALL_SUCCEED,fileName);//发送安装指令
-            //sendDialMessenger(MSG_INSTALL_SUCCEED,fileName);
+        if(lastVersion>DeviceConfig.RELEASE_VERSION){
+            if (file.exists()) {
+                Log.v("UpdateService", "check update file OK");
+                startInstallApp(fileName);
+                Log.i(TAG, "UpdateService:" + fileName);
+                //sendMessenger(MSG_INSTALL_SUCCEED,fileName);//发送安装指令
+                //sendDialMessenger(MSG_INSTALL_SUCCEED,fileName);
+            }
         }
     }
 

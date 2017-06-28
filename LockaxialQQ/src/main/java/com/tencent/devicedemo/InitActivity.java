@@ -29,7 +29,7 @@ import android.widget.Toast;
 
 import com.androidex.DoorLock;
 import com.androidex.aexlibs.hwService;
-import com.phone.config.DeviceConfig;
+import com.androidex.config.DeviceConfig;
 import com.androidex.service.MainService;
 import com.tencent.device.TXDeviceService;
 import com.util.Intenet;

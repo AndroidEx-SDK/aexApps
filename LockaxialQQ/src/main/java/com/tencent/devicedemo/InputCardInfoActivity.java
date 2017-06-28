@@ -14,9 +14,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.phone.config.DeviceConfig;
-import com.phone.utils.Ajax;
-import com.phone.utils.HttpUtils;
+import com.androidex.config.DeviceConfig;
+import com.androidex.utils.Ajax;
+import com.androidex.utils.HttpUtils;
 
 import org.json.JSONObject;
 

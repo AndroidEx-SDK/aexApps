@@ -1,4 +1,4 @@
-package com.phone.utils;
+package com.androidex.utils;
 
 import android.content.Context;
 import android.database.Cursor;

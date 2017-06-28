@@ -1,4 +1,4 @@
-package com.phone.utils;
+package com.androidex.utils;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;

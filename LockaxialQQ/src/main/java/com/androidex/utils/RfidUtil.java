@@ -1,4 +1,4 @@
-package com.phone.utils;
+package com.androidex.utils;
 
 /**
  * Created by simon on 2016/7/11.
@@ -8,7 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.example.seriport.SerialPort;
-import com.phone.config.DeviceConfig;
+import com.androidex.config.DeviceConfig;
 import com.androidex.service.MainService;
 
 import java.io.FileDescriptor;
