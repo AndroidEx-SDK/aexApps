@@ -9,7 +9,7 @@ import android.os.Message;
 
 import com.example.seriport.SerialPort;
 import com.phone.config.DeviceConfig;
-import com.phone.service.MainService;
+import com.androidex.service.MainService;
 
 import java.io.FileDescriptor;
 import java.io.FileInputStream;

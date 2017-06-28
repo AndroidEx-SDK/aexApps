@@ -306,7 +306,7 @@
                 <action android:name="com.android.action.doorsensor"/>
             </intent-filter>
         </service>
-        <service android:name="com.phone.service.MainService"></service>
+        <service android:name="com.androidex.service.MainService"></service>
         <service
             android:name="com.tencent.av.VideoService"
             android:process=":video"/>
@@ -317,6 +317,20 @@
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
         <meta-data android:name="com.google.android.gms.version"
                    android:value="@integer/google_play_services_version"/>
+
+        <service
+            android:name="com.androidex.service.MyAccessibilityService"
+            android:label="我的智能安装"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
+
     </application>
 
 </manifest>

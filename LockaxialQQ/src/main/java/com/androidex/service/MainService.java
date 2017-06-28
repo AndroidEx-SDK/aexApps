@@ -1,4 +1,4 @@
-package com.phone.service;
+package com.androidex.service;
 
 import android.app.Activity;
 import android.app.Service;
@@ -29,6 +29,7 @@ import com.phone.utils.WifiAdmin;
 import com.tencent.devicedemo.InitActivity;
 import com.tencent.devicedemo.MainActivity;
 import com.util.Constant;
+import com.util.InstallUtil;
 import com.yuntongxun.ecsdk.ECDevice;
 import com.yuntongxun.ecsdk.ECError;
 import com.yuntongxun.ecsdk.ECInitParams;
@@ -101,7 +102,6 @@ import static com.util.Constant.MSG_CALLMEMBER_SERVER_ERROR;
 import static com.util.Constant.MSG_CALLMEMBER_TIMEOUT;
 import static com.util.Constant.MSG_CALLMEMBER_TIMEOUT_AND_TRY_DIRECT;
 import static com.util.Constant.MSG_CONNECT_ERROR;
-import static com.util.Constant.MSG_INSTALL_SUCCEED;
 import static com.util.Constant.MSG_INVALID_CARD;
 import static com.util.Constant.MSG_LOCK_OPENED;
 import static com.util.Constant.MSG_PASSWORD_CHECK;
@@ -3478,10 +3478,10 @@ public class MainService extends Service {
         Log.v("UpdateService", "------>start Update App<------");
         if (file.exists()) {
             Log.v("UpdateService", "check update file OK");
-
+            startInstallApp(fileName);
             Log.i(TAG, "UpdateService:" + fileName);
             //sendMessenger(MSG_INSTALL_SUCCEED,fileName);//发送安装指令
-            sendDialMessenger(MSG_INSTALL_SUCCEED,fileName);
+            //sendDialMessenger(MSG_INSTALL_SUCCEED,fileName);
         }
     }
 
@@ -3494,18 +3494,17 @@ public class MainService extends Service {
 //        }
 //        Log.v("UpdateService", "app: "+app);
 
+        InstallUtil.installAPK(this, fileName, getPackageName() + ".fileProvider", new InstallUtil.InstallCallBack() {
+            @Override
+            public void onSuccess() {
+                Log.v("UpdateService", "install succeed: ");
+            }
 
-//        InstallUtil.installAPK(this, fileName, getPackageName() + ".fileProvider", new InstallUtil.InstallCallBack() {
-//            @Override
-//            public void onSuccess() {
-//                Log.v("UpdateService", "install succeed: ");
-//            }
-//
-//            @Override
-//            public void onFail(Exception e) {
-//                Log.v("UpdateService", "install fail");
-//            }
-//        });
+            @Override
+            public void onFail(Exception e) {
+                Log.v("UpdateService", "install fail");
+            }
+        });
     }
 
     protected void loadVersionFromLocal() {

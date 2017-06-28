@@ -24,7 +24,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static com.phone.service.MainService.httpServerToken;
+import static com.androidex.service.MainService.httpServerToken;
 
 public class InputCardInfoActivity extends Activity {
     public EditText et_admin;
