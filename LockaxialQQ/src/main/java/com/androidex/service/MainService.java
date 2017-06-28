@@ -3053,11 +3053,11 @@ public class MainService extends Service {
     }
 
     protected JSONArray checkAdvertiseList() {
-        Log.d(TAG, "checkAdvertiseList: 请求广告数据");
+        Log.d(TAG, "UpdateAdvertise: 请求广告数据");
         String url = DeviceConfig.SERVER_URL + "/app/advertisement/checkAdvertiseList?communityId=" + this.communityId;
         url = url + "&lockId=" + this.lockId;
         JSONArray rows = null;
-        Log.d(TAG, "checkAdvertiseList: url=" + url);
+        Log.d(TAG, "UpdateAdvertise: url=" + url);
         try {
             URL thisUrl = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) thisUrl.openConnection();

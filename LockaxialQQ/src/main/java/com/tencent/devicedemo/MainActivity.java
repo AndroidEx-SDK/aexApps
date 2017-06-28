@@ -555,14 +555,15 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
     }
 
     protected void initAdvertiseHandler() {
-        advertiseHandler = new AdvertiseHandler();
+        if (advertiseHandler == null) {
+            advertiseHandler = new AdvertiseHandler();
+        }
         videoView = (SurfaceView) findViewById(R.id.surface_view);
-
         imageView = (ImageView) findViewById(R.id.image_view);
         //advertiseHandler.init(videoView,imageView,videoPane,imagePane);
+        Log.v("UpdateAdvertise", "------>start Update Advertise<------");
         advertiseHandler.init(videoView, imageView);
     }
-
 
     private void initVoiceHandler() {
         soundPool = new SoundPool(10, AudioManager.STREAM_SYSTEM, 5);//第一个参数为同时播放数据流的最大个数，第二数据流类型，第三为声音质量
@@ -1770,15 +1771,19 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
     protected void onPause() {
         super.onPause();
         //unbindService(mConn);
+        imageView.setVisibility(View.VISIBLE);
+        videoView.setVisibility(View.INVISIBLE);
+
+
     }
 
     protected void onDestroy() {
-        super.onDestroy();
         unbindService(connection);
         disableReaderMode();
         unregisterReceiver(receive);
         unregisterReceiver(mNotifyReceiver);
         sendBroadcast(new Intent("com.android.action.display_navigationbar"));
+        super.onDestroy();
     }
 
     private Receive receive;
