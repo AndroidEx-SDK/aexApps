@@ -1,6 +1,5 @@
 build
 .idea
-.gradle
 *.iml
 *.pro
 *.properties
