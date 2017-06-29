@@ -26,7 +26,7 @@ public class DeviceConfig {
     public static final int DEVICE_KEYCODE_STAR=67;
 	public static final String DEVICE_MODE_FLAG="a"; //设备型号
 
-	public static boolean IS_PUSH_AVAILABLE=false;
+	public static boolean IS_PUSH_AVAILABLE=true;//是否推送
     public static boolean IS_CALL_DIRECT_AVAILABLE=false;
     public static int CALL_MEMBER_MODE=CALL_MEMBER_MODE_PARALL;
 

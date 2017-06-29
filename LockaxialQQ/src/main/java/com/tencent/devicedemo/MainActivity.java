@@ -104,6 +104,7 @@ import jni.util.Utils;
 import static com.androidex.NetWork.NETWOKR_TYPE_ETHERNET;
 import static com.androidex.NetWork.NETWORK_TYPE_WIFI;
 import static com.androidex.NetWork.isNetworkAvailable;
+import static com.androidex.service.MainService.MSG_UPDATE_VERSION;
 import static com.androidex.service.MainService.communityId;
 import static com.androidex.service.MainService.httpServerToken;
 import static com.util.Constant.CALLING_MODE;
@@ -207,6 +208,8 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
     public boolean isFlag = true;
     Parcelable[] listTemp1;
     AlertDialog dialog;
+    Camera camera = null;
+    boolean flag = false;//控制开始接通时，相机为空则再接通
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -327,7 +330,6 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
 
         }
     }
-
 
     /**
      * 注册QQ物联回调
@@ -740,12 +742,11 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
 
     public void onRtcVideoOn() {
         initVideoViews();
-        //有坑
-        MainService.callConnection.buildVideo(remoteView);
-        //callLayout.setVisibility(View.INVISIBLE);
-        //guestLayout.setVisibility(View.INVISIBLE);
+        MainService.callConnection.buildVideo(remoteView);//此处接听过快的会导致崩溃
+        // java.lang.RuntimeException: Fail to connect to camera service
         videoLayout.setVisibility(View.VISIBLE);
         setVideoSurfaceVisibility(View.VISIBLE);
+        setDialValue("正在" + blockNo + "视频通话");
     }
 
     public void onRtcDisconnect() {
@@ -755,6 +756,8 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
         //guestLayout.setVisibility(View.INVISIBLE);
         videoLayout.setVisibility(View.INVISIBLE);
         setVideoSurfaceVisibility(View.INVISIBLE);
+        blockNo="";
+        setDialValue(blockNo);
     }
 
     private void onPasswordCheck(int code) {
@@ -774,6 +777,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
     }
 
     private void onLockOpened() {
+        blockNo="";
         setDialValue("");
         setTempkeyValue("");
         if (currentStatus != PASSWORD_MODE && currentStatus != PASSWORD_CHECKING_MODE) {
@@ -783,11 +787,12 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
     }
 
     protected void onCallMemberError(int reason) {
+        blockNo="";
         setDialValue("");
         setCurrentStatus(CALL_MODE);
         if (reason == MSG_CALLMEMBER_ERROR) {
             Utils.DisplayToast(MainActivity.this, "您呼叫的房间号错误或者无注册用户");
-            Log.v("MainService", "无用户取消呼叫");
+            Log.v("MainActivity", "无用户取消呼叫");
             clearImageUuidAvaible(lastImageUuid);
         } else if (reason == MSG_CALLMEMBER_NO_ONLINE) {
             Utils.DisplayToast(MainActivity.this, "您呼叫的房间号无人在线");
@@ -809,18 +814,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
         setCurrentStatus(CALL_MODE);
         blockNo = "";
         setDialValue(blockNo);
-        advertiseHandler.start(new AdverErrorCallBack() {
-            @Override
-            public void ErrorAdver() {
-                Message message = Message.obtain();
-                message.what=MainService.MSG_RESTART_ADVERT;
-                try {
-                    serviceMessenger.send(message);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        advertiseHandler.start(adverErrorCallBack);
     }
 
     private void onConnectionError() {
@@ -904,14 +898,11 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
     //开始呼叫
     private void startDialing(String num) {
         setCurrentStatus(CALLING_MODE);
-        blockNo = "";
-        setDialValue(blockNo);
         if (DeviceConfig.DEVICE_TYPE == "C") {
             blockId = 0;
             setDialStatus("请输入楼栋编号");
         }
-        //开启拍照，并开始呼叫
-        takePicture(num, true, MainActivity.this);
+        takePicture(num, true, MainActivity.this);//开启拍照，并开始呼叫
     }
 
     private int convertKeyCode(int keyCode) {
@@ -1118,20 +1109,16 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
 
 
     private void onKeyDown(int keyCode) {
-
         if (nfcFlag) {
             inputCardInfo(keyCode);//录入卡片信息
         } else {
             int key = convertKeyCode(keyCode);
-            Log.e("key", "===" + key);
             if (currentStatus == CALL_MODE || currentStatus == PASSWORD_MODE) {
                 if (key >= 0) {
                     if (currentStatus == CALL_MODE) {
                         callInput(key);
-                        Log.e("callInput", "===" + key);
                     } else {
                         passwordInput(key);
-                        Log.e("passwordInput", "===" + key);
                     }
                 } else if (keyCode == KeyEvent.KEYCODE_POUND || keyCode == DeviceConfig.DEVICE_KEYCODE_POUND) {
                     if (currentStatus == CALL_MODE) {//呼叫模式下，按确认键
@@ -1327,7 +1314,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
         setDialValue("正在取消拨号");
         setCurrentStatus(CALL_CANCEL_MODE);
         clearImageUuidAvaible(lastImageUuid);
-        Log.v("MainService", "取消拍照" + lastImageUuid);
+        Log.v("MainActivity", "取消拍照" + lastImageUuid);
     }
 
     protected void doCancelCall() {
@@ -1347,12 +1334,12 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
     }
 
     private void setImageUuidAvaibale(String uuid) {
-        Log.v("MainService", "加入UUID" + uuid);
+        Log.v("MainActivity", "加入UUID" + uuid);
         uuidMaps.put(uuid, "Y");
     }
 
     private void clearImageUuidAvaible(String uuid) {
-        Log.v("MainService", "清除UUID" + uuid);
+        Log.v("MainActivity", "清除UUID" + uuid);
         uuidMaps.remove(uuid);
     }
 
@@ -1494,14 +1481,14 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
             lastImageUuid = uuid;
             setImageUuidAvaibale(uuid);
             callback.beforeTakePickture(thisValue, isCall, uuid);
-            Log.v("MainService", "开始启动拍照");
+            Log.v("MainActivity", "开始启动拍照");
             new Thread() {
                 public void run() {
                     final String thisUuid = uuid;
                     if (checkTakePictureAvailable(thisUuid)) {
                         doTakePicture(thisValue, isCall, uuid, callback);
                     } else {
-                        Log.v("MainService", "取消拍照");
+                        Log.v("MainActivity", "取消拍照");
                     }
                 }
             }.start();
@@ -1509,13 +1496,13 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
     }
 
     private synchronized void doTakePicture(final String thisValue, final boolean isCall, final String uuid, final TakePictureCallback callback) {
-        Camera camera = null;
+
         try {
             camera = Camera.open();
 
         } catch (Exception e) {
         }
-        Log.v("MainService", "打开相机");
+        Log.v("MainActivity", "打开相机");
         if (camera == null) {
             try {
                 camera = Camera.open(0);
@@ -1534,11 +1521,11 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
                 camera.setPreviewDisplay(autoCameraHolder);
                 camera.startPreview();
                 camera.autoFocus(null);
-                Log.v("MainService", "开始拍照");
+                Log.v("MainActivity", "开始拍照");
                 camera.takePicture(null, null, new Camera.PictureCallback() {
                     public void onPictureTaken(byte[] data, Camera camera) {
                         try {
-                            Log.v("MainService", "拍照成功");
+                            Log.v("MainActivity", "拍照成功");
                             Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
                             final File file = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis() + ".jpg");
                             FileOutputStream outputStream = new FileOutputStream(file);
@@ -1546,25 +1533,26 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
                             outputStream.close();
                             camera.stopPreview();
                             camera.release();
-                            Log.v("MainService", "释放照相机资源");
+                            camera = null;
+                            Log.v("MainActivity", "释放照相机资源");
                             final String url = DeviceConfig.SERVER_URL + "/app/upload/image";
                             if (checkTakePictureAvailable(uuid)) {
                                 new Thread() {
                                     public void run() {
                                         String fileUrl = null;
                                         try {
-                                            Log.v("MainService", "开始上传照片");
+                                            Log.v("MainActivity", "开始上传照片");
                                             fileUrl = UploadUtil.uploadFile(file, url);
-                                            Log.v("MainService", "上传照片成功");
+                                            Log.v("MainActivity", "上传照片成功");
                                         } catch (Exception e) {
                                         }
                                         if (checkTakePictureAvailable(uuid)) {
                                             callback.afterTakePickture(thisValue, fileUrl, isCall, uuid);
                                         } else {
-                                            Log.v("MainService", "上传照片成功,但已取消");
+                                            Log.v("MainActivity", "上传照片成功,但已取消");
                                         }
                                         clearImageUuidAvaible(uuid);
-                                        Log.v("MainService", "正常清除" + uuid);
+                                        Log.v("MainActivity", "正常清除" + uuid);
                                         try {
                                             if (file != null) {
                                                 file.deleteOnExit();
@@ -1574,7 +1562,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
                                     }
                                 }.start();
                             } else {
-                                Log.v("MainService", "拍照成功，但已取消");
+                                Log.v("MainActivity", "拍照成功，但已取消");
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -1591,7 +1579,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
                 } catch (Exception err) {
                 }
                 callback.afterTakePickture(thisValue, null, isCall, uuid);
-                Log.v("MainService", "照相出异常清除UUID");
+                Log.v("MainActivity", "照相出异常清除UUID");
                 clearImageUuidAvaible(uuid);
             }
         }
@@ -1603,7 +1591,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
         if (thisValue != null && thisValue.equals("Y")) {
             result = true;
         }
-        Log.v("MainService", "检查UUID" + uuid + result);
+        Log.v("MainActivity", "检查UUID" + uuid + result);
         return result;
     }
 
@@ -1716,6 +1704,15 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
 
                             case R.id.action_catVersion:
                                 Toast.makeText(MainActivity.this, "本机的固件版本：" + hwservice.getSdkVersion(), Toast.LENGTH_LONG).show();
+                                break;
+                            case R.id.action_updateVersion:
+                                Message message = Message.obtain();
+                                message.what=MSG_UPDATE_VERSION;
+                                try {
+                                    serviceMessenger.send(message);
+                                } catch (RemoteException e) {
+                                    e.printStackTrace();
+                                }
                                 break;
 
                             case R.id.action_settings2:
@@ -1955,7 +1952,6 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
                 message.what = MainService.MSG_CHECK_PASSWORD;
                 parameters[0] = thisValue;
             }
-
             parameters[1] = fileUrl;
             parameters[2] = uuid;
             message.obj = parameters;

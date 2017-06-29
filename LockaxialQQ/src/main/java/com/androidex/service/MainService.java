@@ -26,6 +26,7 @@ import com.androidex.utils.AssembleUtil;
 import com.androidex.utils.HttpUtils;
 import com.androidex.utils.SqlUtil;
 import com.androidex.utils.WifiAdmin;
+import com.tencent.device.barrage.ToastUtils;
 import com.tencent.devicedemo.InitActivity;
 import com.tencent.devicedemo.MainActivity;
 import com.util.Constant;
@@ -158,6 +159,7 @@ public class MainService extends Service {
     public static final int MSG_FINGER_DETECT_THREAD_COMPLETE = 20024;
     public static final int MSG_START_OFFLINE = 20025;
     public static final int MSG_RESTART_ADVERT = 20026;
+    public static final int MSG_UPDATE_VERSION = 20027;
 
     public static final int MSG_FIND_NEW_VERSION = 30001;
 
@@ -385,6 +387,9 @@ public class MainService extends Service {
                     Log.i("UpdateService", "checked new version " + version);
                 }else if(msg.what==MSG_RESTART_ADVERT){
                     getLastAdvertisementList();
+                }else if (msg.what == MSG_UPDATE_VERSION){
+                    updateApp();
+                    Log.i("UpdateService", "开启安装");
                 }
             }
         };
@@ -2258,7 +2263,6 @@ public class MainService extends Service {
 
         @Override
         public void onNetStatus(int msg, String info) {
-            // TODO Auto-generated method stub
             System.out.println(msg);
             System.out.println(info);
         }
@@ -3445,7 +3449,7 @@ public class MainService extends Service {
                         if (DeviceConfig.APPLICATION_MODEL == 0) {
                             if (lastVersionStatus.equals("P")) {
                                 lastVersionStatus = "I";
-                                updateApp();
+                               //updateApp();
                             } else {
                                 sleep(1000 * 60 * 3);
                             }
@@ -3453,7 +3457,7 @@ public class MainService extends Service {
                             if (hour == DeviceConfig.RELEASE_VERSION_UPDATE_TIME) {
                                 if (lastVersionStatus.equals("P")) {
                                     lastVersionStatus = "I";
-                                    updateApp();
+                                    //updateApp();
                                 }
                             } else {
                                 sleep(1000 * 60 * 30);
@@ -3487,6 +3491,8 @@ public class MainService extends Service {
                 //sendMessenger(MSG_INSTALL_SUCCEED,fileName);//发送安装指令
                 //sendDialMessenger(MSG_INSTALL_SUCCEED,fileName);
             }
+        }else {
+            ToastUtils.getInstance().showToast(MainService.this,"版本已是最新");
         }
     }
 

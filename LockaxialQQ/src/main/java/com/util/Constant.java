@@ -9,8 +9,8 @@ public class Constant {
 
     public static final int MSG_RTC_NEWCALL = 10000;
 
-    public static final int MSG_RTC_ONVIDEO = 10001;
-    public static final int MSG_RTC_DISCONNECT = 10002;
+    public static final int MSG_RTC_ONVIDEO = 10001;//视频通话连接
+    public static final int MSG_RTC_DISCONNECT = 10002;//视频通话断开
     public static final int MSG_PASSWORD_CHECK = 10003;//验证密码
     public static final int MSG_LOCK_OPENED = 10004;
     public static final int MSG_CALLMEMBER_ERROR = 10005;
@@ -45,6 +45,7 @@ public class Constant {
     public static final int MSG_INPUT_CARDINFO = 0x04;//重复录入卡信息
     public static final int MSG_INSTALL_SUCCEED = 0x05;//安装成功
     public static final int MSG_INSTALL_FAIL = 0x06;//安装失败
+    public static final int MSG_DELAY_CALL = 10021;//延迟200ms接通
 
     public static final int CALL_MODE = 1;
     public static final int PASSWORD_MODE = 2;
