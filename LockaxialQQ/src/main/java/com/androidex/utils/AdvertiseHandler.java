@@ -11,6 +11,8 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.androidex.callback.AdverErrorCallBack;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -81,7 +83,7 @@ public class AdvertiseHandler implements SurfaceHolder.Callback {
         // TODO Auto-generated method stub
     }
 
-    public void initData(JSONArray rows, Messenger dialMessenger, boolean isOnVideo) {
+    public void initData(JSONArray rows, Messenger dialMessenger, boolean isOnVideo,AdverErrorCallBack errorCallBack) {
         this.dialMessenger = dialMessenger;
         try {
             JSONObject row = rows.getJSONObject(0);
@@ -90,7 +92,7 @@ public class AdvertiseHandler implements SurfaceHolder.Callback {
             //initScreen();
             play();
             if (isOnVideo) {
-                pause();
+                pause(errorCallBack);
             }
         } catch (JSONException e) {
         }
@@ -251,6 +253,14 @@ public class AdvertiseHandler implements SurfaceHolder.Callback {
                 onMediaPlayerComplete();
             }
         });
+        mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                Log.v("AdvertiseHandler", "视频播放错误");
+
+                return false;
+            }
+        });
     }
 
     public void initVoicePlayer() {
@@ -313,17 +323,37 @@ public class AdvertiseHandler implements SurfaceHolder.Callback {
         }
     }
 
-    public void start() {
+    public void start(AdverErrorCallBack errorCallBack) {
         if (getCurrentAdType().equals("V")) {
-            mediaPlayer.start();
+            try {
+                if (mediaPlayer != null) {
+                    if (!mediaPlayer.isPlaying()) {
+                        mediaPlayer.start();
+                    }
+                }
+            } catch (IllegalStateException e) {
+                Log.v("AdvertiseHandler", "出错");
+                errorCallBack.ErrorAdver();
+
+            }
         } else if (getCurrentAdType().equals("I")) {
             voicePlayer.start();
         }
     }
 
-    public void pause() {
+    public void pause(AdverErrorCallBack errorCallBack) {
         if (getCurrentAdType().equals("V")) {
-            mediaPlayer.pause();
+            try {
+                if (mediaPlayer != null) {
+                    if (mediaPlayer.isPlaying()) {
+                        mediaPlayer.pause();
+                    }
+                }
+            } catch (IllegalStateException e) {
+                Log.v("AdvertiseHandler", "出错");
+                errorCallBack.ErrorAdver();
+            }
+
         } else if (getCurrentAdType().equals("I")) {
             voicePlayer.pause();
         }

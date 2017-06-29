@@ -157,6 +157,7 @@ public class MainService extends Service {
     public static final int MSG_FINGER_DETECT = 20023;
     public static final int MSG_FINGER_DETECT_THREAD_COMPLETE = 20024;
     public static final int MSG_START_OFFLINE = 20025;
+    public static final int MSG_RESTART_ADVERT = 20026;
 
     public static final int MSG_FIND_NEW_VERSION = 30001;
 
@@ -382,6 +383,8 @@ public class MainService extends Service {
                     String version = (String) msg.obj;
                     onNewVersion(version);
                     Log.i("UpdateService", "checked new version " + version);
+                }else if(msg.what==MSG_RESTART_ADVERT){
+                    getLastAdvertisementList();
                 }
             }
         };

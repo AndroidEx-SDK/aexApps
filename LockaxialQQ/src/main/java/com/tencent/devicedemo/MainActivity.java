@@ -57,7 +57,15 @@ import com.androidex.GetUserInfo;
 import com.androidex.NetWork;
 import com.androidex.SoundPoolUtil;
 import com.androidex.Zxing;
+import com.androidex.callback.AdverErrorCallBack;
 import com.androidex.common.AndroidExActivityBase;
+import com.androidex.config.DeviceConfig;
+import com.androidex.service.MainService;
+import com.androidex.utils.AdvertiseHandler;
+import com.androidex.utils.Ajax;
+import com.androidex.utils.HttpUtils;
+import com.androidex.utils.NfcReader;
+import com.androidex.utils.UploadUtil;
 import com.brocast.NotifyReceiverQQ;
 import com.entity.Banner;
 import com.google.android.gms.appindexing.Action;
@@ -66,13 +74,6 @@ import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.androidex.config.DeviceConfig;
-import com.androidex.service.MainService;
-import com.androidex.utils.AdvertiseHandler;
-import com.androidex.utils.Ajax;
-import com.androidex.utils.HttpUtils;
-import com.androidex.utils.NfcReader;
-import com.androidex.utils.UploadUtil;
 import com.tencent.device.TXBinderInfo;
 import com.tencent.device.TXDeviceService;
 import com.tencent.devicedemo.interfac.NetworkCallBack;
@@ -212,6 +213,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
      */
     private GoogleApiClient client;
     private TextView tv_input_text;
+    private AdverErrorCallBack adverErrorCallBack;
 
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated constructor stub
@@ -235,7 +237,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
         initServer();//初始化服务类
         initVoiceHandler();
         initVoiceVolume();
-
+        initAdvertiseHandler();//初始化广告
         initAutoCamera();
         if (DeviceConfig.DEVICE_TYPE.equals("C")) {
             setDialStatus("请输入楼栋编号");
@@ -465,7 +467,6 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
         Log.d("mainactivity", GetUserInfo.getSn());
         Bitmap bitmap = Zxing.createQRImage("http://iot.qq.com/add?pid=1700003316&sn=" + GetUserInfo.getSn(), 200, 200, null);
         if (bitmap == null) {
-
             options = new DisplayImageOptions.Builder()
                     .showImageOnFail(R.mipmap.fail)
                     .showImageOnLoading(R.mipmap.loading)
@@ -563,6 +564,18 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
         //advertiseHandler.init(videoView,imageView,videoPane,imagePane);
         Log.v("UpdateAdvertise", "------>start Update Advertise<------");
         advertiseHandler.init(videoView, imageView);
+        adverErrorCallBack = new AdverErrorCallBack() {
+            @Override
+            public void ErrorAdver() {
+                Message message = Message.obtain();
+                message.what = MainService.MSG_RESTART_ADVERT;
+                try {
+                    serviceMessenger.send(message);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
     }
 
     private void initVoiceHandler() {
@@ -722,7 +735,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
     public void onRtcConnected() {
         setCurrentStatus(ONVIDEO_MODE);
         setDialValue("");
-        advertiseHandler.pause();
+        advertiseHandler.pause(adverErrorCallBack);
     }
 
     public void onRtcVideoOn() {
@@ -737,7 +750,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
 
     public void onRtcDisconnect() {
         setCurrentStatus(CALL_MODE);
-        advertiseHandler.start();
+        advertiseHandler.start(adverErrorCallBack);
         //callLayout.setVisibility(View.VISIBLE);
         //guestLayout.setVisibility(View.INVISIBLE);
         videoLayout.setVisibility(View.INVISIBLE);
@@ -789,14 +802,25 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
 
     public void onCallDirectlyBegin() {
         setCurrentStatus(DIRECT_MODE);
-        advertiseHandler.pause();
+        advertiseHandler.pause(adverErrorCallBack);
     }
 
     public void onCallDirectlyComplete() {
         setCurrentStatus(CALL_MODE);
         blockNo = "";
         setDialValue(blockNo);
-        advertiseHandler.start();
+        advertiseHandler.start(new AdverErrorCallBack() {
+            @Override
+            public void ErrorAdver() {
+                Message message = Message.obtain();
+                message.what=MainService.MSG_RESTART_ADVERT;
+                try {
+                    serviceMessenger.send(message);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private void onConnectionError() {
@@ -813,9 +837,9 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
         }
     }
 
-    protected void onAdvertiseRefresh(Object obj) {
+    public void onAdvertiseRefresh(Object obj) {
         JSONArray rows = (JSONArray) obj;
-        advertiseHandler.initData(rows, dialMessenger, (currentStatus == ONVIDEO_MODE));
+        advertiseHandler.initData(rows, dialMessenger, (currentStatus == ONVIDEO_MODE), adverErrorCallBack);
     }
 
     protected void onAdvertiseImageChange(Object obj) {
@@ -1636,6 +1660,12 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
         TXDeviceService.getInstance().uploadSDKLog();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        setCurrentStatus(CALL_MODE);
+    }
+
     protected void onResume() {
         super.onResume();
         Intent intent = getIntent();
@@ -1645,7 +1675,6 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
         } else if (!"".equals(bindnum) && "nullnum".equals(bindnum)) {
             iv_bind.setImageDrawable(getResources().getDrawable(R.mipmap.bind_offline));
         }
-        initAdvertiseHandler();//初始化广告
         if (dialog != null && dialog.isShowing()) {/*去掉呼叫中弹出框*/
             dialog.dismiss();
         }
@@ -1772,7 +1801,6 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
         super.onPause();
         //unbindService(mConn);
         imageView.setVisibility(View.VISIBLE);
-        videoView.setVisibility(View.INVISIBLE);
 
 
     }
