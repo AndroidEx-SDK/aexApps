@@ -315,7 +315,10 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
     public void onClick(View v) {
         switch (v.getId()) {//跳转网络或网络设置
             case R.id.net_view_rl:
-                Intenet.system_set(MainActivity.this);
+                Intent intent =  new Intent(Settings.ACTION_SETTINGS);
+                intent.putExtra("back", true);
+                startActivityForResult(intent,INPUT_SYSTEMSET_REQUESTCODE);
+                //Intenet.system_set(MainActivity.this);
                 break;
         }
     }
