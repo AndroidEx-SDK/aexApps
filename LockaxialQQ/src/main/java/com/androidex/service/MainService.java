@@ -511,13 +511,13 @@ public class MainService extends Service {
         //initAdLoad();
         initSqlUtil();
         Log.i("MainService", "init SQL");
-        if (isNetworkConnectedWithTimeout()) {
+        if (isNetworkConnectedWithTimeout()) {//不做网络判断
             Log.i("MainService", "Test Connected");
             initWhenConnected();
         } else {
             Log.i("MainService", "Test NoNetwork");
-            sendInitMessenger(InitActivity.MSG_NO_NETWORK);
-        }
+            sendInitMessenger(InitActivity.MSG_NO_NETWORK);//检测到没有网络发送消息让用户选择
+       }
     }
 
     protected void initWhenConnected() {

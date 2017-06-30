@@ -9,7 +9,7 @@ public class DeviceConfig {
 	public static final String UPDATE_SERVER_URL="http://www.lockaxial.com";
     public static final String UPDATE_RELEASE_FOLDER="/release/doorAccessMachine/v1/";
     public static final String UPDATE_RELEASE_PACKAGE="package.json";
-    public static final int RELEASE_VERSION=1;
+    public static final int RELEASE_VERSION=3;
     public static int RELEASE_VERSION_WAIT_TIME=1000*60*1;
     public static int RELEASE_VERSION_UPDATE_TIME=3;
     public static final String TARGET_PACKAGE_NAME="com.tencent.devicedemo";
@@ -20,7 +20,7 @@ public class DeviceConfig {
     public static final int CALL_MEMBER_MODE_PARALL=1;
     public static final String LOCAL_FILE_PATH="residential";
     public static final int HIDE_SCREEN_STATUS=1;
-    public static final boolean IS_SUPPORT_OFFLINE=false;
+    public static final boolean IS_SUPPORT_OFFLINE=true;//是否离线运行
 	public static final boolean IS_KEY_VOICE_AVAILABLE=false;
     public static final int DEVICE_KEYCODE_POUND=66;
     public static final int DEVICE_KEYCODE_STAR=67;

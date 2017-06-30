@@ -1189,6 +1189,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
                         et_blackno.requestFocus();
                         break;
                     default:
+                        imageView.setVisibility(View.VISIBLE);
                         cardId = null;
                         showToast("取消登录");
                         break;
