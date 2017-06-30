@@ -426,7 +426,7 @@ public class InitActivity extends Activity {
     protected void onChooseWifi(){
         networkState=2;
         setStatusText("选择WIFI连接，正在搜索WIFI信号...");
-        sendMainMessenger(MainService.MSG_CHECK_WIFI);
+        //sendMainMessenger(MainService.MSG_CHECK_WIFI);
     }
 
     protected void onChooseEth(){

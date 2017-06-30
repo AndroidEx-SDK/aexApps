@@ -345,7 +345,7 @@ public class MainService extends Service {
                     if (values.length >= 2) {
                         password = values[1];
                     }
-                    connectWifi(index, password);
+                    //connectWifi(index, password);
                 } else if (msg.what == MSG_CHANGE_FINGER) {
                     JSONArray[] lists = (JSONArray[]) msg.obj;
                     JSONArray fingerListSuccess = lists[0];
@@ -386,7 +386,8 @@ public class MainService extends Service {
                     onNewVersion(version);
                     Log.i("UpdateService", "checked new version " + version);
                 }else if(msg.what==MSG_RESTART_ADVERT){
-                    getLastAdvertisementList();
+                    //getLastAdvertisementList();
+                    initAdvertisement();
                 }else if (msg.what == MSG_UPDATE_VERSION){
                     updateApp();
                     Log.i("UpdateService", "开启安装");
@@ -397,21 +398,21 @@ public class MainService extends Service {
     }
 
     protected void initScanWifi() {
-        wifiAdmin.openWifi();
-        wifiAdmin.startScan();
-        wifiList = wifiAdmin.getWifiList();
+//        wifiAdmin.openWifi();
+//        wifiAdmin.startScan();
+//        wifiList = wifiAdmin.getWifiList();
         // sendInitMessenger(InitActivity.MSG_WIFI_LIST,wifiList);
     }
 
-    protected void connectWifi(int index, String password) {
-        ScanResult scanResult = wifiList.get(index);
-        boolean result = wifiAdmin.connectWifi(scanResult.SSID, password);
-        if (result) {
-            //sendInitMessenger(InitActivity.MSG_WIFI_CONNECTED);
-        } else {
-            // sendInitMessenger(InitActivity.MSG_WIFI_CONNECT_FAIL);
-        }
-    }
+//    protected void connectWifi(int index, String password) {
+//        ScanResult scanResult = wifiList.get(index);
+//        boolean result = wifiAdmin.connectWifi(scanResult.SSID, password);
+//        if (result) {
+//            //sendInitMessenger(InitActivity.MSG_WIFI_CONNECTED);
+//        } else {
+//            // sendInitMessenger(InitActivity.MSG_WIFI_CONNECT_FAIL);
+//        }
+//    }
 
     //protected void
     protected void initLock() {
@@ -2562,7 +2563,6 @@ public class MainService extends Service {
         advertisementThread = new Thread() {
             public void run() {
                 try {
-                    Log.d(TAG, "run: resetFlag=" + resetFlag);
                     //retrieveCardList();//注册卡信息
                     if (resetFlag > 0) {
                         initDeviceData();
@@ -3060,7 +3060,6 @@ public class MainService extends Service {
     }
 
     protected JSONArray checkAdvertiseList() {
-        Log.d(TAG, "UpdateAdvertise: 请求广告数据");
         String url = DeviceConfig.SERVER_URL + "/app/advertisement/checkAdvertiseList?communityId=" + this.communityId;
         url = url + "&lockId=" + this.lockId;
         JSONArray rows = null;
@@ -3175,9 +3174,10 @@ public class MainService extends Service {
     }
 
     protected boolean isAdvertisementListSame(JSONArray rows) {
-        boolean result = true;
         String thisValue = currentAdvertisementList.toString();
         String thisRow = rows.toString();
+        Log.d(TAG, "UpdateAdvertise: thisValue"+thisValue);
+        Log.d(TAG, "UpdateAdvertise: thisRow"+thisRow);
         return thisRow.equals(thisValue);
     }
 

@@ -35,6 +35,7 @@ import android.os.Messenger;
 import android.os.Parcelable;
 import android.os.RemoteException;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -157,6 +158,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
 
     public static final int INPUT_CARDINFO_RESULTCODE = 0X01;
     public static final int INPUT_CARDINFO_REQUESTCODE = 0X02;
+    public static final int INPUT_SYSTEMSET_REQUESTCODE = 0X03;
     private GridView mGridView;
     private BinderListAdapter mAdapter;
     private NotifyReceiverQQ mNotifyReceiver;
@@ -217,6 +219,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
     private GoogleApiClient client;
     private TextView tv_input_text;
     private AdverErrorCallBack adverErrorCallBack;
+    private JSONArray rows;
 
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated constructor stub
@@ -563,19 +566,12 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
         }
         videoView = (SurfaceView) findViewById(R.id.surface_view);
         imageView = (ImageView) findViewById(R.id.image_view);
-        //advertiseHandler.init(videoView,imageView,videoPane,imagePane);
         Log.v("UpdateAdvertise", "------>start Update Advertise<------");
         advertiseHandler.init(videoView, imageView);
         adverErrorCallBack = new AdverErrorCallBack() {
             @Override
             public void ErrorAdver() {
-                Message message = Message.obtain();
-                message.what = MainService.MSG_RESTART_ADVERT;
-                try {
-                    serviceMessenger.send(message);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
+                imageView.setVisibility(View.VISIBLE);
             }
         };
     }
@@ -650,6 +646,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
                     setCurrentStatus(CALL_MODE);
                 } else if (msg.what == MSG_ADVERTISE_REFRESH) {
                     onAdvertiseRefresh(msg.obj);
+                    Log.d(TAG, "UpdateAdvertise: 7");
                 } else if (msg.what == MSG_ADVERTISE_IMAGE) {
                     onAdvertiseImageChange(msg.obj);
                 } else if (msg.what == MSG_INVALID_CARD) {
@@ -756,7 +753,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
         //guestLayout.setVisibility(View.INVISIBLE);
         videoLayout.setVisibility(View.INVISIBLE);
         setVideoSurfaceVisibility(View.INVISIBLE);
-        blockNo="";
+        blockNo = "";
         setDialValue(blockNo);
     }
 
@@ -777,7 +774,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
     }
 
     private void onLockOpened() {
-        blockNo="";
+        blockNo = "";
         setDialValue("");
         setTempkeyValue("");
         if (currentStatus != PASSWORD_MODE && currentStatus != PASSWORD_CHECKING_MODE) {
@@ -787,7 +784,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
     }
 
     protected void onCallMemberError(int reason) {
-        blockNo="";
+        blockNo = "";
         setDialValue("");
         setCurrentStatus(CALL_MODE);
         if (reason == MSG_CALLMEMBER_ERROR) {
@@ -832,7 +829,8 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
     }
 
     public void onAdvertiseRefresh(Object obj) {
-        JSONArray rows = (JSONArray) obj;
+        rows = (JSONArray) obj;
+        Log.d(TAG, "UpdateAdvertise: 8");
         advertiseHandler.initData(rows, dialMessenger, (currentStatus == ONVIDEO_MODE), adverErrorCallBack);
     }
 
@@ -1143,13 +1141,11 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
                 Utils.DisplayToast(MainActivity.this, "当前网络异常");
             } else if (currentStatus == CALLING_MODE) {
                 if (keyCode == KeyEvent.KEYCODE_STAR || keyCode == DeviceConfig.DEVICE_KEYCODE_STAR) {
-
                     startCancelCall();
                 }
             } else if (currentStatus == ONVIDEO_MODE) {
                 if (keyCode == KeyEvent.KEYCODE_STAR || keyCode == DeviceConfig.DEVICE_KEYCODE_STAR) {
                     startDisconnectVideo();
-
                 }
             } else if (currentStatus == DIRECT_CALLING_MODE) {
                 if (keyCode == KeyEvent.KEYCODE_STAR || keyCode == DeviceConfig.DEVICE_KEYCODE_STAR) {
@@ -1170,33 +1166,36 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
                 }
             }
         }
-
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == INPUT_CARDINFO_REQUESTCODE) {
-            switch (resultCode) {
-                case INPUT_CARDINFO_RESULTCODE://从录卡登录页面返回回来
-                    rl_nfc.setVisibility(View.VISIBLE);
-                    tv_message.setText(nfcMessage);
-                    nfcFlag = true;
-                    cardId = null;
-                    isFlag = true;
-                    et_blackno.setFocusable(true);
-                    et_blackno.setFocusableInTouchMode(true);
-                    et_blackno.requestFocus();
-                    break;
-                default:
-                    cardId = null;
-                    showToast("取消登录");
-                    break;
-            }
+        switch (requestCode) {
+            case INPUT_CARDINFO_REQUESTCODE:
+                switch (resultCode) {
+                    case INPUT_CARDINFO_RESULTCODE://从录卡登录页面返回回来
+                        imageView.setVisibility(View.VISIBLE);
+                        rl_nfc.setVisibility(View.VISIBLE);
+                        tv_message.setText(nfcMessage);
+                        nfcFlag = true;
+                        cardId = null;
+                        isFlag = true;
+                        et_blackno.setFocusable(true);
+                        et_blackno.setFocusableInTouchMode(true);
+                        et_blackno.requestFocus();
+                        break;
+                    default:
+                        cardId = null;
+                        showToast("取消登录");
+                        break;
+                }
+                break;
+            case INPUT_SYSTEMSET_REQUESTCODE:
+                imageView.setVisibility(View.VISIBLE);
+                break;
         }
-
     }
-
     /**
      * 录入卡片信息
      *
@@ -1695,7 +1694,10 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.action_settings1:
-                                Intenet.system_set(MainActivity.this);
+                                Intent intent =  new Intent(Settings.ACTION_SETTINGS);
+                                intent.putExtra("back", true);
+                                startActivityForResult(intent,INPUT_SYSTEMSET_REQUESTCODE);
+                                //Intenet.system_set(MainActivity.this);
                                 break;
 
                             case R.id.action_catIP:
@@ -1707,7 +1709,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
                                 break;
                             case R.id.action_updateVersion:
                                 Message message = Message.obtain();
-                                message.what=MSG_UPDATE_VERSION;
+                                message.what = MSG_UPDATE_VERSION;
                                 try {
                                     serviceMessenger.send(message);
                                 } catch (RemoteException e) {
@@ -1797,9 +1799,9 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
     protected void onPause() {
         super.onPause();
         //unbindService(mConn);
-        imageView.setVisibility(View.VISIBLE);
-
-
+        //advertiseHandler.onDestroy();
+        //videoView.setVisibility(View.GONE);
+        advertiseHandler.onStop();
     }
 
     protected void onDestroy() {

@@ -42,6 +42,7 @@ public class AdvertiseHandler implements SurfaceHolder.Callback {
     private int imagePeroid = 5000;
 
     protected Messenger dialMessenger;
+    private int position;
 
     public AdvertiseHandler() {
 
@@ -57,37 +58,47 @@ public class AdvertiseHandler implements SurfaceHolder.Callback {
  //    }
      */
     public void init(SurfaceView videoView, ImageView imageView) {
+        Log.d("AdvertiseHandler", "UpdateAdvertise: init");
         this.videoView = videoView;
         this.imageView = imageView;
         prepareMediaView();
     }
 
     public void prepareMediaView() {
+        //给SurfaceView添加CallBack监听
         surfaceHolder = videoView.getHolder();
         surfaceHolder.addCallback(this);
+        //为了可以播放视频或者使用Camera预览，我们需要指定其Buffer类型
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3) {
+        // 当Surface尺寸等参数改变时触发
+        Log.d("AdvertiseHandler", "UpdateAdvertise: surfaceChanged");
     }
 
     @Override
-    public void surfaceCreated(SurfaceHolder arg0) {
+    public void surfaceCreated(SurfaceHolder holder) {
         //必须在surface创建后才能初始化MediaPlayer,否则不会显示图像
         //startMediaPlay(mediaPlayerSource);
+        // 当SurfaceView中的Surface被创建的时候被调用
+        //在这里我们指定MediaPlayer在当前的Surface中进行播放setDisplay(holder)
+        //在指定了MediaPlayer播放的容器后，我们就可以使用prepare或者prepareAsync来准备播放了player.prepareAsync()
+        Log.d("AdvertiseHandler", "UpdateAdvertise: surfaceCreated done");
     }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder arg0) {
-        // TODO Auto-generated method stub
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        Log.d("AdvertiseHandler", "UpdateAdvertise: surfaceDestroyed ");
     }
 
-    public void initData(JSONArray rows, Messenger dialMessenger, boolean isOnVideo,AdverErrorCallBack errorCallBack) {
+    public void initData(JSONArray rows, Messenger dialMessenger, boolean isOnVideo, AdverErrorCallBack errorCallBack) {
         this.dialMessenger = dialMessenger;
         try {
             JSONObject row = rows.getJSONObject(0);
             list = row.getJSONArray("items");
+            Log.d("AdvertiseHandler", "UpdateAdvertise: list" + list);
             listIndex = 0;
             //initScreen();
             play();
@@ -245,7 +256,9 @@ public class AdvertiseHandler implements SurfaceHolder.Callback {
             mediaPlayer = new MediaPlayer();
         }
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        Log.d("AdvertiseHandler", "UpdateAdvertise: initMediaPlayer setAudioStreamType");
         mediaPlayer.setDisplay(surfaceHolder);
+        Log.d("AdvertiseHandler", "UpdateAdvertise: initMediaPlayer  setDisplay");
         //设置显示视频显示在SurfaceView上
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
@@ -256,8 +269,7 @@ public class AdvertiseHandler implements SurfaceHolder.Callback {
         mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
             @Override
             public boolean onError(MediaPlayer mp, int what, int extra) {
-                Log.v("AdvertiseHandler", "视频播放错误");
-
+                imageView.setVisibility(View.VISIBLE);
                 return false;
             }
         });
@@ -293,7 +305,7 @@ public class AdvertiseHandler implements SurfaceHolder.Callback {
             mediaPlayer.prepare();
             mediaPlayer.start();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("AdvertiseHandler", "UpdateAdvertise: startMediaPlay error");
         }
     }
 
@@ -309,53 +321,85 @@ public class AdvertiseHandler implements SurfaceHolder.Callback {
     }
 
     public void onDestroy() {
-        if (mediaPlayer != null) {
+        try {
+            Log.d("AdvertiseHandler", "UpdateAdvertise: onDestroy");
+            if (mediaPlayer != null) {
+                if (mediaPlayer.isPlaying()) {
+                    mediaPlayer.stop();
+                }
+                mediaPlayer.release();
+            }
+            if (voicePlayer != null) {
+                if (voicePlayer.isPlaying()) {
+                    voicePlayer.stop();
+                }
+                voicePlayer.release();
+            }
+        } catch (IllegalStateException e) {
+            Log.d("AdvertiseHandler", "UpdateAdvertise: onDestroy error");
+        }
+    }
+
+    public void onStop() {
+        try {
+            if (mediaPlayer == null) return;
             if (mediaPlayer.isPlaying()) {
+                position = mediaPlayer.getCurrentPosition();
                 mediaPlayer.stop();
             }
-            mediaPlayer.release();
+        } catch (IllegalStateException e) {
+            Log.d("AdvertiseHandler", "UpdateAdvertise: onStop error");
         }
-        if (voicePlayer != null) {
-            if (voicePlayer.isPlaying()) {
-                voicePlayer.stop();
+    }
+
+    public void onRestart() {
+        if (position > 0) {
+            try {
+                play();
+            } catch (IllegalStateException e) {
+                Log.d("AdvertiseHandler", "UpdateAdvertise: onRestart error");
             }
-            voicePlayer.release();
+            //mediaPlayer.seekTo(position);
+            position = 0;
+            Log.d("AdvertiseHandler", "UpdateAdvertise: onRestart done");
         }
     }
 
     public void start(AdverErrorCallBack errorCallBack) {
-        if (getCurrentAdType().equals("V")) {
-            try {
-                if (mediaPlayer != null) {
-                    if (!mediaPlayer.isPlaying()) {
-                        mediaPlayer.start();
-                    }
+        try {
+            Log.d("AdvertiseHandler", "UpdateAdvertise: start");
+            if (mediaPlayer != null) {
+                Log.d("AdvertiseHandler", "UpdateAdvertise: start");
+                if (!mediaPlayer.isPlaying()) {
+                    mediaPlayer.start();
                 }
-            } catch (IllegalStateException e) {
-                Log.v("AdvertiseHandler", "出错");
-                errorCallBack.ErrorAdver();
-
             }
-        } else if (getCurrentAdType().equals("I")) {
-            voicePlayer.start();
+            if (getCurrentAdType().equals("V")) {
+            } else if (getCurrentAdType().equals("I")) {
+                voicePlayer.start();
+            }
+        } catch (IllegalStateException e) {
+            Log.d("AdvertiseHandler", "UpdateAdvertise: start error");
+            errorCallBack.ErrorAdver();
         }
     }
 
     public void pause(AdverErrorCallBack errorCallBack) {
-        if (getCurrentAdType().equals("V")) {
-            try {
-                if (mediaPlayer != null) {
-                    if (mediaPlayer.isPlaying()) {
-                        mediaPlayer.pause();
-                    }
+        try {
+            Log.d("AdvertiseHandler", "UpdateAdvertise: pause");
+            if (mediaPlayer != null) {
+                if (mediaPlayer.isPlaying()) {
+                    mediaPlayer.pause();
                 }
-            } catch (IllegalStateException e) {
-                Log.v("AdvertiseHandler", "出错");
-                errorCallBack.ErrorAdver();
             }
+            if (getCurrentAdType().equals("V")) {
 
-        } else if (getCurrentAdType().equals("I")) {
-            voicePlayer.pause();
+            } else if (getCurrentAdType().equals("I")) {
+                voicePlayer.pause();
+            }
+        } catch (IllegalStateException e) {
+            Log.d("AdvertiseHandler", "UpdateAdvertise: pause error");
+            errorCallBack.ErrorAdver();
         }
     }
 }
