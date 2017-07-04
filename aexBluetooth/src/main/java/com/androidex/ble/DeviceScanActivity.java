@@ -245,8 +245,9 @@ public class DeviceScanActivity extends AppCompatActivity implements View.OnClic
         public void onDeviceFound(BluetoothLeDevice bluetoothLeDevice) {
             Log.d(TAG, "onDeviceFound: device" + bluetoothLeDevice.getAddress());
             //获取设备的Mac地址
-            //判断MAC地址自动连接
-            if (bluetoothLeDevice.getAddress().equals("B0:B4:48:F9:FF:01")) {
+            //判断MAC地址自动连接B0:B4:48:F9:FF:01
+            if (bluetoothLeDevice.getAddress().equalsIgnoreCase("B0:B4:48:F9:FF:01")) {
+                //b0:b4:48:f9:ff:01
                 stopScan();
                 //连接
                 ViseBluetooth.getInstance().connect(bluetoothLeDevice, false, connectCallback);
