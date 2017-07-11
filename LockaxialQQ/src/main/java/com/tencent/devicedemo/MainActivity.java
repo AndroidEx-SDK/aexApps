@@ -220,6 +220,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
     private TextView tv_input_text;
     private AdverErrorCallBack adverErrorCallBack;
     private JSONArray rows;
+    private View container;
 
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated constructor stub
@@ -229,7 +230,6 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //标题是属于View的，所以窗口所有的修饰部分被隐藏后标题依然有效
         //requestWindowFeature(getWindow().FEATURE_NO_TITLE);
-        sendBroadcast(new Intent("com.android.action.hide_navigationbar"));
         {
             ActionBar ab = getActionBar();
             if (ab != null)
@@ -280,6 +280,7 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
      * 初始化view
      */
     public void initView() {
+        container = findViewById(R.id.container);//根View
         rl_nfc = (RelativeLayout) findViewById(R.id.rl_nfc);
         et_blackno = (EditText) findViewById(R.id.et_blockno);
         et_unitno = (EditText) findViewById(R.id.et_unitno);
@@ -293,7 +294,9 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
         mGridView = (GridView) findViewById(R.id.gridView_binderlist);
         mAdapter = new BinderListAdapter(this);
         mGridView.setAdapter(mAdapter);
-
+        sendBroadcast(new Intent("com.android.action.hide_navigationbar"));//隱藏底部導航
+        setFullScreenView(container);
+        setFullScreen(true);//禁止頂部下拉
         Typeface typeFace = Typeface.createFromAsset(getAssets(), "fonts/GBK.TTF");
         //TextView com_log=(TextView)findViewById(R.id.tv_log);
         tv_input = (EditText) findViewById(R.id.tv_input);
@@ -318,7 +321,6 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
                 Intent intent =  new Intent(Settings.ACTION_SETTINGS);
                 intent.putExtra("back", true);
                 startActivityForResult(intent,INPUT_SYSTEMSET_REQUESTCODE);
-                //Intenet.system_set(MainActivity.this);
                 break;
         }
     }
@@ -517,6 +519,8 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
 
         setTextView(R.id.tv_community, MainService.communityName);
         setTextView(R.id.tv_lock, MainService.lockName);
+
+
     }
 
     private void startClockRefresh() {
@@ -1686,7 +1690,6 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
             }
         }
         initAexNfcReader();
-        setFullScreen(true);//隐藏下拉
         iv_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1698,10 +1701,9 @@ public class MainActivity extends AndroidExActivityBase implements NfcReader.Acc
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.action_settings1:
-                                Intent intent =  new Intent(Settings.ACTION_SETTINGS);
+                                Intent intent =  new Intent(Settings.ACTION_SETTINGS);//跳轉到系統設置
                                 intent.putExtra("back", true);
                                 startActivityForResult(intent,INPUT_SYSTEMSET_REQUESTCODE);
-                                //Intenet.system_set(MainActivity.this);
                                 break;
 
                             case R.id.action_catIP:
