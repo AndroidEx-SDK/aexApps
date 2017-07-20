@@ -1,6 +1,5 @@
 package com.tencent.devicedemo;
 
-import android.app.Activity;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -27,6 +26,7 @@ import android.widget.Toast;
 
 import com.androidex.DoorLock;
 import com.androidex.aexlibs.hwService;
+import com.androidex.common.AndroidExActivityBase;
 import com.androidex.config.DeviceConfig;
 import com.androidex.service.MainService;
 import com.tencent.device.TXDeviceService;
@@ -38,7 +38,7 @@ import java.util.List;
 
 import jni.util.Utils;
 
-public class InitActivity extends Activity {
+public class InitActivity extends AndroidExActivityBase {
     public static final int MSG_NO_MAC_ADDRESS = 30001;
     public static final int MSG_GET_MAC_ADDRESS = 30002;
     public static final int MSG_LOGIN = 30003;
@@ -64,7 +64,6 @@ public class InitActivity extends Activity {
     protected Messenger serviceMessenger;
     protected Handler handler = null;
     private ImageView iv_setting;
-    private hwService hwservice;
 
     String lockName = null;
     boolean hasRegisted = false;
@@ -87,7 +86,6 @@ public class InitActivity extends Activity {
         Log.v("InitActivity", "------>start MainService<-------");
         startMainService();
         //closeBar(this);
-        hwservice = new hwService(InitActivity.this);
         initView();
     }
 
