@@ -150,7 +150,8 @@
         <activity
             android:name=".InitActivity"
             android:configChanges="keyboardHidden|orientation|locale|screenSize"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:theme="@style/Apptheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
