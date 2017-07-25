@@ -127,9 +127,6 @@ public class FaceCardActivity extends AppCompatActivity implements OnFaceDetecto
                 Toast.makeText(getApplicationContext(), isSwitched ? "摄像头切换成功" : "摄像头切换失败", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
     }
 
     private void initDetectView() {
