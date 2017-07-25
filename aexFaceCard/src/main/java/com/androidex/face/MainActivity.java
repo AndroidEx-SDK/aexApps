@@ -1,12 +1,10 @@
 package com.androidex.face;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -106,16 +104,6 @@ public class MainActivity extends Activity implements OnFaceDetectorListener {
     public void initDetectionView() {
         // 检测人脸的View
         mCameraFaceDetectionView = (CameraFaceDetectionView) findViewById(R.id.cameraFaceDetectionView);
-        //获取屏幕的宽和高
-        WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-        int width = wm.getDefaultDisplay().getWidth();
-        int height = wm.getDefaultDisplay().getHeight();
-
-        //动态设置宽和高
-//        RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) mCameraFaceDetectionView.getLayoutParams(); //取控件textView当前的布局参数
-//        linearParams.height = height * 2;
-//        mCameraFaceDetectionView.setLayoutParams(linearParams); //使设置好的布局参数应用到控件
-
         if (mCameraFaceDetectionView != null) {
             mCameraFaceDetectionView.setOnFaceDetectorListener(MainActivity.this);
             mCameraFaceDetectionView.setOnOpenCVInitListener(new OnOpenCVInitListener() {
