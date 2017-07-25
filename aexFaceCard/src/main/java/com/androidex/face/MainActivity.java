@@ -15,18 +15,13 @@ import com.kongqw.interfaces.OnFaceDetectorListener;
 import com.kongqw.interfaces.OnOpenCVInitListener;
 import com.kongqw.util.FaceUtil;
 import com.kongqw.view.CameraFaceDetectionView;
-import com.synjones.idcard.IDCard;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 人脸识别示例
@@ -43,7 +38,6 @@ public class MainActivity extends Activity implements OnFaceDetectorListener {
     private TextView mCmpPic;
     private TextView face_time;//识别时间
     private Mat newMat;
-    private MatOfRect matFace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +45,6 @@ public class MainActivity extends Activity implements OnFaceDetectorListener {
         setContentView(R.layout.activity_main);
         InitUtil.initPermissionManager(MainActivity.this);//初始化权限管理类
         initView();
-        initDao();//初始化数据库
     }
 
     public void initView() {
@@ -61,13 +54,6 @@ public class MainActivity extends Activity implements OnFaceDetectorListener {
         mImageViewFace1 = (ImageView) findViewById(R.id.face1);
         face_time = (TextView) findViewById(R.id.face_time);
         mCmpPic = (TextView) findViewById(R.id.text_view);
-    }
-
-    /**
-     * 初始化数据库
-     */
-    public void initDao() {
-        mFaceDao = FaceDao.getInstance(this);
     }
 
     /**
@@ -90,7 +76,10 @@ public class MainActivity extends Activity implements OnFaceDetectorListener {
                     Imgproc.cvtColor(ma, ma1, Imgproc.COLOR_BGR2GRAY);
                     double cmp = FaceUtil.comPareHist(matFinal, ma1);//比较两个矩阵的相似度
                     if (cmp > 60) {//不存入,返回false
+                        tv_newFace.setText("相似");//同一个人
                         return false;
+                    }else {
+                        tv_newFace.setText("不像素");//同一个人
                     }
                 }
             }
@@ -150,17 +139,19 @@ public class MainActivity extends Activity implements OnFaceDetectorListener {
     @Override
     public void onFace(Mat mat, Rect rect) {
         Mat matGray = FaceUtil.grayChange(mat, rect);//将检测的人脸置灰且变成固定大小，100x100
-        Mat mCharacteristic = FaceUtil.extractORB(matGray);//拿着检测到的人脸去提取图片特征
+        newMat = FaceUtil.extractORB(matGray);//拿着检测到的人脸去提取图片特征
         saveFace(mat, rect);//自动存储人脸信息
-        FaceUtil.saveImage(MainActivity.this, mat, rect, "face");
-        head = FaceUtil.getImage(MainActivity.this, "face");
-
-        if (newMat != null && mCharacteristic != null) {
-            long startTime = System.currentTimeMillis();
-            double cmp = FaceUtil.match(mCharacteristic, newMat);//计算相似度
-            long afterTime = System.currentTimeMillis();
-            long time = afterTime - startTime;
-            UpdateFaceResult(mat, rect, cmp, time);
+        String[] jsonTime = InitUtil.getJsonTime();
+        for (int i=0;i<jsonTime.length;i++){
+            Mat face = getFace(jsonTime[i]);
+            Mat orb = FaceUtil.extractORB(face);
+            if (newMat != null && orb != null) {
+                long startTime = System.currentTimeMillis();
+                double cmp = FaceUtil.match(orb, newMat);//计算相似度
+                long afterTime = System.currentTimeMillis();
+                long time = afterTime - startTime;
+                UpdateFaceResult(mat, rect, cmp, time);
+            }
         }
     }
 
@@ -179,83 +170,26 @@ public class MainActivity extends Activity implements OnFaceDetectorListener {
     }
 
     /**
-     * 根据身份证获取存储的信息
-     */
-    public Map<String, String> getMap(String idnum) {
-        List<Map<String, String>> maps = null;
-        try {
-            maps = InitUtil.parseJson(idnum);
-
-            for (int i = 0; i < maps.size(); i++) {
-                Map<String, String> map = maps.get(i);
-                if (map.get("idnum").equals(idnum)) {
-                    Log.e(TAG, "====idnum: " + idnum);
-                    return map;
-                } else {
-                    Log.e(TAG, "====idnum: null");
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public Bitmap getBitmap(String path) {
-        File file = new File(path);
-        if (file.exists()) {
-            Bitmap bm = BitmapFactory.decodeFile(path);
-            return bm;
-        }
-        return null;
-
-    }
-
-    /**
-     * jsonObject.put("name", idCard.getName());
-     * jsonObject.put("photo", idCard.getPhoto());
-     * jsonObject.put("sex", idCard.getSex());
-     * jsonObject.put("nation", idCard.getNation());
-     * jsonObject.put("birthday", idCard.getBirthday());
-     * jsonObject.put("address", idCard.getAddress());
-     * jsonObject.put("idnum", idCard.getIDCardNo());
-     * jsonObject.put("head", bmp);
-     *
-     * @param idCard
-     */
-    private void saveCardInfo(IDCard idCard, Bitmap head) {
-        Bitmap photo = idCard.getPhoto();//身份证照片
-        long millis = System.currentTimeMillis();
-        InitUtil.saveBitmap("/sdcard/face/", millis + ".png", photo);
-        long millis_head = System.currentTimeMillis();
-        InitUtil.saveBitmap("/sdcard/face/", millis_head + ".png", head);
-
-        String[] strArray = new String[8];
-        strArray[0] = idCard.getName();
-        strArray[1] = "/sdcard/face/" + millis + ".png";
-        strArray[2] = idCard.getSex();
-        strArray[3] = idCard.getNation();
-        strArray[4] = idCard.getBirthday();
-        strArray[5] = idCard.getAddress();
-        strArray[6] = idCard.getIDCardNo();
-        strArray[7] = "/sdcard/face/" + millis_head + ".png";//检测到的人脸路径
-
-        InitUtil.saveJsonStringArray(strArray);
-    }
-
-    /**
      * 存入人脸,将bitmap保存至固定路径下
      */
     public void saveFace(Mat mat, final Rect rect) {
         if (checkIsSave(mat, rect)) {//为真表示存入
             long millis = System.currentTimeMillis();
             //存入数据
-            FaceUtil.saveImage(this, mat, rect, millis + ".png");
-
+            FaceUtil.saveMat(this, mat, rect, millis+"");
+            InitUtil.saveJsonTimes(millis+"");//存储名字
             Log.e(TAG, "录入完成");
         } else {
             Log.e(TAG, "重复录入");
-
         }
+    }
+
+    /**
+     * 返回经过灰度处理的mat
+     * @param name
+     * @return
+     */
+    public Mat getFace(String name){
+       return FaceUtil.getMat(name);
     }
 }

@@ -109,14 +109,11 @@ public class InitUtil {
      */
     public static void saveJsonStringArray(String[] data) {
         String str = getString2Txt();
-
         JSONObject allData = new JSONObject();//建立最外面的节点对象
         JSONArray sing = new JSONArray();//定义数组
-
         for (int x = 0; x < data.length; x++) {//将数组内容配置到相应的节点
             JSONObject temp = new JSONObject();//JSONObject包装数据,而JSONArray包含多个JSONObject
             try {
-
                 temp.put("name" + x, data[x]); //JSONObject是按照key:value形式保存
                 Log.e(TAG, "====data:  " + x + ":::" + data[x]);
             } catch (JSONException e) {
@@ -125,9 +122,7 @@ public class InitUtil {
             sing.put(temp);//保存多个JSONObject
         }
         try {
-
             allData.put("cardinfo", sing);//把JSONArray用最外面JSONObject包装起来
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -167,7 +162,7 @@ public class InitUtil {
      * 解析JSON文件的简单数组
      */
     public static List<Map<String, String>> parseJson(String idnum) throws Exception {
-        String data = "["+getString2Txt()+"]";
+        String data = "[" + getString2Txt() + "]";
         List<Map<String, String>> all = new ArrayList<Map<String, String>>();
         if (data != null) {
             JSONArray array = new JSONArray(data);//是数组
@@ -220,12 +215,11 @@ public class InitUtil {
 
             String mimeTypeLine = null;
             while ((mimeTypeLine = br.readLine()) != null) {
-
                 str = str + mimeTypeLine;
                 Log.e(TAG, "====str:  " + str);
             }
-            str=trimFirstAndLastChar(str,"[".toCharArray()[0]);
-            str=trimFirstAndLastCharEndIndex(str,"]".toCharArray()[0]);
+            str = trimFirstAndLastChar(str, "[".toCharArray()[0]);
+            str = trimFirstAndLastCharEndIndex(str, "]".toCharArray()[0]);
             Log.e(TAG, "====去除两端[]str:  " + str);
             return str;
         } catch (Exception e) {
@@ -240,14 +234,15 @@ public class InitUtil {
 
     /**
      * 去除字符串首尾出现的某个字符.
-     * @param source 源字符串.
+     *
+     * @param source  源字符串.
      * @param element 需要去除的字符.
      * @return String.
      */
-    public static String trimFirstAndLastChar(String source,char element){
+    public static String trimFirstAndLastChar(String source, char element) {
         boolean beginIndexFlag = true;
         boolean endIndexFlag = false;
-        do{
+        do {
             int beginIndex = source.indexOf(element) == 0 ? 1 : 0;
             int endIndex = source.lastIndexOf(element) + 1 == source.length() ? source.lastIndexOf(element) : source.length();
             source = source.substring(beginIndex, endIndex);
@@ -259,14 +254,15 @@ public class InitUtil {
 
     /**
      * 去除字符串首尾出现的某个字符.
-     * @param source 源字符串.
+     *
+     * @param source  源字符串.
      * @param element 需要去除的字符.
      * @return String.
      */
-    public static String trimFirstAndLastCharEndIndex(String source,char element){
-        boolean beginIndexFlag =false;
+    public static String trimFirstAndLastCharEndIndex(String source, char element) {
+        boolean beginIndexFlag = false;
         boolean endIndexFlag = true;
-        do{
+        do {
             int beginIndex = source.indexOf(element) == 0 ? 1 : 0;
             int endIndex = source.lastIndexOf(element) + 1 == source.length() ? source.lastIndexOf(element) : source.length();
             source = source.substring(beginIndex, endIndex);
@@ -293,5 +289,82 @@ public class InitUtil {
         }
         Log.d(TAG, "getJsonSimple jsonObject:" + jsonObject.toString());
         return jsonObject;
+    }
+
+    /**
+     * 用JSON文件保存数组
+     */
+    public static void saveJsonTimes(String time) {
+        String str = getString2Txt();
+        JSONObject allData = new JSONObject();//建立最外面的节点对象
+        try {
+            allData.put("time", time);//把JSONArray用最外面JSONObject包装起来
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+            return;//返回到程序的被调用处 //SD卡不存在则不操作
+        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "urldata" + File.separator + "time.txt");//要输出的文件路径
+        if (!file.getParentFile().exists()) {//文件不存在
+            file.getParentFile().mkdirs();//创建文件夹
+        }
+        PrintStream out = null;
+        try {
+            out = new PrintStream(new FileOutputStream(file));
+            if (str != null && str != "") {
+                Log.e(TAG, "====已经存储的数据:  " + str);
+                out.append(str + "," + allData.toString());//将数据变为字符串后保存
+                Log.e(TAG, "====合并后数据: " + str + "," + allData.toString());
+            } else {
+                out.print(allData.toString());
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            if (out != null) {
+                out.close();//关闭输出
+            }
+        }
+    }
+
+    public static String[] getJsonTime() {
+        String str = getString("time.txt");
+        String[] array = str.split(",");
+        return array;
+    }
+
+    /**
+     * 读取文件，
+     *
+     * @return
+     */
+    public static String getString(String name) {
+        String str = "";
+        InputStreamReader isr = null;
+        String mimeTypeLine = null;
+        try {
+            File urlFile = new File(Environment.getExternalStorageDirectory() + File.separator + "urldata" + File.separator + name);
+            if (!urlFile.exists()) {
+                urlFile.mkdir();
+            }
+            isr = new InputStreamReader(new FileInputStream(urlFile), "UTF-8");
+            BufferedReader br = new BufferedReader(isr);
+            while ((mimeTypeLine = br.readLine()) != null) {
+                str = str + mimeTypeLine;
+                Log.e(TAG, "====str:  " + str);
+            }
+            return str;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (isr != null) {
+                try {
+                    isr.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return str;
     }
 }

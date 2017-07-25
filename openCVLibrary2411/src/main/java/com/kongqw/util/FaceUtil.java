@@ -60,9 +60,19 @@ public final class FaceUtil {
      * @param fileName 文件名字
      * @return 保存是否成功
      */
-    public static boolean saveImage(Context context, Mat image, Rect rect, String fileName) {
+    public static boolean saveMat(Context context, Mat image, Rect rect, String fileName) {
         Mat mat = grayChange(image, rect);
         return Highgui.imwrite(getFilePath(context, fileName), mat);
+    }
+
+    /**
+     * 根据名字提取保存的特征
+     *
+     * @param name
+     * @return
+     */
+    public static Mat getMat(String name) {
+        return Highgui.imread(name);
     }
 
     /**
@@ -128,7 +138,9 @@ public final class FaceUtil {
         return mbitmap;
     }
 
-    /*************** 第一种算法***************************/
+    /***************
+     * 第一种算法
+     ***************************/
    /* *
      *  提取图片特征
      * @return
