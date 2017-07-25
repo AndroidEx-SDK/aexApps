@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.androidex.face.FaceActivity"
+            android:name="com.androidex.face.MainActivity"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.androidex.face.MainActivity"></activity>
+        <activity android:name="com.androidex.face.FaceActivity"></activity>
         <activity android:name="com.androidex.face.FaceCardActivity"></activity>
 
         <service android:name="com.synjones.idcard.RemoteDecodeService"/>
