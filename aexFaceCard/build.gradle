@@ -1,0 +1,114 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion '25.0.2'
+
+    defaultConfig {
+       // applicationId "kong.qingwei.kqwfacedetectiondemo"
+        applicationId "com.androidex.face"
+        minSdkVersion 19
+        targetSdkVersion 25
+        versionCode 2
+        versionName "1.0"
+
+        ndk {
+            moduleName "serial_port"
+            ldLibs "log", "z", "m"
+            cFlags "-fuse-ld=bfd"
+            abiFilters "armeabi", "armeabi-v7a", "x86"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+    /** 导入so文件 */
+    task nativeLibsToJar(type: Zip, description: "create a jar archive of the native libs") {
+        destinationDir file("$projectDir/libs")
+        baseName "jniaexlib"
+        extension "jar"
+        from fileTree(dir: "src/main/jniLibs", include: "**/*.so")
+        into "lib"
+    }
+    tasks.withType(JavaCompile) {
+        compileTask -> compileTask.dependsOn(nativeLibsToJar)
+    }
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+//        exclude 'lib/armeabi/libjniavcodec.so'
+//        exclude 'lib/armeabi/libopencv_dnn.so'
+//        exclude 'lib/x86/libavcodec.so'
+//        exclude 'lib/armeabi/libavcodec.so'
+//        exclude 'lib/armeabi/libopencv_flann.so'
+//        exclude 'lib/x86/libopencv_flann.so'
+//        exclude 'lib/x86/libopencv_bioinspired.so'
+//        exclude 'lib/x86/libjnicvkernels.so'
+//        exclude 'lib/armeabi/libswresample.so'
+//        exclude 'lib/x86/libopencv_videoio.so'
+//        exclude 'lib/x86/libjniARToolKitPlus.so'
+//        exclude 'lib/x86/libjniopencv_ximgproc.so'
+//        exclude 'lib/x86/libopencv_video.so'
+//        exclude 'lib/armeabi/libjniswresample.so'
+//        exclude 'lib/x86/libjniopencv_ml.so'
+//        exclude 'lib/armeabi/libjniopencv_optflow.so'
+//        exclude 'lib/x86/libjniavdevice.so'
+//        exclude 'lib/armeabi/libjniopencv_bioinspired.so'
+//        exclude 'lib/armeabi/libjniopencv_calib3d.so'
+//        exclude 'lib/x86/libopencv_shape.so'
+//        exclude 'lib/armeabi/libjniopencv_xfeatures2d.so'
+//        exclude 'lib/x86/libopencv_xfeatures2d.so'
+//        exclude 'lib/armeabi/libjniopencv_dnn.so'
+//        exclude 'lib/x86/libopencv_videostab.so'
+//        exclude 'lib/x86/libopencv_ximgproc.so'
+//        exclude 'lib/armeabi/libjnicvkernels.so'
+//        exclude 'lib/x86/libjniopencv_superres.so'
+//        exclude 'lib/x86/libavformat.so'
+//        exclude 'lib/x86/libopencv_highgui.so'
+//        exclude 'lib/armeabi/libavfilter.so'
+//        exclude 'lib/x86/libjniavutil.so'
+//        exclude 'lib/armeabi/libavformat.so'
+//        exclude 'lib/armeabi/libjniopencv_ml.so'
+//        exclude 'lib/armeabi/libpostproc.so'
+//        exclude 'lib/x86/libjniavfilter.so'
+//        exclude 'lib/x86/libjniopencv_videostab.so'
+//        exclude 'lib/x86/libjniopencv_face.so'
+//        exclude 'lib/armeabi/libjniavutil.so'
+//        exclude 'lib/x86/libjniswresample.so'
+//        exclude 'lib/armeabi/libjniopencv_flann.so'
+//        exclude 'lib/x86/libopencv_stitching.so'
+//        exclude 'lib/armeabi/libjniopencv_superres.so'
+//        exclude 'lib/armeabi/libopencv_xfeatures2d.so'
+//        exclude 'lib/armeabi/libjniopencv_stitching.so'
+//        exclude 'lib/armeabi/libjniopencv_shape.so'
+
+        pickFirst 'META-INF/maven/org.bytedeco.javacpp-presets/opencv/pom.properties'
+        pickFirst 'META-INF/maven/org.bytedeco.javacpp-presets/opencv/pom.xml'
+        pickFirst 'META-INF/maven/org.bytedeco.javacpp-presets/ffmpeg/pom.properties'
+        pickFirst 'META-INF/maven/org.bytedeco.javacpp-presets/ffmpeg/pom.xml'
+    }
+}
+
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile files('libs/synjonesSerial.jar')
+    compile project(':openCVLibrary2411')
+}
