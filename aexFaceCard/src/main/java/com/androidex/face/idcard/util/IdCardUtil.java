@@ -135,6 +135,7 @@ public class IdCardUtil {
                 //发送消息出去
                 idCard = idreader.getIDCardFp();
                 if (idCard != null) {
+                    Log.d("IdCardUtiil","idCard ="+idCard.getIDCardNo());
                     com.synjones.bluetooth.DecodeWlt mydw = new com.synjones.bluetooth.DecodeWlt();
                     //将读出的照片数据写入文件
                     try {
@@ -161,6 +162,7 @@ public class IdCardUtil {
                     idCard.setPhoto(bmp);
                     bitmapCallBack.callBack(READ);
                 } else {
+                    Log.d("IdCardUtiil","idCard is null");
                     bitmapCallBack.callBack(NOREAD);
                     continue;
                 }
