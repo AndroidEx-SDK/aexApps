@@ -1,27 +1,21 @@
 package com.androidex.face;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.androidex.face.db.FaceDao;
 import com.androidex.face.utils.InitUtil;
-import com.androidex.face.utils.UserInfo;
 import com.kongqw.interfaces.OnFaceDetectorListener;
 import com.kongqw.interfaces.OnOpenCVInitListener;
 import com.kongqw.util.FaceUtil;
 import com.kongqw.view.CameraFaceDetectionView;
 
-import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
-import org.opencv.imgproc.Imgproc;
-
-import java.util.ArrayList;
 
 /**
  * 人脸识别示例
@@ -30,14 +24,23 @@ import java.util.ArrayList;
 public class MainActivity extends Activity implements OnFaceDetectorListener {
     private static final String TAG = "FaceActivity";
     private CameraFaceDetectionView mCameraFaceDetectionView;
-    private FaceDao mFaceDao;
-    private Bitmap photo;
-    private Bitmap head;
     private TextView tv_newFace;//
     private ImageView mImageViewFace1;
     private TextView mCmpPic;
     private TextView face_time;//识别时间
     private Mat newMat;
+    private static final int MSG_UPDATE = 0X01;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case MSG_UPDATE:
+
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,37 +53,38 @@ public class MainActivity extends Activity implements OnFaceDetectorListener {
     public void initView() {
         initDetectionView();//初始化检测人脸的View
         //身份证信息view
-        tv_newFace = (TextView) findViewById(R.id.tv_newFace);
-        mImageViewFace1 = (ImageView) findViewById(R.id.face1);
-        face_time = (TextView) findViewById(R.id.face_time);
-        mCmpPic = (TextView) findViewById(R.id.text_view);
+        tv_newFace = (TextView) findViewById(R.id.tv_newFace);//
+        mImageViewFace1 = (ImageView) findViewById(R.id.face1);//捕捉到的人脸
+        face_time = (TextView) findViewById(R.id.face_time);//识别时间
+        mCmpPic = (TextView) findViewById(R.id.text_view);//相似度
     }
 
     /**
      * 检测人脸是否存在，相似度大于60%为存在，不予存储
-     *
-     * @param mat
-     * @param rect
+     * Utils.bitmapToMat(bitmap, ma);
+     * Imgproc.cvtColor(ma, ma1, Imgproc.COLOR_BGR2GRAY);
+     * double cmp = FaceUtil.comPareHist(orb, newMat);//比较两个矩阵的相似度
      */
-    public boolean checkIsSave(Mat mat, final Rect rect) {
-        ArrayList<UserInfo> userinfo = mFaceDao.getUserinfo();
-        if (userinfo != null && userinfo.size() > 0) {
-            for (int i = 0; i < userinfo.size(); i++) {
-                UserInfo users = userinfo.get(i);
-                Bitmap bitmap = BitmapFactory.decodeFile(users.getFacepath());
-                if (bitmap != null) {
-                    Mat matFinal = FaceUtil.grayChange(mat, rect);
-                    Mat ma = new Mat();
-                    Mat ma1 = new Mat();
-                    Utils.bitmapToMat(bitmap, ma);
-                    Imgproc.cvtColor(ma, ma1, Imgproc.COLOR_BGR2GRAY);
-                    double cmp = FaceUtil.comPareHist(matFinal, ma1);//比较两个矩阵的相似度
-                    if (cmp > 60) {//不存入,返回false
-                        tv_newFace.setText("相似");//同一个人
-                        return false;
-                    }else {
-                        tv_newFace.setText("不像素");//同一个人
-                    }
+    public boolean checkIsSave() {
+        String[] jsonTime = InitUtil.getJsonTime();
+        for (int i = 0; i < jsonTime.length; i++) {
+            Mat face = getFace(jsonTime[i]);
+            Mat orb = FaceUtil.extractORB(face);//提取特征
+            if (newMat != null && orb != null) {
+                long startTime = System.currentTimeMillis();
+                final double cmp = FaceUtil.match(orb, newMat);//计算相似度
+                long afterTime = System.currentTimeMillis();
+                final long time = afterTime - startTime;
+                Log.d("MainActivity", "cmp=" + cmp);
+                if (cmp > 50) {//不存入,返回false
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            face_time.setText("识别时间:" + time + "ms");
+                            mCmpPic.setText(String.format("相似度 :  %.2f%%", cmp));
+                        }
+                    });
+                    return false;
                 }
             }
         }
@@ -137,59 +141,27 @@ public class MainActivity extends Activity implements OnFaceDetectorListener {
      * @param rect //
      */
     @Override
-    public void onFace(Mat mat, Rect rect) {
+    public void onFace(final Mat mat, Rect rect) {
+        Log.e(TAG, "检测到人脸");
         Mat matGray = FaceUtil.grayChange(mat, rect);//将检测的人脸置灰且变成固定大小，100x100
         newMat = FaceUtil.extractORB(matGray);//拿着检测到的人脸去提取图片特征
-        saveFace(mat, rect);//自动存储人脸信息
-        String[] jsonTime = InitUtil.getJsonTime();
-        for (int i=0;i<jsonTime.length;i++){
-            Mat face = getFace(jsonTime[i]);
-            Mat orb = FaceUtil.extractORB(face);
-            if (newMat != null && orb != null) {
-                long startTime = System.currentTimeMillis();
-                double cmp = FaceUtil.match(orb, newMat);//计算相似度
-                long afterTime = System.currentTimeMillis();
-                long time = afterTime - startTime;
-                UpdateFaceResult(mat, rect, cmp, time);
-            }
-        }
-    }
-
-    private void UpdateFaceResult(final Mat mat, final Rect rect, final double lcmp, final long time) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (null == mat) {
-                    mImageViewFace1.setImageResource(R.mipmap.ic_contact_picture);
-                } else {
-                    face_time.setText("识别时间:" + (time) + "ms");
-                    mCmpPic.setText(String.format("相似度 :  %.2f%%", lcmp));
-                }
-            }
-        });
-    }
-
-    /**
-     * 存入人脸,将bitmap保存至固定路径下
-     */
-    public void saveFace(Mat mat, final Rect rect) {
-        if (checkIsSave(mat, rect)) {//为真表示存入
+        if (checkIsSave()) {//存入
             long millis = System.currentTimeMillis();
-            //存入数据
-            FaceUtil.saveMat(this, mat, rect, millis+"");
-            InitUtil.saveJsonTimes(millis+"");//存储名字
+            FaceUtil.saveMat(this, mat, rect, millis + ""); //存入特征
+            InitUtil.saveJsonTimes(millis + "");//存储名字
             Log.e(TAG, "录入完成");
-        } else {
-            Log.e(TAG, "重复录入");
+        } else {//不存入
+            return;
         }
     }
 
     /**
      * 返回经过灰度处理的mat
+     *
      * @param name
      * @return
      */
-    public Mat getFace(String name){
-       return FaceUtil.getMat(name);
+    public Mat getFace(String name) {
+        return FaceUtil.getMat(name);
     }
 }

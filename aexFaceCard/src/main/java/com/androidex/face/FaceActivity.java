@@ -247,7 +247,7 @@ public class FaceActivity extends AppCompatActivity implements View.OnClickListe
         Mat mCharacteristic = FaceUtil.extractORB(matGray);//拿着检测到的人脸去提取图片特征
         //saveFace(mat, rect);//自动存储人脸信息
 
-        FaceUtil.saveImage(FaceActivity.this, mat, rect, "face");
+        FaceUtil.saveMat(FaceActivity.this, mat, rect, "face");
         head = FaceUtil.getImage(FaceActivity.this, "face");
 
         if (newMat != null && mCharacteristic != null) {
@@ -480,7 +480,7 @@ public class FaceActivity extends AppCompatActivity implements View.OnClickListe
         if (checkIsSave(mat, rect)) {//为真表示存入
             long millis = System.currentTimeMillis();
             //存入数据
-            FaceUtil.saveImage(this, mat, rect, millis + ".png");
+            FaceUtil.saveMat(this, mat, rect, millis + ".png");
 
             Log.e(TAG, "录入完成");
         } else {

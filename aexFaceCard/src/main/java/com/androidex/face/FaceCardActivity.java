@@ -252,7 +252,7 @@ public class FaceCardActivity extends AppCompatActivity implements OnFaceDetecto
                 Log.d(TAG, "onFace: 没有存入过");
                 String time = System.currentTimeMillis() + "";
                 //存入数据
-                FaceUtil.saveImage(this, mat, rect, time);
+                FaceUtil.saveMat(this, mat, rect, time);
                 faceDao.insertUserinfo(null, getApplicationContext().getFilesDir().getPath() + time + ".jpg");
                 isShow = true;
             }
@@ -313,7 +313,7 @@ public class FaceCardActivity extends AppCompatActivity implements OnFaceDetecto
                         face_time.setText("识别时间:" + (afterTime - startTime) + "ms");
 
                         if (lcmp > 50) {
-                            FaceUtil.saveImage(FaceCardActivity.this, mat, rect, FACE1);
+                            FaceUtil.saveMat(FaceCardActivity.this, mat, rect, FACE1);
                             mBitmapFace1 = FaceUtil.getImage(FaceCardActivity.this, FACE1);
                             mImageViewFace1.setImageBitmap(mBitmapFace1);
                             mCmpPic.setText(String.format("相似度 :  高（%.2f%%）", cmp));
