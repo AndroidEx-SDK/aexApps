@@ -2,6 +2,7 @@ package com.androidex.face.utils;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Environment;
@@ -24,6 +25,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -283,7 +285,6 @@ public class InitUtil {
             jsonObject.put("address", idCard.getAddress());
             jsonObject.put("idnum", idCard.getIDCardNo());
             jsonObject.put("head", bmp);
-
         } catch (JSONException e) {
             throw new RuntimeException("getJsonSimple JSONException:" + e);
         }
@@ -294,42 +295,42 @@ public class InitUtil {
     /**
      * 用JSON文件保存数组
      */
-    public static void saveJsonTimes(String time) {
-        String str = getString2Txt();
-        JSONObject allData = new JSONObject();//建立最外面的节点对象
+    public static void saveJsonTimes(String time, Context context) {
+        String str = getString("time.txt",context);
+        Log.e("MainActivity", "====已经存储的数据:  2" + str);
+        FileOutputStream out = null;
         try {
-            allData.put("time", time);//把JSONArray用最外面JSONObject包装起来
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
-            return;//返回到程序的被调用处 //SD卡不存在则不操作
-        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "urldata" + File.separator + "time.txt");//要输出的文件路径
-        if (!file.getParentFile().exists()) {//文件不存在
-            file.getParentFile().mkdirs();//创建文件夹
-        }
-        PrintStream out = null;
-        try {
-            out = new PrintStream(new FileOutputStream(file));
+            out = context.openFileOutput("time.txt", Context.MODE_PRIVATE);
+            Log.e("MainActivity", "====已经存储的数据:  3" + str);
             if (str != null && str != "") {
-                Log.e(TAG, "====已经存储的数据:  " + str);
-                out.append(str + "," + allData.toString());//将数据变为字符串后保存
-                Log.e(TAG, "====合并后数据: " + str + "," + allData.toString());
+                Log.e("MainActivity", "====已经存储的数据:  " + str);
+                out.write((str + "," + time).getBytes("utf-8"));//将数据变为字符串后保存
+                Log.e("MainActivity", "====合并后数据: " + str + "," + time);
             } else {
-                out.print(allData.toString());
+                out.write(time.getBytes("utf-8"));//将数据变为后保存
+                Log.e("MainActivity", "====数据1: " + time);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         } finally {
             if (out != null) {
-                out.close();//关闭输出
+                try {
+                    out.close();//关闭输出
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
-    public static String[] getJsonTime() {
-        String str = getString("time.txt");
+    public static String[] getJsonTime(Context context) {
+        String str = getString("time.txt",context);
         String[] array = str.split(",");
+        Log.d("MainActivity", "读取数据str=" + str);
         return array;
     }
 
@@ -338,28 +339,31 @@ public class InitUtil {
      *
      * @return
      */
-    public static String getString(String name) {
+    public static String getString(String name, Context context) {
         String str = "";
-        InputStreamReader isr = null;
-        String mimeTypeLine = null;
+        FileInputStream fileInputStream = null;
+        BufferedReader reader = null;
         try {
-            File urlFile = new File(Environment.getExternalStorageDirectory() + File.separator + "urldata" + File.separator + name);
-            if (!urlFile.exists()) {
-                urlFile.mkdir();
-            }
-            isr = new InputStreamReader(new FileInputStream(urlFile), "UTF-8");
-            BufferedReader br = new BufferedReader(isr);
-            while ((mimeTypeLine = br.readLine()) != null) {
-                str = str + mimeTypeLine;
+            fileInputStream = context.openFileInput(name);
+            reader = new BufferedReader(new InputStreamReader(fileInputStream));
+            String line = new String();
+            while ((line = reader.readLine()) != null) {
+                str = str + line;
                 Log.e(TAG, "====str:  " + str);
             }
-            return str;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (isr != null) {
+            if (reader != null) {
                 try {
-                    isr.close();
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (fileInputStream!=null){
+                try {
+                    fileInputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

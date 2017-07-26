@@ -15,7 +15,7 @@
             android:id="@+id/cameraFaceDetectionView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            />
+        />
 
     </RelativeLayout>
     <LinearLayout
@@ -40,6 +40,17 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="#FF000000"
             android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/tv_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="比对个数"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#FF000000"
+            android:textSize="20sp"
+            />
 
         <TextView
             android:id="@+id/face_time"

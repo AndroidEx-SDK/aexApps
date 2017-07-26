@@ -184,7 +184,7 @@ public final class FaceUtil {
                 max++;
             }
         }*/
-        //Log.d(TAG, "match: 个数"+matches.size());
+        Log.d(TAG, "match: 个数"+matches.size());
         DMatch[] dma = matches.toArray();
         for (int i = 0; i < dma.length; i++) {
             double list = dma[i].distance;
@@ -193,8 +193,9 @@ public final class FaceUtil {
             }
             //Log.d(TAG, "match: 距离="+list);
         }
-        //Log.d(TAG, "match: max="+max);
-        //Log.d(TAG, "match: 相似度"+max/dma.length*100);
+        Log.d(TAG, "match: max="+max);
+        Log.d(TAG, "match: dma.length"+dma.length);
+        Log.d(TAG, "match: 相似度"+max/dma.length*100);
         return max / dma.length * 100;
     }
 

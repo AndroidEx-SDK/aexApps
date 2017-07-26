@@ -51,7 +51,7 @@ public class CameraFaceDetectionView extends JavaCameraView implements CameraBri
 
     private int mAbsoluteFaceSize = 0;
     // 脸部占屏幕多大面积的时候开始识别
-    private static final float RELATIVE_FACE_SIZE = 0.1f;
+    private static final float RELATIVE_FACE_SIZE = 0.4f;
 
     public CameraFaceDetectionView(Context context, AttributeSet attrs) {
         super(context, attrs);
