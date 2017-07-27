@@ -31,6 +31,8 @@ public class MainActivity extends Activity implements OnFaceDetectorListener {
     private TextView mCmpPic;
     private TextView tv_num;
     private TextView face_time;//识别时间
+    private TextView tv_meanTime;//识别时间
+    private TextView tv_manNum;//识别时间
     private Mat newMat;
     private static final int MSG_UPDATE = 0X01;
     private Handler handler = new Handler() {
@@ -44,6 +46,7 @@ public class MainActivity extends Activity implements OnFaceDetectorListener {
             }
         }
     };
+    private int manNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,8 @@ public class MainActivity extends Activity implements OnFaceDetectorListener {
         face_time = (TextView) findViewById(R.id.face_time);//识别时间
         mCmpPic = (TextView) findViewById(R.id.text_view);//相似度
         tv_num = (TextView) findViewById(R.id.tv_num);//相似度
+        tv_meanTime = (TextView) findViewById(R.id.tv_meanTime);//平均时间
+        tv_manNum = (TextView) findViewById(R.id.tv_manNum);//平均时间
     }
 
     /**
@@ -73,20 +78,26 @@ public class MainActivity extends Activity implements OnFaceDetectorListener {
         final String[] jsonTime = InitUtil.getJsonTime(MainActivity.this);
         Log.d("MainActivity", "jsonTime=" + jsonTime.length);
         final long startTime = System.currentTimeMillis();
+        manNum=0;
         for (int i = 0; i < jsonTime.length; i++) {
             Mat face = getFace(jsonTime[i]);
-            if (face!=null){
+            manNum = i+1;
+            if (face != null) {
                 if (newMat != null && face != null) {
                     final double cmp = FaceUtil.match(face, newMat);//计算相似度
                     Log.d("MainActivity", "cmp=" + cmp);
-                    if (cmp > 90) {//不存入,返回false
+                    if (cmp > 80) {//不存入,返回false
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 long afterTime = System.currentTimeMillis();
                                 final long time = afterTime - startTime;
+                                tv_manNum.setText("检测个数:"+manNum);
+                                if (manNum>0){
+                                    tv_meanTime.setText("平均时间："+time/manNum+"ms");
+                                }
                                 face_time.setText("识别时间:" + time + "ms");
-                                tv_num.setText("比对个数: "+jsonTime.length);
+                                tv_num.setText("总数量: " + jsonTime.length);
                                 mCmpPic.setText(String.format("相似度 :  %.2f%%", cmp));
                                 tv_newFace.setText("是同一个人");
                             }
@@ -94,8 +105,8 @@ public class MainActivity extends Activity implements OnFaceDetectorListener {
                         return false;
                     }
                 }
-            }else {
-                Log.d("MainActivity", "没有读取到人脸特征" );
+            } else {
+                Log.d("MainActivity", "没有读取到人脸特征");
             }
         }
         long afterTime = System.currentTimeMillis();
@@ -103,7 +114,11 @@ public class MainActivity extends Activity implements OnFaceDetectorListener {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                tv_num.setText("比对个数: "+jsonTime.length);
+                tv_manNum.setText("检测个数:"+jsonTime.length);
+                if(jsonTime.length>0){
+                    tv_meanTime.setText("平均时间："+time/jsonTime.length+"ms");
+                }
+                tv_num.setText("总数量: " + jsonTime.length);
                 tv_newFace.setText("添加到末尾");
                 face_time.setText("识别时间:" + time + "ms");
             }
@@ -167,15 +182,15 @@ public class MainActivity extends Activity implements OnFaceDetectorListener {
         newMat = FaceUtil.extractORB(matGray);//拿着检测到的人脸去提取图片特征
         if (checkIsSave()) {//存入
             long millis = System.currentTimeMillis();
-            boolean b = FaceUtil.saveMat(this, mat, rect, millis+"" );//存入特征
-            Log.e(TAG, "b=="+b);
-            if (b){
-                InitUtil.saveJsonTimes(millis+"" ,MainActivity.this);//存储名字
-            }else{
-                Log.e(TAG, "录入失败"+millis);
+            boolean b = FaceUtil.saveMat(this, mat, rect, millis + "");//存入特征
+            Log.e(TAG, "b==" + b);
+            if (b) {
+                InitUtil.saveJsonTimes(millis + "", MainActivity.this);//存储名字
+            } else {
+                Log.e(TAG, "录入失败" + millis);
                 return;
             }
-            Log.e(TAG, "录入完成"+millis);
+            Log.e(TAG, "录入完成" + millis);
         } else {//不存入
             Log.e(TAG, "不录入");
             return;
@@ -189,9 +204,12 @@ public class MainActivity extends Activity implements OnFaceDetectorListener {
      * @return
      */
     public Mat getFace(String name) {
-       // return FaceUtil.getMat(name);
+        // return FaceUtil.getMat(name);
         Mat mat = new Mat();
         Bitmap bitmap = FaceUtil.getImage(MainActivity.this, name);
+        if (bitmap == null) {
+            return null;
+        }
         Utils.bitmapToMat(bitmap, mat);
         //提取图片特征//从存储的信息中取出的图片
         mat = FaceUtil.extractORB(mat);
