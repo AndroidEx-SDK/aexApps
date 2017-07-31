@@ -19,16 +19,17 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+
     buildTypes {
         release {
-            minifyEnabled false
-            zipAlignEnabled true
+            minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            zipAlignEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     /** 导入so文件 */
