@@ -918,6 +918,7 @@ public class MainService extends Service {
 
     private void onCardIncome(String card) {
         if (!this.cardRecord.checkLastCard(card)) {
+            Log.v("MainService", "onCard====卡信息：" + card);
             if (checkCardAvailable(card)) {
                 openLock();
                 Log.e(TAG, "onCard====:" + card);
