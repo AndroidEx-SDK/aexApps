@@ -75,7 +75,6 @@ import java.util.List;
  */
 @TargetApi(Build.VERSION_CODES.KITKAT)
 public class FullscreenActivity extends AndroidExActivityBase implements NfcAdapter.ReaderCallback, View.OnClickListener, aexLogFragment.CallBackValue {
-    public static final String LOG = "Log";
     public static final int DLG_NETINFO = 1004;
     public static final String action_back = "com.androidex.back";
     public static final String action_next = "com.androidex.next";
@@ -296,9 +295,6 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     protected void onResume() {
         super.onResume();
         enableReaderMode();//启动NFC
-
-        //if(verify_password == 0)
-        //    CheckPassword();
         hwservice.ExitFullScreen();
         EnableFullScreen();
     }
