@@ -1,4 +1,4 @@
-package com.androidex.text485;
+package com.androidex.comassistant;
 
 /**
  * Created by cts on 17/3/31.
@@ -6,7 +6,7 @@ package com.androidex.text485;
 
 import android.util.Log;
 
-import com.androidex.bean.ComBean;
+import com.androidex.bean.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.InvalidParameterException;
 
-import android_serialport_api.SerialPort;
+import android_serialport_api.*;
 
 /**
  * @author benjaminwan

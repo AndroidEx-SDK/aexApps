@@ -24,4 +24,7 @@ public class ComBean {
         SimpleDateFormat sDateFormat = new SimpleDateFormat("hh:mm:ss");
         sRecTime = sDateFormat.format(new java.util.Date());
     }
+    public void poll(){
+        
+    }
 }

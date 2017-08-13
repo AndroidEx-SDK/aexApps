@@ -1,4 +1,4 @@
-package com.androidex.text485;
+package com.androidex.comassistant;
 
 /**
  * Created by cts on 17/3/31.
@@ -31,8 +31,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.androidex.bean.AssistBean;
-import com.androidex.bean.ComBean;
+import android_serialport_api.*;
+
+import com.androidex.bean.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -45,7 +46,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import android_serialport_api.SerialPortFinder;
 
 /**
  * serialport api和jni取自http://code.google.com/p/android-serialport-api/
@@ -113,7 +113,7 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
     private void setControls() {
         String appName = getString(R.string.app_name);
         try {
-            PackageInfo pinfo = getPackageManager().getPackageInfo("com.androidex.text485", PackageManager.GET_CONFIGURATIONS);
+            PackageInfo pinfo = getPackageManager().getPackageInfo("com.androidex.comassistant", PackageManager.GET_CONFIGURATIONS);
             String versionName = pinfo.versionName;
 //			String versionCode = String.valueOf(pinfo.versionCode);
             setTitle(appName + " V" + versionName);
@@ -523,11 +523,9 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
     }
 
     //----------------------------------------------------串口控制类
-    private class SerialControl extends SerialHelper {
+    public class SerialControl extends SerialHelper {
 
-        //		public SerialControl(String sPort, String sBaudRate){
-//			super(sPort, sBaudRate);
-//		}
+
         public SerialControl() {
         }
 
@@ -556,6 +554,7 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
             super.run();
             while (!isInterrupted()) {
                 final ComBean ComData;
+
                 while ((ComData = QueueList.poll()) != null) {
                     runOnUiThread(new Runnable() {
                         public void run() {
@@ -608,7 +607,7 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
         AssistData.sTimeB = editTextTimeCOMB.getText().toString();
         AssistData.sTimeC = editTextTimeCOMC.getText().toString();
         AssistData.sTimeD = editTextTimeCOMD.getText().toString();
-        SharedPreferences msharedPreferences = getSharedPreferences("text485", Context.MODE_PRIVATE);
+        SharedPreferences msharedPreferences = getSharedPreferences("comassistant", Context.MODE_PRIVATE);
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -624,7 +623,7 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
 
     //----------------------------------------------------
     private AssistBean getAssistData() {
-        SharedPreferences msharedPreferences = getSharedPreferences("text485", Context.MODE_PRIVATE);
+        SharedPreferences msharedPreferences = getSharedPreferences("comassistant", Context.MODE_PRIVATE);
         AssistBean AssistData = new AssistBean();
         try {
             String personBase64 = msharedPreferences.getString("AssistData", "");
@@ -706,7 +705,7 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
         Log.e("xxx显示数据：", sMsg.toString());
         iRecLines++;
         editTextLines.setText(String.valueOf(iRecLines));
-        if ((iRecLines > 500) && (checkBoxAutoClear.isChecked())){//达到500项自动清除
+        if ((iRecLines > 500) && (checkBoxAutoClear.isChecked())) {//达到500项自动清除
             editTextRecDisp.setText("");
             editTextLines.setText("0");
             iRecLines = 0;
