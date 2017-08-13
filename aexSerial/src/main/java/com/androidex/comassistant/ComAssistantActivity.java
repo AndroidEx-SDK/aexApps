@@ -34,6 +34,7 @@ import android.widget.ToggleButton;
 import android_serialport_api.*;
 
 import com.androidex.bean.*;
+import com.androidex.plugins.kkserial;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -70,6 +71,10 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
     SerialPortFinder mSerialPortFinder;//串口设备搜索
     AssistBean AssistData;//用于界面数据序列化和反序列化
     int iRecLines = 0;//接收区行数
+    private kkserial serialA;
+    private kkserial serialB;
+    private kkserial serialC;
+    private kkserial serialD;
 
     /**
      * Called when the activity is first created.
@@ -78,6 +83,11 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        serialA = new kkserial(this);
+        serialB = new kkserial(this);
+        serialC = new kkserial(this);
+        serialD = new kkserial(this);
+
         ComA = new SerialControl();
         ComB = new SerialControl();
         ComC = new SerialControl();
@@ -554,7 +564,6 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
             super.run();
             while (!isInterrupted()) {
                 final ComBean ComData;
-
                 while ((ComData = QueueList.poll()) != null) {
                     runOnUiThread(new Runnable() {
                         public void run() {

@@ -54,5 +54,6 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:23.0.1'
     testCompile 'junit:junit:4.12'
+    compile(name: 'appLibs', ext: 'aar')
 
 }
