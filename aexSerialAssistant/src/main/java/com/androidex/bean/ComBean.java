@@ -25,6 +25,6 @@ public class ComBean {
         sRecTime = sDateFormat.format(new java.util.Date());
     }
     public void poll(){
-        
+
     }
 }

@@ -27,92 +27,100 @@ import java.util.Vector;
 
 public class SerialPortFinder {
 
-	public class Driver {
-		public Driver(String name, String root) {
-			mDriverName = name;
-			mDeviceRoot = root;
-		}
-		private String mDriverName;
-		private String mDeviceRoot;
-		Vector<File> mDevices = null;
-		public Vector<File> getDevices() {
-			if (mDevices == null) {
-				mDevices = new Vector<File>();
-				File dev = new File("/dev");
-				File[] files = dev.listFiles();
-				int i;
-				for (i=0; i<files.length; i++) {
-					if (files[i].getAbsolutePath().startsWith(mDeviceRoot)) {
-						Log.d(TAG, "Found new device: " + files[i]);
-						mDevices.add(files[i]);
-					}
-				}
-			}
-			return mDevices;
-		}
-		public String getName() {
-			return mDriverName;
-		}
-	}
+    public class Driver {
+        public Driver(String name, String root) {
+            mDriverName = name;
+            mDeviceRoot = root;
+        }
 
-	private static final String TAG = "SerialPort";
+        private String mDriverName;
+        private String mDeviceRoot;
+        Vector<File> mDevices = null;
 
-	private Vector<Driver> mDrivers = null;
+        public Vector<File> getDevices() {
+            if (mDevices == null) {
+                mDevices = new Vector<File>();
+                File dev = new File("/dev");
+                File[] files = dev.listFiles();
+                int i;
+                for (i = 0; i < files.length; i++) {
+                    if (files[i].getAbsolutePath().startsWith(mDeviceRoot)) {
+                        Log.d(TAG, "Found new device: " + files[i]);
+                        mDevices.add(files[i]);
+                    }
+                }
+            }
+            return mDevices;
+        }
 
-	Vector<Driver> getDrivers() throws IOException {
-		if (mDrivers == null) {
-			mDrivers = new Vector<Driver>();
-			LineNumberReader r = new LineNumberReader(new FileReader("/proc/tty/drivers"));
-			String l;
-			while((l = r.readLine()) != null) {
-				// Issue 3:
-				// Since driver name may contain spaces, we do not extract driver name with split()
-				String drivername = l.substring(0, 0x15).trim();
-				String[] w = l.split(" +");
-				if ((w.length >= 5) && (w[w.length-1].equals("serial"))) {
-					Log.d(TAG, "Found new driver " + drivername + " on " + w[w.length-4]);
-					mDrivers.add(new Driver(drivername, w[w.length-4]));
-				}
-			}
-			r.close();
-		}
-		return mDrivers;
-	}
+        public String getName() {
+            return mDriverName;
+        }
+    }
 
-	public String[] getAllDevices() {
-		Vector<String> devices = new Vector<String>();
-		// Parse each driver
-		Iterator<Driver> itdriv;
-		try {
-			itdriv = getDrivers().iterator();
-			while(itdriv.hasNext()) {
-				Driver driver = itdriv.next();
-				Iterator<File> itdev = driver.getDevices().iterator();
-				while(itdev.hasNext()) {
-					String device = itdev.next().getName();
-					String value = String.format("%s (%s)", device, driver.getName());
-					devices.add(value);
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return devices.toArray(new String[devices.size()]);
-	}
+    public void next() {
+    }
 
-	public String[] getAllDevicesPath() {
-		Vector<String> devices = new Vector<String>();
+    ;
+    private static final String TAG = "SerialPort";
 
-		devices.add("/dev/ttyGS0");
-		devices.add("/dev/ttyGS1");
-		devices.add("/dev/ttyGS2");
-		devices.add("/dev/ttyGS3");
-		devices.add("/dev/ttymxc0");
-		devices.add("/dev/ttymxc1");
-		devices.add("/dev/ttymxc2");
-		devices.add("/dev/ttymxc3");
-		devices.add("/dev/ttymxc4");
+    private Vector<Driver> mDrivers = null;
 
+    Vector<Driver> getDrivers() throws IOException {
+        if (mDrivers == null) {
+            mDrivers = new Vector<Driver>();
+            LineNumberReader r = new LineNumberReader(new FileReader("/proc/tty/drivers"));
+            String l;
+            while ((l = r.readLine()) != null) {
+                // Issue 3:
+                // Since driver name may contain spaces, we do not extract driver name with split()
+                String drivername = l.substring(0, 0x15).trim();
+                String[] w = l.split(" +");
+                if ((w.length >= 5) && (w[w.length - 1].equals("serial"))) {
+                    Log.d(TAG, "Found new driver " + drivername + " on " + w[w.length - 4]);
+                    mDrivers.add(new Driver(drivername, w[w.length - 4]));
+                }
+            }
+            r.close();
+        }
+        return mDrivers;
+    }
+
+    public String[] getAllDevices() {
+        Vector<String> devices = new Vector<String>();
+        // Parse each driver
+        Iterator<Driver> itdriv;
+        try {
+            itdriv = getDrivers().iterator();
+            while (itdriv.hasNext()) {
+                Driver driver = itdriv.next();
+                Iterator<File> itdev = driver.getDevices().iterator();
+                while (itdev.hasNext()) {
+                    String device = itdev.next().getName();
+                    String value = String.format("%s (%s)", device, driver.getName());
+                    devices.add(value);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return devices.toArray(new String[devices.size()]);
+    }
+
+    public String[] getAllDevicesPath() {
+        Vector<String> devices = new Vector<String>();
+
+        devices.add("/dev/ttyGS0");
+        devices.add("/dev/ttyGS1");
+        devices.add("/dev/ttyGS2");
+        devices.add("/dev/ttyGS3");
+        devices.add("/dev/ttymxc0");
+        devices.add("/dev/ttymxc1");
+        devices.add("/dev/ttymxc2");
+        devices.add("/dev/ttymxc3");
+        devices.add("/dev/ttymxc4");
+
+        /********此处用在飞思卡尔的主控上会崩溃，顾把写成了上面的写法*************/
 //		// Parse each driver
 //		Iterator<Driver> itdriv;
 //		try {
@@ -129,6 +137,6 @@ public class SerialPortFinder {
 //			e.printStackTrace();
 //		}
 
-		return devices.toArray(new String[devices.size()]);
-	}
+        return devices.toArray(new String[devices.size()]);
+    }
 }
