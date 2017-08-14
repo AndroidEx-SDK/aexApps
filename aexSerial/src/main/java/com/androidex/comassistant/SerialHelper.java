@@ -181,19 +181,21 @@ public abstract class SerialHelper {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+
                     }
+                    isRead = true;
                 }
             }
         }
 
         //线程暂停
         public void setSuspendFlag() {
-            this.suspendFlag = true;
+            this.suspendFlag = false;
         }
 
         //唤醒线程
         public synchronized void setResume() {
-            this.suspendFlag = false;
+            this.suspendFlag = true;
             notify();
         }
     }
