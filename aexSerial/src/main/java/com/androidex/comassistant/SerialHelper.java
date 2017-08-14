@@ -26,6 +26,7 @@ public abstract class SerialHelper {
     private Context context;
     private kkserial serial;
     private int mSerialFd;
+    private TimeThread mTimeThread;
 
     //----------------------------------------------------
     public SerialHelper(String sPort, int iBaudRate, Context context) {
@@ -59,6 +60,9 @@ public abstract class SerialHelper {
         mSendThread.start();
         _isOpen = true;
         mSerialFd = serial.serial_open(sPort + "," + iBaudRate + ",N,1,8");
+        mTimeThread = new TimeThread();
+        mTimeThread.setSuspendFlag();
+        mTimeThread.start();
         return mSerialFd;
     }
 
@@ -154,6 +158,56 @@ public abstract class SerialHelper {
             this.suspendFlag = false;
             notify();
         }
+    }
+
+    //----------------------------------------------------
+    private class TimeThread extends Thread {
+        public boolean suspendFlag = true;// 控制线程的执行
+
+        @Override
+        public void run() {
+            super.run();
+            while (!isInterrupted()) {
+                synchronized (this) {
+                    while (suspendFlag) {
+                        try {
+                            wait();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                try {
+                    Thread.sleep(20 * 1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        //线程暂停
+        public void setSuspendFlag() {
+            this.suspendFlag = true;
+        }
+
+        //唤醒线程
+        public synchronized void setResume() {
+            this.suspendFlag = false;
+            notify();
+        }
+    }
+
+    public void startTime() {
+        if (mTimeThread != null) {
+            mTimeThread.setResume();
+        }
+    }
+
+    public void stopTime() {
+        if (mTimeThread != null) {
+            mTimeThread.setSuspendFlag();
+        }
+
     }
 
     //----------------------------------------------------

@@ -59,7 +59,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     CheckBox checkBoxAutoClear, checkBoxAutoCOMA, checkBoxAutoCOMB, checkBoxAutoCOMC, checkBoxAutoCOMD;
     Button ButtonClear, ButtonSendCOMA, btn_queryVersion, btn_parameter;
     Button btn_serialText, btn_queryType, ButtonSendCOMB, ButtonSendCOMC, ButtonSendCOMD;
-    ToggleButton toggleButtonCOMA, toggleButtonCOMB, toggleButtonCOMC, toggleButtonCOMD;
+    ToggleButton toggleButton_startTiming, toggleButtonCOMA, toggleButtonCOMB, toggleButtonCOMC, toggleButtonCOMD;
     Spinner SpinnerCOMA, SpinnerCOMB, SpinnerCOMC, SpinnerCOMD;
     Spinner SpinnerBaudRateCOMA, SpinnerBaudRateCOMB, SpinnerBaudRateCOMC, SpinnerBaudRateCOMD;
     RadioButton radioButtonTxt, radioButtonHex;
@@ -151,6 +151,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         btn_parameter.setOnClickListener(this);
 
 
+        toggleButton_startTiming = (ToggleButton) findViewById(R.id.toggleButton_startTiming);
         toggleButtonCOMA = (ToggleButton) findViewById(R.id.toggleButtonCOMA);
         toggleButtonCOMB = (ToggleButton) findViewById(R.id.ToggleButtonCOMB);
         toggleButtonCOMC = (ToggleButton) findViewById(R.id.ToggleButtonCOMC);
@@ -190,6 +191,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         ButtonSendCOMB.setOnClickListener(new ButtonClickEvent());
         ButtonSendCOMC.setOnClickListener(new ButtonClickEvent());
         ButtonSendCOMD.setOnClickListener(new ButtonClickEvent());
+        toggleButton_startTiming.setOnCheckedChangeListener(new ToggleButtonStartTimingListener());
         toggleButtonCOMA.setOnCheckedChangeListener(new ToggleButtonCheckedChangeEvent());
         toggleButtonCOMB.setOnCheckedChangeListener(new ToggleButtonCheckedChangeEvent());
         toggleButtonCOMC.setOnCheckedChangeListener(new ToggleButtonCheckedChangeEvent());
@@ -426,6 +428,20 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 sendPortData(ComC, editTextCOMC.getText().toString());
             } else if (v == ButtonSendCOMD) {
                 sendPortData(ComD, editTextCOMD.getText().toString());
+            }
+        }
+    }
+
+
+    class ToggleButtonStartTimingListener implements ToggleButton.OnCheckedChangeListener {
+
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if (buttonView == toggleButton_startTiming) {
+                if (isChecked) {
+                    ComA.startTime();
+                } else {
+                    ComA.stopTime();
+                }
             }
         }
     }
@@ -695,7 +711,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         sMsg.append("[");
         sMsg.append(ComRecData.sComPort);
         sMsg.append("]");
-        if (ComRecData.bRec[0]==0X24) {
+        if (ComRecData.bRec[0] == 0X24) {
             try {
                 sMsg.append("[Str] ");
                 sMsg.append(new String(ComRecData.bRec, "UTF-8"));

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:orientation="vertical">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/LinearLayoutRecDisp"
@@ -20,7 +20,7 @@
             android:gravity="top"
             android:longClickable="false"
             android:textColor="@android:color/white"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
 
         <LinearLayout
             android:id="@+id/LinearLayoutRecTool"
@@ -33,7 +33,7 @@
                 android:id="@+id/ButtonClear"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="清除"/>
+                android:text="清除" />
 
 
             <RadioGroup
@@ -47,14 +47,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:text="Txt"/>
+                    android:text="Txt" />
 
 
                 <RadioButton
                     android:id="@+id/radioButtonHex"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hex"/>
+                    android:text="Hex" />
             </RadioGroup>
 
 
@@ -70,7 +70,7 @@
                 android:longClickable="false"
                 android:text="0">
 
-                <requestFocus/>
+                <requestFocus />
             </EditText>
 
 
@@ -79,7 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="自清"/>
+                android:text="自清" />
 
         </LinearLayout>
 
@@ -107,30 +107,36 @@
                 android:layout_weight="1"
                 android:gravity="top"
                 android:imeOptions="actionDone"
-                android:singleLine="true"/>
-            <LinearLayout android:layout_width="match_parent"
-                          android:visibility="gone"
-                          android:layout_height="wrap_content">
+                android:singleLine="true" />
 
-                <Button android:id="@+id/btn_serialText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="串口响应测试"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
-                <Button android:id="@+id/btn_queryType"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="查询数码管型号"/>
+                <Button
+                    android:id="@+id/btn_serialText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="串口响应测试" />
 
-                <Button android:id="@+id/btn_queryVersion"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="查询数码管软件版本"/>
+                <Button
+                    android:id="@+id/btn_queryType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="查询数码管型号" />
 
-                <Button android:id="@+id/btn_parameter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="查询数码管的亮度参数"/>
+                <Button
+                    android:id="@+id/btn_queryVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="查询数码管软件版本" />
+
+                <Button
+                    android:id="@+id/btn_parameter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="查询数码管的亮度参数" />
 
 
             </LinearLayout>
@@ -142,10 +148,24 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <Spinner
-                    android:id="@+id/SpinnerCOMA"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <Spinner
+                        android:id="@+id/SpinnerCOMA"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <ToggleButton
+                        android:id="@+id/toggleButton_startTiming"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ToggleButton" />
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/LinearLayoutOption1COMA"
@@ -157,13 +177,13 @@
                         android:id="@+id/SpinnerBaudRateCOMA"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1" />
 
                     <ToggleButton
                         android:id="@+id/toggleButtonCOMA"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ToggleButton"/>
+                        android:text="ToggleButton" />
 
                 </LinearLayout>
 
@@ -179,26 +199,27 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:inputType="number" android:text="500"/>
+                        android:inputType="number"
+                        android:text="500" />
 
                     <TextView
                         android:id="@+id/textView1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ms"/>
+                        android:text="ms" />
 
                     <CheckBox
                         android:id="@+id/checkBoxAutoCOMA"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="自动"/>
+                        android:text="自动" />
 
 
                     <Button
                         android:id="@+id/ButtonSendCOMA"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="发送"/>
+                        android:text="发送" />
 
                 </LinearLayout>
 
@@ -220,8 +241,10 @@
                 android:id="@+id/editTextCOMB"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
-                android:layout_weight="1" android:gravity="top" android:imeOptions="actionDone"
-                android:singleLine="true"/>
+                android:layout_weight="1"
+                android:gravity="top"
+                android:imeOptions="actionDone"
+                android:singleLine="true" />
 
 
             <LinearLayout
@@ -234,7 +257,7 @@
                 <Spinner
                     android:id="@+id/SpinnerCOMB"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
 
                 <LinearLayout
@@ -247,13 +270,13 @@
                         android:id="@+id/SpinnerBaudRateCOMB"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1" />
 
                     <ToggleButton
                         android:id="@+id/ToggleButtonCOMB"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ToggleButton"/>
+                        android:text="ToggleButton" />
 
                 </LinearLayout>
 
@@ -269,26 +292,27 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:inputType="number" android:text="500"/>
+                        android:inputType="number"
+                        android:text="500" />
 
                     <TextView
                         android:id="@+id/TextView01"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ms"/>
+                        android:text="ms" />
 
                     <CheckBox
                         android:id="@+id/checkBoxAutoCOMB"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="自动"/>
+                        android:text="自动" />
 
 
                     <Button
                         android:id="@+id/ButtonSendCOMB"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="发送"/>
+                        android:text="发送" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -309,8 +333,10 @@
                 android:id="@+id/editTextCOMC"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
-                android:layout_weight="1" android:gravity="top" android:imeOptions="actionDone"
-                android:singleLine="true"/>
+                android:layout_weight="1"
+                android:gravity="top"
+                android:imeOptions="actionDone"
+                android:singleLine="true" />
 
 
             <LinearLayout
@@ -323,7 +349,7 @@
                 <Spinner
                     android:id="@+id/SpinnerCOMC"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
 
                 <LinearLayout
@@ -336,13 +362,13 @@
                         android:id="@+id/SpinnerBaudRateCOMC"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1" />
 
                     <ToggleButton
                         android:id="@+id/ToggleButtonCOMC"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ToggleButton"/>
+                        android:text="ToggleButton" />
 
                 </LinearLayout>
 
@@ -358,26 +384,27 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:inputType="number" android:text="500"/>
+                        android:inputType="number"
+                        android:text="500" />
 
                     <TextView
                         android:id="@+id/TextView02"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ms"/>
+                        android:text="ms" />
 
                     <CheckBox
                         android:id="@+id/checkBoxAutoCOMC"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="自动"/>
+                        android:text="自动" />
 
 
                     <Button
                         android:id="@+id/ButtonSendCOMC"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="发送"/>
+                        android:text="发送" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -398,8 +425,10 @@
                 android:id="@+id/editTextCOMD"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
-                android:layout_weight="1" android:gravity="top" android:imeOptions="actionDone"
-                android:singleLine="true"/>
+                android:layout_weight="1"
+                android:gravity="top"
+                android:imeOptions="actionDone"
+                android:singleLine="true" />
 
 
             <LinearLayout
@@ -412,7 +441,7 @@
                 <Spinner
                     android:id="@+id/SpinnerCOMD"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
 
                 <LinearLayout
@@ -425,13 +454,13 @@
                         android:id="@+id/SpinnerBaudRateCOMD"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1" />
 
                     <ToggleButton
                         android:id="@+id/ToggleButtonCOMD"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ToggleButton"/>
+                        android:text="ToggleButton" />
 
                 </LinearLayout>
 
@@ -447,26 +476,27 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:inputType="number" android:text="500"/>
+                        android:inputType="number"
+                        android:text="500" />
 
                     <TextView
                         android:id="@+id/TextView03"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ms"/>
+                        android:text="ms" />
 
                     <CheckBox
                         android:id="@+id/checkBoxAutoCOMD"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="自动"/>
+                        android:text="自动" />
 
 
                     <Button
                         android:id="@+id/ButtonSendCOMD"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="发送"/>
+                        android:text="发送" />
 
                 </LinearLayout>
             </LinearLayout>
