@@ -27,6 +27,7 @@ public abstract class SerialHelper {
     private kkserial serial;
     private int mSerialFd;
     private TimeThread mTimeThread;
+    boolean isRead = true;
 
     //----------------------------------------------------
     public SerialHelper(String sPort, int iBaudRate, Context context) {
@@ -105,18 +106,20 @@ public abstract class SerialHelper {
         public void run() {
             super.run();
             while (!isInterrupted()) {
-                try {
-                    if (serial == null) return;
-                    byte[] bytes = serial.serial_read(mSerialFd, 20, 3 * 1000);
-                    if (bytes == null) continue;
-                    if (bytes.length > 0) {
-                        ComBean ComRecData = new ComBean(sPort, bytes, bytes.length);
-                        onDataReceived(ComRecData);
-                        Log.i("SerialHelper", "xxx接收到的数据：" + MyFunc.ByteArrToHex(bytes));
+                if (isRead) {
+                    try {
+                        if (serial == null) return;
+                        byte[] bytes = serial.serial_read(mSerialFd, 20, 3 * 1000);
+                        if (bytes == null) continue;
+                        if (bytes.length > 0) {
+                            ComBean ComRecData = new ComBean(sPort, bytes, bytes.length);
+                            onDataReceived(ComRecData);
+                            Log.i("SerialHelper", "xxx接收到的数据：" + MyFunc.ByteArrToHex(bytes));
+                        }
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                        return;
                     }
-                } catch (Throwable e) {
-                    e.printStackTrace();
-                    return;
                 }
             }
         }
@@ -171,16 +174,14 @@ public abstract class SerialHelper {
                 synchronized (this) {
                     while (suspendFlag) {
                         try {
-                            wait();
+                            isRead = true;
+                            Thread.sleep(20 * 1000);
+                            isRead = false;
+                            Thread.sleep(5 * 1000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
-                }
-                try {
-                    Thread.sleep(20 * 1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
             }
         }
