@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.androidex.apps.home">
 
@@ -22,11 +21,14 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
     <uses-permission android:name="android.permission.NFC"/>
     <uses-permission android:name="android.permission.READ_SEARCH_INDEXABLES"/>
-    <uses-permission android:name="android.permission.REBOOT"
-                     android:protectionLevel="signatureOrSystem"/>
-    <uses-permission android:name="android.permission.SHUTDOWN"
-                     android:protectionLevel="signatureOrSystem"/>
+    <uses-permission
+        android:name="android.permission.REBOOT"
+        android:protectionLevel="signatureOrSystem"/>
+    <uses-permission
+        android:name="android.permission.SHUTDOWN"
+        android:protectionLevel="signatureOrSystem"/>
     <uses-permission android:name="android.permission.DELETE_PACKAGES"/>
+
     <uses-feature android:name="android.hardware.camera"/>
     <uses-feature android:name="android.hardware.camera.autofocus"/>
 
@@ -38,7 +40,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".FullscreenActivity"
+            android:name=".GridviewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
             android:label="@string/app_name"
@@ -49,11 +51,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER"/>
                 <category android:name="android.intent.category.DEFAULT"/>
-
             </intent-filter>
         </activity>
-        <receiver android:name="com.androidex.apps.home.brocast.BootBroadcastReceiver">
 
+        <receiver android:name=".brocast.BootBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
@@ -65,6 +66,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
-
     </application>
+
 </manifest>
