@@ -10,14 +10,6 @@ import android.util.Log;
 import com.androidex.bean.*;
 import com.androidex.plugins.kkserial;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.security.InvalidParameterException;
-
-import android_serialport_api.*;
-
 /**
  * @author benjaminwan
  *         串口辅助工具类

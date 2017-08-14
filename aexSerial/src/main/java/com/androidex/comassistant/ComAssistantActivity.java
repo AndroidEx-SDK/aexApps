@@ -32,16 +32,13 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import android_serialport_api.*;
-
 import com.androidex.bean.*;
-import com.androidex.plugins.kkserial;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -248,6 +245,7 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
         DispAssistData(AssistData);
     }
 
+    /*********操作485指令************/
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_serialText:
