@@ -6,6 +6,7 @@ package com.androidex.comassistant;
 
 import android.content.Context;
 import android.util.Log;
+import android.util.Xml;
 
 import com.androidex.bean.*;
 import com.androidex.plugins.kkserial;
@@ -102,15 +103,12 @@ public abstract class SerialHelper {
             while (!isInterrupted()) {
                 try {
                     if (serial == null) return;
-                    byte[] buffer = new byte[512];
-                    //int size = mInputStream.read(buffer);
-                    buffer = serial.serial_read(mSerialFd, 20, 3 * 1000);
-                    if (buffer == null) continue;
-                    if (buffer.length > 0) {
-                        ComBean ComRecData = new ComBean(sPort, buffer, buffer.length);
+                    byte[] bytes = serial.serial_read(mSerialFd, 20, 3 * 1000);
+                    if (bytes == null) continue;
+                    if (bytes.length > 0) {
+                        ComBean ComRecData = new ComBean(sPort, bytes, bytes.length);
                         onDataReceived(ComRecData);
-                        Log.i("SerialHelper", "xxx接收到的数据长度：" + buffer.length + "");
-                        Log.i("SerialHelper", "xxx接收到的数据长度：" + MyFunc.ByteArrToHex(buffer) + "");
+                        Log.i("SerialHelper", "xxx接收到的数据长度：" + MyFunc.ByteArrToHex(bytes));
                     }
                 } catch (Throwable e) {
                     e.printStackTrace();

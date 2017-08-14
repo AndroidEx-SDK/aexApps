@@ -38,6 +38,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -694,12 +695,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
         sMsg.append("[");
         sMsg.append(ComRecData.sComPort);
         sMsg.append("]");
-        if (radioButtonTxt.isChecked()) {
-            sMsg.append("[Txt] ");
-            sMsg.append(new String(ComRecData.bRec));
-        } else if (radioButtonHex.isChecked()) {
-            sMsg.append("[Hex] ");
-            sMsg.append(MyFunc.ByteArrToHex(ComRecData.bRec));
+        if (MyFunc.ByteArrToHex(ComRecData.bRec).substring(0, 1).equals("$")) {
+            try {
+                sMsg.append("[Str] ");
+                sMsg.append(new String(ComRecData.bRec, "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        } else {
+            if (radioButtonTxt.isChecked()) {
+                sMsg.append("[Txt] ");
+                sMsg.append(new String(ComRecData.bRec));
+            } else if (radioButtonHex.isChecked()) {
+                sMsg.append("[Hex] ");
+                sMsg.append(MyFunc.ByteArrToHex(ComRecData.bRec));
+            }
         }
         sMsg.append("\r\n");
         editTextRecDisp.append(sMsg);
