@@ -105,7 +105,7 @@ public abstract class SerialHelper {
                     byte[] buffer = new byte[512];
                     //int size = mInputStream.read(buffer);
                     buffer = serial.serial_read(mSerialFd, 20, 3 * 1000);
-                    if (buffer==null) continue;
+                    if (buffer == null) continue;
                     if (buffer.length > 0) {
                         ComBean ComRecData = new ComBean(sPort, buffer, buffer.length);
                         onDataReceived(ComRecData);
