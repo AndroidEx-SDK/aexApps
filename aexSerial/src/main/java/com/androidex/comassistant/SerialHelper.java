@@ -108,7 +108,7 @@ public abstract class SerialHelper {
                     if (bytes.length > 0) {
                         ComBean ComRecData = new ComBean(sPort, bytes, bytes.length);
                         onDataReceived(ComRecData);
-                        Log.i("SerialHelper", "xxx接收到的数据长度：" + MyFunc.ByteArrToHex(bytes));
+                        Log.i("SerialHelper", "xxx接收到的数据：" + MyFunc.ByteArrToHex(bytes));
                     }
                 } catch (Throwable e) {
                     e.printStackTrace();

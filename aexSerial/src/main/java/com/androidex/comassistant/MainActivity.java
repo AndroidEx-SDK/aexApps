@@ -695,7 +695,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         sMsg.append("[");
         sMsg.append(ComRecData.sComPort);
         sMsg.append("]");
-        if (MyFunc.ByteArrToHex(ComRecData.bRec).substring(0, 1).equals("$")) {
+        if (ComRecData.bRec[0]==0X24) {
             try {
                 sMsg.append("[Str] ");
                 sMsg.append(new String(ComRecData.bRec, "UTF-8"));
@@ -705,7 +705,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         } else {
             if (radioButtonTxt.isChecked()) {
                 sMsg.append("[Txt] ");
-                sMsg.append(new String(ComRecData.bRec));
+                try {
+                    sMsg.append(new String(ComRecData.bRec, "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             } else if (radioButtonHex.isChecked()) {
                 sMsg.append("[Hex] ");
                 sMsg.append(MyFunc.ByteArrToHex(ComRecData.bRec));
