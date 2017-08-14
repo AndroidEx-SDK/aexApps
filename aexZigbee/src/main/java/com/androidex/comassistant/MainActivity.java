@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.androidex.comassistant.util.ComBean;
+import com.androidex.comassistant.util.*;
 import com.androidex.plugins.kkserial;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {

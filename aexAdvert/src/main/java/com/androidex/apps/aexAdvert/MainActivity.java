@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.advert_main);
+        RegisterRecerver();//注册广播
         createFolder(ukeyPath);
         startPlayPic();
     }
@@ -85,18 +86,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        //获取图片控件
-        iview = (ImageView)findViewById(R.id.picsw);
-        //全屏显示
-        //iview.setScaleType(ImageView.ScaleType.FIT_XY);
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_MEDIA_BAD_REMOVAL);
-        filter.addAction(Intent.ACTION_MEDIA_MOUNTED);
-        filter.addAction(Intent.ACTION_MEDIA_REMOVED);
-        filter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
-        filter.addDataScheme("file");
-        receiver = new SDcardLinsenerReceiver();
-        registerReceiver(receiver, filter);
         result = new String[256];
         //拷贝配置文件
         String srcName = getSDPath() +"/" + iniNmae;
@@ -111,6 +100,21 @@ public class MainActivity extends AppCompatActivity {
         handler.postDelayed(runnable, 3000);
     }
 
+    private void RegisterRecerver() {
+        //获取图片控件
+        iview = (ImageView)findViewById(R.id.picsw);
+        //全屏显示
+        //iview.setScaleType(ImageView.ScaleType.FIT_XY);
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_MEDIA_BAD_REMOVAL);
+        filter.addAction(Intent.ACTION_MEDIA_MOUNTED);
+        filter.addAction(Intent.ACTION_MEDIA_REMOVED);
+        filter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
+        filter.addDataScheme("file");
+        receiver = new SDcardLinsenerReceiver();
+        registerReceiver(receiver, filter);
+    }
+
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -121,8 +125,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    public void showPic()
-    {
+    public void showPic() {
         // 防止内存泄露
         if(bm!=null){bm.recycle();}
         //serachFiles(advertPath);
@@ -318,8 +321,10 @@ public class MainActivity extends AppCompatActivity {
             } else if (intent.getAction().equals("android.intent.action.MEDIA_REMOVED")) {
                 showToast("U盘移出");
             } else if (intent.getAction().equals("android.intent.action.MEDIA_UNMOUNTED")) {
+                showToast("U盘插入异常！");
                 //Toast.makeText(getApplicationContext(), "U盘插入异常！",Toast.LENGTH_SHORT).show();
             } else if (intent.getAction().equals("android.intent.action.MEDIA_BAD_REMOVAL")) {
+                showToast("U盘移出异常！");
                 //Toast.makeText(getApplicationContext(), "U盘移出异常！",Toast.LENGTH_SHORT).show();
             }
         }

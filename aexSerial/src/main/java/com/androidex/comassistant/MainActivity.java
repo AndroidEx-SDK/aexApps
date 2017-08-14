@@ -1,4 +1,4 @@
-package com.androidex.text485;
+package com.androidex.comassistant;
 
 /**
  * Created by cts on 17/3/31.
@@ -31,21 +31,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.androidex.bean.AssistBean;
-import com.androidex.bean.ComBean;
+import com.androidex.bean.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import android_serialport_api.SerialPortFinder;
 
 /**
  * serialport api和jni取自http://code.google.com/p/android-serialport-api/
@@ -55,7 +52,7 @@ import android_serialport_api.SerialPortFinder;
  *         程序载入时自动搜索串口设备
  *         n,8,1，没得选
  */
-public class ComAssistantActivity extends Activity implements View.OnClickListener {
+public class MainActivity extends Activity implements View.OnClickListener {
     EditText editTextRecDisp, editTextLines, editTextCOMA, editTextCOMB, editTextCOMC, editTextCOMD;
     EditText editTextTimeCOMA, editTextTimeCOMB, editTextTimeCOMC, editTextTimeCOMD;
     CheckBox checkBoxAutoClear, checkBoxAutoCOMA, checkBoxAutoCOMB, checkBoxAutoCOMC, checkBoxAutoCOMD;
@@ -78,10 +75,10 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        ComA = new SerialControl();
-        ComB = new SerialControl();
-        ComC = new SerialControl();
-        ComD = new SerialControl();
+        ComA = new SerialControl(this);
+        ComB = new SerialControl(this);
+        ComC = new SerialControl(this);
+        ComD = new SerialControl(this);
         DispQueue = new DispQueueThread();
         DispQueue.start();
         AssistData = getAssistData();
@@ -113,7 +110,7 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
     private void setControls() {
         String appName = getString(R.string.app_name);
         try {
-            PackageInfo pinfo = getPackageManager().getPackageInfo("com.androidex.text485", PackageManager.GET_CONFIGURATIONS);
+            PackageInfo pinfo = getPackageManager().getPackageInfo("com.androidex.comassistant", PackageManager.GET_CONFIGURATIONS);
             String versionName = pinfo.versionName;
 //			String versionCode = String.valueOf(pinfo.versionCode);
             setTitle(appName + " V" + versionName);
@@ -247,6 +244,7 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
         DispAssistData(AssistData);
     }
 
+    /*********操作485指令************/
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_serialText:
@@ -446,7 +444,6 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
                         ShowMessage("串口" + SpinnerCOMA.getSelectedItem().toString() + "已打开");
                         buttonView.setChecked(false);
                     } else {
-//						ComA=new SerialControl("/dev/s3c2410_serial0", "9600");
                         ComA.setPort(SpinnerCOMA.getSelectedItem().toString());
                         ComA.setBaudRate(SpinnerBaudRateCOMA.getSelectedItem().toString());
                         OpenComPort(ComA);
@@ -523,12 +520,11 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
     }
 
     //----------------------------------------------------串口控制类
-    private class SerialControl extends SerialHelper {
+    public class SerialControl extends SerialHelper {
 
-        //		public SerialControl(String sPort, String sBaudRate){
-//			super(sPort, sBaudRate);
-//		}
-        public SerialControl() {
+
+        public SerialControl(Context context) {
+            super(context);
         }
 
         @Override
@@ -608,7 +604,7 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
         AssistData.sTimeB = editTextTimeCOMB.getText().toString();
         AssistData.sTimeC = editTextTimeCOMC.getText().toString();
         AssistData.sTimeD = editTextTimeCOMD.getText().toString();
-        SharedPreferences msharedPreferences = getSharedPreferences("text485", Context.MODE_PRIVATE);
+        SharedPreferences msharedPreferences = getSharedPreferences("comassistant", Context.MODE_PRIVATE);
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -624,15 +620,19 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
 
     //----------------------------------------------------
     private AssistBean getAssistData() {
-        SharedPreferences msharedPreferences = getSharedPreferences("text485", Context.MODE_PRIVATE);
+        SharedPreferences msharedPreferences = getSharedPreferences("comassistant", Context.MODE_PRIVATE);
         AssistBean AssistData = new AssistBean();
         try {
             String personBase64 = msharedPreferences.getString("AssistData", "");
             byte[] base64Bytes = Base64.decode(personBase64.getBytes(), 0);
-            ByteArrayInputStream bais = new ByteArrayInputStream(base64Bytes);
-            ObjectInputStream ois = new ObjectInputStream(bais);
-            AssistData = (AssistBean) ois.readObject();
+            if (base64Bytes != null) {
+                ByteArrayInputStream bais = new ByteArrayInputStream(base64Bytes);
+                ObjectInputStream ois = new ObjectInputStream(bais);
+                AssistData = (AssistBean) ois.readObject();
+            }
             return AssistData;
+        } catch (IOException e) {
+            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -706,7 +706,7 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
         Log.e("xxx显示数据：", sMsg.toString());
         iRecLines++;
         editTextLines.setText(String.valueOf(iRecLines));
-        if ((iRecLines > 500) && (checkBoxAutoClear.isChecked())){//达到500项自动清除
+        if ((iRecLines > 500) && (checkBoxAutoClear.isChecked())) {//达到500项自动清除
             editTextRecDisp.setText("");
             editTextLines.setText("0");
             iRecLines = 0;
@@ -743,14 +743,12 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
 
     //----------------------------------------------------打开串口
     private void OpenComPort(SerialHelper ComPort) {
-        try {
-            ComPort.open();
-        } catch (SecurityException e) {
-            ShowMessage("打开串口失败:没有串口读/写权限!");
-        } catch (IOException e) {
-            ShowMessage("打开串口失败:未知错误!");
-        } catch (InvalidParameterException e) {
-            ShowMessage("打开串口失败:参数错误!");
+
+        int mSerialFd = ComPort.open();
+        if (mSerialFd > 0) {
+            ShowMessage("打开串口成功！");
+        } else {
+            ShowMessage("打开串口失败！请查看串口是否存在");
         }
     }
 
