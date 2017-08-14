@@ -71,10 +71,6 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
     SerialPortFinder mSerialPortFinder;//串口设备搜索
     AssistBean AssistData;//用于界面数据序列化和反序列化
     int iRecLines = 0;//接收区行数
-    private kkserial serialA;
-    private kkserial serialB;
-    private kkserial serialC;
-    private kkserial serialD;
 
     /**
      * Called when the activity is first created.
@@ -83,15 +79,10 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        serialA = new kkserial(this);
-        serialB = new kkserial(this);
-        serialC = new kkserial(this);
-        serialD = new kkserial(this);
-
-        ComA = new SerialControl();
-        ComB = new SerialControl();
-        ComC = new SerialControl();
-        ComD = new SerialControl();
+        ComA = new SerialControl(this);
+        ComB = new SerialControl(this);
+        ComC = new SerialControl(this);
+        ComD = new SerialControl(this);
         DispQueue = new DispQueueThread();
         DispQueue.start();
         AssistData = getAssistData();
@@ -456,7 +447,6 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
                         ShowMessage("串口" + SpinnerCOMA.getSelectedItem().toString() + "已打开");
                         buttonView.setChecked(false);
                     } else {
-//						ComA=new SerialControl("/dev/s3c2410_serial0", "9600");
                         ComA.setPort(SpinnerCOMA.getSelectedItem().toString());
                         ComA.setBaudRate(SpinnerBaudRateCOMA.getSelectedItem().toString());
                         OpenComPort(ComA);
@@ -536,7 +526,8 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
     public class SerialControl extends SerialHelper {
 
 
-        public SerialControl() {
+        public SerialControl(Context context) {
+            super(context);
         }
 
         @Override
@@ -751,14 +742,12 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
 
     //----------------------------------------------------打开串口
     private void OpenComPort(SerialHelper ComPort) {
-        try {
-            ComPort.open();
-        } catch (SecurityException e) {
-            ShowMessage("打开串口失败:没有串口读/写权限!");
-        } catch (IOException e) {
-            ShowMessage("打开串口失败:未知错误!");
-        } catch (InvalidParameterException e) {
-            ShowMessage("打开串口失败:参数错误!");
+
+        int mSerialFd = ComPort.open();
+        if (mSerialFd > 0) {
+            ShowMessage("打开串口成功！");
+        } else {
+            ShowMessage("打开串口失败！请查看串口是否存在");
         }
     }
 
