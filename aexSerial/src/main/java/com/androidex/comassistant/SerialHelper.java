@@ -76,6 +76,7 @@ public abstract class SerialHelper {
     public void send(byte[] bOutArray) {
         //mOutputStream.write(bOutArray);
         serial.serial_write(mSerialFd, bOutArray, bOutArray.length);
+        Log.e("SerialHelper", "发送指令：" + MyFunc.ByteArrToHex(bOutArray));
     }
 
     //----------------------------------------------------
@@ -83,6 +84,7 @@ public abstract class SerialHelper {
         byte[] bOutArray = MyFunc.HexToByteArr(sHex);
         //send(bOutArray);
         serial.serial_writeHex(mSerialFd, sHex);
+        Log.e("SerialHelper", "发送指令HEX:" + sHex);
     }
 
     //----------------------------------------------------
@@ -102,13 +104,13 @@ public abstract class SerialHelper {
                     if (serial == null) return;
                     byte[] buffer = new byte[512];
                     //int size = mInputStream.read(buffer);
-                    buffer = serial.serial_read(mSerialFd, buffer.length, 3 * 1000);
+                    buffer = serial.serial_read(mSerialFd, 20, 3 * 1000);
+                    if (buffer==null) continue;
                     if (buffer.length > 0) {
                         ComBean ComRecData = new ComBean(sPort, buffer, buffer.length);
                         onDataReceived(ComRecData);
-                        Log.i("xxx接收到的数据长度：", buffer.length + "");
-                        Log.i("xxx接收到的数据长度：", MyFunc.ByteArrToHex(buffer) + "");
-
+                        Log.i("SerialHelper", "xxx接收到的数据长度：" + buffer.length + "");
+                        Log.i("SerialHelper", "xxx接收到的数据长度：" + MyFunc.ByteArrToHex(buffer) + "");
                     }
                 } catch (Throwable e) {
                     e.printStackTrace();

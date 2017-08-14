@@ -14,7 +14,7 @@
  * limitations under the License. 
  */
 
-package android_serialport_api;
+package com.androidex.comassistant;
 
 import android.util.Log;
 

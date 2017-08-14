@@ -31,7 +31,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import android_serialport_api.*;
 import com.androidex.bean.*;
 
 import java.io.ByteArrayInputStream;
@@ -626,10 +625,14 @@ public class ComAssistantActivity extends Activity implements View.OnClickListen
         try {
             String personBase64 = msharedPreferences.getString("AssistData", "");
             byte[] base64Bytes = Base64.decode(personBase64.getBytes(), 0);
-            ByteArrayInputStream bais = new ByteArrayInputStream(base64Bytes);
-            ObjectInputStream ois = new ObjectInputStream(bais);
-            AssistData = (AssistBean) ois.readObject();
+            if (base64Bytes != null) {
+                ByteArrayInputStream bais = new ByteArrayInputStream(base64Bytes);
+                ObjectInputStream ois = new ObjectInputStream(bais);
+                AssistData = (AssistBean) ois.readObject();
+            }
             return AssistData;
+        } catch (IOException e) {
+            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }

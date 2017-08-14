@@ -12,13 +12,6 @@ android {
             sourceCompatibility JavaVersion.VERSION_1_5
             targetCompatibility JavaVersion.VERSION_1_5
         }
-
-        ndk {
-            moduleName "serial_port"
-            ldLibs "log", "z", "m"
-            cFlags "-fuse-ld=bfd"
-            abiFilters "armeabi", "armeabi-v7a", "x86"
-        }
     }
 
     buildTypes {
@@ -32,18 +25,6 @@ android {
         }
     }
     sourceSets { main { jni.srcDirs = ['src/main/jni'] } }
-    /** 导入so文件 */
-    task nativeLibsToJar(type: Zip, description: "create a jar archive of the native libs") {
-        destinationDir file("$projectDir/libs")
-        baseName "jniserial_port"
-        extension "jar"
-        from fileTree(dir: "src/main/jniLibs", include: "**/*.so")
-        into "lib"
-    }
-    tasks.withType(JavaCompile) {
-        compileTask -> compileTask.dependsOn(nativeLibsToJar)
-    }
-
     repositories {
         flatDir {
             dirs 'libs'
@@ -59,5 +40,4 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
     testCompile 'junit:junit:4.12'
     compile(name: 'appLibs', ext: 'aar')
-
 }
