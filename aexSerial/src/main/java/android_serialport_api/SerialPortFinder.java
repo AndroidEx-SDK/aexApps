@@ -110,10 +110,11 @@ public class SerialPortFinder {
     public String[] getAllDevicesPath() {
         Vector<String> devices = new Vector<String>();
 
-        devices.add("/dev/ttyGS0");
-        devices.add("/dev/ttyGS1");
-        devices.add("/dev/ttyGS2");
-        devices.add("/dev/ttyGS3");
+        devices.add("/dev/ttyS0");
+        devices.add("/dev/ttyS1");
+        devices.add("/dev/ttyS2");
+        devices.add("/dev/ttyS3");
+        devices.add("/dev/ttyS4");
         devices.add("/dev/ttymxc0");
         devices.add("/dev/ttymxc1");
         devices.add("/dev/ttymxc2");
