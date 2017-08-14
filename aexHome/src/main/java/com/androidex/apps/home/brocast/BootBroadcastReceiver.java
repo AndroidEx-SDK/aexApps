@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.androidex.apps.home.FullscreenActivity;
+import com.androidex.apps.home.GridviewActivity;
 import com.androidex.logger.Log;
 
 public class BootBroadcastReceiver extends BroadcastReceiver {    
@@ -18,7 +18,7 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
 			//sayHelloIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			//context.startActivity(sayHelloIntent);	
 			Log.v(TAG, String.format("Recive %s.\n",intent.getAction()));
-            Intent dlIntent = new Intent(context,FullscreenActivity.class);
+            Intent dlIntent = new Intent(context,GridviewActivity.class);
             dlIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(dlIntent);
 			return;
