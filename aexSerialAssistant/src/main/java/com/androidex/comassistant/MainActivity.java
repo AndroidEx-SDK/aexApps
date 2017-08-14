@@ -55,7 +55,7 @@ import java.util.Queue;
  *         程序载入时自动搜索串口设备
  *         n,8,1，没得选
  */
-public class ComAssistantActivity extends Activity implements View.OnClickListener {
+public class MainActivity extends Activity implements View.OnClickListener {
     EditText editTextRecDisp, editTextLines, editTextCOMA, editTextCOMB, editTextCOMC, editTextCOMD;
     EditText editTextTimeCOMA, editTextTimeCOMB, editTextTimeCOMC, editTextTimeCOMD;
     CheckBox checkBoxAutoClear, checkBoxAutoCOMA, checkBoxAutoCOMB, checkBoxAutoCOMC, checkBoxAutoCOMD;
