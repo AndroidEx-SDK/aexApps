@@ -26,9 +26,7 @@ public class StartAPK {
             Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
             resolveIntent.setPackage(pi.packageName);
             PackageManager pManager = context.getPackageManager();
-            List<ResolveInfo> apps = pManager.queryIntentActivities(
-                    resolveIntent, 0);
-
+            List<ResolveInfo> apps = pManager.queryIntentActivities(resolveIntent, 0);
             ResolveInfo ri = apps.iterator().next();
             if (ri != null) {
                 packageName = ri.activityInfo.packageName;
@@ -41,7 +39,6 @@ public class StartAPK {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
