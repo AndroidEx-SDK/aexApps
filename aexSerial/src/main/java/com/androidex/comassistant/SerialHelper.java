@@ -87,7 +87,6 @@ public abstract class SerialHelper {
     public void close() {
         if (mReadThread != null) {
             mReadThread.setSuspendFlag();
-           // mReadThread = null;
         }
         if (serial != null) {
             serial.serial_close(mSerialFd);
