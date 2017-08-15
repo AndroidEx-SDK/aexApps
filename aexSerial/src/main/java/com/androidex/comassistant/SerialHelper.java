@@ -34,10 +34,18 @@ public abstract class SerialHelper {
         this.sPort = sPort;
         this.iBaudRate = iBaudRate;
         this.context = context;
+        serial = new kkserial(context);
+        mReadThread = new ReadThread();
+        mReadThread.setSuspendFlag();
+        mReadThread.start();
+        mSendThread = new SendThread();
+        mSendThread.setSuspendFlag();
+        mSendThread.start();
+        mTimeThread = new TimeThread();
+        mTimeThread.setSuspendFlag();
+        mTimeThread.start();
     }
 
-    public SerialHelper() {
-    }
 
     public SerialHelper(Context context) {
         this("/dev/ttyS0", 9600, context);
@@ -53,34 +61,46 @@ public abstract class SerialHelper {
 
     //----------------------------------------------------
     public int open() {
-        serial = new kkserial(context);
-        mReadThread = new ReadThread();
-        mReadThread.start();
-        mSendThread = new SendThread();
-        mSendThread.setSuspendFlag();
-        mSendThread.start();
-        _isOpen = true;
+        if (serial == null) {
+            serial = new kkserial(context);
+        }
+        if (mReadThread == null) {
+            mReadThread = new ReadThread();
+            mReadThread.setResume();
+            mReadThread.start();
+        }else {
+            mReadThread.setResume();
+        }
+        if (mSendThread == null) {
+            mSendThread = new SendThread();
+            mSendThread.setSuspendFlag();
+            mSendThread.start();
+        } else {
+            mSendThread.setSuspendFlag();
+        }
         mSerialFd = serial.serial_open(sPort + "," + iBaudRate + ",N,1,8");
-        mTimeThread = new TimeThread();
-        mTimeThread.setSuspendFlag();
-        mTimeThread.start();
+        _isOpen = true;
         return mSerialFd;
     }
 
     //----------------------------------------------------
     public void close() {
-        if (mReadThread != null)
-            mReadThread.interrupt();
+        if (mReadThread != null) {
+            mReadThread.setSuspendFlag();
+           // mReadThread = null;
+        }
         if (serial != null) {
             serial.serial_close(mSerialFd);
             serial = null;
+        }
+        if (mTimeThread != null) {
+            mTimeThread.interrupt();
         }
         _isOpen = false;
     }
 
     //----------------------------------------------------
     public void send(byte[] bOutArray) {
-        //mOutputStream.write(bOutArray);
         serial.serial_write(mSerialFd, bOutArray, bOutArray.length);
         Log.e("SerialHelper", "发送指令：" + MyFunc.ByteArrToHex(bOutArray));
     }
@@ -102,26 +122,41 @@ public abstract class SerialHelper {
 
     //----------------------------------------------------
     private class ReadThread extends Thread {
+        public boolean suspendFlag = true;// 控制线程的执行
+
         @Override
         public void run() {
             super.run();
             while (!isInterrupted()) {
-                if (isRead) {
-                    try {
-                        if (serial == null) return;
-                        byte[] bytes = serial.serial_read(mSerialFd, 20, 3 * 1000);
-                        if (bytes == null) continue;
-                        if (bytes.length > 0) {
-                            ComBean ComRecData = new ComBean(sPort, bytes, bytes.length);
-                            onDataReceived(ComRecData);
-                            Log.i("SerialHelper", "xxx接收到的数据：" + MyFunc.ByteArrToHex(bytes));
+                synchronized (this) {
+                    while (suspendFlag) {
+                        try {
+                            if (serial == null) return;
+                            byte[] bytes = serial.serial_read(mSerialFd, 20, 3 * 1000);
+                            if (bytes == null) continue;
+                            if (bytes.length > 0) {
+                                ComBean ComRecData = new ComBean(sPort, bytes, bytes.length);
+                                onDataReceived(ComRecData);
+                                Log.i("SerialHelper", "xxx接收到的数据：" + MyFunc.ByteArrToHex(bytes));
+                            }
+                        } catch (Throwable e) {
+                            e.printStackTrace();
+                            return;
                         }
-                    } catch (Throwable e) {
-                        e.printStackTrace();
-                        return;
                     }
                 }
             }
+        }
+
+        //线程暂停
+        public void setSuspendFlag() {
+            this.suspendFlag = false;
+        }
+
+        //唤醒线程
+        public synchronized void setResume() {
+            this.suspendFlag = true;
+            notify();
         }
     }
 
@@ -174,9 +209,9 @@ public abstract class SerialHelper {
                 synchronized (this) {
                     while (suspendFlag) {
                         try {
-                            isRead = true;
+                            mReadThread.setResume();
                             Thread.sleep(20 * 1000);
-                            isRead = false;
+                            mReadThread.setSuspendFlag();
                             Thread.sleep(5 * 1000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
