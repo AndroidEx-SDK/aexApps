@@ -119,14 +119,13 @@ public abstract class SerialHelper {
 
     //----------------------------------------------------
     private class ReadThread extends Thread {
-        public boolean suspendFlag = true;// 控制线程的执行
 
         @Override
         public void run() {
             super.run();
             while (!isInterrupted()) {
                 synchronized (this) {
-                    while (suspendFlag) {
+                    while (isRead) {
                         try {
                             if (serial == null) return;
                             byte[] bytes = serial.serial_read(mSerialFd, 20, 3 * 1000);
@@ -146,7 +145,7 @@ public abstract class SerialHelper {
             if (isInterrupted()) {
                 Toast.makeText(context, "读取数据的线程终止了。", Toast.LENGTH_LONG).show();
                 Log.e("SerialHelper", "读取数据的线程终止了。");
-                mReadThread=new ReadThread();
+                mReadThread = new ReadThread();
                 mReadThread.setResume();
                 mReadThread.start();
             }
@@ -154,12 +153,12 @@ public abstract class SerialHelper {
 
         //线程暂停
         public void setSuspendFlag() {
-            this.suspendFlag = false;
+            isRead = false;
         }
 
         //唤醒线程
         public synchronized void setResume() {
-            this.suspendFlag = true;
+            isRead = true;
             notify();
         }
     }
@@ -213,15 +212,15 @@ public abstract class SerialHelper {
                 synchronized (this) {
                     while (suspendFlag) {
                         try {
-                            mReadThread.setResume();
+                            isRead = true;
                             Thread.sleep(20 * 1000);
-                            mReadThread.setSuspendFlag();
+                            isRead = false;
                             Thread.sleep(5 * 1000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
-                    mReadThread.setResume();
+                    isRead = true;
                 }
             }
         }
