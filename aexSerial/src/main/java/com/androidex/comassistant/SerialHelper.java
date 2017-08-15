@@ -28,7 +28,7 @@ public abstract class SerialHelper {
     private kkserial serial;
     private int mSerialFd;
     private TimeThread mTimeThread;
-    boolean isRead = true;
+    boolean isRead = false;
 
     //----------------------------------------------------
     public SerialHelper(String sPort, int iBaudRate, Context context) {
@@ -37,14 +37,10 @@ public abstract class SerialHelper {
         this.context = context;
         serial = new kkserial(context);
         mReadThread = new ReadThread();
-        mReadThread.setSuspendFlag();
         mReadThread.start();
         mSendThread = new SendThread();
         mSendThread.setSuspendFlag();
         mSendThread.start();
-        mTimeThread = new TimeThread();
-        mTimeThread.setSuspendFlag();
-        mTimeThread.start();
     }
 
 
@@ -67,10 +63,8 @@ public abstract class SerialHelper {
         }
         if (mReadThread == null) {
             mReadThread = new ReadThread();
-            mReadThread.setResume();
             mReadThread.start();
-        } else {
-            mReadThread.setResume();
+
         }
         if (mSendThread == null) {
             mSendThread = new SendThread();
@@ -80,6 +74,7 @@ public abstract class SerialHelper {
             mSendThread.setSuspendFlag();
         }
         mSerialFd = serial.serial_open(sPort + "," + iBaudRate + ",N,1,8");
+        isRead = true;
         _isOpen = true;
         return mSerialFd;
     }
@@ -87,8 +82,7 @@ public abstract class SerialHelper {
     //----------------------------------------------------
     public void close() {
         if (mReadThread != null) {
-            mReadThread.setSuspendFlag();
-           // mReadThread = null;
+            isRead = false;
         }
         if (serial != null) {
             serial.serial_close(mSerialFd);
@@ -125,42 +119,22 @@ public abstract class SerialHelper {
         public void run() {
             super.run();
             while (!isInterrupted()) {
-                synchronized (this) {
-                    while (isRead) {
-                        try {
-                            if (serial == null) return;
-                            byte[] bytes = serial.serial_read(mSerialFd, 20, 3 * 1000);
-                            if (bytes == null) continue;
-                            if (bytes.length > 0) {
-                                ComBean ComRecData = new ComBean(sPort, bytes, bytes.length);
-                                onDataReceived(ComRecData);
-                                Log.i("SerialHelper", "xxx接收到的数据：" + MyFunc.ByteArrToHex(bytes));
-                            }
-                        } catch (Throwable e) {
-                            e.printStackTrace();
-                            return;
+                if (isRead) {
+                    try {
+                        if (serial == null) return;
+                        byte[] bytes = serial.serial_read(mSerialFd, 20, 3 * 1000);
+                        if (bytes == null) continue;
+                        if (bytes.length > 0) {
+                            ComBean ComRecData = new ComBean(sPort, bytes, bytes.length);
+                            onDataReceived(ComRecData);
+                            Log.i("SerialHelper", "xxx接收到的数据：" + MyFunc.ByteArrToHex(bytes));
                         }
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                        return;
                     }
                 }
             }
-            if (isInterrupted()) {
-                Toast.makeText(context, "读取数据的线程终止了。", Toast.LENGTH_LONG).show();
-                Log.e("SerialHelper", "读取数据的线程终止了。");
-                mReadThread = new ReadThread();
-                mReadThread.setResume();
-                mReadThread.start();
-            }
-        }
-
-        //线程暂停
-        public void setSuspendFlag() {
-            isRead = false;
-        }
-
-        //唤醒线程
-        public synchronized void setResume() {
-            isRead = true;
-            notify();
         }
     }
 
@@ -213,15 +187,25 @@ public abstract class SerialHelper {
                 synchronized (this) {
                     while (suspendFlag) {
                         try {
-                            isRead = true;
-                            Thread.sleep(20 * 1000);
-                            isRead = false;
-                            Thread.sleep(5 * 1000);
+                            if (serial==null) return;
+                            if (isRead){
+                                isRead = false;
+                                serial.serial_close(mSerialFd);
+                                Thread.sleep(5 * 1000);
+                            }else {
+                                isRead = true;
+                                mSerialFd = serial.serial_open(sPort + "," + iBaudRate + ",N,1,8");
+                                Thread.sleep(20 * 1000);
+                            }
                         } catch (InterruptedException e) {
                             e.printStackTrace();
+                            return;
                         }
                     }
-                    isRead = true;
+                    //if (!isRead){
+                        mSerialFd = serial.serial_open(sPort + "," + iBaudRate + ",N,1,8");
+                        isRead = true;
+                    //}
                 }
             }
         }
@@ -239,6 +223,11 @@ public abstract class SerialHelper {
     }
 
     public void startTime() {
+        if (mTimeThread == null) {
+            mTimeThread = new TimeThread();
+            mTimeThread.setSuspendFlag();
+            mTimeThread.start();
+        }
         if (mTimeThread != null) {
             mTimeThread.setResume();
         }
