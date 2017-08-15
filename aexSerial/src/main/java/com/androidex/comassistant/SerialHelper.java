@@ -187,12 +187,12 @@ public abstract class SerialHelper {
                 synchronized (this) {
                     while (suspendFlag) {
                         try {
-                            if (serial==null) return;
-                            if (isRead){
+                            if (serial == null) return;
+                            if (isRead) {
                                 isRead = false;
                                 serial.serial_close(mSerialFd);
                                 Thread.sleep(5 * 1000);
-                            }else {
+                            } else {
                                 isRead = true;
                                 mSerialFd = serial.serial_open(sPort + "," + iBaudRate + ",N,1,8");
                                 Thread.sleep(20 * 1000);
@@ -202,10 +202,8 @@ public abstract class SerialHelper {
                             return;
                         }
                     }
-                    //if (!isRead){
-                        mSerialFd = serial.serial_open(sPort + "," + iBaudRate + ",N,1,8");
-                        isRead = true;
-                    //}
+                    mSerialFd = serial.serial_open(sPort + "," + iBaudRate + ",N,1,8");
+                    isRead = true;
                 }
             }
         }
