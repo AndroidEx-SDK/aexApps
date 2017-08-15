@@ -7,6 +7,7 @@ package com.androidex.comassistant;
 import android.content.Context;
 import android.util.Log;
 import android.util.Xml;
+import android.widget.Toast;
 
 import com.androidex.bean.*;
 import com.androidex.plugins.kkserial;
@@ -68,7 +69,7 @@ public abstract class SerialHelper {
             mReadThread = new ReadThread();
             mReadThread.setResume();
             mReadThread.start();
-        }else {
+        } else {
             mReadThread.setResume();
         }
         if (mSendThread == null) {
@@ -142,6 +143,13 @@ public abstract class SerialHelper {
                     }
                 }
             }
+            if (isInterrupted()) {
+                Toast.makeText(context, "读取数据的线程终止了。", Toast.LENGTH_LONG).show();
+                Log.e("SerialHelper", "读取数据的线程终止了。");
+                mReadThread=new ReadThread();
+                mReadThread.setResume();
+                mReadThread.start();
+            }
         }
 
         //线程暂停
@@ -212,9 +220,8 @@ public abstract class SerialHelper {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-
                     }
-                    isRead = true;
+                    mReadThread.setResume();
                 }
             }
         }
