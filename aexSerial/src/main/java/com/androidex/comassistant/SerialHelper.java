@@ -223,11 +223,8 @@ public abstract class SerialHelper {
     public void startTime() {
         if (mTimeThread == null) {
             mTimeThread = new TimeThread();
-            mTimeThread.setSuspendFlag();
-            mTimeThread.start();
-        }
-        if (mTimeThread != null) {
             mTimeThread.setResume();
+            mTimeThread.start();
         }
     }
 

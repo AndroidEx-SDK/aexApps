@@ -437,10 +437,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if (buttonView == toggleButton_startTiming) {
-                if (isChecked) {
-                    ComA.startTime();
+                if (toggleButtonCOMA.isChecked()) {
+
+                    if (isChecked) {
+                        ComA.startTime();
+                    } else {
+                        ComA.stopTime();
+                    }
+                    toggleButton_startTiming.setChecked(true);
                 } else {
-                    ComA.stopTime();
+                    //请先打开串口
+                    toggleButton_startTiming.setChecked(false);
+                    Toast.makeText(MainActivity.this,"请先打开串口",Toast.LENGTH_LONG).show();
                 }
             }
         }
