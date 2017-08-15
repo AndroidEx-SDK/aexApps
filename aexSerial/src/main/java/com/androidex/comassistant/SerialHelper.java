@@ -107,8 +107,6 @@ public abstract class SerialHelper {
 
     //----------------------------------------------------
     public void sendHex(String sHex) {
-        byte[] bOutArray = MyFunc.HexToByteArr(sHex);
-        //send(bOutArray);
         serial.serial_writeHex(mSerialFd, sHex);
         Log.e("SerialHelper", "发送指令HEX:" + sHex);
     }
@@ -117,7 +115,6 @@ public abstract class SerialHelper {
     public void sendTxt(String sTxt) {
         byte[] bOutArray = sTxt.getBytes();
         send(bOutArray);
-        //serial.serial_write(mSerialFd, bOutArray, bOutArray.length);
     }
 
     //----------------------------------------------------
