@@ -20,6 +20,7 @@ public class StartAPK {
      * @param context
      */
     public static void RunApp(String packageName, Context context) {
+        //本机中所有包的信息
         PackageInfo pi;
         try {
             pi = context.getPackageManager().getPackageInfo(packageName, 0);

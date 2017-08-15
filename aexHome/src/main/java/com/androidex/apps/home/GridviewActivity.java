@@ -1,7 +1,9 @@
 package com.androidex.apps.home;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -19,7 +21,7 @@ public class GridviewActivity extends Activity {
     private SimpleAdapter sim_adapter;
     // 图片封装为一个数组
     private int[] icon = { R.drawable.balance, R.drawable.balance,
-            R.drawable.balance, R.drawable.ic_launcher, R.drawable.balance,
+            R.drawable.balance, R.drawable.balance, R.drawable.balance,
             R.drawable.balance, R.drawable.balance, R.drawable.balance,
             R.drawable.balance, R.drawable.balance, R.drawable.balance,
             R.drawable.balance };
@@ -46,12 +48,38 @@ public class GridviewActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        Toast.makeText(GridviewActivity.this, "item1", Toast.LENGTH_LONG)
-                                .show();
+                        // 通过包名获取要跳转的app，创建intent对象
+                        Intent intent = getPackageManager().getLaunchIntentForPackage("com.tencent.devicedemo");
+                        Log.e("===========>", String.valueOf(intent));
+
+                        // 这里如果intent为空，就说名没有安装要跳转的应用嘛
+                        if (intent != null) {
+                            // 这里跟Activity传递参数一样的，不要担心怎么传递参数，还有接收参数也是跟Activity和Activity传参数一样
+//                            intent.putExtra("name", "Liu xiang");
+//                            intent.putExtra("birthday", "1983-7-13");
+                            startActivity(intent);
+                            Log.e("------------>", String.valueOf(intent));
+                        } else {
+                            // 没有安装要跳转的app应用，提醒一下
+                            Toast.makeText(getApplicationContext(), "没有找到app,赶紧下载安装这个APP吧", Toast.LENGTH_LONG).show();
+                        }
                         break;
                     case 1:
-                        Toast.makeText(GridviewActivity.this, "item2", Toast.LENGTH_LONG)
-                                .show();
+                        // 通过包名获取要跳转的app，创建intent对象
+                        Intent intent1 = getPackageManager().getLaunchIntentForPackage("xxxxxxxxx");
+                        Log.e("===========>", String.valueOf(intent1));
+
+                        // 这里如果intent为空，就说名没有安装要跳转的应用嘛
+                        if (intent1 != null) {
+                            // 这里跟Activity传递参数一样的，不要担心怎么传递参数，还有接收参数也是跟Activity和Activity传参数一样
+//                            intent.putExtra("name", "Liu xiang");
+//                            intent.putExtra("birthday", "1983-7-13");
+                            startActivity(intent1);
+                            Log.e("------------>", String.valueOf(intent1));
+                        } else {
+                            // 没有安装要跳转的app应用，提醒一下
+                            Toast.makeText(getApplicationContext(), "没有找到app,赶紧下载安装这个APP吧", Toast.LENGTH_LONG).show();
+                        }
                         break;
                     case 2:
 
