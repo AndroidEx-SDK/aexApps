@@ -8,10 +8,7 @@ android {
         applicationId "com.androidex.comassistant"
         minSdkVersion 19
         targetSdkVersion 23
-        compileOptions {
-            sourceCompatibility JavaVersion.VERSION_1_5
-            targetCompatibility JavaVersion.VERSION_1_5
-        }
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -21,23 +18,21 @@ android {
         }
         debug{
             minifyEnabled false
+            jniDebuggable true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
     sourceSets { main { jni.srcDirs = ['src/main/jni'] } }
-    repositories {
-        flatDir {
-            dirs 'libs'
-        }
+    productFlavors {
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:23.0.1'
     testCompile 'junit:junit:4.12'
-    compile(name: 'appLibs', ext: 'aar')
+    compile files('libs/aexAppLibs.jar')
 }
