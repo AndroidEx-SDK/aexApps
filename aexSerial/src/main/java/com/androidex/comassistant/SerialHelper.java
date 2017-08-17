@@ -50,15 +50,19 @@ public abstract class SerialHelper {
     //----------------------------------------------------
     public int open() {
         mSerialFd = serial.serial_open(sPort + "," + iBaudRate + ",N,1,8");
+        log(String.format("打开%s成功：%d",sPort,mSerialFd));
         return mSerialFd;
     }
 
     //----------------------------------------------------
     public void close() {
         if(mSerialFd > 0) {
-            serial.serial_close(mSerialFd);
-            mSerialFd = 0;
             onClearMessage();
+            serial.serial_close(mSerialFd);
+            log(String.format("关闭串口%s:%d",sPort,mSerialFd));
+            mSerialFd = 0;
+        }else {
+            //log("关闭串口时串口句柄无效，也许没有打开串口。");
         }
     }
 
@@ -87,12 +91,14 @@ public abstract class SerialHelper {
     public void startReadSerial(){
         Runnable run=new Runnable() {
             public void run() {
+                log("开始读取串口数据");
                 while(mSerialFd > 0) {
-                    byte[] r = serial.serial_read(mSerialFd, 100, Integer.MAX_VALUE);
+                    byte[] r = serial.serial_read(mSerialFd, 100, 3000);
                     if (r != null) {
                         ComBean ComRecData = new ComBean(sPort, r, r.length);
                         onDataReceived(ComRecData);
                     }
+                    //log(String.format("read:%d",mSerialFd));
                 }
                 log("读取结束");
             }

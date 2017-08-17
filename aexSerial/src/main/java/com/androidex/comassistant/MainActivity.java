@@ -506,6 +506,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private void log(String msg){
         editTextRecDisp.append(msg);
+        //Log.i("TS",msg);
     }
 
     //----------------------------------------------------设置自动发送模式开关
