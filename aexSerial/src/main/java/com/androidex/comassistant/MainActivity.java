@@ -5,6 +5,7 @@ package com.androidex.comassistant;
  */
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -437,18 +438,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if (buttonView == toggleButton_startTiming) {
-                if (toggleButtonCOMA.isChecked()) {
-
-                    if (isChecked) {
-                        ComA.startTime();
-                    } else {
-                        ComA.stopTime();
-                    }
+                if (isChecked) {
+                    Toast.makeText(MainActivity.this, "开启串口自动控制状态", Toast.LENGTH_LONG).show();
+                    ComA.startTime();
                     toggleButton_startTiming.setChecked(true);
                 } else {
-                    //请先打开串口
+                    Toast.makeText(MainActivity.this, "关闭串口自动控制状态", Toast.LENGTH_LONG).show();
+                    ComA.stopTime();
                     toggleButton_startTiming.setChecked(false);
-                    Toast.makeText(MainActivity.this,"请先打开串口",Toast.LENGTH_LONG).show();
                 }
             }
         }
