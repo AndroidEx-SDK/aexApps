@@ -60,7 +60,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     CheckBox checkBoxAutoClear, checkBoxAutoCOMA, checkBoxAutoCOMB, checkBoxAutoCOMC, checkBoxAutoCOMD;
     Button ButtonClear, ButtonSendCOMA, btn_queryVersion, btn_parameter;
     Button btn_serialText, btn_queryType, ButtonSendCOMB, ButtonSendCOMC, ButtonSendCOMD;
-    ToggleButton toggleButton_startTiming, toggleButtonCOMA, toggleButtonCOMB, toggleButtonCOMC, toggleButtonCOMD;
+    ToggleButton toggleButton_startTimingA,toggleButton_startTimingB,toggleButton_startTimingC,toggleButton_startTimingD, toggleButtonCOMA, toggleButtonCOMB, toggleButtonCOMC, toggleButtonCOMD;
     Spinner SpinnerCOMA, SpinnerCOMB, SpinnerCOMC, SpinnerCOMD;
     Spinner SpinnerBaudRateCOMA, SpinnerBaudRateCOMB, SpinnerBaudRateCOMC, SpinnerBaudRateCOMD;
     RadioButton radioButtonTxt, radioButtonHex;
@@ -151,8 +151,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
         btn_queryVersion.setOnClickListener(this);
         btn_parameter.setOnClickListener(this);
 
-
-        toggleButton_startTiming = (ToggleButton) findViewById(R.id.toggleButton_startTiming);
+        toggleButton_startTimingA = (ToggleButton) findViewById(R.id.toggleButton_startTimingA);
+        toggleButton_startTimingB = (ToggleButton) findViewById(R.id.toggleButton_startTimingB);
+        toggleButton_startTimingC = (ToggleButton) findViewById(R.id.toggleButton_startTimingC);
+        toggleButton_startTimingD = (ToggleButton) findViewById(R.id.toggleButton_startTimingD);
         toggleButtonCOMA = (ToggleButton) findViewById(R.id.toggleButtonCOMA);
         toggleButtonCOMB = (ToggleButton) findViewById(R.id.ToggleButtonCOMB);
         toggleButtonCOMC = (ToggleButton) findViewById(R.id.ToggleButtonCOMC);
@@ -192,7 +194,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
         ButtonSendCOMB.setOnClickListener(new ButtonClickEvent());
         ButtonSendCOMC.setOnClickListener(new ButtonClickEvent());
         ButtonSendCOMD.setOnClickListener(new ButtonClickEvent());
-        toggleButton_startTiming.setOnCheckedChangeListener(new ToggleButtonStartTimingListener());
+        toggleButton_startTimingA.setOnCheckedChangeListener(new ToggleButtonStartTimingListener());
+        toggleButton_startTimingB.setOnCheckedChangeListener(new ToggleButtonStartTimingListener());
+        toggleButton_startTimingC.setOnCheckedChangeListener(new ToggleButtonStartTimingListener());
+        toggleButton_startTimingD.setOnCheckedChangeListener(new ToggleButtonStartTimingListener());
         toggleButtonCOMA.setOnCheckedChangeListener(new ToggleButtonCheckedChangeEvent());
         toggleButtonCOMB.setOnCheckedChangeListener(new ToggleButtonCheckedChangeEvent());
         toggleButtonCOMC.setOnCheckedChangeListener(new ToggleButtonCheckedChangeEvent());
@@ -437,15 +442,45 @@ public class MainActivity extends Activity implements View.OnClickListener {
     class ToggleButtonStartTimingListener implements ToggleButton.OnCheckedChangeListener {
 
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if (buttonView == toggleButton_startTiming) {
+            if (buttonView == toggleButton_startTimingA) {
                 if (isChecked) {
                     Toast.makeText(MainActivity.this, "开启串口自动控制状态", Toast.LENGTH_LONG).show();
                     ComA.startTime();
-                    toggleButton_startTiming.setChecked(true);
+                    toggleButton_startTimingA.setChecked(true);
                 } else {
                     Toast.makeText(MainActivity.this, "关闭串口自动控制状态", Toast.LENGTH_LONG).show();
                     ComA.stopTime();
-                    toggleButton_startTiming.setChecked(false);
+                    toggleButton_startTimingA.setChecked(false);
+                }
+            }else if (buttonView == toggleButton_startTimingB) {
+                if (isChecked) {
+                    Toast.makeText(MainActivity.this, "开启串口自动控制状态", Toast.LENGTH_LONG).show();
+                    ComB.startTime();
+                    toggleButton_startTimingB.setChecked(true);
+                } else {
+                    Toast.makeText(MainActivity.this, "关闭串口自动控制状态", Toast.LENGTH_LONG).show();
+                    ComB.stopTime();
+                    toggleButton_startTimingB.setChecked(false);
+                }
+            }else if (buttonView == toggleButton_startTimingC) {
+                if (isChecked) {
+                    Toast.makeText(MainActivity.this, "开启串口自动控制状态", Toast.LENGTH_LONG).show();
+                    ComC.startTime();
+                    toggleButton_startTimingC.setChecked(true);
+                } else {
+                    Toast.makeText(MainActivity.this, "关闭串口自动控制状态", Toast.LENGTH_LONG).show();
+                    ComC.stopTime();
+                    toggleButton_startTimingC.setChecked(false);
+                }
+            }else if (buttonView == toggleButton_startTimingD) {
+                if (isChecked) {
+                    Toast.makeText(MainActivity.this, "开启串口自动控制状态", Toast.LENGTH_LONG).show();
+                    ComD.startTime();
+                    toggleButton_startTimingD.setChecked(true);
+                } else {
+                    Toast.makeText(MainActivity.this, "关闭串口自动控制状态", Toast.LENGTH_LONG).show();
+                    ComD.stopTime();
+                    toggleButton_startTimingD.setChecked(false);
                 }
             }
         }

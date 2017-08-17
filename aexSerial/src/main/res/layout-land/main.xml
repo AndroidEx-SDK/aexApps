@@ -160,7 +160,7 @@
                         android:layout_weight="1" />
 
                     <ToggleButton
-                        android:id="@+id/toggleButton_startTiming"
+                        android:id="@+id/toggleButton_startTimingA"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="ToggleButton" />
@@ -233,8 +233,7 @@
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:orientation="vertical">
 
 
             <EditText
@@ -253,12 +252,24 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-
-                <Spinner
-                    android:id="@+id/SpinnerCOMB"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
 
+                    <Spinner
+                        android:id="@+id/SpinnerCOMB"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <ToggleButton
+                        android:id="@+id/toggleButton_startTimingB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ToggleButton" />
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/LinearLayoutOption1COMB"
@@ -325,8 +336,7 @@
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:orientation="vertical">
 
 
             <EditText
@@ -345,12 +355,24 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-
-                <Spinner
-                    android:id="@+id/SpinnerCOMC"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
 
+                    <Spinner
+                        android:id="@+id/SpinnerCOMC"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <ToggleButton
+                        android:id="@+id/toggleButton_startTimingC"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ToggleButton" />
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/LinearLayoutOption1COMC"
@@ -417,8 +439,7 @@
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:orientation="vertical">
 
 
             <EditText
@@ -437,12 +458,24 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-
-                <Spinner
-                    android:id="@+id/SpinnerCOMD"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
 
+                    <Spinner
+                        android:id="@+id/SpinnerCOMD"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <ToggleButton
+                        android:id="@+id/toggleButton_startTimingD"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ToggleButton" />
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/LinearLayoutOption1COMD"
