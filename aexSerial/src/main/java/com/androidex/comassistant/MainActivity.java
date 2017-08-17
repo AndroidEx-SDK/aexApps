@@ -45,7 +45,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-
 /**
  * serialport api和jni取自http://code.google.com/p/android-serialport-api/
  *
