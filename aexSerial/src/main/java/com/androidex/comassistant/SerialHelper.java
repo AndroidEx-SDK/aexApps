@@ -93,7 +93,7 @@ public abstract class SerialHelper {
             public void run() {
                 log("开始读取串口数据");
                 while(mSerialFd > 0) {
-                    byte[] r = serial.serial_read(mSerialFd, 100, -1);
+                    byte[] r = serial.serial_read(mSerialFd, 100, 3000);
                     if (r != null) {
                         ComBean ComRecData = new ComBean(sPort, r, r.length);
                         onDataReceived(ComRecData);

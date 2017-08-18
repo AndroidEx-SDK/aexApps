@@ -551,6 +551,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     //------------------------------------------显示消息
     private void ShowMessage(String sMsg) {
-        Toast.makeText(this, sMsg, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, sMsg, Toast.LENGTH_SHORT).show();
+        log(sMsg);
     }
 }
