@@ -471,7 +471,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         sMsg.append(ComRecData.sRecTime);
         sMsg.append("[");
         sMsg.append(ComRecData.sComPort);
-        sMsg.append("]");
+        sMsg.append(String.format("](%d)",ComRecData.bRec.length));
         if (ComRecData.bRec[0] == 0X24) {
             try {
                 sMsg.append("[Str] ");

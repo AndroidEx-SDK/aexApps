@@ -97,6 +97,7 @@ public abstract class SerialHelper {
                     if (r != null) {
                         ComBean ComRecData = new ComBean(sPort, r, r.length);
                         onDataReceived(ComRecData);
+                        android.util.Log.i("TS",MyFunc.ByteArrToHex(r));
                     }
                     //log(String.format("read:%d",mSerialFd));
                 }
