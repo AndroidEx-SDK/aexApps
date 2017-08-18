@@ -85,8 +85,7 @@ public abstract class SerialHelper {
             isRead = false;
         }
         if (serial != null) {
-            serial.serial_close(mSerialFd);
-            serial = null;
+            mSerialFd = serial.serial_close(mSerialFd);
         }
         if (mTimeThread != null) {
             mTimeThread.interrupt();
@@ -119,23 +118,32 @@ public abstract class SerialHelper {
         public void run() {
             super.run();
             while (!isInterrupted()) {
-                if (isRead) {
-                    try {
-                        if (serial == null) return;
-                        byte[] bytes = serial.serial_read(mSerialFd, 100, Integer.MAX_VALUE);
-                        if (bytes == null) continue;
-                        if (bytes.length > 0) {
-                            ComBean ComRecData = new ComBean(sPort, bytes, bytes.length);
-                            onDataReceived(ComRecData);
-                            Log.i("SerialHelper", "xxx接收到的数据：" + MyFunc.ByteArrToHex(bytes));
-                        }
-                    } catch (Throwable e) {
-                        e.printStackTrace();
-                        return;
+                if (mSerialFd > 0) {
+                    byte[] bytes = serial.serial_read(mSerialFd, 100, Integer.MAX_VALUE);
+                    if (bytes != null) {
+                        ComBean ComRecData = new ComBean(sPort, bytes, bytes.length);
+                        onDataReceived(ComRecData);
                     }
                 }
             }
         }
+    }
+
+    public void startReadSerial() {
+        Runnable run = new Runnable() {
+            public void run() {
+                while (mSerialFd > 0) {
+                    byte[] r = serial.serial_read(mSerialFd, 100, Integer.MAX_VALUE);
+                    if (r != null) {
+                        ComBean ComRecData = new ComBean(sPort, r, r.length);
+                        onDataReceived(ComRecData);
+                    }
+                }
+                Log.i("SerialHelper", "读取结束");
+            }
+        };
+        Thread pthread = new Thread(run);
+        pthread.start();
     }
 
     //----------------------------------------------------
@@ -188,22 +196,16 @@ public abstract class SerialHelper {
                     while (suspendFlag) {
                         try {
                             if (serial == null) return;
-                            if (isRead) {
-                                isRead = false;
-                                serial.serial_close(mSerialFd);
-                                Thread.sleep(5 * 1000);
-                            } else {
-                                isRead = true;
-                                mSerialFd = serial.serial_open(sPort + "," + iBaudRate + ",N,1,8");
-                                Thread.sleep(20 * 1000);
-                            }
+                            mSerialFd = serial.serial_close(mSerialFd);
+                            Thread.sleep(5 * 1000);
+                            mSerialFd = serial.serial_open(sPort + "," + iBaudRate + ",N,1,8");
+                            Thread.sleep(20 * 1000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                             return;
                         }
                     }
                     mSerialFd = serial.serial_open(sPort + "," + iBaudRate + ",N,1,8");
-                    isRead = true;
                 }
             }
         }
