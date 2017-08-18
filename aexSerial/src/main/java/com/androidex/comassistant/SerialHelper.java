@@ -122,7 +122,7 @@ public abstract class SerialHelper {
                 if (isRead) {
                     try {
                         if (serial == null) return;
-                        byte[] bytes = serial.serial_read(mSerialFd, 20, 3 * 1000);
+                        byte[] bytes = serial.serial_read(mSerialFd, 100, Integer.MAX_VALUE);
                         if (bytes == null) continue;
                         if (bytes.length > 0) {
                             ComBean ComRecData = new ComBean(sPort, bytes, bytes.length);
