@@ -468,20 +468,20 @@ public class MainActivity extends Activity implements View.OnClickListener {
     //----------------------------------------------------显示接收数据
     private void DispRecData(ComBean ComRecData) {
         StringBuilder sMsg = new StringBuilder();
-        sMsg.append(ComRecData.sRecTime);
-        sMsg.append("[");
-        sMsg.append(ComRecData.sComPort);
-        sMsg.append(String.format("](%d)",ComRecData.bRec.length));
+        //sMsg.append(ComRecData.sRecTime);
+        //sMsg.append("[");
+        //sMsg.append(ComRecData.sComPort);
+        //sMsg.append(String.format("](%d)",ComRecData.bRec.length));
         if (ComRecData.bRec[0] == 0X24) {
             try {
-                sMsg.append("[Str] ");
+                //sMsg.append("[Str] ");
                 sMsg.append(new String(ComRecData.bRec, "UTF-8"));
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         } else {
             if (radioButtonTxt.isChecked()) {
-                sMsg.append("[Txt] ");
+                //sMsg.append("[Txt] ");
                 try {
                     sMsg.append(new String(ComRecData.bRec, "UTF-8"));
                 } catch (UnsupportedEncodingException e) {
@@ -492,7 +492,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 sMsg.append(MyFunc.ByteArrToHex(ComRecData.bRec));
             }
         }
-        sMsg.append("\r\n");
+        //sMsg.append("\r\n");
         editTextRecDisp.append(sMsg);
         //Log.e("xxx显示数据：", sMsg.toString());
         iRecLines++;
@@ -505,7 +505,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void log(String msg){
-        editTextRecDisp.append(msg);
+        editTextRecDisp.append(String.format("\r\n%s\r\n",msg));
         //Log.i("TS",msg);
     }
 

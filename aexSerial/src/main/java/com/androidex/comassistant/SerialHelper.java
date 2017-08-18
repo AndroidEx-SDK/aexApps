@@ -18,7 +18,7 @@ import com.androidex.plugins.kkserial;
  *         串口辅助工具类
  */
 public abstract class SerialHelper {
-    private String sPort = "/dev/ttymxc0";
+    private String sPort = "/dev/ttymxc2";
     private int iBaudRate = 115200;
     private byte[] _bLoopData = new byte[]{0x30};
     private int iDelay = 500;
@@ -36,11 +36,11 @@ public abstract class SerialHelper {
 
 
     public SerialHelper(Context context) {
-        this("/dev/ttyS0", 9600, context);
+        this("/dev/ttymxc2", 115200, context);
     }
 
     public SerialHelper(String sPort, Context context) {
-        this(sPort, 9600, context);
+        this(sPort, 115200, context);
     }
 
     public SerialHelper(String sPort, String sBaudRate, Context context) {
@@ -93,11 +93,11 @@ public abstract class SerialHelper {
             public void run() {
                 log("开始读取串口数据");
                 while(mSerialFd > 0) {
-                    byte[] r = serial.serial_read(mSerialFd, 100, 3000);
+                    byte[] r = serial.serial_read(mSerialFd, 100, -1);
                     if (r != null) {
                         ComBean ComRecData = new ComBean(sPort, r, r.length);
                         onDataReceived(ComRecData);
-                        android.util.Log.i("TS",MyFunc.ByteArrToHex(r));
+                        android.util.Log.i("TS",String.format("(%d)%s",r.length,MyFunc.ByteArrToHex(r)));
                     }
                     //log(String.format("read:%d",mSerialFd));
                 }
