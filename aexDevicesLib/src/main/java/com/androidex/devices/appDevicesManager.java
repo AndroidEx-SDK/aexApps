@@ -31,6 +31,11 @@ public class appDevicesManager extends appLibsDevices {
      */
     public aexddPbocReader mBankCardReader = null;
     /**
+     * 电动读卡器接口类
+     */
+    public aexddPbocReader mCRT310CardReader = null;
+
+    /**
      * 燃气电力读卡器接口类
      */
     public aexddPbocReader mCasCardReader = null;
@@ -56,11 +61,12 @@ public class appDevicesManager extends appLibsDevices {
 
         mPrinter = new aexddB58Printer(ctx, mConfig.mConfigPrinter);
         mBankCardReader = new aexddMT319Reader(ctx, mConfig.mConfigBankReader);
-        mCasCardReader = new aexddLCC1Reader(ctx, mConfig.mConfigCasReader);//莱卡
-        //mCasCardReader = new aexddMT319Reader(ctx,mConfig.mConfigCasReader);
+        mCasCardReader = new aexddLCC1Reader(ctx, mConfig.mConfigCasReader);//莱卡、
+        //mCasCardReader = new aexddMT319Reader(ctx,mConfig.mConfigCasReader);//燃气卡
         mPasswordKeypad = new aexddKMY350(ctx, mConfig.mConfigPasswordKeypad);
         mZTPasswordKeypad = new aexddZTC70(ctx, mConfig.mConfigPasswordKeypad);
-        mX3Biovo = new aexddX3Biovo(ctx, mConfig.mConfigBiovo);
+        mX3Biovo = new aexddX3Biovo(ctx, mConfig.mConfigBiovo);//指纹仪
+        mCRT310CardReader = new aexddCRT310Reader(ctx, mConfig.mConfigBiovo);//电动读卡
 
     }
 
@@ -73,6 +79,7 @@ public class appDevicesManager extends appLibsDevices {
         mPasswordKeypad.setContext(ctx);
         mNfcReader.setContext(ctx);
         mX3Biovo.setContext(ctx);
+        mCRT310CardReader.setContext(ctx);
     }
 
     public static final appDevicesManager getDevicesManager(Context ctx) {

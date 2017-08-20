@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.androidex.apps.aexdeviceslib.R;
 import com.androidex.logger.Log;
+import com.androidex.plugins.kkserial;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,14 +27,17 @@ public class aexddCRT310Reader extends aexddPbocReader {
 
     public static final String TAG = "mt319";
     private JSONObject mArgs;
+    private Context context;
 
     public aexddCRT310Reader(Context ctx) {
         super(ctx);
+        context=ctx;
     }
 
     public aexddCRT310Reader(Context ctx, JSONObject args) {
         super(ctx, args);
         mArgs = args;
+        context=ctx;
     }
 
     @Override
@@ -214,7 +218,7 @@ public class aexddCRT310Reader extends aexddPbocReader {
     @Override
     public String getVersion() {
         String result = null;
-        pbocSendHexCmd("3140");
+        WriteDataHex("");
         byte[] r = pbocReadPacket(3000 * delayUint);
         if (r != null && r.length > 5) {
             int mlen = (r[1] << 8) | r[2];
