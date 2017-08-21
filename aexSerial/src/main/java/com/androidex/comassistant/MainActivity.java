@@ -54,16 +54,16 @@ import java.util.Queue;
  *         n,8,1，没得选
  */
 public class MainActivity extends Activity implements View.OnClickListener {
-    EditText editTextRecDisp, editTextLines, editTextCOMA, editTextCOMB, editTextCOMC, editTextCOMD;
-    EditText editTextTimeCOMA, editTextTimeCOMB, editTextTimeCOMC, editTextTimeCOMD;
-    CheckBox checkBoxAutoClear, checkBoxAutoCOMA, checkBoxAutoCOMB, checkBoxAutoCOMC, checkBoxAutoCOMD;
+    EditText editTextRecDisp, editTextLines, editTextCOMA;
+    EditText editTextTimeCOMA;
+    CheckBox checkBoxAutoClear, checkBoxAutoCOMA;
     Button ButtonClear, ButtonSendCOMA, btn_queryVersion, btn_parameter;
-    Button btn_serialText, btn_queryType, ButtonSendCOMB, ButtonSendCOMC, ButtonSendCOMD;
-    ToggleButton toggleButton_startTimingA,toggleButton_startTimingB,toggleButton_startTimingC,toggleButton_startTimingD, toggleButtonCOMA, toggleButtonCOMB, toggleButtonCOMC, toggleButtonCOMD;
-    Spinner SpinnerCOMA, SpinnerCOMB, SpinnerCOMC, SpinnerCOMD;
-    Spinner SpinnerBaudRateCOMA, SpinnerBaudRateCOMB, SpinnerBaudRateCOMC, SpinnerBaudRateCOMD;
+    Button btn_serialText, btn_queryType;
+    ToggleButton toggleButton_startTimingA,toggleButtonCOMA;
+    Spinner SpinnerCOMA;
+    Spinner SpinnerBaudRateCOMA;
     RadioButton radioButtonTxt, radioButtonHex;
-    SerialControl ComA, ComB, ComC, ComD;//4个串口
+    SerialControl ComA;//4个串口
     DispQueueThread DispQueue;//刷新显示线程
     SerialPortFinder mSerialPortFinder;//串口设备搜索
     AssistBean AssistData;//用于界面数据序列化和反序列化
@@ -77,9 +77,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         ComA = new SerialControl(this);
-        ComB = new SerialControl(this);
-        ComC = new SerialControl(this);
-        ComD = new SerialControl(this);
         DispQueue = new DispQueueThread();
         DispQueue.start();
         AssistData = getAssistData();
@@ -90,9 +87,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public void onDestroy() {
         saveAssistData(AssistData);
         CloseComPort(ComA);
-        CloseComPort(ComB);
-        CloseComPort(ComC);
-        CloseComPort(ComD);
         super.onDestroy();
     }
 
@@ -100,9 +94,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         CloseComPort(ComA);
-        CloseComPort(ComB);
-        CloseComPort(ComC);
-        CloseComPort(ComD);
         setContentView(R.layout.main);
         setControls();
     }
@@ -121,25 +112,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
         editTextRecDisp = (EditText) findViewById(R.id.editTextRecDisp);
         editTextLines = (EditText) findViewById(R.id.editTextLines);
         editTextCOMA = (EditText) findViewById(R.id.editTextCOMA);
-        editTextCOMB = (EditText) findViewById(R.id.editTextCOMB);
-        editTextCOMC = (EditText) findViewById(R.id.editTextCOMC);
-        editTextCOMD = (EditText) findViewById(R.id.editTextCOMD);
         editTextTimeCOMA = (EditText) findViewById(R.id.editTextTimeCOMA);
-        editTextTimeCOMB = (EditText) findViewById(R.id.editTextTimeCOMB);
-        editTextTimeCOMC = (EditText) findViewById(R.id.editTextTimeCOMC);
-        editTextTimeCOMD = (EditText) findViewById(R.id.editTextTimeCOMD);
 
         checkBoxAutoClear = (CheckBox) findViewById(R.id.checkBoxAutoClear);
         checkBoxAutoCOMA = (CheckBox) findViewById(R.id.checkBoxAutoCOMA);
-        checkBoxAutoCOMB = (CheckBox) findViewById(R.id.checkBoxAutoCOMB);
-        checkBoxAutoCOMC = (CheckBox) findViewById(R.id.checkBoxAutoCOMC);
-        checkBoxAutoCOMD = (CheckBox) findViewById(R.id.checkBoxAutoCOMD);
 
         ButtonClear = (Button) findViewById(R.id.ButtonClear);
         ButtonSendCOMA = (Button) findViewById(R.id.ButtonSendCOMA);
-        ButtonSendCOMB = (Button) findViewById(R.id.ButtonSendCOMB);
-        ButtonSendCOMC = (Button) findViewById(R.id.ButtonSendCOMC);
-        ButtonSendCOMD = (Button) findViewById(R.id.ButtonSendCOMD);
 
         btn_serialText = (Button) findViewById(R.id.btn_serialText);
         btn_queryType = (Button) findViewById(R.id.btn_queryType);
@@ -151,71 +130,29 @@ public class MainActivity extends Activity implements View.OnClickListener {
         btn_parameter.setOnClickListener(this);
 
         toggleButton_startTimingA = (ToggleButton) findViewById(R.id.toggleButton_startTimingA);
-        toggleButton_startTimingB = (ToggleButton) findViewById(R.id.toggleButton_startTimingB);
-        toggleButton_startTimingC = (ToggleButton) findViewById(R.id.toggleButton_startTimingC);
-        toggleButton_startTimingD = (ToggleButton) findViewById(R.id.toggleButton_startTimingD);
         toggleButtonCOMA = (ToggleButton) findViewById(R.id.toggleButtonCOMA);
-        toggleButtonCOMB = (ToggleButton) findViewById(R.id.ToggleButtonCOMB);
-        toggleButtonCOMC = (ToggleButton) findViewById(R.id.ToggleButtonCOMC);
-        toggleButtonCOMD = (ToggleButton) findViewById(R.id.ToggleButtonCOMD);
         SpinnerCOMA = (Spinner) findViewById(R.id.SpinnerCOMA);
-        SpinnerCOMB = (Spinner) findViewById(R.id.SpinnerCOMB);
-        SpinnerCOMC = (Spinner) findViewById(R.id.SpinnerCOMC);
-        SpinnerCOMD = (Spinner) findViewById(R.id.SpinnerCOMD);
         SpinnerBaudRateCOMA = (Spinner) findViewById(R.id.SpinnerBaudRateCOMA);
-        SpinnerBaudRateCOMB = (Spinner) findViewById(R.id.SpinnerBaudRateCOMB);
-        SpinnerBaudRateCOMC = (Spinner) findViewById(R.id.SpinnerBaudRateCOMC);
-        SpinnerBaudRateCOMD = (Spinner) findViewById(R.id.SpinnerBaudRateCOMD);
         radioButtonTxt = (RadioButton) findViewById(R.id.radioButtonTxt);
         radioButtonHex = (RadioButton) findViewById(R.id.radioButtonHex);
 
         editTextCOMA.setOnEditorActionListener(new EditorActionEvent());
-        editTextCOMB.setOnEditorActionListener(new EditorActionEvent());
-        editTextCOMC.setOnEditorActionListener(new EditorActionEvent());
-        editTextCOMD.setOnEditorActionListener(new EditorActionEvent());
         editTextTimeCOMA.setOnEditorActionListener(new EditorActionEvent());
-        editTextTimeCOMB.setOnEditorActionListener(new EditorActionEvent());
-        editTextTimeCOMC.setOnEditorActionListener(new EditorActionEvent());
-        editTextTimeCOMD.setOnEditorActionListener(new EditorActionEvent());
         editTextCOMA.setOnFocusChangeListener(new FocusChangeEvent());
-        editTextCOMB.setOnFocusChangeListener(new FocusChangeEvent());
-        editTextCOMC.setOnFocusChangeListener(new FocusChangeEvent());
-        editTextCOMD.setOnFocusChangeListener(new FocusChangeEvent());
         editTextTimeCOMA.setOnFocusChangeListener(new FocusChangeEvent());
-        editTextTimeCOMB.setOnFocusChangeListener(new FocusChangeEvent());
-        editTextTimeCOMC.setOnFocusChangeListener(new FocusChangeEvent());
-        editTextTimeCOMD.setOnFocusChangeListener(new FocusChangeEvent());
 
         radioButtonTxt.setOnClickListener(new radioButtonClickEvent());
         radioButtonHex.setOnClickListener(new radioButtonClickEvent());
         ButtonClear.setOnClickListener(new ButtonClickEvent());
         ButtonSendCOMA.setOnClickListener(new ButtonClickEvent());
-        ButtonSendCOMB.setOnClickListener(new ButtonClickEvent());
-        ButtonSendCOMC.setOnClickListener(new ButtonClickEvent());
-        ButtonSendCOMD.setOnClickListener(new ButtonClickEvent());
         toggleButton_startTimingA.setOnCheckedChangeListener(new ToggleButtonStartTimingListener());
-        toggleButton_startTimingB.setOnCheckedChangeListener(new ToggleButtonStartTimingListener());
-        toggleButton_startTimingC.setOnCheckedChangeListener(new ToggleButtonStartTimingListener());
-        toggleButton_startTimingD.setOnCheckedChangeListener(new ToggleButtonStartTimingListener());
         toggleButtonCOMA.setOnCheckedChangeListener(new ToggleButtonCheckedChangeEvent());
-        toggleButtonCOMB.setOnCheckedChangeListener(new ToggleButtonCheckedChangeEvent());
-        toggleButtonCOMC.setOnCheckedChangeListener(new ToggleButtonCheckedChangeEvent());
-        toggleButtonCOMD.setOnCheckedChangeListener(new ToggleButtonCheckedChangeEvent());
         checkBoxAutoCOMA.setOnCheckedChangeListener(new CheckBoxChangeEvent());
-        checkBoxAutoCOMB.setOnCheckedChangeListener(new CheckBoxChangeEvent());
-        checkBoxAutoCOMC.setOnCheckedChangeListener(new CheckBoxChangeEvent());
-        checkBoxAutoCOMD.setOnCheckedChangeListener(new CheckBoxChangeEvent());
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.baudrates_value, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         SpinnerBaudRateCOMA.setAdapter(adapter);
-        SpinnerBaudRateCOMB.setAdapter(adapter);
-        SpinnerBaudRateCOMC.setAdapter(adapter);
-        SpinnerBaudRateCOMD.setAdapter(adapter);
         SpinnerBaudRateCOMA.setSelection(12);
-        SpinnerBaudRateCOMB.setSelection(12);
-        SpinnerBaudRateCOMC.setSelection(12);
-        SpinnerBaudRateCOMD.setSelection(12);
 
         mSerialPortFinder = new SerialPortFinder();
         String[] entryValues = mSerialPortFinder.getAllDevicesPath();
@@ -226,29 +163,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         ArrayAdapter<String> aspnDevices = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, allDevices);
         aspnDevices.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         SpinnerCOMA.setAdapter(aspnDevices);
-        SpinnerCOMB.setAdapter(aspnDevices);
-        SpinnerCOMC.setAdapter(aspnDevices);
-        SpinnerCOMD.setAdapter(aspnDevices);
         if (allDevices.size() > 0) {
             SpinnerCOMA.setSelection(0);
         }
-        if (allDevices.size() > 1) {
-            SpinnerCOMB.setSelection(1);
-        }
-        if (allDevices.size() > 2) {
-            SpinnerCOMC.setSelection(2);
-        }
-        if (allDevices.size() > 3) {
-            SpinnerCOMD.setSelection(3);
-        }
         SpinnerCOMA.setOnItemSelectedListener(new ItemSelectedEvent());
-        SpinnerCOMB.setOnItemSelectedListener(new ItemSelectedEvent());
-        SpinnerCOMC.setOnItemSelectedListener(new ItemSelectedEvent());
-        SpinnerCOMD.setOnItemSelectedListener(new ItemSelectedEvent());
         SpinnerBaudRateCOMA.setOnItemSelectedListener(new ItemSelectedEvent());
-        SpinnerBaudRateCOMB.setOnItemSelectedListener(new ItemSelectedEvent());
-        SpinnerBaudRateCOMC.setOnItemSelectedListener(new ItemSelectedEvent());
-        SpinnerBaudRateCOMD.setOnItemSelectedListener(new ItemSelectedEvent());
         DispAssistData(AssistData);
     }
 
@@ -278,18 +197,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 CloseComPort(ComA);
                 checkBoxAutoCOMA.setChecked(false);
                 toggleButtonCOMA.setChecked(false);
-            } else if ((arg0 == SpinnerCOMB) || (arg0 == SpinnerBaudRateCOMB)) {
-                CloseComPort(ComB);
-                checkBoxAutoCOMA.setChecked(false);
-                toggleButtonCOMB.setChecked(false);
-            } else if ((arg0 == SpinnerCOMC) || (arg0 == SpinnerBaudRateCOMC)) {
-                CloseComPort(ComC);
-                checkBoxAutoCOMA.setChecked(false);
-                toggleButtonCOMC.setChecked(false);
-            } else if ((arg0 == SpinnerCOMD) || (arg0 == SpinnerBaudRateCOMD)) {
-                CloseComPort(ComD);
-                checkBoxAutoCOMA.setChecked(false);
-                toggleButtonCOMD.setChecked(false);
             }
         }
 
@@ -304,20 +211,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         public void onFocusChange(View v, boolean hasFocus) {
             if (v == editTextCOMA) {
                 setSendData(editTextCOMA);
-            } else if (v == editTextCOMB) {
-                setSendData(editTextCOMB);
-            } else if (v == editTextCOMC) {
-                setSendData(editTextCOMC);
-            } else if (v == editTextCOMD) {
-                setSendData(editTextCOMD);
             } else if (v == editTextTimeCOMA) {
                 setDelayTime(editTextTimeCOMA);
-            } else if (v == editTextTimeCOMB) {
-                setDelayTime(editTextTimeCOMB);
-            } else if (v == editTextTimeCOMC) {
-                setDelayTime(editTextTimeCOMC);
-            } else if (v == editTextTimeCOMD) {
-                setDelayTime(editTextTimeCOMD);
             }
         }
     }
@@ -327,20 +222,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             if (v == editTextCOMA) {
                 setSendData(editTextCOMA);
-            } else if (v == editTextCOMB) {
-                setSendData(editTextCOMB);
-            } else if (v == editTextCOMC) {
-                setSendData(editTextCOMC);
-            } else if (v == editTextCOMD) {
-                setSendData(editTextCOMD);
             } else if (v == editTextTimeCOMA) {
                 setDelayTime(editTextTimeCOMA);
-            } else if (v == editTextTimeCOMB) {
-                setDelayTime(editTextTimeCOMB);
-            } else if (v == editTextTimeCOMC) {
-                setDelayTime(editTextTimeCOMC);
-            } else if (v == editTextTimeCOMD) {
-                setDelayTime(editTextTimeCOMD);
             }
             return false;
         }
@@ -352,9 +235,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             if (v == radioButtonTxt) {
                 KeyListener TxtkeyListener = new TextKeyListener(TextKeyListener.Capitalize.NONE, false);
                 editTextCOMA.setKeyListener(TxtkeyListener);
-                editTextCOMB.setKeyListener(TxtkeyListener);
-                editTextCOMC.setKeyListener(TxtkeyListener);
-                editTextCOMD.setKeyListener(TxtkeyListener);
                 AssistData.setTxtMode(true);
             } else if (v == radioButtonHex) {
                 KeyListener HexkeyListener = new NumberKeyListener() {
@@ -369,19 +249,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     }
                 };
                 editTextCOMA.setKeyListener(HexkeyListener);
-                editTextCOMB.setKeyListener(HexkeyListener);
-                editTextCOMC.setKeyListener(HexkeyListener);
-                editTextCOMD.setKeyListener(HexkeyListener);
                 AssistData.setTxtMode(false);
             }
             editTextCOMA.setText(AssistData.getSendA());
-            editTextCOMB.setText(AssistData.getSendB());
-            editTextCOMC.setText(AssistData.getSendC());
-            editTextCOMD.setText(AssistData.getSendD());
             setSendData(editTextCOMA);
-            setSendData(editTextCOMB);
-            setSendData(editTextCOMC);
-            setSendData(editTextCOMD);
         }
     }
 
@@ -395,27 +266,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 }
                 SetLoopData(ComA, editTextCOMA.getText().toString());
                 SetAutoSend(ComA, isChecked);
-            } else if (buttonView == checkBoxAutoCOMB) {
-                if (!toggleButtonCOMB.isChecked() && isChecked) {
-                    buttonView.setChecked(false);
-                    return;
-                }
-                SetLoopData(ComB, editTextCOMB.getText().toString());
-                SetAutoSend(ComB, isChecked);
-            } else if (buttonView == checkBoxAutoCOMC) {
-                if (!toggleButtonCOMC.isChecked() && isChecked) {
-                    buttonView.setChecked(false);
-                    return;
-                }
-                SetLoopData(ComC, editTextCOMC.getText().toString());
-                SetAutoSend(ComC, isChecked);
-            } else if (buttonView == checkBoxAutoCOMD) {
-                if (!toggleButtonCOMD.isChecked() && isChecked) {
-                    buttonView.setChecked(false);
-                    return;
-                }
-                SetLoopData(ComD, editTextCOMD.getText().toString());
-                SetAutoSend(ComD, isChecked);
             }
         }
     }
@@ -427,12 +277,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 editTextRecDisp.setText("");
             } else if (v == ButtonSendCOMA) {
                 sendPortData(ComA, editTextCOMA.getText().toString());
-            } else if (v == ButtonSendCOMB) {
-                sendPortData(ComB, editTextCOMB.getText().toString());
-            } else if (v == ButtonSendCOMC) {
-                sendPortData(ComC, editTextCOMC.getText().toString());
-            } else if (v == ButtonSendCOMD) {
-                sendPortData(ComD, editTextCOMD.getText().toString());
             }
         }
     }
@@ -444,42 +288,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
             if (buttonView == toggleButton_startTimingA) {
                 if (isChecked) {
                     Toast.makeText(MainActivity.this, "开启串口自动控制状态", Toast.LENGTH_LONG).show();
-                    ComA.startTime();
+                    //ComA.startTime();
                     toggleButton_startTimingA.setChecked(true);
                 } else {
                     Toast.makeText(MainActivity.this, "关闭串口自动控制状态", Toast.LENGTH_LONG).show();
-                    ComA.stopTime();
+                    //ComA.stopTime();
                     toggleButton_startTimingA.setChecked(false);
-                }
-            }else if (buttonView == toggleButton_startTimingB) {
-                if (isChecked) {
-                    Toast.makeText(MainActivity.this, "开启串口自动控制状态", Toast.LENGTH_LONG).show();
-                    ComB.startTime();
-                    toggleButton_startTimingB.setChecked(true);
-                } else {
-                    Toast.makeText(MainActivity.this, "关闭串口自动控制状态", Toast.LENGTH_LONG).show();
-                    ComB.stopTime();
-                    toggleButton_startTimingB.setChecked(false);
-                }
-            }else if (buttonView == toggleButton_startTimingC) {
-                if (isChecked) {
-                    Toast.makeText(MainActivity.this, "开启串口自动控制状态", Toast.LENGTH_LONG).show();
-                    ComC.startTime();
-                    toggleButton_startTimingC.setChecked(true);
-                } else {
-                    Toast.makeText(MainActivity.this, "关闭串口自动控制状态", Toast.LENGTH_LONG).show();
-                    ComC.stopTime();
-                    toggleButton_startTimingC.setChecked(false);
-                }
-            }else if (buttonView == toggleButton_startTimingD) {
-                if (isChecked) {
-                    Toast.makeText(MainActivity.this, "开启串口自动控制状态", Toast.LENGTH_LONG).show();
-                    ComD.startTime();
-                    toggleButton_startTimingD.setChecked(true);
-                } else {
-                    Toast.makeText(MainActivity.this, "关闭串口自动控制状态", Toast.LENGTH_LONG).show();
-                    ComD.stopTime();
-                    toggleButton_startTimingD.setChecked(false);
                 }
             }
         }
@@ -490,86 +304,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if (buttonView == toggleButtonCOMA) {
                 if (isChecked) {
-                    if (toggleButtonCOMB.isChecked() && SpinnerCOMA.getSelectedItemPosition() == SpinnerCOMB.getSelectedItemPosition()) {
-                        ShowMessage("串口" + SpinnerCOMA.getSelectedItem().toString() + "已打开");
-                        buttonView.setChecked(false);
-                    } else if (toggleButtonCOMC.isChecked() && SpinnerCOMA.getSelectedItemPosition() == SpinnerCOMC.getSelectedItemPosition()) {
-                        ShowMessage("串口" + SpinnerCOMA.getSelectedItem().toString() + "已打开");
-                        buttonView.setChecked(false);
-                    } else if (toggleButtonCOMD.isChecked() && SpinnerCOMA.getSelectedItemPosition() == SpinnerCOMD.getSelectedItemPosition()) {
-                        ShowMessage("串口" + SpinnerCOMA.getSelectedItem().toString() + "已打开");
-                        buttonView.setChecked(false);
-                    } else {
-                        ComA.setPort(SpinnerCOMA.getSelectedItem().toString());
-                        ComA.setBaudRate(SpinnerBaudRateCOMA.getSelectedItem().toString());
-                        OpenComPort(ComA);
-                    }
+                    ComA.setPort(SpinnerCOMA.getSelectedItem().toString());
+                    ComA.setBaudRate(SpinnerBaudRateCOMA.getSelectedItem().toString());
+                    OpenComPort(ComA);
                 } else {
                     CloseComPort(ComA);
                     checkBoxAutoCOMA.setChecked(false);
-                }
-            } else if (buttonView == toggleButtonCOMB) {
-                if (isChecked) {
-                    if (toggleButtonCOMA.isChecked() && SpinnerCOMB.getSelectedItemPosition() == SpinnerCOMA.getSelectedItemPosition()) {
-                        ShowMessage("串口" + SpinnerCOMB.getSelectedItem().toString() + "已打开");
-                        buttonView.setChecked(false);
-                    } else if (toggleButtonCOMC.isChecked() && SpinnerCOMB.getSelectedItemPosition() == SpinnerCOMC.getSelectedItemPosition()) {
-                        ShowMessage("串口" + SpinnerCOMB.getSelectedItem().toString() + "已打开");
-                        buttonView.setChecked(false);
-                    } else if (toggleButtonCOMD.isChecked() && SpinnerCOMB.getSelectedItemPosition() == SpinnerCOMD.getSelectedItemPosition()) {
-                        ShowMessage("串口" + SpinnerCOMB.getSelectedItem().toString() + "已打开");
-                        buttonView.setChecked(false);
-                    } else {
-//						ComB=new SerialControl("/dev/s3c2410_serial1", "9600");
-                        ComB.setPort(SpinnerCOMB.getSelectedItem().toString());
-                        ComB.setBaudRate(SpinnerBaudRateCOMB.getSelectedItem().toString());
-                        OpenComPort(ComB);
-                    }
-                } else {
-                    CloseComPort(ComB);
-                    checkBoxAutoCOMB.setChecked(false);
-                }
-            } else if (buttonView == toggleButtonCOMC) {
-                if (isChecked) {
-                    if (toggleButtonCOMA.isChecked() && SpinnerCOMC.getSelectedItemPosition() == SpinnerCOMA.getSelectedItemPosition()) {
-                        ShowMessage("串口" + SpinnerCOMC.getSelectedItem().toString() + "已打开");
-                        buttonView.setChecked(false);
-                    } else if (toggleButtonCOMB.isChecked() && SpinnerCOMC.getSelectedItemPosition() == SpinnerCOMB.getSelectedItemPosition()) {
-                        ShowMessage("串口" + SpinnerCOMC.getSelectedItem().toString() + "已打开");
-                        buttonView.setChecked(false);
-                    } else if (toggleButtonCOMD.isChecked() && SpinnerCOMC.getSelectedItemPosition() == SpinnerCOMD.getSelectedItemPosition()) {
-                        ShowMessage("串口" + SpinnerCOMC.getSelectedItem().toString() + "已打开");
-                        buttonView.setChecked(false);
-                    } else {
-                        //					ComC=new SerialControl("/dev/s3c2410_serial2", "9600");
-                        ComC.setPort(SpinnerCOMC.getSelectedItem().toString());
-                        ComC.setBaudRate(SpinnerBaudRateCOMC.getSelectedItem().toString());
-                        OpenComPort(ComC);
-                    }
-                } else {
-                    CloseComPort(ComC);
-                    checkBoxAutoCOMC.setChecked(false);
-                }
-            } else if (buttonView == toggleButtonCOMD) {
-                if (isChecked) {
-                    if (toggleButtonCOMA.isChecked() && SpinnerCOMD.getSelectedItemPosition() == SpinnerCOMA.getSelectedItemPosition()) {
-                        ShowMessage("串口" + SpinnerCOMD.getSelectedItem().toString() + "已打开");
-                        buttonView.setChecked(false);
-                    } else if (toggleButtonCOMB.isChecked() && SpinnerCOMD.getSelectedItemPosition() == SpinnerCOMB.getSelectedItemPosition()) {
-                        ShowMessage("串口" + SpinnerCOMD.getSelectedItem().toString() + "已打开");
-                        buttonView.setChecked(false);
-                    } else if (toggleButtonCOMC.isChecked() && SpinnerCOMD.getSelectedItemPosition() == SpinnerCOMC.getSelectedItemPosition()) {
-                        ShowMessage("串口" + SpinnerCOMD.getSelectedItem().toString() + "已打开");
-                        buttonView.setChecked(false);
-                    } else {
-                        //					ComD=new SerialControl("/dev/s3c2410_serial3", "9600");
-                        ComD.setPort(SpinnerCOMD.getSelectedItem().toString());
-                        ComD.setBaudRate(SpinnerBaudRateCOMD.getSelectedItem().toString());
-                        OpenComPort(ComD);
-                    }
-                } else {
-                    CloseComPort(ComD);
-                    checkBoxAutoCOMD.setChecked(false);
                 }
             }
         }
@@ -596,6 +336,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     DispRecData(ComRecData);
                 }
             });
+        }
+
+        @Override
+        protected void onLog(final String msg){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    log(msg);
+                }
+            });
+        }
+
+        @Override
+        protected void onClearMessage(){
+            editTextRecDisp.setText("");
         }
     }
 
@@ -632,34 +387,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
     //----------------------------------------------------刷新界面数据
     private void DispAssistData(AssistBean AssistData) {
         editTextCOMA.setText(AssistData.getSendA());
-        editTextCOMB.setText(AssistData.getSendB());
-        editTextCOMC.setText(AssistData.getSendC());
-        editTextCOMD.setText(AssistData.getSendD());
         setSendData(editTextCOMA);
-        setSendData(editTextCOMB);
-        setSendData(editTextCOMC);
-        setSendData(editTextCOMD);
         if (AssistData.isTxt()) {
             radioButtonTxt.setChecked(true);
         } else {
             radioButtonHex.setChecked(true);
         }
         editTextTimeCOMA.setText(AssistData.sTimeA);
-        editTextTimeCOMB.setText(AssistData.sTimeB);
-        editTextTimeCOMC.setText(AssistData.sTimeC);
-        editTextTimeCOMD.setText(AssistData.sTimeD);
         setDelayTime(editTextTimeCOMA);
-        setDelayTime(editTextTimeCOMB);
-        setDelayTime(editTextTimeCOMC);
-        setDelayTime(editTextTimeCOMD);
     }
 
     //----------------------------------------------------保存、获取界面数据
     private void saveAssistData(AssistBean AssistData) {
         AssistData.sTimeA = editTextTimeCOMA.getText().toString();
-        AssistData.sTimeB = editTextTimeCOMB.getText().toString();
-        AssistData.sTimeC = editTextTimeCOMC.getText().toString();
-        AssistData.sTimeD = editTextTimeCOMD.getText().toString();
         SharedPreferences msharedPreferences = getSharedPreferences("comassistant", Context.MODE_PRIVATE);
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -700,15 +440,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         if (v == editTextTimeCOMA) {
             AssistData.sTimeA = v.getText().toString();
             SetiDelayTime(ComA, v.getText().toString());
-        } else if (v == editTextTimeCOMB) {
-            AssistData.sTimeB = v.getText().toString();
-            SetiDelayTime(ComB, v.getText().toString());
-        } else if (v == editTextTimeCOMC) {
-            AssistData.sTimeC = v.getText().toString();
-            SetiDelayTime(ComC, v.getText().toString());
-        } else if (v == editTextTimeCOMD) {
-            AssistData.sTimeD = v.getText().toString();
-            SetiDelayTime(ComD, v.getText().toString());
         }
     }
 
@@ -717,15 +448,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         if (v == editTextCOMA) {
             AssistData.setSendA(v.getText().toString());
             SetLoopData(ComA, v.getText().toString());
-        } else if (v == editTextCOMB) {
-            AssistData.setSendB(v.getText().toString());
-            SetLoopData(ComB, v.getText().toString());
-        } else if (v == editTextCOMC) {
-            AssistData.setSendC(v.getText().toString());
-            SetLoopData(ComC, v.getText().toString());
-        } else if (v == editTextCOMD) {
-            AssistData.setSendD(v.getText().toString());
-            SetLoopData(ComD, v.getText().toString());
         }
     }
 
@@ -746,20 +468,20 @@ public class MainActivity extends Activity implements View.OnClickListener {
     //----------------------------------------------------显示接收数据
     private void DispRecData(ComBean ComRecData) {
         StringBuilder sMsg = new StringBuilder();
-        sMsg.append(ComRecData.sRecTime);
-        sMsg.append("[");
-        sMsg.append(ComRecData.sComPort);
-        sMsg.append("]");
+        //sMsg.append(ComRecData.sRecTime);
+        //sMsg.append("[");
+        //sMsg.append(ComRecData.sComPort);
+        //sMsg.append(String.format("](%d)",ComRecData.bRec.length));
         if (ComRecData.bRec[0] == 0X24) {
             try {
-                sMsg.append("[Str] ");
+                //sMsg.append("[Str] ");
                 sMsg.append(new String(ComRecData.bRec, "UTF-8"));
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         } else {
             if (radioButtonTxt.isChecked()) {
-                sMsg.append("[Txt] ");
+                //sMsg.append("[Txt] ");
                 try {
                     sMsg.append(new String(ComRecData.bRec, "UTF-8"));
                 } catch (UnsupportedEncodingException e) {
@@ -770,9 +492,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 sMsg.append(MyFunc.ByteArrToHex(ComRecData.bRec));
             }
         }
-        sMsg.append("\r\n");
+        //sMsg.append("\r\n");
         editTextRecDisp.append(sMsg);
-        Log.e("xxx显示数据：", sMsg.toString());
+        //Log.e("xxx显示数据：", sMsg.toString());
         iRecLines++;
         editTextLines.setText(String.valueOf(iRecLines));
         if ((iRecLines > 500) && (checkBoxAutoClear.isChecked())) {//达到500项自动清除
@@ -782,12 +504,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
+    private void log(String msg){
+        editTextRecDisp.append(String.format("\r\n%s\r\n",msg));
+        //Log.i("TS",msg);
+    }
+
     //----------------------------------------------------设置自动发送模式开关
     private void SetAutoSend(SerialHelper ComPort, boolean isAutoSend) {
         if (isAutoSend) {
-            ComPort.startSend();
+            //ComPort.startSend();
         } else {
-            ComPort.stopSend();
+            //ComPort.stopSend();
         }
     }
 
@@ -805,7 +532,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     //----------------------------------------------------关闭串口
     private void CloseComPort(SerialHelper ComPort) {
         if (ComPort != null) {
-            ComPort.stopSend();
+            //ComPort.stopSend();
             ComPort.close();
         }
     }
@@ -816,6 +543,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         int mSerialFd = ComPort.open();
         if (mSerialFd > 0) {
             ShowMessage("打开串口成功！");
+            ComPort.startReadSerial();
         } else {
             ShowMessage("打开串口失败！请查看串口是否存在");
         }
