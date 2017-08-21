@@ -33,6 +33,7 @@
     <uses-feature android:name="android.hardware.camera.autofocus"/>
 
     <application
+        
         android:allowBackup="true"
         android:exported="true"
         android:icon="@mipmap/ic_launcher"
