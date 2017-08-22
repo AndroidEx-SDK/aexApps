@@ -25,19 +25,19 @@ public class aexddCRT310Reader extends aexddPbocReader {
         }
     }
 
-    public static final String TAG = "mt319";
+    public static final String TAG = "CRT310";
     private JSONObject mArgs;
     private Context context;
 
     public aexddCRT310Reader(Context ctx) {
         super(ctx);
-        context=ctx;
+        context = ctx;
     }
 
     public aexddCRT310Reader(Context ctx, JSONObject args) {
         super(ctx, args);
         mArgs = args;
-        context=ctx;
+        context = ctx;
     }
 
     @Override
@@ -145,11 +145,10 @@ public class aexddCRT310Reader extends aexddPbocReader {
      * @return 成功返回true，否则返回false
      */
     @Override
-    public boolean selfTest()
-    {
+    public boolean selfTest() {
 
         if (getVersion() != null) {
-            Log.d(TAG, "读卡器OK");
+            Log.d(TAG, "读卡器OK" + getVersion());
         } else {
             Log.d(TAG, "读卡器失败");
         }
@@ -174,14 +173,14 @@ public class aexddCRT310Reader extends aexddPbocReader {
         return true;
     }
 
-    public boolean selfTest(int flag){
-        if (flag==1){
+    public boolean selfTest(int flag) {
+        if (flag == 1) {
             if (getVersion() != null) {
                 Log.d(TAG, "银行卡读卡器OK");
             } else {
                 Log.d(TAG, "银行卡读卡器失败");
             }
-        }else if (flag==2){
+        } else if (flag == 2) {
             if (getVersion() != null) {
                 Log.d(TAG, "燃气卡读卡器OK");
             } else {
@@ -218,13 +217,16 @@ public class aexddCRT310Reader extends aexddPbocReader {
     @Override
     public String getVersion() {
         String result = null;
-        WriteDataHex("");
-        byte[] r = pbocReadPacket(3000 * delayUint);
-        if (r != null && r.length > 5) {
-            int mlen = (r[1] << 8) | r[2];
-            if (r[3] == 0x31 && r[4] == 0x40)
-                result = new String(r, 5, mlen - 2);
+        WriteDataHex("02000230300303");
+        result = ReciveDataHex(mSerialFd, 3000 * delayUint);
+        android.util.Log.d(TAG, "getVersion:1 result"+result);
+        if (result.equals("06")) {
+            WriteDataHex("05");
+            result = ReciveDataHex(mSerialFd, 3000 * delayUint);
+            android.util.Log.d(TAG, "getVersion:2 result"+result);
         }
+        result = CharacterUtils.hexStr2Str(result);
+        android.util.Log.d(TAG, "getVersion:3 result"+result);
         return result;
     }
 

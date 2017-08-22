@@ -54,6 +54,7 @@ import com.androidex.common.DummyContent;
 import com.androidex.common.LogFragment;
 import com.androidex.devices.aexddAndroidNfcReader;
 import com.androidex.devices.aexddB58Printer;
+import com.androidex.devices.aexddCRT310Reader;
 import com.androidex.devices.aexddLCC1Reader;
 import com.androidex.devices.aexddMT319Reader;
 import com.androidex.devices.aexddNfcReader;
@@ -404,7 +405,8 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 return true;
 
             case R.id.action_cas_reader:
-                casReaderText(2);//燃气读卡器测试
+                //casReaderText(2);//燃气读卡器测试
+                Crt310Text();
                 return true;
 
             case R.id.action_password_key:
@@ -571,6 +573,21 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             mBankCardReader.Close();
         } else {
             String s = String.format("Open bank reader fial:%s", mDevices.mBankCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS));
+            Log.i(TAG, s);
+            Toast.makeText(this, s, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * CRT310电动读卡器
+     */
+    private void Crt310Text() {
+        if (mDevices.mCRT310CardReader.Open()) {
+            //lcc1ReaderText();//莱卡读卡器测试程序
+            aexddCRT310Reader mCRT310Reader = (aexddCRT310Reader) mDevices.mCRT310CardReader;
+            mCRT310Reader.Close();
+        } else {
+            String s = String.format("Open cas reader fial:%s", mDevices.mCRT310CardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS));
             Log.i(TAG, s);
             Toast.makeText(this, s, Toast.LENGTH_LONG).show();
         }
