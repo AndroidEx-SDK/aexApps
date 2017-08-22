@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.androidex.apps.home">
+          package="com.androidex.apps.home" xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
@@ -33,7 +33,8 @@
     <uses-feature android:name="android.hardware.camera.autofocus"/>
 
     <application
-        
+        android:name="com.morgoo.droidplugin.PluginApplication"
+        tools:replace="android:icon, android:theme"
         android:allowBackup="true"
         android:exported="true"
         android:icon="@mipmap/ic_launcher"
