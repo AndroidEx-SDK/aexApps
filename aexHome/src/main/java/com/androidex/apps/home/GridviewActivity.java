@@ -12,8 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.morgoo.droidplugin.pm.PluginManager;
 import com.morgoo.helper.compat.PackageManagerCompat;
@@ -31,7 +29,6 @@ public class GridviewActivity extends Activity {
     private List<Map<String, Object>> data_list;
     private SimpleAdapter sim_adapter;
     private File[] plugins;
-    private TextView tvTest;
     PackageInfo packageInfo;
     // 图片封装为一个数组
     private int[] icon = { R.drawable.balance, R.drawable.balance,
@@ -39,7 +36,7 @@ public class GridviewActivity extends Activity {
             R.drawable.balance, R.drawable.balance, R.drawable.balance,
             R.drawable.balance, R.drawable.balance, R.drawable.balance,
             R.drawable.balance };
-    private String[] iconName = { "item1", "item2", "item3", "item4", "item5", "item6", "item7",
+    private String[] iconName = { "textNFC", "aexNFC", "item3", "item4", "item5", "item6", "item7",
             "item8", "item9", "item10", "item11", "item12" };
 
     @Override
@@ -47,7 +44,6 @@ public class GridviewActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gridview);
         gview = (GridView) findViewById(R.id.gview);
-        final TextView tvTest = (TextView) findViewById(R.id.tv_test);
         //新建List
         data_list = new ArrayList<Map<String, Object>>();
         //获取数据
@@ -58,6 +54,9 @@ public class GridviewActivity extends Activity {
         sim_adapter = new SimpleAdapter(this, data_list, item, from, to);
         //配置适配器
         gview.setAdapter(sim_adapter);
+
+
+
         //每一个item的点击事件
         gview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -71,44 +70,38 @@ public class GridviewActivity extends Activity {
                         Log.e("===========",String.valueOf(intent));
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
-                        //获取插件
-                        File file = new File(Environment.getExternalStorageDirectory(), "/plugin");
-                        plugins = file.listFiles();
                         break;
+                    //打开aexNFC
                     case 1:
-                        Toast.makeText(GridviewActivity.this, "item2", Toast.LENGTH_LONG)
-                                .show();
-                        break;
-                    case 2:
-
-                        break;
-                    case 3:
-
-                        break;
-                    case 4:
-
-                        break;
-                    case 5:
-
-                        break;
-                    default:
+                        PackageManager pm1 = getPackageManager();
+                        //aexNFC的主页面包名
+                        Intent intent1 = pm1.getLaunchIntentForPackage("com.example.androidex");
+                        Log.e("===========",String.valueOf(intent1));
+                        intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent1);
                         break;
                 }
             }
         });
+        //获取插件
+        File file = new File(Environment.getExternalStorageDirectory(), "/plugin");
+        plugins = file.listFiles();
         //没有插件
         if (plugins == null || plugins.length == 0) {
             return;
         }
-        //安装第一个插件
+        //安装插件
         else {
-            try {
-                PluginManager.getInstance().installPackage(plugins[0].getAbsolutePath(), PackageManagerCompat.INSTALL_REPLACE_EXISTING);
-            } catch (RemoteException e) {
-                e.printStackTrace();
+            //i的最大值为文件夹内apk的数量
+            for (int i=0;i<2;i++){
+                try {
+                    PluginManager.getInstance().installPackage(plugins[i].getAbsolutePath(), PackageManagerCompat.INSTALL_REPLACE_EXISTING);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
             }
-            tvTest.setText(plugins[0].getAbsolutePath());
         }
+
     }
 
 
