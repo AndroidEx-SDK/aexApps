@@ -43,21 +43,18 @@ public class GridviewActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gridview);
+        InstallAPK();
+        InitGridView();
+    }
+
+    private void InitGridView() {
         gview = (GridView) findViewById(R.id.gview);
-        //新建List
         data_list = new ArrayList<Map<String, Object>>();
-        //获取数据
         getData();
-        //新建适配器
         String [] from ={"image","text"};
         int [] to = {R.id.image,R.id.text};
         sim_adapter = new SimpleAdapter(this, data_list, item, from, to);
-        //配置适配器
         gview.setAdapter(sim_adapter);
-
-
-
-        //每一个item的点击事件
         gview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -65,17 +62,14 @@ public class GridviewActivity extends Activity {
                     //打开textNFC
                     case 0:
                         PackageManager pm = getPackageManager();
-                        //textNFC的主页面包名
-                        Intent intent = pm.getLaunchIntentForPackage("com.example.cts.textnfc");
+                        Intent intent = pm.getLaunchIntentForPackage("com.example.cts.textnfc");//textNFC的主页面包名
                         Log.e("===========",String.valueOf(intent));
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                         break;
-                    //打开aexNFC
-                    case 1:
+                    case 1://打开aexNFC
                         PackageManager pm1 = getPackageManager();
-                        //aexNFC的主页面包名
-                        Intent intent1 = pm1.getLaunchIntentForPackage("com.example.androidex");
+                        Intent intent1 = pm1.getLaunchIntentForPackage("com.example.androidex");//aexNFC的主页面包名
                         Log.e("===========",String.valueOf(intent1));
                         intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent1);
@@ -83,25 +77,26 @@ public class GridviewActivity extends Activity {
                 }
             }
         });
-        //获取插件
+    }
+
+    private void InstallAPK() {
+        //获取插件,plugin为sdcard下的文件夹名称
         File file = new File(Environment.getExternalStorageDirectory(), "/plugin");
         plugins = file.listFiles();
         //没有插件
         if (plugins == null || plugins.length == 0) {
             return;
-        }
-        //安装插件
-        else {
+        } else {//安装插件
             //i的最大值为文件夹内apk的数量
             for (int i=0;i<2;i++){
                 try {
                     PluginManager.getInstance().installPackage(plugins[i].getAbsolutePath(), PackageManagerCompat.INSTALL_REPLACE_EXISTING);
                 } catch (RemoteException e) {
+
                     e.printStackTrace();
                 }
             }
         }
-
     }
 
 
