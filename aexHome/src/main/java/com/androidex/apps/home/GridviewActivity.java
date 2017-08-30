@@ -5,16 +5,11 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.SimpleAdapter;
-
-import com.morgoo.droidplugin.pm.PluginManager;
-import com.morgoo.helper.compat.PackageManagerCompat;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,7 +23,6 @@ public class GridviewActivity extends Activity {
     private GridView gview;
     private List<Map<String, Object>> data_list;
     private SimpleAdapter sim_adapter;
-    private File[] plugins;
     PackageInfo packageInfo;
     // 图片封装为一个数组
     private int[] icon = { R.drawable.balance, R.drawable.balance,
@@ -43,7 +37,6 @@ public class GridviewActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gridview);
-        InstallAPK();
         InitGridView();
     }
 
@@ -79,25 +72,6 @@ public class GridviewActivity extends Activity {
         });
     }
 
-    private void InstallAPK() {
-        //获取插件,plugin为sdcard下的文件夹名称
-        File file = new File(Environment.getExternalStorageDirectory(), "/plugin");
-        plugins = file.listFiles();
-        //没有插件
-        if (plugins == null || plugins.length == 0) {
-            return;
-        } else {//安装插件
-            //i的最大值为文件夹内apk的数量
-            for (int i=0;i<2;i++){
-                try {
-                    PluginManager.getInstance().installPackage(plugins[i].getAbsolutePath(), PackageManagerCompat.INSTALL_REPLACE_EXISTING);
-                } catch (RemoteException e) {
-
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 
 
     public List<Map<String, Object>> getData(){
