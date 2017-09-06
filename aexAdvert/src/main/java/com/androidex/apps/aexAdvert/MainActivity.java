@@ -34,17 +34,16 @@ public class MainActivity extends AppCompatActivity {
     //统一文件存储路径便于管理
     public String advertPath = "/mnt/sdcard/advertpic/";
     String localPath = "file:///android_asset/photo/";
-    public String ukeyPath = "/mnt/usbhost1/";
+    public String ukeyPath = "/storage/uhost1";
     public String sdcardPath = "advertpic";
     public String iniNmae = "advert.ini";
-    public String configname ="/mnt/sdcard/advertpic/advert.ini";
-
-    Bitmap bm = null;;
+    public String configname = "/mnt/sdcard/advertpic/advert.ini";
+    Bitmap bm = null;
     public ImageView iview;//   图片控件
     public String[] result;
     public int advertnum = 0;
     public int nSeconds = 3;
-    public int count= 0;
+    public int count = 0;
     public int nPicCount = 0;
 
     SDcardLinsenerReceiver receiver;
@@ -63,11 +62,11 @@ public class MainActivity extends AppCompatActivity {
         startPlayPic();
     }
 
-    public void showDialog(String msg){
+    public void showDialog(String msg) {
         new AlertDialog.Builder(this)
                 .setTitle("确认")
                 .setMessage(msg)
-                .setPositiveButton("保存",new DialogInterface.OnClickListener(){
+                .setPositiveButton("保存", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                     }
@@ -76,21 +75,21 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-    public void startPlayPic(){
+    public void startPlayPic() {
         //创建广告播放存储配置和图片的根目录
         File ff = new File(advertPath);
         if (!ff.exists()) {
             Log.i(TAG, String.format("File %s not exists,Create it now.", advertPath));
-            if(!ff.mkdirs()){
+            if (!ff.mkdirs()) {
                 Log.e(TAG, String.format("Create %s fail.", advertPath));
             }
         }
 
         result = new String[256];
         //拷贝配置文件
-        String srcName = getSDPath() +"/" + iniNmae;
+        String srcName = getSDPath() + "/" + iniNmae;
         String dstName = advertPath + iniNmae;
-        copyFile(srcName,dstName);
+        copyFile(srcName, dstName);
         showToast("开始读取配置!");
         //读取配置
         readfile();
@@ -102,7 +101,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void RegisterRecerver() {
         //获取图片控件
-        iview = (ImageView)findViewById(R.id.picsw);
+        iview = (ImageView) findViewById(R.id.picsw);
+        showToast("开始读取配置11111");
         //全屏显示
         //iview.setScaleType(ImageView.ScaleType.FIT_XY);
         IntentFilter filter = new IntentFilter();
@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction(Intent.ACTION_MEDIA_REMOVED);
         filter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
         filter.addDataScheme("file");
+        showToast("开始读取配置222222");
         receiver = new SDcardLinsenerReceiver();
         registerReceiver(receiver, filter);
     }
@@ -127,16 +128,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void showPic() {
         // 防止内存泄露
-        if(bm!=null){bm.recycle();}
+        if (bm != null) {
+            bm.recycle();
+        }
         //serachFiles(advertPath);
-        if(count >= advertnum || count < 0){
+        if (count >= advertnum || count < 0) {
             count = 0;
         }
         String filename = null;
-        for(int i = count ; i <= advertnum; i++)
-        {
+        for (int i = count; i <= advertnum; i++) {
             filename = advertPath + result[count];
-            if(filename.indexOf(".jpg") > 0){
+            if (filename.indexOf(".jpg") > 0) {
                 break;
             }
             count++;
@@ -148,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         //bm = getBitmapFromFile(filename, 1920,1080);
         //竖屏版本
         //bm = getBitmapFromFile(filename, 1080,1920);
-        bm = getBitmapFromFile(filename, width,height);
+        bm = getBitmapFromFile(filename, width, height);
         iview.setImageBitmap(bm);
         count++;
         //设置透明
@@ -157,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Bitmap getBitmapFromFile(String dst, int width, int height) {
         // TODO Auto-generated method stub
-        if (null != dst ) {
+        if (null != dst) {
             BitmapFactory.Options opts = null;
             if (width > 0 && height > 0) {
                 opts = new BitmapFactory.Options();
@@ -226,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < filesOrDirs.length; i++) {
             if (!filesOrDirs[i].isDirectory()) {//如果不是文件夹,说明是文件
                 String strPicName = filesOrDirs[i].getName();
-                if(strPicName.indexOf(".jpg") > 0){
+                if (strPicName.indexOf(".jpg") > 0) {
                     result[number] = strPicName; //把文件名存储在String[]中
                     advertnum++;
                     number++;
@@ -235,13 +237,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void checkfile(){
+    public void checkfile(String pathString) {
         //停止定时器
         handler.removeCallbacks(runnable);
         //删除之前文件
         delAllFile(advertPath);
-        String fileName = ukeyPath + sdcardPath;
-        copyFolder(fileName,advertPath);
+        String fileName = pathString + sdcardPath;
+        copyFolder(fileName, advertPath);
         String strTip = "复制U盘中文件成功 " + nPicCount;
         showToast(strTip);
         showToast("请拔出U盘!");
@@ -253,10 +255,10 @@ public class MainActivity extends AppCompatActivity {
         handler.postDelayed(runnable, 5000);
     }
 
-    public String getSDPath(){
+    public String getSDPath() {
         File sdDir = null;
         boolean sdCardExist = Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);   //判断sd卡是否存在
-        if   (sdCardExist)      //如果SD卡存在，则获取跟目录
+        if (sdCardExist)      //如果SD卡存在，则获取跟目录
         {
             sdDir = Environment.getExternalStorageDirectory();//获取跟目录
         }
@@ -265,6 +267,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void showToast(String string) {
         Toast.makeText(this, string, Toast.LENGTH_SHORT).show();
+        android.util.Log.e("MainActivity", "====="+string);
     }
 
     public void delAllFile(String path) {
@@ -280,16 +283,15 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < tempList.length; i++) {
             if (path.endsWith(File.separator)) {
                 temp = new File(path + tempList[i]);
-            }
-            else {
+            } else {
                 temp = new File(path + File.separator + tempList[i]);
             }
             if (temp.isFile()) {
                 temp.delete();
             }
             if (temp.isDirectory()) {
-                delAllFile(path+"/"+ tempList[i]);//先删除文件夹里面的文件
-                delFolder(path+"/"+ tempList[i]);//再删除空文件夹
+                delAllFile(path + "/" + tempList[i]);//先删除文件夹里面的文件
+                delFolder(path + "/" + tempList[i]);//再删除空文件夹
             }
         }
     }
@@ -301,15 +303,14 @@ public class MainActivity extends AppCompatActivity {
             filePath = filePath.toString();
             java.io.File myFilePath = new java.io.File(filePath);
             myFilePath.delete(); //删除空文件夹
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("删除文件夹操作出错");
             e.printStackTrace();
         }
     }
 
     /**
-     *** 监听U盘插拔
+     * ** 监听U盘插拔
      */
     private class SDcardLinsenerReceiver extends BroadcastReceiver {
 
@@ -317,7 +318,10 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals("android.intent.action.MEDIA_MOUNTED")) {
                 showToast("U盘插入");
-                checkfile();
+                String path = intent.getDataString();
+                String pathString = path.split("file://")[1];
+                showToast(pathString);
+                checkfile(pathString);
             } else if (intent.getAction().equals("android.intent.action.MEDIA_REMOVED")) {
                 showToast("U盘移出");
             } else if (intent.getAction().equals("android.intent.action.MEDIA_UNMOUNTED")) {
@@ -326,6 +330,8 @@ public class MainActivity extends AppCompatActivity {
             } else if (intent.getAction().equals("android.intent.action.MEDIA_BAD_REMOVAL")) {
                 showToast("U盘移出异常！");
                 //Toast.makeText(getApplicationContext(), "U盘移出异常！",Toast.LENGTH_SHORT).show();
+            } else {
+                showToast("开始读取配置444444");
             }
         }
     }
@@ -333,13 +339,13 @@ public class MainActivity extends AppCompatActivity {
     //读取配置
     public void readfile() {
         try {
-            IniReader ini=new IniReader(configname);
+            IniReader ini = new IniReader(configname);
             String strSeconds = ini.getValue("config", "seconds");
-            System.out.println(strSeconds );
-            showToast("读取配置中设置时间间隔秒数为" +strSeconds);
+            System.out.println(strSeconds);
+            showToast("读取配置中设置时间间隔秒数为" + strSeconds);
             nSeconds = Integer.parseInt(strSeconds);
-            if(nSeconds <= 0){
-                nSeconds =3;
+            if (nSeconds <= 0) {
+                nSeconds = 3;
             }
         } catch (IOException e1) {
             showToast("默认配置时间间隔秒数为3!");
@@ -350,6 +356,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * 复制单个文件
+     *
      * @param oldPath String 原文件路径 如：c:/fqf.txt
      * @param newPath String 复制后路径 如：f:/fqf.txt
      * @return boolean
@@ -364,31 +371,31 @@ public class MainActivity extends AppCompatActivity {
                 FileOutputStream fs = new FileOutputStream(newPath);
                 byte[] buffer = new byte[1444];
                 int length;
-                while ( (byteread = inStream.read(buffer)) != -1) {
+                while ((byteread = inStream.read(buffer)) != -1) {
                     bytesum += byteread; //字节数 文件大小
                     //System.out.println(bytesum);
                     fs.write(buffer, 0, byteread);
                 }
                 inStream.close();
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("复制单个文件操作出错");
             e.printStackTrace();
         }
     }
 
-    public void createFolder(String path){
+    public void createFolder(String path) {
         File ffp = new File(String.format("%s/test", path));
-        if(!ffp.exists()){
+        if (!ffp.exists()) {
             //路径不存在创建之
-            System.out.printf("%s does not exist ,try to create \r\n",path);
+            System.out.printf("%s does not exist ,try to create \r\n", path);
             ffp.mkdirs();
         }
     }
 
     /**
      * 复制整个文件夹内容
+     *
      * @param oldPath String 原文件路径 如：c:/fqf
      * @param newPath String 复制后路径 如：f:/fqf/ff
      * @return boolean
@@ -398,24 +405,23 @@ public class MainActivity extends AppCompatActivity {
         nPicCount = 0;
         try {
             (new File(newPath)).mkdirs(); //如果文件夹不存在 则建立新文件夹
-            File a=new File(oldPath);
-            String[] file=a.list();
-            File temp=null;
+            File a = new File(oldPath);
+            String[] file = a.list();
+            File temp = null;
             for (int i = 0; i < file.length; i++) {
-                if(oldPath.endsWith(File.separator)){
-                    temp=new File(oldPath+file[i]);
-                }
-                else{
-                    temp=new File(oldPath+File.separator+file[i]);
+                if (oldPath.endsWith(File.separator)) {
+                    temp = new File(oldPath + file[i]);
+                } else {
+                    temp = new File(oldPath + File.separator + file[i]);
                 }
 
-                if(temp.isFile()){
+                if (temp.isFile()) {
                     FileInputStream input = new FileInputStream(temp);
                     FileOutputStream output = new FileOutputStream(newPath + "/" +
                             (temp.getName()).toString());
                     byte[] b = new byte[1024 * 5];
                     int len;
-                    while ( (len = input.read(b)) != -1) {
+                    while ((len = input.read(b)) != -1) {
                         output.write(b, 0, len);
                     }
                     output.flush();
@@ -423,12 +429,11 @@ public class MainActivity extends AppCompatActivity {
                     input.close();
                     nPicCount++;
                 }
-                if(temp.isDirectory()){//如果是子文件夹
-                    copyFolder(oldPath+"/"+file[i],newPath+"/"+file[i]);
+                if (temp.isDirectory()) {//如果是子文件夹
+                    copyFolder(oldPath + "/" + file[i], newPath + "/" + file[i]);
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("复制整个文件夹内容操作出错");
             e.printStackTrace();
         }

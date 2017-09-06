@@ -61,4 +61,5 @@ dependencies {
     compile 'com.android.support:support-v4:22.2.1'
     testCompile 'junit:junit:4.12'
     compile project(':DroidPlugin')
+    compile(name: 'appLibs', ext: 'aar')
 }
