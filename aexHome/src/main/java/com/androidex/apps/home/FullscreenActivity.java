@@ -498,13 +498,13 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 startActivity(intent);
                 return true;
 
-            case R.id.action_startEthernet:
+            case R.id.action_startEthernet://打开以太网
 
                 //lcc1ReaderText();
                 hwservice.EthernetStart();
                 return true;
 
-            case R.id.action_closeEthernet:
+            case R.id.action_closeEthernet://关闭以太网
                 hwservice.EthernetStop();
                 return true;
             default:
