@@ -16,9 +16,6 @@ public class AssistBean implements Serializable {
     private String SendTxtA="COMA",SendTxtB="COMB",SendTxtC="COMC",SendTxtD="COMD";
     private String SendHexA="AA",SendHexB="BB",SendHexC="CC",SendHexD="DD";
     public String sTimeA="500";
-    public String sTimeB="500";
-    public String sTimeC="500";
-    public String sTimeD="500";
     public boolean isTxt()
     {
         return isTxt;
