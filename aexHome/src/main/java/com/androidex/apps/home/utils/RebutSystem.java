@@ -16,7 +16,7 @@ import java.util.TimerTask;
 
 public class RebutSystem {
 
-    public static long delyTime = 1000 * 60 * 5;//设置5分钟重启
+    public static long delyTime = 1000 * 60 * 60;//设置60分钟重启
     private static long times = 0;
 
     public static String startTime = "startTime";//开始老化测试的起始时间
