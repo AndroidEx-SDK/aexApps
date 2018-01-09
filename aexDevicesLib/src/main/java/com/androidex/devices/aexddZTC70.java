@@ -3,6 +3,7 @@ package com.androidex.devices;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.widget.Toast;
 
 import com.androidex.apps.aexdeviceslib.R;
 import com.androidex.common.SoundPoolUtil;
@@ -144,17 +145,18 @@ public class aexddZTC70 extends aexddPasswordKeypad {
 
     @Override
     public boolean selfTest() {
-        if (pkGetVersion()!=null){
+        if (pkGetVersion() != null) {
             Log.d(TAG, "密码键盘OK");
-        }else {
+        } else {
             Log.d(TAG, "密码键盘失败");
         }
-       // Toast.makeText(mContext,String.format("Version:%s", pkGetVersion()), Toast.LENGTH_LONG).show();
+        // Toast.makeText(mContext,String.format("Version:%s", pkGetVersion()), Toast.LENGTH_LONG).show();
         //setQuery();
-       // android.util.Log.e(TAG,String.format("Status:%s", getStatusStr(setQuery())));
+        // android.util.Log.e(TAG,String.format("Status:%s", getStatusStr(setQuery())));
         return true;
     }
-    public void setQuery(){
+
+    public void setQuery() {
         pkSetEncryptMode(2);
     }
 
@@ -224,7 +226,9 @@ public class aexddZTC70 extends aexddPasswordKeypad {
         pthread.start();
         return r;
     }
+
     private int r;
+
     @Override
     public int pkReadLoop(int i) {
         return 0;
@@ -293,21 +297,21 @@ public class aexddZTC70 extends aexddPasswordKeypad {
         String ret = null;
         //pkSendHexCmd("0233013330333103");
         WriteDataHex("0230313330333103");
-        byte[] r = pkReadPacket(10000*delayUint);
+        byte[] r = pkReadPacket(10000 * delayUint);
         String s = hexString(r);
-        if(s!=null){
-            ret = s.substring(10,30);//35 41 35 34 33 35 33 39 33 38
+        if (s != null) {
+            ret = s.substring(10, 30);//35 41 35 34 33 35 33 39 33 38
             //对接收的字符串进行处理
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(s.charAt(0));
             stringBuilder.append(s.charAt(1));
-            for (int i = 1;i<=(s.length()-2)/2;i++){
-                stringBuilder.append(s.charAt(2*i+1));
+            for (int i = 1; i <= (s.length() - 2) / 2; i++) {
+                stringBuilder.append(s.charAt(2 * i + 1));
             }
 
-            String str = stringBuilder.substring(4,6);
-            //Toast.makeText(mContext,getStatusStr(Integer.parseInt(str,16)),Toast.LENGTH_LONG).show();
-
+            String str = stringBuilder.substring(4, 6);
+            //Toast.makeText(mContext, getStatusStr(Integer.parseInt(str, 16)), Toast.LENGTH_LONG).show();
+            Log.e(TAG, "获取密码键盘版本号的结果=" + str);
         }
         return ret;
     }
@@ -336,7 +340,7 @@ public class aexddZTC70 extends aexddPasswordKeypad {
                 r = ReciveDataHex(255, 3000 * delayUint);
             }
             break;
-            case 2:{
+            case 2: {
 
                /* pkSendHexCmd("03810210");
                 r = ReciveDataHex(255, 3000 * delayUint);*/
@@ -344,7 +348,7 @@ public class aexddZTC70 extends aexddPasswordKeypad {
                 r = ReciveDataHex(500, 5000 * delayUint);
                */
                 pkSendHexCmd("03810220");
-                byte[] b = pkReadPacket(delayUint* delayUint*30);
+                byte[] b = pkReadPacket(delayUint * delayUint * 30);
             }
             break;
         }
@@ -352,24 +356,22 @@ public class aexddZTC70 extends aexddPasswordKeypad {
 
     /**
      * 转换成16进制
+     *
      * @param b
      * @return
      */
-    public  String  hexString( byte[] b)
-    {
-        if(b!=null){
-            StringBuffer string=new StringBuffer();
-            for (int i = 0; i < b.length; i++)
-            {
+    public String hexString(byte[] b) {
+        if (b != null) {
+            StringBuffer string = new StringBuffer();
+            for (int i = 0; i < b.length; i++) {
                 String hex = Integer.toHexString(b[i] & 0xFF);
-                if (hex.length() == 1)
-                {
+                if (hex.length() == 1) {
                     hex = '0' + hex;
                 }
-                string.append(hex.toUpperCase() );
+                string.append(hex.toUpperCase());
             }
-            return  string.toString();
-        }else{
+            return string.toString();
+        } else {
             return null;
         }
     }
