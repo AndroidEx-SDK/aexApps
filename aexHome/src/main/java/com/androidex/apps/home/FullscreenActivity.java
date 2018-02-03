@@ -46,6 +46,7 @@ import com.androidex.apps.home.fragment.StartSettingFragment;
 import com.androidex.apps.home.fragment.SystemSettingFragment;
 import com.androidex.apps.home.fragment.VedioFragment;
 import com.androidex.apps.home.utils.MacUtil;
+import com.androidex.apps.home.utils.MyAnimation;
 import com.androidex.apps.home.utils.NetWork;
 import com.androidex.apps.home.utils.RebutSystem;
 import com.androidex.apps.home.view.CircleTextProgressbar;
@@ -138,8 +139,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     public String runShellCommand(String cmd) {
         String ret = "";
         byte[] retBytes = new byte[2048];
-
-        // Log.d(TAG, String.format("runShellCommand(%s)", cmd));
+        Log.d(TAG, String.format("runShellCommand(%s)", cmd));
         try {
             cmd += "\n";
             Process exeEcho1 = Runtime.getRuntime().exec("su");
@@ -170,7 +170,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         initProgressBar();
         initTablayoutAndViewPager();
         initBroadCast();
-        RebutSystem.reBut(this);  //60分钟重启动，用于老化测试
+        //RebutSystem.reBut(this);  //60分钟重启动，用于老化测试
        /* //if (hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
             if (!isInitConfig) {
                 initConfig();
@@ -195,7 +195,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         setFullScreenView(mContentView);
         getWindow().getDecorView().setBackgroundResource(R.drawable.default_wallpaper);
         mContentView.setBackgroundResource(R.drawable.default_wallpaper);
-        // mContentView.setPageTransformer(true, MyAnimation.Instance().new MyPageTransformer());//给ViewPager添加动画
+        mContentView.setPageTransformer(true, MyAnimation.Instance().new MyPageTransformer());//给ViewPager添加动画
         mControlsView.setOnTouchListener(mDelayHideTouchListener);
         system_set.setOnClickListener(this);
         about_local.setOnClickListener(this);

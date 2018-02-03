@@ -1,5 +1,6 @@
 package com.androidex.apps.home;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -31,19 +32,19 @@ public class aexLogFragment extends LogFragment implements OnMultClickListener {
     public NotyBroadCast mNotyBroadcast;
     public CallBackValue mCallBackValue;
     public FullscreenActivity activity;
+
     public aexLogFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        android.util.Log.d("++++++","zhixingleema ");
         activity = (FullscreenActivity) getActivity();
         //注册广播
         mNotyBroadcast = new NotyBroadCast();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(PRINT_ACTION);
-        getActivity().registerReceiver(mNotyBroadcast,intentFilter);
-        return super.onCreateView(inflater,container,savedInstanceState);
+        getActivity().registerReceiver(mNotyBroadcast, intentFilter);
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -58,26 +59,26 @@ public class aexLogFragment extends LogFragment implements OnMultClickListener {
         FullscreenActivity.registerMultClickListener(getLogView(), this);
     }
 
-    /** Create a chain of targets that will receive log data
-     *
-     * */
+    /**
+     * Create a chain of targets that will receive log data
+     */
     public void initializeLogging() {
         // On screen logging via a fragment with a TextView.
         LogWrapper logWrapper = (LogWrapper) Log.getLogNode();
-        MessageOnlyLogFilter msgFilter = (MessageOnlyLogFilter)logWrapper.getNext();
+        MessageOnlyLogFilter msgFilter = (MessageOnlyLogFilter) logWrapper.getNext();
         msgFilter.setNext(this.getLogView());
-        Log.d(TAG,"就绪");
+        Log.d(TAG, "就绪");
         try {
-            if (activity.hwservice!=null){
+            if (activity.hwservice != null) {
                 JSONObject jsonObject = new JSONObject(activity.hwservice.getUserInfo());
                 String string = jsonObject.optString("times");
                 String startTime = jsonObject.optString(RebutSystem.startTime);
                 long endTime = RebutSystem.getDelyTime();
-                if("".equals(string)){
+                if ("".equals(string)) {
                     string = "0";
                 }
-                Log.d(TAG,"UUID: "+activity.hwservice.get_uuid());
-                Log.d(TAG,"开机次数: "+string);
+                Log.d(TAG, "UUID: " + activity.hwservice.get_uuid());
+                Log.d(TAG, "开机次数: " + string);
                 if (!"".equals(startTime)) {
                     Log.d(TAG, "测试时长: " + getTextHours(startTime, endTime));
                 }
@@ -89,22 +90,21 @@ public class aexLogFragment extends LogFragment implements OnMultClickListener {
     }
 
     /**
-     *
      * @param startTime
      * @param end
-     * @return
-     * 计算测试的时长（天/时/分/秒）
+     * @return 计算测试的时长（天/时/分/秒）
      */
-    public String getTextHours(String startTime,long end){
+    public String getTextHours(String startTime, long end) {
         long start = Long.parseLong(startTime);
         long time = end - start;
         String result = formatTime(time);
         return result;
     }
-    /*
- * 毫秒转化时分秒毫秒
- */
-    public  String formatTime(Long ms) {
+
+    /**
+     * 毫秒转化时分秒毫秒
+     */
+    public String formatTime(Long ms) {
         Integer ss = 1000;
         Integer mi = ss * 60;
         Integer hh = mi * 60;
@@ -117,17 +117,17 @@ public class aexLogFragment extends LogFragment implements OnMultClickListener {
         Long milliSecond = ms - day * dd - hour * hh - minute * mi - second * ss;
 
         StringBuffer sb = new StringBuffer();
-        if(day > 0) {
-            sb.append(day+"天");
+        if (day > 0) {
+            sb.append(day + "天");
         }
-        if(hour > 0) {
-            sb.append(hour+"小时");
+        if (hour > 0) {
+            sb.append(hour + "小时");
         }
-        if(minute > 0) {
-            sb.append(minute+"分");
+        if (minute > 0) {
+            sb.append(minute + "分");
         }
-        if(second > 0) {
-            sb.append(second+"秒");
+        if (second > 0) {
+            sb.append(second + "秒");
         }
         return sb.toString();
     }
@@ -152,17 +152,19 @@ public class aexLogFragment extends LogFragment implements OnMultClickListener {
 
     /**
      * 得到logview对象
+     *
      * @return
      */
     @Override
     public LogView getLogView() {
         return super.getLogView();
     }
-    public String getPrintLog(){
+
+    public String getPrintLog() {
         String printLog = getLogView().getText().toString();
-        if (printLog!=null){
+        if (printLog != null) {
             return printLog;
-        }else{
+        } else {
             return null;
         }
     }
@@ -171,31 +173,32 @@ public class aexLogFragment extends LogFragment implements OnMultClickListener {
      * 广播接收器
      * 打印的广播
      */
-    public class NotyBroadCast extends BroadcastReceiver{
+    public class NotyBroadCast extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (action.equals(PRINT_ACTION)){//需要打印
+            if (action.equals(PRINT_ACTION)) {//需要打印
                 //将需要打印的数据回传给fullscreenactivity
                 //一行行的传过去打印
-                String [] ss = getPrintLog().split("\n");
-                for (int i = 0;i<ss.length;i++){
-                    mCallBackValue.sendMessageValue(ss[i],ss.length-1,i);
-                    Log.d(TAG,i+":"+ss[i]);
+                String[] ss = getPrintLog().split("\n");
+                for (int i = 0; i < ss.length; i++) {
+                    mCallBackValue.sendMessageValue(ss[i], ss.length - 1, i);
+                    Log.d(TAG, i + ":" + ss[i]);
                 }
             }
         }
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(Activity context) {
         super.onAttach(context);
         mCallBackValue = (CallBackValue) getActivity();
     }
 
     //回调接口
-    public interface CallBackValue{
-         void sendMessageValue(String printLog,int totalLength,int length);
+    public interface CallBackValue {
+        void sendMessageValue(String printLog, int totalLength, int length);
     }
+
     public static final String PRINT_ACTION = "com.androidex.apps.home.paction";
 }
