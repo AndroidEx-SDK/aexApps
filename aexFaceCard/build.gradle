@@ -109,7 +109,6 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.2.0'
     compile files('libs/synjonesSerial.jar')
     compile project(':openCVLibrary2411')
 }
