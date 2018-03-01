@@ -368,7 +368,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         }
                     });
                     try {
-                        Thread.sleep(100);//显示性能高的话，可以把此数值调小。
+                        Thread.sleep(200);//显示性能高的话，可以把此数值调小。
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
