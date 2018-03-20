@@ -44,8 +44,7 @@ public class ReaderSerialPort implements DataTransInterface {
 	private Bitmap bmp;
   
 
-	public ReaderSerialPort(Activity mContext, OutputStream mOutputStream, InputStream mInputStream )
-	{		
+	public ReaderSerialPort(Activity mContext, OutputStream mOutputStream, InputStream mInputStream ) {
 		this.mInputStream=mInputStream;
 		this.mOutputStream=mOutputStream;
 		this.mContext=mContext;
@@ -116,8 +115,5 @@ public class ReaderSerialPort implements DataTransInterface {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
 	}
-
-
 }
