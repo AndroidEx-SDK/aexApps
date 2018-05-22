@@ -1,4 +1,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="系统设置"/>
+
+    <item
+        android:id="@+id/action_startEthernet"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="打开以太网"/>
+
+    <item
+        android:id="@+id/action_closeEthernet"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="关闭以太网"/>
+
     <item
         android:id="@+id/action_setuuid"
         android:orderInCategory="100"
@@ -46,7 +65,7 @@
         android:id="@+id/action_record_voice"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="系统设置"/>
+        android:title="录音测试"/>
 
     <item
         android:id="@+id/action_onekey_text"
@@ -74,23 +93,5 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="一键卸载"/>
-
-    <item
-        android:id="@+id/action_startEthernet"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="打开以太网"/>
-
-    <item
-        android:id="@+id/action_closeEthernet"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="关闭以太网"/>
-
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="系统设置"/>
 
 </menu>

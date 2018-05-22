@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.androidex.face.MainActivity"
+            android:name="com.androidex.face.FaceCardActivity"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -23,22 +23,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.androidex.face.FaceActivity"></activity>
-        <activity android:name="com.androidex.face.FaceCardActivity"></activity>
-
         <service android:name="com.synjones.idcard.RemoteDecodeService"/>
 
-        <!-- <service android:name=".door.DoorLock"/>-->
-
-        <!-- 开机自启动广播接受 -->
-        <receiver android:name="com.androidex.face.utils.BootRecevier">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-            </intent-filter>
-        </receiver>
-
-        <activity android:name="com.androidex.face.ImageListActivity">
-        </activity>
     </application>
 
 </manifest>

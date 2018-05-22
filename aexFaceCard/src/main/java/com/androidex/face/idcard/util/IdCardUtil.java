@@ -75,7 +75,7 @@ public class IdCardUtil {
      * 打开阅读器
      */
     public void openIdCard() {
-        Log.d(TAG, "openIdCard: " + mContext);
+        Log.d(TAG, "openIdCard: ");
         rsp = new ReaderSerialPort((Activity) mContext, mOutputStream, mInputStream);
         reader.setDataTransInterface(rsp);
         idreader = new IDcardReader(reader);
@@ -112,7 +112,7 @@ public class IdCardUtil {
         } else {
             closeReadThread();
             try {
-                Thread.sleep(100);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -135,7 +135,7 @@ public class IdCardUtil {
                 //发送消息出去
                 idCard = idreader.getIDCardFp();
                 if (idCard != null) {
-                    Log.d("IdCardUtiil","idCard ="+idCard.getIDCardNo());
+                    Log.d("IdCardUtiil", "idCard =" + idCard.getIDCardNo());
                     com.synjones.bluetooth.DecodeWlt mydw = new com.synjones.bluetooth.DecodeWlt();
                     //将读出的照片数据写入文件
                     try {
@@ -162,11 +162,10 @@ public class IdCardUtil {
                     idCard.setPhoto(bmp);
                     bitmapCallBack.callBack(READ);
                 } else {
-                    Log.d("IdCardUtiil","idCard is null");
+                    Log.d("IdCardUtiil", "idCard is null");
                     bitmapCallBack.callBack(NOREAD);
                     continue;
                 }
-
             }
         }
 

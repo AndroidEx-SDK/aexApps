@@ -46,6 +46,7 @@ import com.androidex.apps.home.fragment.StartSettingFragment;
 import com.androidex.apps.home.fragment.SystemSettingFragment;
 import com.androidex.apps.home.fragment.VedioFragment;
 import com.androidex.apps.home.utils.MacUtil;
+import com.androidex.apps.home.utils.MyAnimation;
 import com.androidex.apps.home.utils.NetWork;
 import com.androidex.apps.home.utils.RebutSystem;
 import com.androidex.apps.home.view.CircleTextProgressbar;
@@ -54,6 +55,7 @@ import com.androidex.common.DummyContent;
 import com.androidex.common.LogFragment;
 import com.androidex.devices.aexddAndroidNfcReader;
 import com.androidex.devices.aexddB58Printer;
+import com.androidex.devices.aexddCRT310Reader;
 import com.androidex.devices.aexddLCC1Reader;
 import com.androidex.devices.aexddMT319Reader;
 import com.androidex.devices.aexddNfcReader;
@@ -137,8 +139,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
     public String runShellCommand(String cmd) {
         String ret = "";
         byte[] retBytes = new byte[2048];
-
-        // Log.d(TAG, String.format("runShellCommand(%s)", cmd));
+        Log.d(TAG, String.format("runShellCommand(%s)", cmd));
         try {
             cmd += "\n";
             Process exeEcho1 = Runtime.getRuntime().exec("su");
@@ -169,7 +170,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         initProgressBar();
         initTablayoutAndViewPager();
         initBroadCast();
-        //RebutSystem.reBut(this);  //五分钟重启动，用于老化测试
+        //RebutSystem.reBut(this);  //60分钟重启动，用于老化测试
        /* //if (hwservice.get_uuid().equals("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")) {
             if (!isInitConfig) {
                 initConfig();
@@ -194,7 +195,7 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
         setFullScreenView(mContentView);
         getWindow().getDecorView().setBackgroundResource(R.drawable.default_wallpaper);
         mContentView.setBackgroundResource(R.drawable.default_wallpaper);
-        // mContentView.setPageTransformer(true, MyAnimation.Instance().new MyPageTransformer());//给ViewPager添加动画
+        mContentView.setPageTransformer(true, MyAnimation.Instance().new MyPageTransformer());//给ViewPager添加动画
         mControlsView.setOnTouchListener(mDelayHideTouchListener);
         system_set.setOnClickListener(this);
         about_local.setOnClickListener(this);
@@ -404,7 +405,8 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 return true;
 
             case R.id.action_cas_reader:
-                casReaderText(2);//燃气读卡器测试
+                //casReaderText(2);//燃气读卡器测试
+                Crt310Text();
                 return true;
 
             case R.id.action_password_key:
@@ -496,13 +498,13 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
                 startActivity(intent);
                 return true;
 
-            case R.id.action_startEthernet:
+            case R.id.action_startEthernet://打开以太网
 
                 //lcc1ReaderText();
                 hwservice.EthernetStart();
                 return true;
 
-            case R.id.action_closeEthernet:
+            case R.id.action_closeEthernet://关闭以太网
                 hwservice.EthernetStop();
                 return true;
             default:
@@ -571,6 +573,21 @@ public class FullscreenActivity extends AndroidExActivityBase implements NfcAdap
             mBankCardReader.Close();
         } else {
             String s = String.format("Open bank reader fial:%s", mDevices.mBankCardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS));
+            Log.i(TAG, s);
+            Toast.makeText(this, s, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * CRT310电动读卡器
+     */
+    private void Crt310Text() {
+        if (mDevices.mCRT310CardReader.Open()) {
+            //lcc1ReaderText();//莱卡读卡器测试程序
+            aexddCRT310Reader mCRT310Reader = (aexddCRT310Reader) mDevices.mCRT310CardReader;
+            mCRT310Reader.Close();
+        } else {
+            String s = String.format("Open cas reader fial:%s", mDevices.mCRT310CardReader.mParams.optString(appDeviceDriver.PORT_ADDRESS));
             Log.i(TAG, s);
             Toast.makeText(this, s, Toast.LENGTH_LONG).show();
         }

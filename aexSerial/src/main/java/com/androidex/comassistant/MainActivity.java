@@ -5,7 +5,6 @@ package com.androidex.comassistant;
  */
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -17,7 +16,6 @@ import android.text.method.KeyListener;
 import android.text.method.NumberKeyListener;
 import android.text.method.TextKeyListener;
 import android.util.Base64;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,7 +30,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.androidex.bean.*;
+import com.androidex.bean.AssistBean;
+import com.androidex.bean.ComBean;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -46,10 +45,9 @@ import java.util.List;
 import java.util.Queue;
 
 /**
- * serialport api和jni取自http://code.google.com/p/android-serialport-api/
  *
  * @author benjaminwan
- *         串口助手，支持4串口同时读写
+ *         串口助手
  *         程序载入时自动搜索串口设备
  *         n,8,1，没得选
  */
@@ -370,7 +368,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         }
                     });
                     try {
-                        Thread.sleep(100);//显示性能高的话，可以把此数值调小。
+                        Thread.sleep(200);//显示性能高的话，可以把此数值调小。
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

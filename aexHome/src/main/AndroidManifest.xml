@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="com.androidex.apps.home">
 
     <uses-permission android:name="android.permission.BLUETOOTH"/>
@@ -33,14 +34,16 @@
     <uses-feature android:name="android.hardware.camera.autofocus"/>
 
     <application
+        android:name="com.morgoo.droidplugin.PluginApplication"
         android:allowBackup="true"
         android:exported="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon, android:theme">
         <activity
-            android:name=".GridviewActivity"
+            android:name=".FullscreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
             android:label="@string/app_name"
@@ -66,6 +69,9 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
+
+        <activity android:name=".GridviewActivity">
+        </activity>
     </application>
 
 </manifest>

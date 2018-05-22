@@ -5,12 +5,8 @@ package com.androidex.comassistant;
  */
 
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
-import android.util.Xml;
-import android.widget.Toast;
 
-import com.androidex.bean.*;
+import com.androidex.bean.ComBean;
 import com.androidex.plugins.kkserial;
 
 /**
@@ -18,7 +14,8 @@ import com.androidex.plugins.kkserial;
  *         串口辅助工具类
  */
 public abstract class SerialHelper {
-    private String sPort = "/dev/ttymxc2";
+    //private String sPort = "/dev/ttymxc2";
+    private static String sPort = "/dev/ttyS2,9600,N,1,8";     //打开串口的参数
     private int iBaudRate = 115200;
     private byte[] _bLoopData = new byte[]{0x30};
     private int iDelay = 500;
@@ -49,7 +46,7 @@ public abstract class SerialHelper {
 
     //----------------------------------------------------
     public int open() {
-        mSerialFd = serial.serial_open(sPort + "," + iBaudRate + ",N,1,8");
+        mSerialFd = serial.serial_open(sPort);
         log(String.format("打开%s成功：%d",sPort,mSerialFd));
         return mSerialFd;
     }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">人脸识别</string>
+    <string name="app_name">身份证识别</string>
     <string name="about_msg">
 趋势科特二代证串口测试示例\n
 Synjone ID Card Reader Demo For Android Serial Port Development\n
