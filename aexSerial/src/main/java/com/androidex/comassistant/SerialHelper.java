@@ -97,6 +97,9 @@ public abstract class SerialHelper {
         send(bOutArray);
     }
 
+    /**
+     * 启动读取串口数据
+     */
     public void startReadSerial(){
         Runnable run=new Runnable() {
             public void run() {
