@@ -58,8 +58,7 @@ public class MyFunc {
 
     //-------------------------------------------------------
     //转hex字符串转字节数组
-    static public byte[] HexToByteArr(String inHex)//hex字符串转字节数组
-    {
+    static public byte[] HexToByteArr(String inHex) { //hex字符串转字节数组
         int hexlen = inHex.length();
         byte[] result;
         if (isOdd(hexlen) == 1) {//奇数

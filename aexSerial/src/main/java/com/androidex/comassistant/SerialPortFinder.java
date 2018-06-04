@@ -16,8 +16,6 @@
 
 package com.androidex.comassistant;
 
-import android.util.Log;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -26,6 +24,9 @@ import java.util.Iterator;
 import java.util.Vector;
 
 public class SerialPortFinder {
+    private static final String TAG = "kkserial";
+
+    private Vector<Driver> mDrivers = null;
 
     public class Driver {
         public Driver(String name, String root) {
@@ -45,7 +46,6 @@ public class SerialPortFinder {
                 int i;
                 for (i = 0; i < files.length; i++) {
                     if (files[i].getAbsolutePath().startsWith(mDeviceRoot)) {
-                        Log.d(TAG, "Found new device: " + files[i]);
                         mDevices.add(files[i]);
                     }
                 }
@@ -58,26 +58,15 @@ public class SerialPortFinder {
         }
     }
 
-    public void next() {
-    }
-
-    ;
-    private static final String TAG = "SerialPort";
-
-    private Vector<Driver> mDrivers = null;
-
     Vector<Driver> getDrivers() throws IOException {
         if (mDrivers == null) {
             mDrivers = new Vector<Driver>();
             LineNumberReader r = new LineNumberReader(new FileReader("/proc/tty/drivers"));
             String l;
             while ((l = r.readLine()) != null) {
-                // Issue 3:
-                // Since driver name may contain spaces, we do not extract driver name with split()
                 String drivername = l.substring(0, 0x15).trim();
                 String[] w = l.split(" +");
                 if ((w.length >= 5) && (w[w.length - 1].equals("serial"))) {
-                    Log.d(TAG, "Found new driver " + drivername + " on " + w[w.length - 4]);
                     mDrivers.add(new Driver(drivername, w[w.length - 4]));
                 }
             }
@@ -86,6 +75,12 @@ public class SerialPortFinder {
         return mDrivers;
     }
 
+    /**
+     * 自动获取本机串口接口
+     * 此处用在NXP的主控上会崩溃，顾NXP若出现问题请使用默认串口接口 getAllDevicesPath()
+     *
+     * @return
+     */
     public String[] getAllDevices() {
         Vector<String> devices = new Vector<String>();
         // Parse each driver
@@ -107,35 +102,22 @@ public class SerialPortFinder {
         return devices.toArray(new String[devices.size()]);
     }
 
+    /**
+     * 默认串口接口
+     */
     public String[] getAllDevicesPath() {
         Vector<String> devices = new Vector<String>();
+        /************KK3X 系列******************/
         devices.add("/dev/ttyS0");
         devices.add("/dev/ttyS2");
-        devices.add("/dev/ttyS3");
         devices.add("/dev/ttyS4");
+        devices.add("/dev/ttyS6");
+        /*************NXP系列********************/
         devices.add("/dev/ttymxc0");
         devices.add("/dev/ttymxc1");
         devices.add("/dev/ttymxc2");
         devices.add("/dev/ttymxc3");
         devices.add("/dev/ttymxc4");
-
-        /********此处用在飞思卡尔的主控上会崩溃，顾把写成了上面的写法*************/
-//		// Parse each driver
-//		Iterator<Driver> itdriv;
-//		try {
-//			itdriv = getDrivers().iterator();
-//			while(itdriv.hasNext()) {
-//				Driver driver = itdriv.next();
-//				Iterator<File> itdev = driver.getDevices().iterator();
-//				while(itdev.hasNext()) {
-//					String device = itdev.next().getAbsolutePath();
-//					devices.add(device);
-//				}
-//			}
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-
         return devices.toArray(new String[devices.size()]);
     }
 }

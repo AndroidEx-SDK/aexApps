@@ -46,22 +46,21 @@ import java.util.Queue;
 
 /**
  *
- * @author benjaminwan
- *         串口助手
- *         程序载入时自动搜索串口设备
- *         n,8,1，没得选
+ * @author liyp
+ *  安卓工控专用串口助手
+ *  程序载入时可自动搜索串口设备
+ *  n,8,1，没得选
  */
-public class MainActivity extends Activity implements View.OnClickListener {
+public class MainActivity extends Activity {
     EditText editTextRecDisp, editTextLines, editTextCOMA;
     EditText editTextTimeCOMA;
     CheckBox checkBoxAutoClear, checkBoxAutoCOMA;
-    Button ButtonClear, ButtonSendCOMA, btn_queryVersion, btn_parameter;
-    Button btn_serialText, btn_queryType;
+    Button ButtonClear, ButtonSendCOMA;
     ToggleButton toggleButton_startTimingA,toggleButtonCOMA;
     Spinner SpinnerCOMA;
     Spinner SpinnerBaudRateCOMA;
     RadioButton radioButtonTxt, radioButtonHex;
-    SerialControl ComA;//4个串口
+    SerialControl ComA;
     DispQueueThread DispQueue;//刷新显示线程
     SerialPortFinder mSerialPortFinder;//串口设备搜索
     AssistBean AssistData;//用于界面数据序列化和反序列化
@@ -96,13 +95,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setControls();
     }
 
-    //----------------------------------------------------
     private void setControls() {
         String appName = getString(R.string.app_name);
         try {
             PackageInfo pinfo = getPackageManager().getPackageInfo("com.androidex.comassistant", PackageManager.GET_CONFIGURATIONS);
             String versionName = pinfo.versionName;
-//			String versionCode = String.valueOf(pinfo.versionCode);
             setTitle(appName + " V" + versionName);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
@@ -117,15 +114,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         ButtonClear = (Button) findViewById(R.id.ButtonClear);
         ButtonSendCOMA = (Button) findViewById(R.id.ButtonSendCOMA);
-
-        btn_serialText = (Button) findViewById(R.id.btn_serialText);
-        btn_queryType = (Button) findViewById(R.id.btn_queryType);
-        btn_queryVersion = (Button) findViewById(R.id.btn_queryVersion);
-        btn_parameter = (Button) findViewById(R.id.btn_parameter);
-        btn_serialText.setOnClickListener(this);
-        btn_queryType.setOnClickListener(this);
-        btn_queryVersion.setOnClickListener(this);
-        btn_parameter.setOnClickListener(this);
 
         toggleButton_startTimingA = (ToggleButton) findViewById(R.id.toggleButton_startTimingA);
         toggleButtonCOMA = (ToggleButton) findViewById(R.id.toggleButtonCOMA);
@@ -169,26 +157,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         DispAssistData(AssistData);
     }
 
-    /*********操作485指令************/
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_serialText:
-                sendPortData(ComA, "$001,01&");
-                break;
-            case R.id.btn_queryType:
-                sendPortData(ComA, "$001,02&");
-                break;
-            case R.id.btn_queryVersion:
-                sendPortData(ComA, "$001,03&");
-                break;
-            case R.id.btn_parameter:
-                sendPortData(ComA, "$001,04&");
-                break;
-
-        }
-    }
-
-    //----------------------------------------------------串口号或波特率变化时，关闭打开的串口
+    //串口号或波特率变化时，关闭打开的串口
     class ItemSelectedEvent implements Spinner.OnItemSelectedListener {
         public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
             if ((arg0 == SpinnerCOMA) || (arg0 == SpinnerBaudRateCOMA)) {
@@ -201,10 +170,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         public void onNothingSelected(AdapterView<?> arg0) {
 
         }
-
     }
 
-    //----------------------------------------------------编辑框焦点转移事件
+    //编辑框焦点转移事件
     class FocusChangeEvent implements EditText.OnFocusChangeListener {
         public void onFocusChange(View v, boolean hasFocus) {
             if (v == editTextCOMA) {
@@ -215,7 +183,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    //----------------------------------------------------编辑框完成事件
+    //编辑框完成事件
     class EditorActionEvent implements EditText.OnEditorActionListener {
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             if (v == editTextCOMA) {
@@ -227,7 +195,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    //----------------------------------------------------Txt、Hex模式选择
+    //Txt、Hex模式选择
     class radioButtonClickEvent implements RadioButton.OnClickListener {
         public void onClick(View v) {
             if (v == radioButtonTxt) {
@@ -254,7 +222,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    //----------------------------------------------------自动发送
+    //自动发送
     class CheckBoxChangeEvent implements CheckBox.OnCheckedChangeListener {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if (buttonView == checkBoxAutoCOMA) {
@@ -268,7 +236,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    //----------------------------------------------------清除按钮、发送按钮
+    //清除按钮、发送按钮
     class ButtonClickEvent implements View.OnClickListener {
         public void onClick(View v) {
             if (v == ButtonClear) {
@@ -280,6 +248,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
 
+    /**
+     * 自动控制串口操作，每间隔x s，循环发送数据，然后关闭，然后再间隔x s，循环发送数据，然后再关闭，循环执行。
+     */
     class ToggleButtonStartTimingListener implements ToggleButton.OnCheckedChangeListener {
 
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -297,7 +268,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    //----------------------------------------------------打开关闭串口
+    /**
+     * 打开关闭串口
+     */
     class ToggleButtonCheckedChangeEvent implements ToggleButton.OnCheckedChangeListener {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if (buttonView == toggleButtonCOMA) {
@@ -308,14 +281,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 } else {
                     CloseComPort(ComA);
                     checkBoxAutoCOMA.setChecked(false);
+                    toggleButtonCOMA.setChecked(false);
                 }
             }
         }
     }
 
-    //----------------------------------------------------串口控制类
+    /**
+     * 串口控制类
+     */
     public class SerialControl extends SerialHelper {
-
 
         public SerialControl(Context context) {
             super(context);
@@ -326,7 +301,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             //数据接收量大或接收时弹出软键盘，界面会卡顿,可能和6410的显示性能有关
             //直接刷新显示，接收数据量大时，卡顿明显，但接收与显示同步。
             //用线程定时刷新显示可以获得较流畅的显示效果，但是接收数据速度快于显示速度时，显示会滞后。
-            //最终效果差不多-_-，线程定时刷新稍好一些。
+            //最终效果差不多_，线程定时刷新稍好一些。
             //DispQueue.AddQueue(ComRecData);//线程定时刷新显示(推荐)
             runOnUiThread(new Runnable()//直接刷新显示
             {
@@ -352,7 +327,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    //----------------------------------------------------刷新显示线程
+    /**
+     * 刷新显示线程
+     */
     private class DispQueueThread extends Thread {
         private Queue<ComBean> QueueList = new LinkedList<ComBean>();
 
@@ -382,7 +359,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    //----------------------------------------------------刷新界面数据
+    /**
+     * 刷新界面数据
+     */
     private void DispAssistData(AssistBean AssistData) {
         editTextCOMA.setText(AssistData.getSendA());
         setSendData(editTextCOMA);
@@ -395,7 +374,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setDelayTime(editTextTimeCOMA);
     }
 
-    //----------------------------------------------------保存、获取界面数据
+    /**
+     * 保存、获取界面数据
+     */
     private void saveAssistData(AssistBean AssistData) {
         AssistData.sTimeA = editTextTimeCOMA.getText().toString();
         SharedPreferences msharedPreferences = getSharedPreferences("comassistant", Context.MODE_PRIVATE);
@@ -412,7 +393,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    //----------------------------------------------------
+    /**
+     * 获取缓存的数据
+     *
+     * @return
+     */
     private AssistBean getAssistData() {
         SharedPreferences msharedPreferences = getSharedPreferences("comassistant", Context.MODE_PRIVATE);
         AssistBean AssistData = new AssistBean();
@@ -433,7 +418,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         return AssistData;
     }
 
-    //----------------------------------------------------设置自动发送延时
+    //设置自动发送延时
     private void setDelayTime(TextView v) {
         if (v == editTextTimeCOMA) {
             AssistData.sTimeA = v.getText().toString();
@@ -441,7 +426,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    //----------------------------------------------------设置自动发送数据
+    //设置自动发送数据
     private void setSendData(TextView v) {
         if (v == editTextCOMA) {
             AssistData.setSendA(v.getText().toString());
@@ -449,12 +434,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    //----------------------------------------------------设置自动发送延时
+    //设置自动发送延时
     private void SetiDelayTime(SerialHelper ComPort, String sTime) {
         ComPort.setiDelay(Integer.parseInt(sTime));
     }
 
-    //----------------------------------------------------设置自动发送数据
+    //设置自动发送数据
     private void SetLoopData(SerialHelper ComPort, String sLoopData) {
         if (radioButtonTxt.isChecked()) {
             ComPort.setTxtLoopData(sLoopData);
@@ -463,25 +448,20 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    //----------------------------------------------------显示接收数据
+    //显示接收数据
     private void DispRecData(ComBean ComRecData) {
         StringBuilder sMsg = new StringBuilder();
-        //sMsg.append(ComRecData.sRecTime);
-        //sMsg.append("[");
-        //sMsg.append(ComRecData.sComPort);
-        //sMsg.append(String.format("](%d)",ComRecData.bRec.length));
         if (ComRecData.bRec[0] == 0X24) {
             try {
                 //sMsg.append("[Str] ");
-                sMsg.append(new String(ComRecData.bRec, "UTF-8"));
+                sMsg.append(new String(ComRecData.bRec, "UTF8"));
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         } else {
             if (radioButtonTxt.isChecked()) {
-                //sMsg.append("[Txt] ");
                 try {
-                    sMsg.append(new String(ComRecData.bRec, "UTF-8"));
+                    sMsg.append(new String(ComRecData.bRec, "UTF8"));
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
@@ -490,9 +470,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 sMsg.append(MyFunc.ByteArrToHex(ComRecData.bRec));
             }
         }
-        //sMsg.append("\r\n");
         editTextRecDisp.append(sMsg);
-        //Log.e("xxx显示数据：", sMsg.toString());
         iRecLines++;
         editTextLines.setText(String.valueOf(iRecLines));
         if ((iRecLines > 500) && (checkBoxAutoClear.isChecked())) {//达到500项自动清除
@@ -504,10 +482,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private void log(String msg){
         editTextRecDisp.append(String.format("\r\n%s\r\n",msg));
-        //Log.i("TS",msg);
     }
 
-    //----------------------------------------------------设置自动发送模式开关
+    //设置自动发送模式开关
     private void SetAutoSend(SerialHelper ComPort, boolean isAutoSend) {
         if (isAutoSend) {
             //ComPort.startSend();
@@ -516,7 +493,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    //----------------------------------------------------串口发送
+    //串口发送
     private void sendPortData(SerialHelper ComPort, String sOut) {
         if (ComPort != null && ComPort.isOpen()) {
             if (radioButtonTxt.isChecked()) {
@@ -527,29 +504,28 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    //----------------------------------------------------关闭串口
+    //关闭串口
     private void CloseComPort(SerialHelper ComPort) {
         if (ComPort != null) {
-            //ComPort.stopSend();
             ComPort.close();
         }
     }
 
-    //----------------------------------------------------打开串口
+    //打开串口
     private void OpenComPort(SerialHelper ComPort) {
-
         int mSerialFd = ComPort.open();
         if (mSerialFd > 0) {
             ShowMessage("打开串口成功！");
             ComPort.startReadSerial();
         } else {
-            ShowMessage("打开串口失败！请查看串口是否存在");
+            checkBoxAutoCOMA.setChecked(false);
+            toggleButtonCOMA.setChecked(false);
+            ShowMessage("打开串口失败！请查看串口是否存在或是否有权限");
         }
     }
 
-    //------------------------------------------显示消息
+    //显示消息
     private void ShowMessage(String sMsg) {
-        //Toast.makeText(this, sMsg, Toast.LENGTH_SHORT).show();
         log(sMsg);
     }
 }

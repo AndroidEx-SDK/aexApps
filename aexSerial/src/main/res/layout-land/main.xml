@@ -28,19 +28,16 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-
             <Button
                 android:id="@+id/ButtonClear"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="清除" />
 
-
             <RadioGroup
                 android:id="@+id/radioGroupOption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-
 
                 <RadioButton
                     android:id="@+id/radioButtonTxt"
@@ -49,14 +46,12 @@
                     android:checked="true"
                     android:text="Txt" />
 
-
                 <RadioButton
                     android:id="@+id/radioButtonHex"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Hex" />
             </RadioGroup>
-
 
             <EditText
                 android:id="@+id/editTextLines"
@@ -70,9 +65,7 @@
                 android:longClickable="false"
                 android:text="0">
 
-                <requestFocus />
             </EditText>
-
 
             <CheckBox
                 android:id="@+id/checkBoxAutoClear"
@@ -80,20 +73,10 @@
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:text="自清" />
-
         </LinearLayout>
-
     </LinearLayout>
 
-
     <LinearLayout
-        android:id="@+id/LinearLayoutALLCOM"
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1">
-
-
-        <LinearLayout
             android:id="@+id/LinearLayoutCOMA"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
@@ -109,44 +92,6 @@
                 android:imeOptions="actionDone"
                 android:singleLine="true" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone">
-
-                <Button
-                    android:id="@+id/btn_serialText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="串口响应测试" />
-
-                <Button
-                    android:id="@+id/btn_queryType"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="查询数码管型号" />
-
-                <Button
-                    android:id="@+id/btn_queryVersion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="查询数码管软件版本" />
-
-                <Button
-                    android:id="@+id/btn_parameter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="查询数码管的亮度参数" />
-
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/LinearLayoutTooLCOMA"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -160,11 +105,11 @@
                         android:layout_weight="1" />
 
                     <ToggleButton
+                        android:visibility="invisible"
                         android:id="@+id/toggleButton_startTimingA"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="ToggleButton" />
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -186,7 +131,6 @@
                         android:text="ToggleButton" />
 
                 </LinearLayout>
-
 
                 <LinearLayout
                     android:id="@+id/LinearLayoutOption2COMA"
@@ -214,20 +158,11 @@
                         android:layout_height="wrap_content"
                         android:text="自动" />
 
-
                     <Button
                         android:id="@+id/ButtonSendCOMA"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="发送" />
-
                 </LinearLayout>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-
     </LinearLayout>
-
 </LinearLayout>
