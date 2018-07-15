@@ -19,10 +19,10 @@ public class appDevicesConfig extends appLibsConfig {
     public static final String PASSWORD_KEYPAD = "passwordKeypad";
     public static final String X3BIOVO = "biovo";
     public static final String CRT310_READER = "CRT310Reader";
-    public String PORT_ADDR_PRINTER = "/dev/ttyS0,115200,N,1,8";
-    public String PORT_ADDR_PASSWORD_KEYPAD = "/dev/ttyS2,9600,N,1,8";
-    public String PORT_ADDR_BANKREADER = "/dev/ttyS4,9600,N,1,8";
-    public String PORT_ADDR_CASREADER = "/dev/ttyS6,9600,N,1,8";
+    public String PORT_ADDR_PRINTER = "/dev/ttyS0,115200,N,1,8";//打印机
+    public String PORT_ADDR_PASSWORD_KEYPAD = "/dev/ttyS2,9600,N,1,8";//密码键盘
+    public String PORT_ADDR_BANKREADER = "/dev/ttyS4,9600,N,1,8";//银行卡读卡器
+    public String PORT_ADDR_CASREADER = "/dev/ttyS6,9600,N,1,8";//燃气卡读卡器
     public String PORT_ADDR_CASREADER_LCC = "/dev/ttyS4,9600,N,1,8";//莱卡的s4串口
     public String PORT_ADDR_X3BIOVO = "/dev/ttyS4,19200,N,1,8";//指纹仪
     public String PORT_ADDR_CRT310READER = "/dev/ttyS4,9600,N,1,8";//电动读卡器
