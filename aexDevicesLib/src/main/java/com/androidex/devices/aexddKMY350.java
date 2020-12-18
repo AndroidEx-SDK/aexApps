@@ -367,16 +367,37 @@ public class aexddKMY350 extends aexddPasswordKeypad {
     }
 
     /**
-     * 数据 MAC 运算 (ANSI X9.9)
-     * <p>命令:02h+<Ln>+41h+<字符串>+<BCC>+[03h]</p>
-     * <p>描述:将 Ln(5~247)个字节明文字符串，用当前的工作密钥(DES/3DES)以 CBC 方式进行加密运算 C1=eK(P1)及 Ci=eK(Pi⊕C i-1)i=2,3, ...,n。返回 8 字节 MAC 字串数据。返回 MAC 信息后关闭加密状态。</p>
-     * <p>返回:02h+09h+<ST>+<MAC 字串>+<BCC>+[03h]。 ST 可能是 04h、15h、A4h、B5h、C4h、D5h、E0h。 </p>
-     * <p>注意:MAC 是按 8 字节进行分组，每组需要 25/75mS 等待 DES/3DES 运算，根据此确立等待返回时间。</p>
-     * @param mode  设置Mac加密模式
+     * 设置mac算法模式
+     * @param mode 01 MAC采用ASNI X9.9算法 *   02 MAC采用SAM卡算法  03 MAC采用银联的算法
      */
     public void pkSetEncryptMac(int mode)
     {
+        String r = "";
+        pkSendHexCmd("03460030");
+        r = ReciveDataHex(255,3000*delayUint);
+    }
 
+    /**
+     * 数据 MAC 运算 (ANSI X9.9)
+     * <p>命令:02h+<Ln>+41h+<字符串>+<BCC>+[03h]</p>
+     * <p>描述:将 Ln(5~247)个字节明文字符串，用当前的工作密钥(DES/3DES)以 CBC 方式进行加密运算 </p>
+     * <p>    </p>C1=eK(P1)及 Ci=eK(Pi⊕C i-1)i=2,3, ...,n。返回 8 字节 MAC 字串数据。返回 MAC 信息后关闭加密状态。</p>
+     * <p>返回:02h+09h+<ST>+<MAC 字串>+<BCC>+[03h]。 ST 可能是 04h、15h、A4h、B5h、C4h、D5h、E0h。 </p>
+     * <p>注意:MAC 是按 8 字节进行分组，每组需要 25/75mS 等待 DES/3DES 运算，根据此确立等待返回时间。</p>
+     * @param str
+     */
+    public void pkMacBlock(byte[] str)
+    {
+        byte[] r;
+        byte[] cmd;
+
+        cmd =  new byte[str.length+2];
+        cmd[0] = (byte)str.length;
+        cmd[1] = 0x41;
+        System.arraycopy(str,0,cmd,2,str.length);
+
+        pkSendCmd(cmd,cmd.length);
+        r = ReciveData(255,3000*delayUint);
     }
 
     /**

@@ -11,13 +11,6 @@ android {
         versionCode 2
         versionName "1.0"
         multiDexEnabled true
-
-        ndk {
-            moduleName "serial_port"
-            ldLibs "log", "z", "m"
-            cFlags "-fuse-ld=bfd"
-            abiFilters "armeabi", "armeabi-v7a", "x86"
-        }
     }
 
     buildTypes {

@@ -8,7 +8,7 @@ public class CharacterUtils {
 
     /**
      * 十六进制转换字符串
-     * @param String str Byte字符串(Byte之间无分隔符 如:[616C6B])
+     * @param hexStr Byte字符串(Byte之间无分隔符 如:[616C6B])
      * @return String 对应的字符串
      */
     public static String hexStr2Str(String hexStr)

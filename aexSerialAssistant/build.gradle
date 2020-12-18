@@ -12,13 +12,6 @@ android {
             sourceCompatibility JavaVersion.VERSION_1_5
             targetCompatibility JavaVersion.VERSION_1_5
         }
-
-        ndk {
-            moduleName "serial_port"
-            ldLibs "log", "z", "m"
-            cFlags "-fuse-ld=bfd"
-            abiFilters "armeabi", "armeabi-v7a", "x86"
-        }
     }
 
     buildTypes {
